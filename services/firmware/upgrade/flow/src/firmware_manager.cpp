@@ -119,7 +119,7 @@ void FirmwareManager::RestoreUpdate()
         return;
     }
 
-    if (firmwareTask.status == UpgradeStatus::INSTALLING || firmwareTask.status == UpgradeStatus::INSTALL_SUCCESS) {
+    if (firmwareTask.status == UpgradeStatus::INSTALLING) {
         HandleBootInstallOnStatusProcess(firmwareTask);
         return;
     }
