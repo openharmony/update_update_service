@@ -131,12 +131,11 @@ int32_t UpdateServiceKitsImpl::RegisterUpdateCallback(const UpgradeInfo &info, c
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
 
     std::lock_guard<std::mutex> lock(updateServiceLock_);
-    auto remoteUpdateCallback = new RemoteUpdateCallback(cb);
+    sptr<IUpdateCallback> remoteUpdateCallback = new RemoteUpdateCallback(cb);
     ENGINE_CHECK(remoteUpdateCallback != nullptr, return INT_PARAM_ERR, "Failed to create remote callback");
     int32_t ret = updateService->RegisterUpdateCallback(info, remoteUpdateCallback);
-    if (ret == INT_CALL_SUCCESS) {
-        remoteUpdateCallbackMap_[info] = remoteUpdateCallback;
-    }
+    remoteUpdateCallbackMap_[info] = remoteUpdateCallback;
+    ENGINE_LOGI("RegisterUpdateCallback %{public}s", ret == INT_CALL_SUCCESS ? "success" : "failure");
     return ret;
 }
 

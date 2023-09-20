@@ -98,7 +98,24 @@ void UpdateClient::InitCallback()
             NotifyEventInfo(eventInfo);
         }
     };
-    UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo_, callback);
+
+    constexpr int32_t nextRetryDuration = 10;
+    constexpr int32_t maxRetryTimes = 5;
+    int32_t retryTimes = 0;
+    do {
+        int32_t ret = UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo_, callback);
+        if (ret == INT_CALL_SUCCESS) {
+            break;
+        }
+
+        if (retryTimes++ < maxRetryTimes) {
+            CLIENT_LOGI("InitCallback fail, will retry after %{public}d milliseconds", nextRetryDuration);
+            std::this_thread::sleep_for(std::chrono::milliseconds(nextRetryDuration));
+        } else {
+            CLIENT_LOGE("InitCallback fail after retry %{public}d times", retryTimes);
+        }
+    } while (retryTimes < maxRetryTimes);
+    
 }
 
 napi_value UpdateClient::CheckNewVersion(napi_env env, napi_callback_info info)
