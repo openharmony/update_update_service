@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+#ifdef ABILITY_RUNTIME_ENABLE
+#include "ability_manager_proxy.h"
+#endif
 #include "accesstoken_kit.h"
 #include "access_token.h"
 #include "ipc_skeleton.h"

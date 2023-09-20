@@ -13,7 +13,7 @@
     "name": "update_service",
     "subsystem": "updater",
     "syscap": [
-      "SystemCapability.Update.UpdateService"
+      "SystemCapability.Update.Update_service"
     ],
     "features": [],
     "adapted_system_type": [
@@ -22,6 +22,7 @@
     "deps": {
       "components": [
         "c_utils",
+        "ability_runtime",
         "hilog",
         "ipc",
         "safwk",
