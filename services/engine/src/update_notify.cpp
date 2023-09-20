@@ -15,6 +15,9 @@
 
 #include "update_notify.h"
 
+#ifdef ABILITY_RUNTIME_ENABLE
+#include "ability_manager_proxy.h"
+#endif
 #include "iservice_registry.h"
 
 #include "update_helper.h"
