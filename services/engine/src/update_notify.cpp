@@ -18,7 +18,7 @@
 #include "iservice_registry.h"
 
 #include "update_helper.h"
-#include "update_log.h"`1
+#include "update_log.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -51,8 +51,8 @@ ErrCode UpdateNotify::DisconnectAbility(const sptr<AAFwk::IAbilityConnection> &c
     return result;
 }
 
-Want UpdateNotify::MakeWant(const std::string &deviceId, const std::string &abilityName, const std::string &bundleName,
-    const std::string &subscribeInfo, const std::string &params)
+AAFwk::Want UpdateNotify::MakeWant(const std::string &deviceId, const std::string &abilityName,
+    const std::string &bundleName, const std::string &subscribeInfo, const std::string &params)
 {
     AppExecFwk::ElementName element(deviceId, bundleName, abilityName);
     AAFwk::Want want;
@@ -62,19 +62,19 @@ Want UpdateNotify::MakeWant(const std::string &deviceId, const std::string &abil
     return want;
 }
 
-void UpdateNotify::NotifyToAppService(const std::string &eventInfo, const std::string &subscribeInfo)
+bool UpdateNotify::NotifyToAppService(const std::string &eventInfo, const std::string &subscribeInfo)
 {
     if (eventInfo.empty()) {
         ENGINE_LOGE("NotifyToAppService eventInfo error.");
-        return;
+        return false;
     }
-    string bundleName = OUC_PACKAGE_NAME;
-    string abilityName = OUC_SERVICE_EXT_ABILITY_NAME;
+    std::string bundleName = OUC_PACKAGE_NAME;
+    std::string abilityName = OUC_SERVICE_EXT_ABILITY_NAME;
     AAFwk::Want want = MakeWant("", abilityName, bundleName, subscribeInfo, eventInfo);
     return StartAbility(want) == OHOS::ERR_OK;
 }
 
-void NotifyConnection::OnAbilityConnectDone(const ElementName &element,
+void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &element,
     const sptr<IRemoteObject> &remoteObject, int32_t resultCode)
 {
     ENGINE_LOGI("OnAbilityConnectDone successfully. result %{public}d", resultCode);
