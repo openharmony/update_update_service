@@ -22,7 +22,6 @@
     "deps": {
       "components": [
         "c_utils",
-        "ability_runtime",
         "hilog",
         "ipc",
         "safwk",

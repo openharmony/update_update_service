@@ -15,9 +15,6 @@
 
 #include "update_service_kits_impl.h"
 
-#ifdef BASE_RUNTIME_ENABLE
-#include "ability_manager_proxy.h"
-#endif
 #include "if_system_ability_manager.h"
 #include "iservice_registry.h"
 #include "system_ability_definition.h"
