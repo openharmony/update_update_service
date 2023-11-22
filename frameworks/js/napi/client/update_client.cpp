@@ -115,7 +115,6 @@ void UpdateClient::InitCallback()
             CLIENT_LOGE("InitCallback fail after retry %{public}d times", retryTimes);
         }
     } while (retryTimes < maxRetryTimes);
-    
 }
 
 napi_value UpdateClient::CheckNewVersion(napi_env env, napi_callback_info info)
@@ -222,8 +221,8 @@ napi_value UpdateClient::PauseDownload(napi_env env, napi_callback_info info)
 
     ClientStatus ret = ParseUpgOptions(env, info, versionDigestInfo_, pauseDownloadOptions_);
     std::vector<std::pair<std::string, std::string>> paramInfos;
-    paramInfos.push_back({"versionDigestInfo", "VersionDigestInfo"});
-    paramInfos.push_back({"pauseDownloadOptions", "PauseDownloadOptions"});
+    paramInfos.push_back({ "versionDigestInfo", "VersionDigestInfo" });
+    paramInfos.push_back({ "pauseDownloadOptions", "PauseDownloadOptions" });
     PARAM_CHECK(ret == ClientStatus::CLIENT_SUCCESS,
         ClientHelper::NapiThrowParamError(env, paramInfos);
         return nullptr, "Failed to get pauseDownloadOptions param");
@@ -301,8 +300,8 @@ napi_value UpdateClient::ClearError(napi_env env, napi_callback_info info)
 
     ClientStatus ret = ParseUpgOptions(env, info, versionDigestInfo_, clearOptions_);
     std::vector<std::pair<std::string, std::string>> paramInfos;
-    paramInfos.push_back({"versionDigestInfo", "VersionDigestInfo"});
-    paramInfos.push_back({"clearOptions", "ClearOptions"});
+    paramInfos.push_back({ "versionDigestInfo", "VersionDigestInfo" });
+    paramInfos.push_back({ "clearOptions", "ClearOptions" });
     PARAM_CHECK(ret == ClientStatus::CLIENT_SUCCESS,
         ClientHelper::NapiThrowParamError(env, paramInfos);
         return nullptr, "Failed to get clearOptions param");
