@@ -99,9 +99,9 @@ if (relational_store_native_rdb_enable) {
 }
 firmware_src += ab_update_src
 
-firmware_external_deps = []
+firmware_external_deps = [ "sys_installer:libsysinstallerkits" ]
 
-ab_update_deps = [ "//base/update/sys_installer/interfaces/innerkits/ipc_client:libsysinstallerkits" ]
+ab_update_deps = []
 
 firmware_deps = []
 firmware_deps += ab_update_deps
