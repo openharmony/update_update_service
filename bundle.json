@@ -27,13 +27,27 @@
         "safwk",
         "samgr",
         "napi",
-        "startup_l2"
+        "startup_l2",
+        "access_token",
+        "hisysevent",
+        "init",
+        "updater",
+        "ability_base",
+        "ability_runtime",
+        "netmanager_base",
+        "preferences",
+        "sys_installer",
+        "relational_store"
       ],
       "third_party": [
         "curl",
         "libxml2",
         "cJSON",
-        "bounds_checking_function"
+        "bounds_checking_function",
+        "glib",
+        "jsoncpp",
+        "mbedtls",
+        "openssl"
       ]
     },
     "build": {
