@@ -433,7 +433,8 @@ int32_t UpdateServiceStub::OnRemoteRequest(uint32_t code,
 }
 
 int32_t UpdateServiceStub::HandleRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
-                                               MessageOption &option) {
+    MessageOption &option)
+{
     if (data.ReadInterfaceToken() != GetDescriptor()) {
         ENGINE_LOGE("UpdateServiceStub ReadInterfaceToken fail");
         return CALL_RESULT_TO_IPC_RESULT(INT_CALL_IPC_ERR);
