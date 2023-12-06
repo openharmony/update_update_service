@@ -62,8 +62,8 @@ void ModuleManager::LoadModule(std::string libPath)
 
 ModuleManager& ModuleManager::GetInstance()
 {
-    static ModuleManager moduleManager_;
-    return moduleManager_;
+    static ModuleManager moduleManager;
+    return moduleManager;
 }
 
 void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest, bool isExt)
