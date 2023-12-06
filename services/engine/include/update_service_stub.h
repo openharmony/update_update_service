@@ -36,6 +36,9 @@ public:
     using RequestFuncType = int32_t (UpdateServiceStub::*)(UpdateServiceStubPtr service,
         MessageParcel &data, MessageParcel &reply, MessageOption &option);
 
+    int32_t HandleRemoteRequest(uint32_t code, MessageParcel& data, MessageParcel& reply,
+                            MessageOption &option);
+
 private:
     int32_t GetNewVersionStub(UpdateServiceStubPtr service,
         MessageParcel& data, MessageParcel& reply, MessageOption &option);

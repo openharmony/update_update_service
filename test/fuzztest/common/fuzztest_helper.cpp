@@ -116,7 +116,6 @@ BusinessType FuzztestHelper::BuildBusinessType()
 UpdateCallbackInfo FuzztestHelper::BuildUpdateCallbackInfo()
 {
     UpdateCallbackInfo cb;
-    cb.checkNewVersionDone = FtCheckNewVersionDone;
     cb.onEvent = FtOnEvent;
     return cb;
 }

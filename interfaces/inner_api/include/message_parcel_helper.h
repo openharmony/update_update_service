@@ -18,11 +18,11 @@
 
 #include <string>
 
+#include "message_parcel.h"
 #include "parcel.h"
 #include "update_helper.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class MessageParcelHelper {
 public:
     static int32_t ReadUpgradeInfo(MessageParcel &reply, UpgradeInfo &info);
@@ -50,6 +50,9 @@ public:
     static int32_t ReadUpgradePolicy(MessageParcel &reply, UpgradePolicy &policy);
     static int32_t WriteUpgradePolicy(MessageParcel &data, const UpgradePolicy &policy);
 
+    static int32_t ReadCustomUpgradePolicy(MessageParcel &reply, CustomPolicy &policy);
+    static int32_t WriteCustomUpgradePolicy(MessageParcel &data, const CustomPolicy &policy);
+
     static int32_t ReadEventInfo(MessageParcel &reply, EventInfo &eventInfo);
     static int32_t WriteEventInfo(MessageParcel &data, const EventInfo &eventInfo);
 
@@ -76,7 +79,12 @@ public:
 
     static int32_t CompareVersion(const std::string &version1, const std::string &version2);
     static std::vector<std::string> SplitString(const std::string &str, const std::string &delimiter);
+
+    static int32_t ReadAccessoryUpgradeData(MessageParcel &reply, uint8_t **data, uint32_t &dataLen);
+    static int32_t WriteAccessoryUpgradeData(MessageParcel &message, const uint8_t *data, uint32_t dataLen);
+
+    static int32_t ReadAccessoryUpgradeDeviceInfo(MessageParcel &reply, AccessoryDeviceInfo &deviceInfo);
+    static int32_t WriteAccessoryUpgradeDeviceInfo(MessageParcel &data, const AccessoryDeviceInfo &deviceInfo);
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // MESSAGE_PARCEL_HELPER_H

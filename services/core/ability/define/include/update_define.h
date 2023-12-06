@@ -18,11 +18,12 @@
 
 #include "update_log.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 #define COUNT_OF(array) (sizeof(array) / sizeof((array)[0]))
 #define CAST_INT(enumClass) (static_cast<int32_t>(enumClass))
 #define CAST_UINT(enumClass) (static_cast<uint32_t>(enumClass))
+#define CAST_UINT64(enumClass) (static_cast<uint64_t>(enumClass))
+#define CAST_DEFINE_ENUM_ITEM(enumVal) { CAST_INT(enumVal), enumVal }
 
 #define ENGINE_CHECK(retCode, exper, ...)     \
     do {                                      \
@@ -31,6 +32,5 @@ namespace UpdateEngine {
             exper;                            \
         }                                     \
     } while (0)
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_DEFINE_H

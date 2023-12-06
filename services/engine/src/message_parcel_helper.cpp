@@ -63,6 +63,8 @@ void ReadComponentDescriptions(MessageParcel &reply, std::vector<ComponentDescri
         componentDescription.componentId = Str16ToStr8(reply.ReadString16());
         componentDescription.descriptionInfo.descriptionType = static_cast<DescriptionType>(reply.ReadUint32());
         componentDescription.descriptionInfo.content = Str16ToStr8(reply.ReadString16());
+        componentDescription.notifyDescriptionInfo.descriptionType = static_cast<DescriptionType>(reply.ReadUint32());
+        componentDescription.notifyDescriptionInfo.content = Str16ToStr8(reply.ReadString16());
         componentDescriptions.push_back(componentDescription);
     }
 }
@@ -74,6 +76,8 @@ void WriteComponentDescriptions(MessageParcel &data, const std::vector<Component
         data.WriteString16(Str8ToStr16(componentDescriptions[i].componentId));
         data.WriteUint32(static_cast<uint32_t>(componentDescriptions[i].descriptionInfo.descriptionType));
         data.WriteString16(Str8ToStr16(componentDescriptions[i].descriptionInfo.content));
+        data.WriteUint32(static_cast<uint32_t>(componentDescriptions[i].notifyDescriptionInfo.descriptionType));
+        data.WriteString16(Str8ToStr16(componentDescriptions[i].notifyDescriptionInfo.content));
     }
 }
 
@@ -84,6 +88,8 @@ int32_t MessageParcelHelper::ReadUpgradeInfo(MessageParcel &reply, UpgradeInfo &
     info.businessType.subType = static_cast<BusinessSubType>(reply.ReadInt32());
     info.upgradeDevId = Str16ToStr8(reply.ReadString16());
     info.controlDevId = Str16ToStr8(reply.ReadString16());
+    info.processId = reply.ReadInt32();
+    info.deviceType = static_cast<DeviceType>(reply.ReadInt32());
     return 0;
 }
 
@@ -94,6 +100,8 @@ int32_t MessageParcelHelper::WriteUpgradeInfo(MessageParcel &data, const Upgrade
     data.WriteInt32(static_cast<int32_t>(info.businessType.subType));
     data.WriteString16(Str8ToStr16(info.upgradeDevId));
     data.WriteString16(Str8ToStr16(info.controlDevId));
+    data.WriteInt32(info.processId);
+    data.WriteInt32(static_cast<int32_t>(info.deviceType));
     return 0;
 }
 
@@ -141,7 +149,7 @@ void ReadVersionComponents(MessageParcel &reply, std::vector<VersionComponent> &
         versionComponent.upgradeAction = Str16ToStr8(reply.ReadString16());
         versionComponent.displayVersion = Str16ToStr8(reply.ReadString16());
         versionComponent.innerVersion = Str16ToStr8(reply.ReadString16());
-        versionComponent.size = static_cast<size_t>(reply.ReadUint32());
+        versionComponent.size = static_cast<size_t>(reply.ReadUint64());
         versionComponent.effectiveMode = static_cast<size_t>(reply.ReadUint32());
 
         versionComponent.descriptionInfo.descriptionType = static_cast<DescriptionType>(reply.ReadUint32());
@@ -161,7 +169,7 @@ void WriteVersionComponents(MessageParcel &data, const std::vector<VersionCompon
         data.WriteString16(Str8ToStr16(versionComponent->upgradeAction));
         data.WriteString16(Str8ToStr16(versionComponent->displayVersion));
         data.WriteString16(Str8ToStr16(versionComponent->innerVersion));
-        data.WriteUint32(static_cast<uint32_t>(versionComponent->size));
+        data.WriteUint64(static_cast<uint64_t>(versionComponent->size));
         data.WriteUint32(static_cast<uint32_t>(versionComponent->effectiveMode));
 
         data.WriteUint32(static_cast<uint32_t>(versionComponent->descriptionInfo.descriptionType));
@@ -290,6 +298,26 @@ int32_t MessageParcelHelper::WriteUpgradePolicy(MessageParcel &data, const Upgra
     return 0;
 }
 
+int32_t MessageParcelHelper::ReadCustomUpgradePolicy(MessageParcel &reply, CustomPolicy &policy)
+{
+    policy.version = Str16ToStr8(reply.ReadString16());
+    policy.type = static_cast<PolicyType>(reply.ReadUint32());
+    policy.installTime.lastUpdateTime = reply.ReadInt64();
+    policy.installTime.installWindowStart = reply.ReadInt64();
+    policy.installTime.installWindowEnd = reply.ReadInt64();
+    return 0;
+}
+
+int32_t MessageParcelHelper::WriteCustomUpgradePolicy(MessageParcel &data, const CustomPolicy &policy)
+{
+    data.WriteString16(Str8ToStr16(policy.version));
+    data.WriteUint32(CAST_UINT(policy.type));
+    data.WriteInt64(policy.installTime.lastUpdateTime);
+    data.WriteInt64(policy.installTime.installWindowStart);
+    data.WriteInt64(policy.installTime.installWindowEnd);
+    return 0;
+}
+
 int32_t MessageParcelHelper::ReadEventInfo(MessageParcel &reply, EventInfo &eventInfo)
 {
     eventInfo.eventId = static_cast<EventId>(reply.ReadUint32());
@@ -392,6 +420,34 @@ int32_t MessageParcelHelper::ReadClearOptions(MessageParcel &reply, ClearOptions
 int32_t MessageParcelHelper::WriteClearOptions(MessageParcel &data, const ClearOptions &clearOptions)
 {
     data.WriteUint32(static_cast<uint32_t>(clearOptions.status));
+    return 0;
+}
+
+int32_t MessageParcelHelper::ReadAccessoryUpgradeData(MessageParcel &reply, uint8_t **data, uint32_t &dataLen)
+{
+    dataLen = reply.ReadUint32();
+    *data = (const_cast<uint8_t *>(reply.ReadBuffer(dataLen)));
+    return 0;
+}
+
+int32_t MessageParcelHelper::WriteAccessoryUpgradeData(MessageParcel &message, const uint8_t *data, uint32_t dataLen)
+{
+    message.WriteUint32(dataLen);
+    message.WriteBuffer(data, dataLen);
+    return 0;
+}
+
+int32_t MessageParcelHelper::ReadAccessoryUpgradeDeviceInfo(MessageParcel &reply, AccessoryDeviceInfo &deviceInfo)
+{
+    deviceInfo.macAddress = Str16ToStr8(reply.ReadString16());
+    deviceInfo.deviceType = static_cast<DeviceType>(reply.ReadInt32());
+    return 0;
+}
+
+int32_t MessageParcelHelper::WriteAccessoryUpgradeDeviceInfo(MessageParcel &data, const AccessoryDeviceInfo &deviceInfo)
+{
+    data.WriteString16(Str8ToStr16(deviceInfo.macAddress));
+    data.WriteInt32(static_cast<int32_t>(deviceInfo.deviceType));
     return 0;
 }
 } // namespace UpdateEngine

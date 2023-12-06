@@ -18,7 +18,6 @@
 
 #include "iremote_proxy.h"
 #include "iupdate_service.h"
-#include "updater_sa_ipc_interface_code.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -30,7 +29,7 @@ public:
 
     int32_t UnregisterUpdateCallback(const UpgradeInfo &info) override;
 
-    int32_t CheckNewVersion(const UpgradeInfo &info) override;
+    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult) override;
 
     int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DownloadOptions &downloadOptions, BusinessError &businessError) override;
@@ -78,6 +77,17 @@ public:
 
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) override;
+
+    int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+       BusinessError &businessError) override;
+
+    int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+       BusinessError &businessError) override;
+
+    int32_t AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
+       uint32_t dataLen) override;
+
+    int32_t AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo) override;
 
 private:
     static inline BrokerDelegator<UpdateServiceProxy> delegator_;

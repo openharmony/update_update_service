@@ -15,52 +15,56 @@
     "syscap": [
       "SystemCapability.Update.UpdateService"
     ],
-    "features": [],
+    "features": [
+      "update_service_dupdate_config_path",
+      "update_service_updater_sa_cfg_path"
+    ],
     "adapted_system_type": [
       "standard"
     ],
     "deps": {
       "components": [
+        "ability_runtime",
         "c_utils",
         "hilog",
         "ipc",
         "safwk",
         "samgr",
         "napi",
-        "startup_l2",
-        "access_token",
-        "hisysevent",
-        "init",
-        "updater",
-        "ability_base",
-        "ability_runtime",
-        "netmanager_base",
-        "preferences",
-        "sys_installer",
-        "relational_store"
+        "startup_l2"
       ],
       "third_party": [
         "curl",
         "libxml2",
+        "json",
         "cJSON",
-        "bounds_checking_function",
-        "glib",
-        "jsoncpp",
-        "mbedtls",
-        "openssl"
+        "bounds_checking_function"
       ]
     },
     "build": {
-      "sub_component": [
-        "//base/update/updateservice:update_service"
+      "modules": [
+        "//base/update/updateservice/frameworks/js/napi/client:update",
+        "//base/update/updateservice/interfaces/inner_api/engine:updateservicekits",
+        "//base/update/updateservice/interfaces/inner_api/modulemgr:update_module_mgr",
+        "//base/update/updateservice/services/engine:dupdate_config.json",
+        "//base/update/updateservice/services/engine:updater_sa.cfg",
+        "//base/update/updateservice/services/engine:updateservice",
+        "//base/update/updateservice/services/engine/sa_profile:updater_sa_profile"
       ],
-      "inner_kits": [
+      "inner_api": [
         {
           "header": {
             "header_base":"//base/update/updateservice/interfaces/inner_api/include",
             "header_files": []
           },
           "name": "//base/update/updateservice/interfaces/inner_api/engine:updateservicekits"
+        },
+        {
+          "header": {
+            "header_base":"//base/update/updateservice/interfaces/inner_api/modulemgr/include",
+            "header_files": []
+          },
+          "name": "//base/update/updateservice/interfaces/inner_api/modulemgr:update_module_mgr"
         }
       ],
       "test": [

@@ -50,14 +50,5 @@ sptr<IUpdateCallback> UpdateServiceUtil::GetUpgradeCallback(const UpgradeInfo &u
     }
     return service->GetUpgradeCallback(upgradeInfo);
 }
-
-void UpdateServiceUtil::SearchCallback(const UpgradeInfo &upgradeInfo, BusinessError &businessError,
-    CheckResult &checkResult)
-{
-    ENGINE_LOGI("SearchCallback isExistNewVersion %{public}d", checkResult.isExistNewVersion);
-    auto upgradeCallback = GetUpgradeCallback(upgradeInfo);
-    ENGINE_CHECK(upgradeCallback != nullptr, return, "SearchCallback upgradeCallback is null");
-    upgradeCallback->OnCheckVersionDone(businessError, checkResult);
-}
 } // namespace UpdateEngine
 } // namespace OHOS

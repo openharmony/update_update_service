@@ -19,8 +19,7 @@
 #include <string>
 #include <vector>
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class JsonBuilder {
 public:
     JsonBuilder &Append(const std::string &qualifier)
@@ -39,15 +38,25 @@ public:
         return AppendNum(key, std::to_string(value));
     }
 
+    JsonBuilder &Append(const std::string &key, const bool value)
+    {
+        const std::string valueString = value ? "true" : "false";
+        return AppendNum(key, valueString);
+    }
+
     JsonBuilder &Append(const std::string &key, const int64_t value)
     {
         return AppendNum(key, std::to_string(value));
     }
 
-    JsonBuilder &Append(const std::string &key, const std::string &value)
+    JsonBuilder &Append(const std::string &key, const std::string &value, const bool isJsonString = false)
     {
         AppendComma();
-        builder_.append("\"").append(key).append("\"").append(":").append("\"").append(value).append("\"");
+        if (isJsonString) {
+            builder_.append("\"").append(key).append("\"").append(":").append(value);
+        } else {
+            builder_.append("\"").append(key).append("\"").append(":").append("\"").append(value).append("\"");
+        }
         return *this;
     }
 
@@ -102,6 +111,5 @@ private:
     std::string builder_;
     bool isFirstItem_ = true;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // JSON_BUILDER_H

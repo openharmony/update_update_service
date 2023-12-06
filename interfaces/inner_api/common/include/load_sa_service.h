@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef UPDATE_SERVICE_ONDEMAND_H
-#define UPDATE_SERVICE_ONDEMAND_H
-
-#include "update_helper.h"
+#ifndef LOAD_SA_SERVICE_H
+#define LOAD_SA_SERVICE_H
 
 #include <mutex>
 #include <unistd.h>
@@ -25,33 +23,31 @@
 #include "system_ability_definition.h"
 #include "system_ability_load_callback_stub.h"
 
-namespace OHOS {
-namespace UpdateEngine {
-static constexpr int64_t SLEEP_TIME = 50 * 1000;
-static constexpr int32_t RETRY_TIMES = 100;
-
-enum class LoadUpdaterSaStatus {
+namespace OHOS::UpdateEngine {
+enum class LoadSaStatus {
     WAIT_RESULT = 0,
     SUCCESS,
     FAIL,
 };
 
-class UpdateServiceOnDemand : public SystemAbilityLoadCallbackStub {
+class LoadSaService : public SystemAbilityLoadCallbackStub {
 public:
-    static sptr<UpdateServiceOnDemand> GetInstance();
-    bool TryLoadUpdaterSa();
-    void OnLoadSystemAbilitySuccess(int32_t systemAbilityId, const sptr<IRemoteObject>& remoteObject) override;
+    static sptr<LoadSaService> GetInstance();
+    bool TryLoadSa(int systemAbilityId);
+    void OnLoadSystemAbilitySuccess(int32_t systemAbilityId, const sptr<IRemoteObject> &remoteObject) override;
     void OnLoadSystemAbilityFail(int32_t systemAbilityId) override;
 
 private:
-    void InitStatus();
-    bool CheckUpdaterSaLoaded();
-    bool LoadUpdaterSa();
+    LoadSaService();
+    ~LoadSaService() override;
 
-    LoadUpdaterSaStatus loadUpdaterSaStatus_ = LoadUpdaterSaStatus::WAIT_RESULT;
-    static sptr<UpdateServiceOnDemand> instance_;
+    void InitStatus();
+    bool CheckSaLoaded();
+    bool LoadSa(int systemAbilityId);
+
+    LoadSaStatus loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
     static std::mutex instanceLock_;
+    static sptr<LoadSaService> instance_;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
-#endif // UPDATE_SERVICE_ONDEMAND_H
+} // namespace OHOS::UpdateEngine
+#endif // LOAD_SA_SERVICE_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,11 +16,11 @@
 #ifndef UPDATE_CLIENT_RESTORER_H
 #define UPDATE_CLIENT_RESTORER_H
 
-#include "iupdater.h"
 #include "js_native_api_types.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+#include "iupdater.h"
+
+namespace OHOS::UpdateEngine {
 class Restorer : public IUpdater {
 public:
     class Napi {
@@ -31,9 +31,7 @@ public:
     };
 
     Restorer(napi_env env, napi_value thisVar);
-
     napi_value FactoryReset(napi_env env, napi_callback_info info);
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_CLIENT_RESTORER_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,13 +20,11 @@
 #include "client_helper.h"
 #include "define_property.h"
 #include "local_updater.h"
-#include "napi_util.h"
 #include "restorer.h"
 #include "update_client.h"
 #include "update_define.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 struct NativeClass {
     std::string className;
     napi_callback constructor;
@@ -53,7 +51,7 @@ template<typename T, typename Initializer, typename Finalizer>
 napi_value JsConstructor(napi_env env, napi_callback_info info, Initializer initializer, Finalizer finalizer)
 {
     size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = {0};
+    napi_value args[MAX_ARGC] = { 0 };
     napi_value thisVar = nullptr;
     void* data = nullptr;
     napi_get_cb_info(env, info, &argc, args, &thisVar, &data);
@@ -73,22 +71,22 @@ napi_value JsConstructor(napi_env env, napi_callback_info info)
         UpgradeInfo upgradeInfo;
         ClientStatus ret = ClientHelper::GetUpgradeInfoFromArg(env, arg, upgradeInfo);
         if (ret != ClientStatus::CLIENT_SUCCESS) {
-            CLIENT_LOGE("JsConstructor GetUpgradeInfoFromArg error");
+            ENGINE_LOGE("JsConstructor GetUpgradeInfoFromArg error");
             T* object = NULL;
             return object;
         }
         if (g_onlineUpdater.count(upgradeInfo) == 0) {
-            CLIENT_LOGI("JsConstructor new UpdateClient subtype: %{public}d", upgradeInfo.businessType.subType);
+            ENGINE_LOGI("JsConstructor new UpdateClient subtype: %{public}d", upgradeInfo.businessType.subType);
             std::shared_ptr<UpdateClient> updateClient = std::make_shared<UpdateClient>(env, value);
             g_onlineUpdater[upgradeInfo] = updateClient;
         } else {
-            CLIENT_LOGI("JsConstructor UpdateClient use cache");
+            ENGINE_LOGI("JsConstructor UpdateClient use cache");
         }
         return g_onlineUpdater[upgradeInfo].get();
     };
 
     auto finalizer = [](napi_env env, void* data, void* hint) {
-        CLIENT_LOGI("delete js object");
+        ENGINE_LOGI("delete js object");
     };
 
     return JsConstructor<T>(env, info, initializer, finalizer);
@@ -98,7 +96,7 @@ napi_value JsConstructorRestorer(napi_env env, napi_callback_info info)
 {
     auto initializer = [](napi_env env, napi_value value, const napi_value arg) {
         if (g_restorer == nullptr) {
-            CLIENT_LOGI("JsConstructorRestorer, create native object");
+            ENGINE_LOGI("JsConstructorRestorer, create native object");
             g_restorer = std::make_shared<Restorer>(env, value);
         }
         return g_restorer.get();
@@ -111,7 +109,7 @@ napi_value JsConstructorLocalUpdater(napi_env env, napi_callback_info info)
 {
     auto initializer = [](napi_env env, napi_value value, const napi_value arg) {
         if (g_localUpdater == nullptr) {
-            CLIENT_LOGI("JsConstructorLocalUpdater, create native object");
+            ENGINE_LOGI("JsConstructorLocalUpdater, create native object");
             g_localUpdater = std::make_shared<LocalUpdater>(env, value);
         }
         return g_localUpdater.get();
@@ -129,10 +127,10 @@ T* CreateJsObject(napi_env env, napi_callback_info info, napi_ref constructorRef
         "CreateJsObject error, napi_get_reference_value fail");
 
     size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = {0};
+    napi_value args[MAX_ARGC] = { 0 };
     status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     if (status != napi_ok) {
-        CLIENT_LOGI("CreateJsObject, napi_get_cb_info error");
+        ENGINE_LOGI("CreateJsObject, napi_get_cb_info error");
     }
     status = napi_new_instance(env, constructor, argc, args, &jsObject);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "CreateJsObject error, napi_new_instance fail");
@@ -140,7 +138,7 @@ T* CreateJsObject(napi_env env, napi_callback_info info, napi_ref constructorRef
     T *nativeObject = nullptr;
     status = napi_unwrap(env, jsObject, (void**)&nativeObject);
     if (status != napi_ok) {
-        CLIENT_LOGE("CreateJsObject error, napi_unwrap fail");
+        ENGINE_LOGE("CreateJsObject error, napi_unwrap fail");
         napi_remove_wrap(env, jsObject, (void**)&nativeObject);
         jsObject = nullptr;
         return nullptr;
@@ -212,7 +210,7 @@ napi_value Download(napi_env env, napi_callback_info info)
 
 napi_value PauseDownload(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("PauseDownload");
+    ENGINE_LOGI("PauseDownload");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->PauseDownload(env, info);
@@ -220,7 +218,7 @@ napi_value PauseDownload(napi_env env, napi_callback_info info)
 
 napi_value ResumeDownload(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("ResumeDownload");
+    ENGINE_LOGI("ResumeDownload");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->ResumeDownload(env, info);
@@ -235,7 +233,7 @@ napi_value CancelUpgrade(napi_env env, napi_callback_info info)
 
 napi_value Upgrade(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("Upgrade");
+    ENGINE_LOGI("Upgrade");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->Upgrade(env, info);
@@ -243,7 +241,7 @@ napi_value Upgrade(napi_env env, napi_callback_info info)
 
 napi_value ClearError(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("ClearError");
+    ENGINE_LOGI("ClearError");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->ClearError(env, info);
@@ -251,7 +249,7 @@ napi_value ClearError(napi_env env, napi_callback_info info)
 
 napi_value TerminateUpgrade(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("TerminateUpgrade");
+    ENGINE_LOGI("TerminateUpgrade");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->TerminateUpgrade(env, info);
@@ -273,7 +271,7 @@ napi_value GetNewVersionDescription(napi_env env, napi_callback_info info)
 
 napi_value GetCurrentVersionInfo(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("GetCurrentVersionInfo");
+    ENGINE_LOGI("GetCurrentVersionInfo");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->GetCurrentVersionInfo(env, info);
@@ -288,7 +286,7 @@ napi_value GetCurrentVersionDescription(napi_env env, napi_callback_info info)
 
 napi_value GetTaskInfo(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("GetTaskInfo");
+    ENGINE_LOGI("GetTaskInfo");
     UpdateClient *client = UnwrapJsObject<UpdateClient>(env, info);
     PARAM_CHECK_NAPI_CALL(env, client != nullptr, return nullptr, "Error get client");
     return client->GetTaskInfo(env, info);
@@ -305,7 +303,7 @@ static bool DefineClass(napi_env env, napi_value exports, const NativeClass& nat
     status = napi_set_named_property(env, exports, className.c_str(), result);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return false, "DefineClass error, napi_set_named_property fail");
 
-    constexpr int32_t refCount = 1;
+    constexpr int32_t refCount = 1; // 新引用的初始引用计数
     status = napi_create_reference(env, result, refCount, nativeClass.constructorRef);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return false, "DefineClass error, napi_create_reference fail");
     return true;
@@ -385,7 +383,7 @@ napi_value UpdateClientInit(napi_env env, napi_value exports)
 static napi_value UpdateClientInit(napi_env env, napi_value exports)
 #endif
 {
-    CLIENT_LOGI("UpdateClientInit");
+    ENGINE_LOGI("UpdateClientInit");
     // Registration function
     napi_property_descriptor desc[] = {
         DECLARE_NAPI_FUNCTION("getOnlineUpdater", GetOnlineUpdater),
@@ -396,15 +394,15 @@ static napi_value UpdateClientInit(napi_env env, napi_value exports)
 
     bool ret = DefineUpdateClient(env, exports);
     PARAM_CHECK_NAPI_CALL(env, ret, return nullptr, "DefineUpdateClient fail");
-    CLIENT_LOGI("DefineUpdateClient success");
+    ENGINE_LOGI("DefineUpdateClient success");
 
     ret = DefineRestorer(env, exports);
     PARAM_CHECK_NAPI_CALL(env, ret, return nullptr, "DefineRestorer fail");
-    CLIENT_LOGI("DefineRestorer success");
+    ENGINE_LOGI("DefineRestorer success");
 
     ret = DefineLocalUpdater(env, exports);
     PARAM_CHECK_NAPI_CALL(env, ret, return nullptr, "DefineLocalUpdater fail");
-    CLIENT_LOGI("DefineLocalUpdater success");
+    ENGINE_LOGI("DefineLocalUpdater success");
 
     DefineProperty::DefineProperties(env, exports);
     return exports;
@@ -430,5 +428,4 @@ extern "C" __attribute__((constructor)) void RegisterModule(void)
 {
     napi_module_register(&g_module);
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
