@@ -12,8 +12,8 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
-import("$updateengine_root_path/services/core/ability/log/log.gni")
 import("../../../updateengine.gni")
+import("$updateengine_root_path/services/core/ability/log/log.gni")
 
 ohos_prebuilt_etc("updater_sa.rc") {
   source = "etc/updater_sa.rc"
