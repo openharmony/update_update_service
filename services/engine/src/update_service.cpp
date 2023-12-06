@@ -534,7 +534,8 @@ void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
 } // namespace OHOS
 
 int32_t HandleBlueRemoteRequest(uint32_t code, OHOS::MessageParcel &data, OHOS::MessageParcel &reply,
-                                OHOS::MessageOption &option) {
+    OHOS::MessageOption &option)
+{
     OHOS::UpdateEngine::UpdateService::GetInstance()-> HandleRemoteRequest(code, data, reply, option);
     return 0;
 }

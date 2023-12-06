@@ -12,8 +12,8 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
-import("../../../updateengine.gni")
 import("$updateengine_root_path/services/core/ability/log/log.gni")
+import("../../../updateengine.gni")
 
 ohos_prebuilt_etc("updater_sa.rc") {
   source = "etc/updater_sa.rc"
@@ -62,9 +62,9 @@ ohos_shared_library("$updateengine_inner_library_name") {
   public_configs = [ ":updateengine_inner_library_native_config" ]
 
   deps = [
-    "//third_party/bounds_checking_function:libsec_static",
     "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
-    "//third_party/json:nlohmann_json_static"
+    "//third_party/bounds_checking_function:libsec_static",
+    "//third_party/json:nlohmann_json_static",
   ]
 
   external_deps = [

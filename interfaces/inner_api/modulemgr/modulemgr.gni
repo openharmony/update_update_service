@@ -28,9 +28,7 @@ modulemgr_deps = []
 
 modulemgr_public_deps = []
 
-modulemgr_include = [
-  "$modulemgr_root_path/include",
-]
+modulemgr_include = [ "$modulemgr_root_path/include" ]
 
 modulemgr_src = [
   "$modulemgr_root_path/src/update_service_module.cpp",

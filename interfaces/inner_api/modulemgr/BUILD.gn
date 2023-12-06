@@ -15,26 +15,25 @@ import("//build/ohos.gni")
 import("../../inner_api/modulemgr/modulemgr.gni")
 
 config("module_mgr_library_native_config") {
-    include_dirs = modulemgr_include
+  include_dirs = modulemgr_include
 }
 
 ohos_shared_library("update_module_mgr") {
-    sanitize = {
-        cfi = true
-        cfi_cross_dso = true
-        debug = false
-    }
-    branch_protector_ret = "pac_ret"
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+  branch_protector_ret = "pac_ret"
 
-    include_dirs = modulemgr_include
-    sources = modulemgr_src
-    deps = modulemgr_deps
-    external_deps = modulemgr_external_deps
-    public_deps = modulemgr_public_deps
-    part_name = "$updateengine_part_name"
-    subsystem_name = "updater"
-    #    defines = sa_defines
-    cflags = modulemgr_cflags
+  include_dirs = modulemgr_include
+  sources = modulemgr_src
+  deps = modulemgr_deps
+  external_deps = modulemgr_external_deps
+  public_deps = modulemgr_public_deps
+  part_name = "$updateengine_part_name"
+  subsystem_name = "updater"
+  cflags = modulemgr_cflags
 
-    public_configs = [ ":module_mgr_library_native_config" ]
+  public_configs = [ ":module_mgr_library_native_config" ]
 }
