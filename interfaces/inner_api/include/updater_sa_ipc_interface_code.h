@@ -16,10 +16,11 @@
 #ifndef UPDATER_SA_IPC_INTERFACE_CODE_H
 #define UPDATER_SA_IPC_INTERFACE_CODE_H
 
-namespace OHOS {
-namespace UpdateEngine {
+#include <cstdint>
+
+namespace OHOS::UpdateEngine {
 /* SAID: 3006 */
-enum class UpdaterSaInterfaceCode {
+enum class UpdaterSaInterfaceCode : uint32_t {
     CHECK_VERSION = 1,
     DOWNLOAD,
     PAUSE_DOWNLOAD,
@@ -39,8 +40,11 @@ enum class UpdaterSaInterfaceCode {
     CANCEL,
     FACTORY_RESET,
     APPLY_NEW_VERSION,
-    VERIFY_UPGRADE_PACKAGE
+    VERIFY_UPGRADE_PACKAGE,
+    SET_CUSTOM_POLICY,
+    GET_CUSTOM_POLICY,
+    ACCESSORY_CONNECT_NOTIFY,
+    ACCESSORY_UNPAIR_NOTIFY
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATER_SA_IPC_INTERFACE_CODE_H

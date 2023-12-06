@@ -25,7 +25,6 @@ class UpdateServiceUtil {
 public:
     static void BuildTaskBody(const Progress &progress, TaskBody &taskBody);
     static sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &upgradeInfo);
-    static void SearchCallback(const UpgradeInfo &upgradeInfo, BusinessError &businessError, CheckResult &checkResult);
 };
 } // namespace UpdateEngine
 } // namespace OHOS

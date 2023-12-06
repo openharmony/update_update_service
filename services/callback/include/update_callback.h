@@ -19,18 +19,19 @@
 #include "update_callback_stub.h"
 #include "update_helper.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class UpdateCallback : public UpdateCallbackStub {
 public:
     explicit UpdateCallback() = default;
 
-    ~UpdateCallback() = default;
+    explicit UpdateCallback(const UpdateCallbackInfo &updateCallback);
 
-    void OnCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult) override;
+    ~UpdateCallback() override = default;
 
     void OnEvent(const EventInfo &eventInfo) override;
+
+private:
+    UpdateCallbackInfo updateCallback_{};
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_CALLBACK_H

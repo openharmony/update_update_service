@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,29 +17,18 @@
 
 #include "securec.h"
 
+#include "common_check.h"
 #include "message_parcel_helper.h"
 #include "update_define.h"
 #include "update_helper.h"
 #include "update_log.h"
+#include "updater_sa_ipc_interface_code.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 #define RETURN_WHEN_TOKEN_WRITE_FAIL(data)                             \
     if (!(data).WriteInterfaceToken(GetDescriptor())) {                \
         ENGINE_LOGE("UpdateServiceProxy WriteInterfaceToken fail");    \
         return INT_CALL_IPC_ERR;                                       \
-    }
-
-#define RETURN_WHEN_REMOTE_NULL(remote) \
-    ENGINE_CHECK((remote) != nullptr, return INT_CALL_IPC_ERR, "Can not get remote")
-
-#define IPC_RESULT_TO_CALL_RESULT(result)           \
-    if ((result) == ERR_NONE) {                     \
-        result = INT_CALL_SUCCESS;                  \
-    } else if ((result) >= CALL_RESULT_OFFSET) {    \
-        result = (result) - CALL_RESULT_OFFSET;     \
-    } else {                                        \
-        result = INT_CALL_IPC_ERR;                  \
     }
 
 #define RETURN_FAIL_WHEN_REMOTE_ERR(methodName, res)                             \
@@ -49,8 +38,7 @@ namespace UpdateEngine {
         ENGINE_CHECK((res) == INT_CALL_SUCCESS, return (res), "Transact error"); \
     } while (0)
 
-int32_t UpdateServiceProxy::RegisterUpdateCallback(const UpgradeInfo &info,
-    const sptr<IUpdateCallback>& updateCallback)
+int32_t UpdateServiceProxy::RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback> &updateCallback)
 {
     ENGINE_CHECK(updateCallback != nullptr, return INT_PARAM_ERR, "Invalid param");
     ENGINE_LOGI("UpdateServiceProxy::RegisterUpdateCallback");
@@ -87,7 +75,8 @@ int32_t UpdateServiceProxy::UnregisterUpdateCallback(const UpgradeInfo &info)
     return INT_CALL_SUCCESS;
 }
 
-int32_t UpdateServiceProxy::CheckNewVersion(const UpgradeInfo &info)
+int32_t UpdateServiceProxy::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError,
+    CheckResult &checkResult)
 {
     ENGINE_LOGI("UpdateServiceProxy::CheckNewVersion");
     auto remote = Remote();
@@ -101,6 +90,12 @@ int32_t UpdateServiceProxy::CheckNewVersion(const UpgradeInfo &info)
     MessageOption option;
     int32_t ret = remote->SendRequest(CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION), data, reply, option);
     RETURN_FAIL_WHEN_REMOTE_ERR("UpdateServiceProxy::CheckNewVersion", ret);
+    CheckResult result;
+    BusinessError error;
+    MessageParcelHelper::ReadBusinessError(reply, error);
+    MessageParcelHelper::ReadCheckResult(reply, result);
+    checkResult = result;
+    businessError = error;
     return INT_CALL_SUCCESS;
 }
 
@@ -512,5 +507,85 @@ int32_t UpdateServiceProxy::VerifyUpgradePackage(const std::string &packagePath,
     businessError = remoteBusinessError;
     return INT_CALL_SUCCESS;
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+
+int32_t UpdateServiceProxy::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+    BusinessError &businessError)
+{
+    ENGINE_LOGI("UpdateServiceProxy::SetCustomUpgradePolicy");
+    auto remote = Remote();
+    RETURN_WHEN_REMOTE_NULL(remote);
+
+    MessageParcel data;
+    RETURN_WHEN_TOKEN_WRITE_FAIL(data);
+    MessageParcelHelper::WriteUpgradeInfo(data, info);
+    MessageParcelHelper::WriteCustomUpgradePolicy(data, policy);
+
+    MessageParcel reply;
+    MessageOption option;
+    int32_t ret = remote->SendRequest(CAST_UINT(UpdaterSaInterfaceCode::SET_CUSTOM_POLICY), data, reply, option);
+    RETURN_FAIL_WHEN_REMOTE_ERR("UpdateServiceProxy::SetUpgradePolicy", ret);
+
+    MessageParcelHelper::ReadBusinessError(reply, businessError);
+    return INT_CALL_SUCCESS;
+}
+
+int32_t UpdateServiceProxy::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+    BusinessError &businessError)
+{
+    ENGINE_LOGI("UpdateServiceProxy::GetCustomUpgradePolicy");
+    auto remote = Remote();
+    RETURN_WHEN_REMOTE_NULL(remote);
+
+    MessageParcel data;
+    RETURN_WHEN_TOKEN_WRITE_FAIL(data);
+    MessageParcelHelper::WriteUpgradeInfo(data, info);
+    MessageParcelHelper::WriteCustomUpgradePolicy(data, policy);
+
+    MessageParcel reply;
+    MessageOption option;
+    int32_t ret = remote->SendRequest(CAST_UINT(UpdaterSaInterfaceCode::GET_CUSTOM_POLICY), data, reply, option);
+    RETURN_FAIL_WHEN_REMOTE_ERR("UpdateServiceProxy::GetCustomUpgradePolicy", ret);
+
+    MessageParcelHelper::ReadBusinessError(reply, businessError);
+    MessageParcelHelper::ReadCustomUpgradePolicy(reply, policy);
+    return INT_CALL_SUCCESS;
+}
+
+int32_t UpdateServiceProxy::AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
+    uint32_t dataLen)
+{
+    ENGINE_LOGI("UpdateServiceProxy::AccessoryConnectNotify");
+    auto remote = Remote();
+    RETURN_WHEN_REMOTE_NULL(remote);
+
+    MessageParcel message;
+    RETURN_WHEN_TOKEN_WRITE_FAIL(message);
+    MessageParcelHelper::WriteAccessoryUpgradeData(message, data, dataLen);
+    MessageParcelHelper::WriteAccessoryUpgradeDeviceInfo(message, deviceInfo);
+
+    MessageParcel reply;
+    MessageOption option;
+    int32_t ret = remote->SendRequest(CAST_UINT(UpdaterSaInterfaceCode::ACCESSORY_CONNECT_NOTIFY),
+        message, reply, option);
+    RETURN_FAIL_WHEN_REMOTE_ERR("UpdateServiceProxy::AccessoryConnectNotify", ret);
+    return INT_CALL_SUCCESS;
+}
+
+int32_t UpdateServiceProxy::AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo)
+{
+    ENGINE_LOGI("UpdateServiceProxy::AccessoryUnpairNotify");
+    auto remote = Remote();
+    RETURN_WHEN_REMOTE_NULL(remote);
+
+    MessageParcel message;
+    RETURN_WHEN_TOKEN_WRITE_FAIL(message);
+    MessageParcelHelper::WriteAccessoryUpgradeDeviceInfo(message, deviceInfo);
+
+    MessageParcel reply;
+    MessageOption option;
+    int32_t ret = remote->SendRequest(CAST_UINT(UpdaterSaInterfaceCode::ACCESSORY_UNPAIR_NOTIFY),
+        message, reply, option);
+    RETURN_FAIL_WHEN_REMOTE_ERR("UpdateServiceProxy::AccessoryUnpairNotify", ret);
+    return INT_CALL_SUCCESS;
+}
+} // namespace OHOS::UpdateEngine

@@ -21,21 +21,16 @@
 #include "iupdate_callback.h"
 #include "update_helper.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class UpdateCallbackProxy : public IRemoteProxy<IUpdateCallback> {
 public:
     explicit UpdateCallbackProxy(const sptr<IRemoteObject>& impl) : IRemoteProxy<IUpdateCallback>(impl) {}
-
-    virtual ~UpdateCallbackProxy() = default;
-
-    void OnCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult) override;
+    ~UpdateCallbackProxy() override = default;
 
     void OnEvent(const EventInfo &eventInfo) override;
 
 private:
     static inline BrokerDelegator<UpdateCallbackProxy> delegator_;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_CALLBACK_PROXY_H

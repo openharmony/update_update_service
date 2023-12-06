@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,8 +18,7 @@
 
 #include "iupdater.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class UpdateClient : public IUpdater {
 public:
     class Napi {
@@ -59,16 +58,13 @@ public:
     void GetUpdateResult(SessionType type, UpdateResult &result) override;
 
     // Notify the session.
-    void NotifyCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult) override;
     void NotifyDownloadProgress(const BusinessError &businessError, const Progress &progress);
     void NotifyUpgradeProgresss(const BusinessError &businessError, const Progress &progress);
 
     #ifdef UPDATER_UT
     UpdateSession *GetUpdateSession(uint32_t sessId)
     {
-    #ifndef UPDATER_API_TEST
         std::lock_guard<std::mutex> guard(sessionMutex_);
-    #endif
         auto iter = sessions_.find(sessId);
         if (iter != sessions_.end()) {
             return iter->second.get();
@@ -76,16 +72,20 @@ public:
         return nullptr;
     }
     #endif
+
+protected:
+    void RegisterCallback() override;
+    void UnRegisterCallback() override;
+
 private:
-    void InitCallback();
     template <typename T>
     ClientStatus ParseUpgOptions(napi_env env, napi_callback_info info, VersionDigestInfo &versionDigestInfo,
         T &options);
     template <typename T>
     ClientStatus ParseUpgOptions(napi_env env, napi_callback_info info, T &options);
-#ifndef UPDATER_API_TEST
+
+private:
     std::mutex sessionMutex_;
-#endif
     bool isInit_ = false;
     std::string upgradeFile_;
     std::string certsFile_;
@@ -111,6 +111,5 @@ private:
 #ifdef UPDATER_UT
 napi_value UpdateClientInit(napi_env env, napi_value exports);
 #endif
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_CLIENT_H

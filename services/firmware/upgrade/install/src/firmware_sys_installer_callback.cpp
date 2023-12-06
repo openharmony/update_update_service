@@ -38,7 +38,7 @@ void SysInstallerCallback::OnUpgradeProgress(SysInstaller::UpdateStatus updateSt
             break;
         default:
             installProgress.progress.status = UpgradeStatus::INSTALL_FAIL;
-            installProgress.errMsg.errorMsg = resultMsg;
+            installProgress.errMsg.errorMessage = resultMsg;
             break;
     }
 

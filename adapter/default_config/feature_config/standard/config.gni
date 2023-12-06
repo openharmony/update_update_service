@@ -12,4 +12,6 @@
 # limitations under the License.
 
 declare_args() {
+    update_service_dupdate_config_path = "//base/update/updateservice/services/engine/etc/dupdate_config.json"
+    update_service_updater_sa_cfg_path = "//base/update/updateservice/services/engine/etc/updater_sa.cfg"
 }

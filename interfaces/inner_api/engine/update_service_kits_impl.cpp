@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,115 +23,26 @@
 #include "iupdate_callback.h"
 #include "update_define.h"
 #include "update_log.h"
-#include "update_service_ondemand.h"
 
-namespace OHOS {
-namespace UpdateEngine {
-#define RETURN_FAIL_WHEN_SERVICE_NULL(updateService) \
-    ENGINE_CHECK((updateService) != nullptr, return INT_CALL_IPC_ERR, "Get updateService failed")
-
-UpdateServiceKits& UpdateServiceKits::GetInstance()
+namespace OHOS::UpdateEngine {
+UpdateServiceKits &UpdateServiceKits::GetInstance()
 {
     return DelayedRefSingleton<UpdateServiceKitsImpl>::GetInstance();
 }
 
-UpdateServiceKitsImpl::UpdateServiceKitsImpl() {}
+UpdateServiceKitsImpl::UpdateServiceKitsImpl() : BaseServiceKitsImpl<IUpdateService>(UPDATE_DISTRIBUTED_SERVICE_ID) {}
 
-UpdateServiceKitsImpl::~UpdateServiceKitsImpl() {}
-
-void UpdateServiceKitsImpl::ResetService(const wptr<IRemoteObject>& remote)
-{
-    ENGINE_LOGI("Remote is dead, reset service instance");
-
-    std::lock_guard<std::mutex> lock(updateServiceLock_);
-    if (updateService_ != nullptr) {
-        sptr<IRemoteObject> object = updateService_->AsObject();
-        if ((object != nullptr) && (remote == object)) {
-            object->RemoveDeathRecipient(deathRecipient_);
-            updateService_ = nullptr;
-        }
-    }
-}
-
-sptr<IUpdateService> UpdateServiceKitsImpl::GetService()
-{
-    std::lock_guard<std::mutex> lock(updateServiceLock_);
-    if (updateService_ != nullptr) {
-        return updateService_;
-    }
-
-    sptr<ISystemAbilityManager> samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
-    ENGINE_CHECK(samgr != nullptr, return nullptr, "Get samgr failed");
-    sptr<IRemoteObject> object = samgr->GetSystemAbility(UPDATE_DISTRIBUTED_SERVICE_ID);
-    if (object == nullptr) {
-        ENGINE_CHECK(UpdateServiceOnDemand::GetInstance()->TryLoadUpdaterSa(), return nullptr, "TryLoadUpdaterSa fail");
-        object = samgr->GetSystemAbility(UPDATE_DISTRIBUTED_SERVICE_ID);
-        ENGINE_CHECK(object != nullptr, return nullptr, "Get update object from samgr failed");
-    }
-
-    if (deathRecipient_ == nullptr) {
-        deathRecipient_ = new DeathRecipient();
-    }
-
-    if ((object->IsProxyObject()) && (!object->AddDeathRecipient(deathRecipient_))) {
-        ENGINE_LOGE("Failed to add death recipient");
-    }
-
-    ENGINE_LOGI("get remote object ok");
-    updateService_ = iface_cast<IUpdateService>(object);
-    if (updateService_ == nullptr) {
-        ENGINE_LOGE("update service iface_cast failed");
-        return updateService_;
-    }
-
-    ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.size());
-    for (auto &iter : remoteUpdateCallbackMap_) {
-        updateService_->RegisterUpdateCallback(iter.first, iter.second);
-    }
-    return updateService_;
-}
-
-void UpdateServiceKitsImpl::DeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
-{
-    DelayedRefSingleton<UpdateServiceKitsImpl>::GetInstance().ResetService(remote);
-}
-
-UpdateServiceKitsImpl::RemoteUpdateCallback::RemoteUpdateCallback(const UpdateCallbackInfo &cb)
-    : UpdateCallback()
-{
-    updateCallback_ = cb;
-}
-
-UpdateServiceKitsImpl::RemoteUpdateCallback::~RemoteUpdateCallback()
-{
-    updateCallback_.checkNewVersionDone = nullptr;
-    updateCallback_.onEvent = nullptr;
-}
-
-void UpdateServiceKitsImpl::RemoteUpdateCallback::OnCheckVersionDone(
-    const BusinessError &businessError, const CheckResult &checkResult)
-{
-    ENGINE_LOGI("OnCheckVersionDone status %{public}d", checkResult.isExistNewVersion);
-    if (updateCallback_.checkNewVersionDone != nullptr) {
-        updateCallback_.checkNewVersionDone(businessError, checkResult);
-    }
-}
-
-void UpdateServiceKitsImpl::RemoteUpdateCallback::OnEvent(const EventInfo &eventInfo)
-{
-    ENGINE_LOGI("OnEvent eventId %{public}d", eventInfo.eventId);
-    if (updateCallback_.onEvent != nullptr) {
-        updateCallback_.onEvent(eventInfo);
-    }
-}
+UpdateServiceKitsImpl::~UpdateServiceKitsImpl() = default;
 
 int32_t UpdateServiceKitsImpl::RegisterUpdateCallback(const UpgradeInfo &info, const UpdateCallbackInfo &cb)
 {
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
 
-    std::lock_guard<std::mutex> lock(updateServiceLock_);
-    sptr<IUpdateCallback> remoteUpdateCallback = new RemoteUpdateCallback(cb);
+    std::lock_guard<std::mutex> lock(remoteServerLock_);
+
+    // 以下代码中sptr<IUpdateCallback>不能修改为auto,否则在重注册时有概率出现Crash
+    sptr<IUpdateCallback> remoteUpdateCallback(new UpdateCallback(cb));
     ENGINE_CHECK(remoteUpdateCallback != nullptr, return INT_PARAM_ERR, "Failed to create remote callback");
     int32_t ret = updateService->RegisterUpdateCallback(info, remoteUpdateCallback);
     remoteUpdateCallbackMap_[info] = remoteUpdateCallback;
@@ -141,19 +52,23 @@ int32_t UpdateServiceKitsImpl::RegisterUpdateCallback(const UpgradeInfo &info, c
 
 int32_t UpdateServiceKitsImpl::UnregisterUpdateCallback(const UpgradeInfo &info)
 {
+    auto updateService = GetService();
+    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
+
     ENGINE_LOGI("UnregisterUpdateCallback");
-    std::lock_guard<std::mutex> lock(updateServiceLock_);
+    std::lock_guard<std::mutex> lock(remoteServerLock_);
     remoteUpdateCallbackMap_.erase(info);
-    return INT_CALL_SUCCESS;
+    return updateService->UnregisterUpdateCallback(info);
 }
 
-int32_t UpdateServiceKitsImpl::CheckNewVersion(const UpgradeInfo &info)
+int32_t UpdateServiceKitsImpl::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError,
+    CheckResult &checkResult)
 {
     ENGINE_LOGI("UpdateServiceKitsImpl::CheckNewVersion");
 
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->CheckNewVersion(info);
+    return updateService->CheckNewVersion(info, businessError, checkResult);
 }
 
 int32_t UpdateServiceKitsImpl::Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
@@ -288,10 +203,7 @@ int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
     ENGINE_LOGI("UpdateServiceKitsImpl::FactoryReset");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-#ifndef UPDATER_API_TEST
     return updateService->FactoryReset(businessError);
-#endif
-    return INT_CALL_SUCCESS;
 }
 
 int32_t UpdateServiceKitsImpl::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
@@ -311,5 +223,47 @@ int32_t UpdateServiceKitsImpl::VerifyUpgradePackage(const std::string &packagePa
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
     return updateService->VerifyUpgradePackage(packagePath, keyPath, businessError);
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+
+void UpdateServiceKitsImpl::RegisterCallback()
+{
+    ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.size());
+    for (auto &iter : remoteUpdateCallbackMap_) {
+        remoteServer_->RegisterUpdateCallback(iter.first, iter.second);
+    }
+}
+
+int32_t UpdateServiceKitsImpl::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+    BusinessError &businessError)
+{
+    ENGINE_LOGI("UpdateServiceKitsImpl::GetCustomUpgradePolicy");
+    auto updateService = GetService();
+    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
+    return updateService->GetCustomUpgradePolicy(info, policy, businessError);
+}
+
+int32_t UpdateServiceKitsImpl::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+    BusinessError &businessError)
+{
+    ENGINE_LOGI("UpdateServiceKitsImpl::SetCustomUpgradePolicy");
+    auto updateService = GetService();
+    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
+    return updateService->SetCustomUpgradePolicy(info, policy, businessError);
+}
+
+int32_t UpdateServiceKitsImpl::AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
+    uint32_t dataLen)
+{
+    ENGINE_LOGI("UpdateServiceKitsImpl::AccessoryConnectNotify");
+    auto updateService = GetService();
+    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
+    return updateService->AccessoryConnectNotify(deviceInfo, data, dataLen);
+}
+
+int32_t UpdateServiceKitsImpl::AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo)
+{
+    ENGINE_LOGI("UpdateServiceKitsImpl::AccessoryUnpairNotify");
+    auto updateService = GetService();
+    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
+    return updateService->AccessoryUnpairNotify(deviceInfo);
+}
+} // namespace OHOS::UpdateEngine

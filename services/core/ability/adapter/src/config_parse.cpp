@@ -35,9 +35,14 @@ ConfigParse::~ConfigParse()
     ENGINE_LOGI("ConfigParse::~ConfigParse");
 }
 
-    uint32_t ConfigParse::GetAbInstallerTimeout()
+uint32_t ConfigParse::GetAbInstallerTimeout()
 {
     return configInfo_.abInstallTimeout;
+}
+
+std::string ConfigParse::GetModuleLibPath()
+{
+    return configInfo_.moduleLibPath;
 }
 
 void ConfigParse::LoadConfigInfo()
@@ -60,6 +65,7 @@ void ConfigParse::LoadConfigInfo()
     }
 
     JsonUtils::GetValueAndSetTo(root, "abInstallTimeout", configInfo_.abInstallTimeout);
+    JsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
 }
 } // namespace UpdateEngine
 } // namespace OHOS

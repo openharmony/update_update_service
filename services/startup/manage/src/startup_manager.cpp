@@ -20,7 +20,7 @@
 #include "system_ability_definition.h"
 
 #include "access_factory.h"
-#include "file_utils.h"
+#include "constant.h"
 #include "firmware_preferences_utils.h"
 #include "schedule_config.h"
 #include "string_utils.h"

@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 
-#include "update_helper.h"
+#include "file_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {

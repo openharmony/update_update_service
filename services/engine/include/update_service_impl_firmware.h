@@ -16,9 +16,12 @@
 #ifndef UPDATE_SERVICE_IMPL_FIRMWARE_H
 #define UPDATE_SERVICE_IMPL_FIRMWARE_H
 
+#include <condition_variable>
+
 #include "iservice_online_updater.h"
 
 #include "firmware_preferences_utils.h"
+#include "firmware_task.h"
 #include "update_helper.h"
 
 namespace OHOS {
@@ -31,7 +34,7 @@ public:
 
     DISALLOW_COPY_AND_MOVE(UpdateServiceImplFirmware);
 
-    int32_t CheckNewVersion(const UpgradeInfo &info) final;
+    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult) final;
 
     int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DownloadOptions &downloadOptions, BusinessError &businessError) final;
@@ -70,11 +73,19 @@ public:
 
     int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError) final;
 
+    int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+       BusinessError &businessError) final;
+
+    int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy, BusinessError &businessError) final;
+
     int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError) final;
 
 private:
     std::shared_ptr<FirmwarePreferencesUtil> preferencesUtil_ =
         DelayedSingleton<FirmwarePreferencesUtil>::GetInstance();
+    std::condition_variable conditionVariable_;
+    std::mutex checkNewVersionMutex_;
+    bool checkComplete_ = false;
     void GetChangelogContent(std::string &dataXml, const std::string &language);
 };
 } // namespace UpdateEngine

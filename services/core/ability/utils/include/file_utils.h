@@ -22,12 +22,15 @@
 #include <map>
 #include <string>
 
-#include "constant.h"
-#include "update_helper.h"
-
 namespace OHOS {
 namespace UpdateEngine {
 constexpr int32_t FOLDER_PERMISSION = 0750;
+
+struct DirInfo {
+    std::string dirName;
+    int32_t dirPermissions;
+    bool isAllowDestroyContents = false; // 是否允许删除当前目录下的所有文件（包括子目录）
+};
 
 class FileUtils {
 public:

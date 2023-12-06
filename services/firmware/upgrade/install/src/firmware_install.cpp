@@ -64,7 +64,7 @@ void FirmwareInstall::SetIsInstalling(bool isInstalling)
 
 void FirmwareInstall::CallbackFailedResult(FirmwareInstallCallback &cb, const std::string &errorMsg, int32_t errCode)
 {
-    ErrMsg errMsg = { errCode, errorMsg };
+    ErrorMessage errMsg = { errCode, errorMsg };
     cb.onFirmwareEvent(false, errMsg);
 }
 

@@ -30,11 +30,11 @@ constexpr int32_t SLEEP_INSTALL = 1;
 
 struct InstallProgress {
     Progress progress;
-    ErrMsg errMsg;
+    ErrorMessage errMsg;
 };
 
 using OnFirmwareProgress = std::function<void(const FirmwareComponent &component)>;
-using OnFirmwareEvent = std::function<void(const bool result, const ErrMsg &errMsg)>;
+using OnFirmwareEvent = std::function<void(const bool result, const ErrorMessage &errMsg)>;
 using OnFirmwareStatus = std::function<void(const UpgradeStatus &status)>;
 struct FirmwareInstallCallback {
     OnFirmwareProgress onFirmwareProgress;
@@ -58,7 +58,7 @@ private:
 
 protected:
     FirmwareInstallCallback onInstallCallback_;
-    ErrMsg errMsg_;
+    ErrorMessage errMsg_;
 
 private:
     std::mutex mutex_;
