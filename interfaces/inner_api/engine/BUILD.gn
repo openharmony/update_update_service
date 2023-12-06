@@ -11,8 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import("//base/update/updateservice/updateengine.gni")
 import("//build/ohos.gni")
-import("../../../updateengine.gni")
 import("$updateengine_root_path/services/core/ability/log/log.gni")
 
 ohos_prebuilt_etc("updater_sa.rc") {
