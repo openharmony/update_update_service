@@ -48,7 +48,6 @@ ohos_shared_library("$updateengine_client_library_name") {
 
     "$updateengine_root_path/services/core/ability/utils/include",
 
-    "//foundation/arkui/napi/interfaces/kits",
     "//third_party/json/include",
     "//third_party/node/src",  # napi
   ]

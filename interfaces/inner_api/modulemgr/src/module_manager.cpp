@@ -17,9 +17,8 @@
 #include <map>
 #include <thread>
 
-
-#include "../include/module_manager.h"
 #include "../include/module_log.h"
+#include "../include/module_manager.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -30,7 +29,8 @@ std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
 
 bool ModuleManager::isLoaded = false;
 
-void ModuleManager::LoadModule(std::string libPath) {
+void ModuleManager::LoadModule(std::string libPath)
+{
     std::string prefix = "/system/lib64/updateext";
     std::string suffix = ".so";
     if ((libPath.substr(0, prefix.length()) != prefix) ||
@@ -43,7 +43,7 @@ void ModuleManager::LoadModule(std::string libPath) {
         constexpr int32_t maxRetryTimes = 1;
         int32_t retryTimes = 0;
         do {
-            dueModuleHandler = dlopen(libPath.c_str(), RTLD_LAZY); 
+            dueModuleHandler = dlopen(libPath.c_str(), RTLD_LAZY);
             if (dueModuleHandler != nullptr) {
                 isLoaded = true;
                 break;
@@ -66,7 +66,8 @@ ModuleManager& ModuleManager::GetInstance()
     return moduleManager_;
 }
 
-void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest, bool isExt) {
+void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest, bool isExt)
+{
     if (isExt) {
         extCodesSet_.insert(codes.begin(), codes.end());
     }
@@ -81,7 +82,8 @@ void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemot
     }
 }
 
-int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) {
+int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
     if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {
         UTILS_LOGE("HandleFunc code %{public}d not exist", code);
     } else {
@@ -92,11 +94,14 @@ int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessagePar
 }
 
 ModuleManager::ModuleManager() {}
-    bool ModuleManager::IsModuleLoaded() {
+
+bool ModuleManager::IsModuleLoaded()
+{
     return isLoaded;
 }
 
-void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop) {
+void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop)
+{
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGE("phase exist already %{public}s onStartOnStopFuncMap_", phase.c_str());
         onStartOnStopFuncMap_.insert(std::make_pair(phase, handleSAOnStartOnStop));
@@ -106,7 +111,8 @@ void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType h
     }
 }
 
-int32_t ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason) {
+int32_t ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
+{
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGE("HandleOnStartOnStopFunc phase %{public}s not exist", phase.c_str());
     } else {
@@ -116,7 +122,8 @@ int32_t ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::Sy
     return 0;
 }
 
-void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle) {
+void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle)
+{
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGE("phase exist already %{public}s onIdleFuncMap_", phase.c_str());
         onIdleFuncMap_.insert(std::make_pair(phase, handleSAOnIdle));
@@ -126,7 +133,8 @@ void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType ha
     }
 }
 
-int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason) {
+int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
+{
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGE("HandleOnIdleFunc phase %{public}s not exist", phase.c_str());
     } else {
