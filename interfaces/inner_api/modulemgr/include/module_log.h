@@ -19,7 +19,7 @@
 
 #include "hilog/log.h"
 
-static constexpr OHOS::HiviewDFX::HiLogLabel MODULE_MGR_LABEL = {LOG_CORE, 0xD002E00, "UPDATER_MODULE_MGR"};
+constexpr OHOS::HiviewDFX::HiLogLabel MODULE_MGR_LABEL = {LOG_CORE, 0xD002E00, "UPDATER_MODULE_MGR"};
 
 #define UTILS_LOGF(...) (void)OHOS::HiviewDFX::HiLog::Fatal(MODULE_MGR_LABEL, __VA_ARGS__)
 #define UTILS_LOGE(...) (void)OHOS::HiviewDFX::HiLog::Error(MODULE_MGR_LABEL, __VA_ARGS__)
