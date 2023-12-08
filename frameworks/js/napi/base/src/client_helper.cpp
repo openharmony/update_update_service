@@ -396,6 +396,9 @@ ClientStatus ClientHelper::GetUpgradeInfoFromArg(napi_env env, const napi_value 
     ParseBusinessType(env, arg, upgradeInfo);
     NapiCommonUtils::GetString(env, arg, "upgradeDevId", upgradeInfo.upgradeDevId);
     NapiCommonUtils::GetString(env, arg, "controlDevId", upgradeInfo.controlDevId);
+    int32_t type;
+    NapiCommonUtils::GetInt32(env, arg, "deviceType", type);
+    upgradeInfo.deviceType = static_cast<DeviceType>(type);
     // 进程ID
     upgradeInfo.processId = getpid();
     return ClientStatus::CLIENT_SUCCESS;

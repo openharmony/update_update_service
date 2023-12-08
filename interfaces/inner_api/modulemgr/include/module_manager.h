@@ -38,15 +38,14 @@ public:
 
     void LoadModule(std::string libPath);
     bool IsModuleLoaded();
-    void HookFunc(std::vector<int>, RequestFuncType handleRemoteRequest, bool isExt);
+    void HookFunc(std::vector<int>, RequestFuncType handleRemoteRequest);
     int32_t HandleFunc(uint32_t code, MessageParcel& data, MessageParcel& reply, MessageOption &option);
     void HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop);
-    int32_t HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
+    void HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
     void HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle);
     int32_t HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
 
     static std::map<int, RequestFuncType> onRemoteRequestFuncMap_;
-    static std::set<int> extCodesSet_;
 
 private:
     int32_t retryInterval_ = 0;

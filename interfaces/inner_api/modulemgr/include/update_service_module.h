@@ -37,10 +37,10 @@ using RequestFuncType = int32_t (*)(uint32_t code,
 using LifeCycleFuncType = void (*)(const OHOS::SystemAbilityOnDemandReason &reason);
 using LifeCycleFuncReturnType = int32_t (*)(const OHOS::SystemAbilityOnDemandReason &reason);
 
-int32_t RegisterFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest, bool isExt);
+void RegisterFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest);
 
-int32_t RegisterOnStartOnStopFunc(std::string phase, LifeCycleFuncType handlePhase);
-int32_t RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase);
+void RegisterOnStartOnStopFunc(std::string phase, LifeCycleFuncType handlePhase);
+void RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase);
 
 #ifdef __cplusplus
 #if __cplusplus

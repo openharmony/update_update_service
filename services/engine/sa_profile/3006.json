@@ -8,23 +8,7 @@
       "distributed": false,
       "bootphase": "BootStartPhase",
       "dump-level": 1,
-      "auto-restart" : true,
-      "start-on-demand": {
-        "allow-update": true,
-        "bindercall": true,
-        "commonevent": [
-          {
-            "name": "usual.event.CONNECTIVITY_CHANGE",
-            "value": "3"
-          }
-        ],
-        "timedevent": [
-          {
-            "name": "loopevent",
-            "value": "86400"
-          }
-        ]
-      }
+      "auto-restart" : true
     }
   ]
 }

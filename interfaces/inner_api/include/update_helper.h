@@ -319,6 +319,7 @@ struct SubscribeInfo : public BaseJsonStruct {
     std::string subscriberDevId;
     std::string devUpgradeId;
     DeviceType deviceType = DeviceType::UNKNOWN;
+    std::string deviceName;
 
     explicit SubscribeInfo(BusinessSubType subType)
     {
@@ -375,6 +376,7 @@ enum class AutoUpgradeCondition {
 struct AccessoryDeviceInfo {
     std::string macAddress;
     DeviceType deviceType;
+    std::string deviceName;
 };
 
 struct ParamExtra : public BaseJsonStruct {

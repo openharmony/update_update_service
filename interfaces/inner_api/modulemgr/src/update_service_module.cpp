@@ -21,21 +21,18 @@
 #include "../include/module_log.h"
 #include "../include/module_manager.h"
 
-int32_t RegisterFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest, bool isExt)
+void RegisterFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest)
 {
     UTILS_LOGI("enter RegisterFunc");
-    OHOS::UpdateEngine::ModuleManager::GetInstance().HookFunc(codes, handleRemoteRequest, isExt);
-    return 0;
+    OHOS::UpdateEngine::ModuleManager::GetInstance().HookFunc(codes, handleRemoteRequest);
 }
 
-int32_t RegisterOnStartOnStopFunc(std::string phase, LifeCycleFuncType handlePhase)
+void RegisterOnStartOnStopFunc(std::string phase, LifeCycleFuncType handlePhase)
 {
     OHOS::UpdateEngine::ModuleManager::GetInstance().HookOnStartOnStopFunc(phase, handlePhase);
-    return 0;
 }
 
-int32_t RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase)
+void RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase)
 {
     OHOS::UpdateEngine::ModuleManager::GetInstance().HookOnIdleFunc(phase, handlePhase);
-    return 0;
 }
