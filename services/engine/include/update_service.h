@@ -149,9 +149,8 @@ private:
     static sptr<UpdateService> updateService_;
     std::shared_ptr<UpdateServiceImplManager> updateImplMgr_ = nullptr;
 };
+
+int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option);
 } // namespace UpdateEngine
 } // namespace OHOS
-
-extern "C" int32_t HandleBlueRemoteRequest(uint32_t code,
-    OHOS::MessageParcel &data, OHOS::MessageParcel &reply, OHOS::MessageOption &option);
 #endif // UPDATE_SERVICE_H

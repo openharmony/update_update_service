@@ -22,7 +22,6 @@
 
 namespace OHOS {
 namespace UpdateEngine {
-std::set<int> ModuleManager::extCodesSet_;
 std::map<int, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
 std::map<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
 std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
@@ -66,11 +65,8 @@ ModuleManager& ModuleManager::GetInstance()
     return moduleManager;
 }
 
-void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest, bool isExt)
+void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest)
 {
-    if (isExt) {
-        extCodesSet_.insert(codes.begin(), codes.end());
-    }
     for (int code : codes) {
         if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {
             UTILS_LOGE("code not exist %{public}d onRemoteRequestFuncMap_", code);
@@ -111,7 +107,7 @@ void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType h
     }
 }
 
-int32_t ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
+void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGE("HandleOnStartOnStopFunc phase %{public}s not exist", phase.c_str());
@@ -119,7 +115,6 @@ int32_t ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::Sy
         UTILS_LOGD("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
         ((LifeCycleFuncType)onStartOnStopFuncMap_[phase])(reason);
     }
-    return 0;
 }
 
 void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle)
@@ -139,7 +134,7 @@ int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbi
         UTILS_LOGE("HandleOnIdleFunc phase %{public}s not exist", phase.c_str());
     } else {
         UTILS_LOGI("HandleOnIdleFunc phase %{public}s exist", phase.c_str());
-        ((LifeCycleFuncReturnType)onIdleFuncMap_[phase])(reason);
+        return ((LifeCycleFuncReturnType)onIdleFuncMap_[phase])(reason);
     }
     return 0;
 }

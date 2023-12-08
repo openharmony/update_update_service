@@ -460,8 +460,7 @@ int UpdateService::Dump(int fd, const std::vector<std::u16string> &args)
 
 void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
 {
-    ENGINE_LOGI("UpdaterService blue OnStart");
-    ENGINE_LOGI("UpdaterService blue OnStart, startReason name %{public}s, id %{public}d, value %{public}s",
+    ENGINE_LOGI("UpdaterService oh OnStart, startReason name %{public}s, id %{public}d, value %{public}s",
         startReason.GetName().c_str(), CAST_INT(startReason.GetId()), startReason.GetValue().c_str());
     updateService_ = this;
     if (updateService_ == nullptr) {
@@ -490,8 +489,8 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
         CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
         CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
     };
-    ENGINE_LOGI("RegisterFunc HandleBlueRemoteRequest");
-    RegisterFunc(codes, HandleBlueRemoteRequest, false);
+    ENGINE_LOGI("RegisterFunc HandleOhRemoteRequest");
+    RegisterFunc(codes, HandleOhRemoteRequest);
 
     DelayedSingleton<ConfigParse>::GetInstance()->LoadConfigInfo(); // 启动读取配置信息
     std::string libPath = DelayedSingleton<ConfigParse>::GetInstance()->GetModuleLibPath();
@@ -521,8 +520,7 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
 int32_t UpdateService::OnIdle(const SystemAbilityOnDemandReason &idleReason)
 {
     ENGINE_LOGI("UpdaterService OnIdle");
-    ModuleManager::GetInstance().HandleOnIdleFunc("OnIdle", idleReason);
-    return -1;
+    return ModuleManager::GetInstance().HandleOnIdleFunc("OnIdle", idleReason);
 }
 
 void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
@@ -530,12 +528,10 @@ void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
     ENGINE_LOGI("UpdaterService OnStop");
     ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStop", stopReason);
 }
+
+int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    return UpdateService::GetInstance()-> HandleRemoteRequest(code, data, reply, option);
+}
 } // namespace UpdateEngine
 } // namespace OHOS
-
-int32_t HandleBlueRemoteRequest(uint32_t code, OHOS::MessageParcel &data, OHOS::MessageParcel &reply,
-    OHOS::MessageOption &option)
-{
-    OHOS::UpdateEngine::UpdateService::GetInstance()-> HandleRemoteRequest(code, data, reply, option);
-    return 0;
-}

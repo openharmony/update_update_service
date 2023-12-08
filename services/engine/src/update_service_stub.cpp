@@ -153,7 +153,7 @@ int32_t UpdateServiceStub::GetTaskInfoStub(UpdateServiceStubPtr service,
 }
 
 int32_t UpdateServiceStub::CheckNewVersionStub(UpdateServiceStub::UpdateServiceStubPtr service,
-                                               MessageParcel& data, MessageParcel& reply, MessageOption &option)
+    MessageParcel& data, MessageParcel& reply, MessageOption &option)
 {
     RETURN_FAIL_WHEN_SERVICE_NULL(service);
     UpgradeInfo upgradeInfo {};
@@ -414,20 +414,10 @@ int32_t UpdateServiceStub::OnRemoteRequest(uint32_t code,
     MessageParcel& data, MessageParcel& reply, MessageOption &option)
 {
     ENGINE_LOGI("UpdateServiceStub func code %{public}u", code);
-    if (ModuleManager::GetInstance().IsModuleLoaded()) {
-        auto iter = ModuleManager::extCodesSet_.find(code);
-        if (iter == ModuleManager::extCodesSet_.end()) {
-            ENGINE_LOGE("UpdateServiceStub OnRemoteRequest code %{public}u not found", code);
-            return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
-        }
-        ENGINE_LOGD("UpdateServiceStub OnRemoteRequest route to yellow");
-    } else {
-        auto iter = requestFuncMap_.find(code);
-        if (iter == requestFuncMap_.end()) {
-            ENGINE_LOGE("UpdateServiceStub OnRemoteRequest code %{public}u not found", code);
-            return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
-        }
-        ENGINE_LOGD("UpdateServiceStub OnRemoteRequest route to blue");
+    auto iter = ModuleManager::onRemoteRequestFuncMap_.find(code);
+    if (iter == ModuleManager::onRemoteRequestFuncMap_.end()) {
+        ENGINE_LOGE("UpdateServiceStub OnRemoteRequest code %{public}u not found", code);
+        return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
     return ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
 }
@@ -441,11 +431,11 @@ int32_t UpdateServiceStub::HandleRemoteRequest(uint32_t code, MessageParcel &dat
     }
 
     if (!IsCallerValid()) {
-        ENGINE_LOGE("UpdateServiceStub IsCallerValid");
+        ENGINE_LOGE("UpdateServiceStub IsCallerValid false");
         return CALL_RESULT_TO_IPC_RESULT(INT_NOT_SYSTEM_APP);
     }
     if (!IsPermissionGranted(code)) {
-        ENGINE_LOGE("UpdateServiceStub IsCallerValid");
+        ENGINE_LOGE("UpdateServiceStub code %{public}d IsPermissionGranted false", code);
         UpgradeInfo tmpInfo;
         MessageParcelHelper::ReadUpgradeInfo(data, tmpInfo);
         return CALL_RESULT_TO_IPC_RESULT(INT_APP_NOT_GRANTED);
