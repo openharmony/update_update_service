@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
+#include "session_manager.h"
+
 #include <uv.h>
 
 #include "node_api.h"
 
 #include "client_helper.h"
-#include "session_manager.h"
 #include "update_define.h"
 #include "update_helper.h"
 #include "update_session.h"

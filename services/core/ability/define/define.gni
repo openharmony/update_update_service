@@ -15,6 +15,4 @@ import("../../../updateengine.gni")
 
 define_root_path = "$updateengine_root_path/services/core/ability/define"
 
-define_include = [
-    "$define_root_path/include",
-]
+define_include = [ "$define_root_path/include" ]
