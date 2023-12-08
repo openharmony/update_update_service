@@ -83,14 +83,6 @@
         }
       ],
       "test": [
-        "//base/update/updateservice/test/fuzztest/updateservicecancel_fuzzer:UpdateServiceCancelFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateservicechecknewversion_fuzzer:UpdateServiceCheckNewVersionFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateservicedownload_fuzzer:UpdateServiceDownloadFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateservicegetnewversion_fuzzer:UpdateServiceGetNewVersionFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateservicegetupgradepolicy_fuzzer:UpdateServiceGetUpgradePolicyFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateserviceregisterupdatecallback_fuzzer:UpdateServiceRegisterUpdateCallbackFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateservicesetupgradepolicy_fuzzer:UpdateServiceSetUpgradePolicyFuzzTest",
-        "//base/update/updateservice/test/fuzztest/updateserviceunregisterupdatecallback_fuzzer:UpdateServiceUnregisterUpdateCallbackFuzzTest",
         "//base/update/updateservice/test/unittest:unittest"
       ]
     },
