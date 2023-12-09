@@ -20,13 +20,11 @@
 #include "iupdate_callback.h"
 #include "message_parcel.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class UpdateCallbackStub : public IRemoteStub<IUpdateCallback> {
 public:
     int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
         MessageOption &option) override;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_CALLBACK_STUB_H

@@ -270,7 +270,7 @@ void FirmwareManager::DoClearError(BusinessError &businessError)
         FIRMWARE_LOGI("DoClearError has no task");
         return;
     }
-    if (!UpdateHelper::IsUpgradeFailed(task.status)) {
+    if (!FirmwareUpdateHelper::IsUpgradeFailed(task.status)) {
         businessError.Build(CallResult::FAIL, "please check status before clear error");
         businessError.AddErrorMessage(CAST_INT(DUPDATE_ERR_UPDATE_COMMON_ERROR),
             "please check status before clear error");

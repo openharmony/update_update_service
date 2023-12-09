@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,13 +21,13 @@
 #include "iupdate_callback.h"
 #include "update_helper.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class IServiceOnlineUpdater : public virtual RefBase {
 public:
     virtual ~IServiceOnlineUpdater() = default;
 
-    virtual int32_t CheckNewVersion(const UpgradeInfo &info) = 0;
+    virtual int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError,
+        CheckResult &checkResult) = 0;
 
     virtual int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DownloadOptions &downloadOptions, BusinessError &businessError) = 0;
@@ -66,8 +66,13 @@ public:
 
     virtual int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError) = 0;
 
+    virtual int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+        BusinessError &businessError) = 0;
+
+    virtual int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+        BusinessError &businessError) = 0;
+
     virtual int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError) = 0;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // ISERVICE_ONLINE_UPDATER_H

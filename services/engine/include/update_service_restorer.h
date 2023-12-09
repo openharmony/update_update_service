@@ -18,7 +18,7 @@
 
 #include "iservice_restorer.h"
 
-#include "update_helper.h"
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UpdateEngine {

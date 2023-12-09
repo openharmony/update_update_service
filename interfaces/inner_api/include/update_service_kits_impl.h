@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,18 +18,20 @@
 
 #include "singleton.h"
 
+#include "base_service_kits_impl.h"
+#include "iupdate_callback.h"
 #include "update_define.h"
 #include "update_helper.h"
 #include "update_service_kits.h"
-#include "iupdate_callback.h"
 #include "update_callback.h"
 #include "update_service_proxy.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class UpdateServiceKitsImpl final : public UpdateServiceKits,
-    public DelayedRefSingleton<UpdateServiceKitsImpl> {
+    public DelayedRefSingleton<UpdateServiceKitsImpl>,
+    public BaseServiceKitsImpl<IUpdateService> {
     DECLARE_DELAYED_REF_SINGLETON(UpdateServiceKitsImpl);
+
 public:
     DISALLOW_COPY_AND_MOVE(UpdateServiceKitsImpl);
 
@@ -37,7 +39,7 @@ public:
 
     int32_t UnregisterUpdateCallback(const UpgradeInfo &info) final;
 
-    int32_t CheckNewVersion(const UpgradeInfo &info) final;
+    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult) final;
 
     int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DownloadOptions &downloadOptions, BusinessError &businessError) final;
@@ -85,42 +87,24 @@ public:
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) final;
 
+    int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+        BusinessError &businessError) final;
+
+    int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+        BusinessError &businessError) final;
+
+    int32_t AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data, uint32_t dataLen) final;
+
+    int32_t AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo) final;
+
+protected:
+    void RegisterCallback() override;
+
 #ifndef UPDATER_UT
 private:
 #endif
-    // For call event procession
-    class RemoteUpdateCallback final : public UpdateCallback {
-    public:
-        RemoteUpdateCallback(const UpdateCallbackInfo &cb);
-        ~RemoteUpdateCallback();
-
-        DISALLOW_COPY_AND_MOVE(RemoteUpdateCallback);
-
-        void OnCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult) final;
-
-        void OnEvent(const EventInfo &eventInfo) final;
-    private:
-        UpdateCallbackInfo updateCallback_ {};
-    };
-
-    // For death event procession
-    class DeathRecipient final : public IRemoteObject::DeathRecipient {
-    public:
-        DeathRecipient() = default;
-        ~DeathRecipient() final = default;
-        DISALLOW_COPY_AND_MOVE(DeathRecipient);
-        void OnRemoteDied(const wptr<IRemoteObject>& remote) final;
-    };
-
-    void ResetService(const wptr<IRemoteObject>& remote);
-    sptr<IUpdateService> GetService();
-
-    std::mutex updateServiceLock_;
-    sptr<IUpdateService> updateService_ {};
-    sptr<IRemoteObject::DeathRecipient> deathRecipient_ {};
     std::map<UpgradeInfo, sptr<IUpdateCallback>> remoteUpdateCallbackMap_;
-    UpgradeInfo upgradeInfo_ {};
+    UpgradeInfo upgradeInfo_{};
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_KITS_IMPL_H

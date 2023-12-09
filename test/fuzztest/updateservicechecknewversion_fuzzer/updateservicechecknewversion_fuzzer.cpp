@@ -28,8 +28,10 @@ bool FuzzUpdateServiceCheckNewVersion(const uint8_t* data, size_t size)
         return false;
     }
 
+    CheckResult checkResult;
+    BusinessError businessError;
     return UpdateServiceKits::GetInstance().CheckNewVersion(
-        DelayedSingleton<FuzztestHelper>::GetInstance()->BuildUpgradeInfo()) == 0;
+        DelayedSingleton<FuzztestHelper>::GetInstance()->BuildUpgradeInfo(), businessError, checkResult) == 0;
 }
 }
 

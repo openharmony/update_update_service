@@ -19,34 +19,7 @@
 #include "update_helper.h"
 #include "update_log.h"
 
-namespace OHOS {
-namespace UpdateEngine {
-void UpdateCallbackProxy::OnCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult)
-{
-    ENGINE_LOGI("UpdateCallbackProxy::OnCheckVersionDone");
-    MessageParcel data;
-    MessageParcel reply;
-    MessageOption option { MessageOption::TF_SYNC };
-
-    if (!data.WriteInterfaceToken(GetDescriptor())) {
-        ENGINE_LOGE("UpdateCallbackProxy WriteInterfaceToken fail");
-        return;
-    }
-
-    auto remote = Remote();
-    ENGINE_CHECK(remote != nullptr, return, "Can not get remote");
-
-    int32_t result = MessageParcelHelper::WriteBusinessError(data, businessError);
-    ENGINE_CHECK(result == 0, return, "Can not WriteBusinessError");
-
-    result = MessageParcelHelper::WriteCheckResult(data, checkResult);
-    ENGINE_CHECK(result == 0, return, "Can not WriteCheckResult");
-
-    result = remote->SendRequest(CHECK_VERSION, data, reply, option);
-    ENGINE_CHECK(result == ERR_OK, return, "Can not SendRequest");
-    return;
-}
-
+namespace OHOS::UpdateEngine {
 void UpdateCallbackProxy::OnEvent(const EventInfo &eventInfo)
 {
     ENGINE_LOGI("UpdateCallbackProxy::OnEvent");
@@ -69,5 +42,5 @@ void UpdateCallbackProxy::OnEvent(const EventInfo &eventInfo)
     ENGINE_CHECK(result == ERR_OK, return, "Can not SendRequest");
     return;
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
+

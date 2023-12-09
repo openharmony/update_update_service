@@ -15,26 +15,22 @@
 
 #include "define_property.h"
 
-#include "napi/native_common.h"
-
-#include "client_helper.h"
-#include "napi_util.h"
+#include "napi_common_utils.h"
 #include "string_utils.h"
 #include "update_define.h"
 #include "update_helper.h"
 
 #define DECLARE_ENUM_PROPERTY(item)      \
-    {StringUtils::GetEnumValueString(#item), NapiUtil::CreateUint32(env, CAST_UINT((item)))}
+    {StringUtils::GetEnumValueString(#item), NapiCommonUtils::CreateUint32(env, CAST_UINT((item)))}
 
 #define DECLARE_STRING_PROPERTY(item)    \
-    {StringUtils::GetEnumValueString(#item), NapiUtil::CreateStringUtf8(env, (item))}
+    {StringUtils::GetEnumValueString(#item), NapiCommonUtils::CreateStringUtf8(env, (item))}
 
 #define DECLARE_CALL_RESULT_PROPERTY(item)      \
     {StringUtils::GetEnumValueString(#item),    \
-        NapiUtil::CreateUint32(env, CAST_UINT(ClientHelper::ConvertToErrorCode(item)))}
+        NapiCommonUtils::CreateUint32(env, CAST_UINT(NapiCommonUtils::ConvertToErrorCode(item)))}
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 void DefineProperty::DefineProperties(napi_env env, napi_value exports)
 {
     DefineCallResult(env, exports);
@@ -68,7 +64,7 @@ void DefineProperty::DefineCallResult(napi_env env, napi_value exports)
         DECLARE_CALL_RESULT_PROPERTY(CallResult::IO_ERROR),
         DECLARE_CALL_RESULT_PROPERTY(CallResult::NET_ERROR)
     };
-    NapiUtil::CreateProperty(env, exports, "CallResult", callResultList);
+    NapiCommonUtils::CreateProperty(env, exports, "CallResult", callResultList);
 }
 
 void DefineProperty::DefineUpgradeStatus(napi_env env, napi_value exports)
@@ -96,15 +92,18 @@ void DefineProperty::DefineUpgradeStatus(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(UpgradeStatus::UPDATE_FAIL),
         DECLARE_ENUM_PROPERTY(UpgradeStatus::UPDATE_SUCCESS)
     };
-    NapiUtil::CreateProperty(env, exports, "UpgradeStatus", upgradeStatusList);
+    NapiCommonUtils::CreateProperty(env, exports, "UpgradeStatus", upgradeStatusList);
 }
 
 void DefineProperty::DefineComponentType(napi_env env, napi_value exports)
 {
     std::vector<std::pair<std::string, napi_value>> componentTypeList = {
         DECLARE_ENUM_PROPERTY(ComponentType::OTA),
+        DECLARE_ENUM_PROPERTY(ComponentType::PATCH),
+        DECLARE_ENUM_PROPERTY(ComponentType::COTA),
+        DECLARE_ENUM_PROPERTY(ComponentType::PARAM)
     };
-    NapiUtil::CreateProperty(env, exports, "ComponentType", componentTypeList);
+    NapiCommonUtils::CreateProperty(env, exports, "ComponentType", componentTypeList);
 }
 
 void DefineProperty::DefineEffectiveMode(napi_env env, napi_value exports)
@@ -114,7 +113,7 @@ void DefineProperty::DefineEffectiveMode(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(EffectiveMode::LIVE),
         DECLARE_ENUM_PROPERTY(EffectiveMode::LIVE_AND_COLD)
     };
-    NapiUtil::CreateProperty(env, exports, "EffectiveMode", effectiveModeList);
+    NapiCommonUtils::CreateProperty(env, exports, "EffectiveMode", effectiveModeList);
 }
 
 void DefineProperty::DefineNetType(napi_env env, napi_value exports)
@@ -126,7 +125,7 @@ void DefineProperty::DefineNetType(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(NetType::WIFI),
         DECLARE_ENUM_PROPERTY(NetType::CELLULAR_AND_WIFI)
     };
-    NapiUtil::CreateProperty(env, exports, "NetType", netTypeList);
+    NapiCommonUtils::CreateProperty(env, exports, "NetType", netTypeList);
 }
 
 void DefineProperty::DefineOrder(napi_env env, napi_value exports)
@@ -138,24 +137,26 @@ void DefineProperty::DefineOrder(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(Order::APPLY),
         DECLARE_ENUM_PROPERTY(Order::INSTALL_AND_APPLY)
     };
-    NapiUtil::CreateProperty(env, exports, "Order", orderList);
+    NapiCommonUtils::CreateProperty(env, exports, "Order", orderList);
 }
 
 void DefineProperty::DefineEventClassify(napi_env env, napi_value exports)
 {
     std::vector<std::pair<std::string, napi_value>> eventClassifyList = {
-        DECLARE_ENUM_PROPERTY(EventClassify::TASK)
+        DECLARE_ENUM_PROPERTY(EventClassify::TASK),
+        DECLARE_ENUM_PROPERTY(EventClassify::SYSTEM)
     };
-    NapiUtil::CreateProperty(env, exports, "EventClassify", eventClassifyList);
+    NapiCommonUtils::CreateProperty(env, exports, "EventClassify", eventClassifyList);
 }
 
 void DefineProperty::DefineBusinessSubType(napi_env env, napi_value exports)
 {
     std::vector<std::pair<std::string, napi_value>> businessSubTypeList = {
         DECLARE_ENUM_PROPERTY(BusinessSubType::FIRMWARE),
-        DECLARE_ENUM_PROPERTY(BusinessSubType::PARAM)
+        DECLARE_ENUM_PROPERTY(BusinessSubType::PARAM),
+        DECLARE_ENUM_PROPERTY(BusinessSubType::ROLLBACK)
     };
-    NapiUtil::CreateProperty(env, exports, "BusinessSubType", businessSubTypeList);
+    NapiCommonUtils::CreateProperty(env, exports, "BusinessSubType", businessSubTypeList);
 }
 
 void DefineProperty::DefineDescriptionType(napi_env env, napi_value exports)
@@ -165,7 +166,7 @@ void DefineProperty::DefineDescriptionType(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(DescriptionType::URI),
         DECLARE_ENUM_PROPERTY(DescriptionType::ID)
     };
-    NapiUtil::CreateProperty(env, exports, "DescriptionType", descriptionTypeList);
+    NapiCommonUtils::CreateProperty(env, exports, "DescriptionType", descriptionTypeList);
 }
 
 void DefineProperty::DefineDescriptionFormat(napi_env env, napi_value exports)
@@ -174,7 +175,7 @@ void DefineProperty::DefineDescriptionFormat(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(DescriptionFormat::STANDARD),
         DECLARE_ENUM_PROPERTY(DescriptionFormat::SIMPLIFIED)
     };
-    NapiUtil::CreateProperty(env, exports, "DescriptionFormat", descriptionFormatList);
+    NapiCommonUtils::CreateProperty(env, exports, "DescriptionFormat", descriptionFormatList);
 }
 
 void DefineProperty::DefineEventId(napi_env env, napi_value exports)
@@ -200,26 +201,30 @@ void DefineProperty::DefineEventId(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(EventId::EVENT_AUTH_START),
         DECLARE_ENUM_PROPERTY(EventId::EVENT_AUTH_SUCCESS),
         DECLARE_ENUM_PROPERTY(EventId::EVENT_DOWNLOAD_CANCEL),
-        DECLARE_ENUM_PROPERTY(EventId::EVENT_INITIALIZE)
+        DECLARE_ENUM_PROPERTY(EventId::EVENT_INITIALIZE),
+        DECLARE_ENUM_PROPERTY(EventId::EVENT_TASK_CHANGE),
+        DECLARE_ENUM_PROPERTY(EventId::EVENT_VERSION_INFO_CHANGE),
+        DECLARE_ENUM_PROPERTY(EventId::SYSTEM_BASE),
+        DECLARE_ENUM_PROPERTY(EventId::SYSTEM_BOOT_COMPLETE)
     };
-    NapiUtil::CreateProperty(env, exports, "EventId", eventIdList);
+    NapiCommonUtils::CreateProperty(env, exports, "EventId", eventIdList);
 }
 
 void DefineProperty::DefineUpgradeAction(napi_env env, napi_value exports)
 {
     std::vector<std::pair<std::string, napi_value>> upgradeActionList = {
         DECLARE_STRING_PROPERTY(UpgradeAction::UPGRADE),
-        DECLARE_STRING_PROPERTY(UpgradeAction::RECOVERY)
+        DECLARE_STRING_PROPERTY(UpgradeAction::RECOVERY),
+        DECLARE_STRING_PROPERTY(UpgradeAction::ROLLBACK)
     };
-    NapiUtil::CreateProperty(env, exports, "UpgradeAction", upgradeActionList);
+    NapiCommonUtils::CreateProperty(env, exports, "UpgradeAction", upgradeActionList);
 }
 
 void DefineProperty::DefineBusinessVendor(napi_env env, napi_value exports)
 {
     std::vector<std::pair<std::string, napi_value>> businessVendorList = {
-        DECLARE_STRING_PROPERTY(BusinessVendor::PUBLIC),
+        DECLARE_STRING_PROPERTY(BusinessVendor::PUBLIC)
     };
-    NapiUtil::CreateProperty(env, exports, "BusinessVendor", businessVendorList);
+    NapiCommonUtils::CreateProperty(env, exports, "BusinessVendor", businessVendorList);
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine

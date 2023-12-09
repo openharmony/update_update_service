@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,26 +17,27 @@
 #define UPDATER_INTERFACE_H
 
 #include <memory>
-#include "client_helper.h"
-#include "iupdate_session.h"
-#include "napi_util.h"
-#include "session_manager.h"
 
-namespace OHOS {
-namespace UpdateEngine {
-class IUpdater {
+#include "base_client.h"
+#include "base_session.h"
+#include "client_helper.h"
+#include "session_manager.h"
+#include "update_result.h"
+
+namespace OHOS::UpdateEngine {
+class IUpdater : public BaseClient {
 public:
     virtual ~IUpdater() {}
 
     napi_value On(napi_env env, napi_callback_info info);
-
     napi_value Off(napi_env env, napi_callback_info info);
-
     virtual void GetUpdateResult(SessionType type, UpdateResult &result);
 
-    virtual void NotifyCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult) {};
+protected:
+    virtual void RegisterCallback() {}
+    virtual void UnRegisterCallback() {}
 
-    void RemoveSession(uint32_t sessionId)
+    void RemoveSession(uint32_t sessionId) override
     {
         if (sessionsMgr_ == nullptr) {
             return;
@@ -44,16 +45,13 @@ public:
         sessionsMgr_->RemoveSession(sessionId);
     }
 
-protected:
     napi_value StartSession(napi_env env, napi_callback_info info, SessionParams &sessionParams,
-        IUpdateSession::DoWorkFunction function);
-
+        BaseSession::DoWorkFunction function);
     napi_value StartParamErrorSession(napi_env env, napi_callback_info info, CALLBACK_POSITION callbackPosition);
-
     void NotifyEventInfo(const EventInfo &eventInfo);
 
+protected:
     std::shared_ptr<SessionManager> sessionsMgr_ = nullptr;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATER_INTERFACE_H

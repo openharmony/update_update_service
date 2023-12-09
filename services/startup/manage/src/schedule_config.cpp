@@ -17,6 +17,7 @@
 
 #include "file_utils.h"
 #include "update_log.h"
+#include "constant.h"
 
 namespace OHOS {
 namespace UpdateEngine {

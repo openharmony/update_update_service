@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-#ifndef UPDATE_CONSTANT_H
-#define UPDATE_CONSTANT_H
+#ifndef BASE_CLIENT_H
+#define BASE_CLIENT_H
 
-namespace OHOS {
-namespace UpdateEngine {
-enum class FunctionResult {
-    SUCCESS = 0,
-    FAIL = 1,
+namespace OHOS::UpdateEngine {
+class BaseClient {
+public:
+    virtual ~BaseClient() {}
+
+    virtual void RemoveSession(uint32_t sessionId) = 0;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
-#endif // UPDATE_CONSTANT_H
+} // namespace OHOS::UpdateEngine
+#endif // BASE_CLIENT_H

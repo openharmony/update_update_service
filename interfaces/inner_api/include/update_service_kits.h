@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,8 +20,7 @@
 #include "iupdate_service.h"
 #include "update_helper.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class UpdateServiceKits {
 public:
     UpdateServiceKits() = default;
@@ -39,7 +38,8 @@ public:
 
     virtual int32_t UnregisterUpdateCallback(const UpgradeInfo &info) = 0;
 
-    virtual int32_t CheckNewVersion(const UpgradeInfo &info) = 0;
+    virtual int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError,
+        CheckResult &checkResult) = 0;
 
     virtual int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DownloadOptions &downloadOptions, BusinessError &businessError) = 0;
@@ -87,7 +87,17 @@ public:
 
     virtual int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) = 0;
+
+    virtual int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+        BusinessError &businessError) = 0;
+
+    virtual int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+        BusinessError &businessError) = 0;
+
+    virtual int32_t AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
+        uint32_t dataLen) = 0;
+
+    virtual int32_t AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo) = 0;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_KITS_H

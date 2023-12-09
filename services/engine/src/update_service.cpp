@@ -15,7 +15,10 @@
 
 #include "update_service.h"
 
+#include <dlfcn.h>
 #include <unistd.h>
+#include <updater_sa_ipc_interface_code.h>
+#include <update_callback_stub.h>
 
 #include "iservice_registry.h"
 #include "ohos_types.h"
@@ -23,6 +26,7 @@
 
 #include "access_manager.h"
 #include "dupdate_net_manager.h"
+#include "config_parse.h"
 #include "firmware_common.h"
 #include "firmware_manager.h"
 #include "startup_manager.h"
@@ -31,6 +35,9 @@
 #include "update_service_local_updater.h"
 #include "update_service_restorer.h"
 #include "update_service_util.h"
+
+#include "../../../interfaces/inner_api/modulemgr/include/update_service_module.h"
+#include "../../../interfaces/inner_api/modulemgr/include/module_manager.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -227,14 +234,14 @@ int32_t UpdateService::GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &
     return onlineUpdater->GetUpgradePolicy(info, policy, businessError);
 }
 
-int32_t UpdateService::CheckNewVersion(const UpgradeInfo &info)
+int32_t UpdateService::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
         ENGINE_LOGI("CheckNewVersion onlineUpdater null");
         return INT_CALL_FAIL;
     }
-    return onlineUpdater->CheckNewVersion(info);
+    return onlineUpdater->CheckNewVersion(info, businessError, checkResult);
 }
 
 int32_t UpdateService::Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
@@ -339,6 +346,41 @@ int32_t UpdateService::VerifyUpgradePackage(const std::string &packagePath, cons
     return localUpdater->VerifyUpgradePackage(packagePath, keyPath, businessError);
 }
 
+int32_t UpdateService::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+                                              BusinessError &businessError)
+{
+    sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
+    if (onlineUpdater == nullptr) {
+        ENGINE_LOGI("SetCustomUpgradePolicy onlineUpdater null");
+        return INT_CALL_FAIL;
+    }
+    return onlineUpdater->SetCustomUpgradePolicy(info, policy, businessError);
+}
+
+int32_t UpdateService::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+                                              BusinessError &businessError)
+{
+    sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
+    if (onlineUpdater == nullptr) {
+        ENGINE_LOGI("GetCustomUpgradePolicy localUpdater null");
+        return INT_CALL_FAIL;
+    }
+    return onlineUpdater->GetCustomUpgradePolicy(info, policy, businessError);
+}
+
+int32_t UpdateService::AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
+                                              uint32_t dataLen)
+{
+    ENGINE_LOGI("AccessoryConnectNotify Unsupported");
+    return INT_CALL_FAIL;
+}
+
+int32_t UpdateService::AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo)
+{
+    ENGINE_LOGI("AccessoryUnpairNotify Unsupported");
+    return INT_CALL_FAIL;
+}
+
 void BuildUpgradeInfoDump(const int fd, UpgradeInfo &info)
 {
     dprintf(fd, "---------------------upgrade info info--------------------\n");
@@ -416,29 +458,80 @@ int UpdateService::Dump(int fd, const std::vector<std::u16string> &args)
     return 0;
 }
 
-void UpdateService::OnStart()
+void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
 {
-    ENGINE_LOGI("UpdaterService OnStart");
+    ENGINE_LOGI("UpdaterService oh OnStart, startReason name %{public}s, id %{public}d, value %{public}s",
+        startReason.GetName().c_str(), CAST_INT(startReason.GetId()), startReason.GetValue().c_str());
     updateService_ = this;
     if (updateService_ == nullptr) {
         ENGINE_LOGE("updateService_ null");
     }
 
-    DelayedSingleton<NetManager>::GetInstance()->Init();
+    std::vector<int> codes = {
+        CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
+        CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),
+        CAST_UINT(UpdaterSaInterfaceCode::RESUME_DOWNLOAD),
+        CAST_UINT(UpdaterSaInterfaceCode::UPGRADE),
+        CAST_UINT(UpdaterSaInterfaceCode::CLEAR_ERROR),
+        CAST_UINT(UpdaterSaInterfaceCode::TERMINATE_UPGRADE),
+        CAST_UINT(UpdaterSaInterfaceCode::SET_POLICY),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_POLICY),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION_DESCRIPTION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION_DESCRIPTION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_TASK_INFO),
+        CAST_UINT(UpdaterSaInterfaceCode::REGISTER_CALLBACK),
+        CAST_UINT(UpdaterSaInterfaceCode::UNREGISTER_CALLBACK),
+        CAST_UINT(UpdaterSaInterfaceCode::CANCEL),
+        CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET),
+        CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
+    };
+    ENGINE_LOGI("RegisterFunc HandleOhRemoteRequest");
+    RegisterFunc(codes, HandleOhRemoteRequest);
 
-    // 动态启停流程启动
-    DelayedSingleton<StartupManager>::GetInstance()->Start();
+    DelayedSingleton<ConfigParse>::GetInstance()->LoadConfigInfo(); // 启动读取配置信息
+    std::string libPath = DelayedSingleton<ConfigParse>::GetInstance()->GetModuleLibPath();
+    ENGINE_LOGI("GetModuleLibPath %{public}s ", libPath.c_str());
+    ModuleManager::GetInstance().LoadModule(libPath);
+
+    if (!ModuleManager::GetInstance().IsModuleLoaded()) {
+        ENGINE_LOGI("IsModuleLoaded false, init blue");
+        DelayedSingleton<NetManager>::GetInstance()->Init();
+
+        // 动态启停流程启动
+        DelayedSingleton<StartupManager>::GetInstance()->Start();
+    }
 
     if (Publish(this)) {
         ENGINE_LOGI("UpdaterService OnStart publish success");
     } else {
         ENGINE_LOGI("UpdaterService OnStart publish fail");
     }
+    // 如果是黄区，执行黄区方法
+    if (ModuleManager::GetInstance().IsModuleLoaded()) {
+        ENGINE_LOGI("IsModuleLoaded true, init yellow");
+        ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStart", startReason);
+    }
 }
 
-void UpdateService::OnStop()
+int32_t UpdateService::OnIdle(const SystemAbilityOnDemandReason &idleReason)
+{
+    ENGINE_LOGI("UpdaterService OnIdle");
+    return ModuleManager::GetInstance().HandleOnIdleFunc("OnIdle", idleReason);
+}
+
+void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
 {
     ENGINE_LOGI("UpdaterService OnStop");
+    ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStop", stopReason);
+}
+
+int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    return UpdateService::GetInstance()-> HandleRemoteRequest(code, data, reply, option);
 }
 } // namespace UpdateEngine
 } // namespace OHOS

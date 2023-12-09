@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,62 +16,27 @@
 #ifndef UPDATE_HELPER_H
 #define UPDATE_HELPER_H
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <ipc_types.h>
 #include <list>
 #include <map>
 #include <string>
 #include <string_ex.h>
+#include <utility>
 
-#include "parcel.h"
-#include "message_parcel.h"
-#include "hilog/log.h"
-#include "system_ability_definition.h"
+#include "nlohmann/json.hpp"
 
+#include "common_error_define.h"
 #include "json_builder.h"
+#include "net_manager_model.h"
 #include "update_define.h"
 
-namespace OHOS {
-namespace UpdateEngine {
-static const std::string OUC_PACKAGE_NAME = "com.ohos.updateapp";
-static const std::string OUC_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
-constexpr int CALL_RESULT_OFFSET = 2000;
-
-enum class CallResult {
-// 通用错误码
-    APP_NOT_GRANTED = 201,
-    NOT_SYSTEM_APP = 202,
-    PARAM_ERR = 401,
-    UN_SUPPORT = 801,
-
-// 模块内错误码
-    SUCCESS = 0,
-    FAIL = 100,
-    DEV_UPG_INFO_ERR = 102,
-    FORBIDDEN = 103,
-    IPC_ERR = 104,
-    TIME_OUT = 402,
-    DB_ERROR = 501,
-    IO_ERROR = 502,
-    NET_ERROR = 503
-};
-
-constexpr int32_t INT_CALL_SUCCESS = CAST_INT(CallResult::SUCCESS);
-constexpr int32_t INT_CALL_FAIL = CAST_INT(CallResult::FAIL);
-constexpr int32_t INT_UN_SUPPORT = CAST_INT(CallResult::UN_SUPPORT);
-constexpr int32_t INT_FORBIDDEN = CAST_INT(CallResult::FORBIDDEN);
-constexpr int32_t INT_CALL_IPC_ERR = CAST_INT(CallResult::IPC_ERR);
-constexpr int32_t INT_APP_NOT_GRANTED = CAST_INT(CallResult::APP_NOT_GRANTED);
-constexpr int32_t INT_NOT_SYSTEM_APP = CAST_INT(CallResult::NOT_SYSTEM_APP);
-constexpr int32_t INT_PARAM_ERR = CAST_INT(CallResult::PARAM_ERR);
-constexpr int32_t INT_DEV_UPG_INFO_ERR = CAST_INT(CallResult::DEV_UPG_INFO_ERR);
-constexpr int32_t INT_TIME_OUT = CAST_INT(CallResult::TIME_OUT);
-constexpr int32_t INT_DB_ERROR = CAST_INT(CallResult::DB_ERROR);
-constexpr int32_t INT_IO_ERROR = CAST_INT(CallResult::IO_ERROR);
-constexpr int32_t INT_NET_ERROR = CAST_INT(CallResult::NET_ERROR);
+namespace OHOS::UpdateEngine {
+const std::string OUC_PACKAGE_NAME = "com.ohos.updateapp";
+const std::string OUC_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
 
 // 搜索状态
 enum class SearchStatus {
@@ -80,7 +45,7 @@ enum class SearchStatus {
     HAS_NEW_VERSION,
     NO_NEW_VERSION,
     SERVER_BUSY,
-    CHECK_EXECUTE_ERR,
+    CHECK_EXECUTE_ERR
 };
 
 enum class UpgradeStatus {
@@ -109,29 +74,29 @@ enum class UpgradeStatus {
 
 enum class PackageType {
     DYNAMIC = 0,
-    NORMAL = 1
+    NORMAL = 1,
+    BASE = 2,
+    CUST = 3,
+    PRELOAD = 4,
+    COTA = 5,
+    VERSION = 6,
+    PATCH = 8,
+    SA = 9
 };
 
 enum class ComponentType {
     INVALID = 0,
-    OTA = 1
+    OTA = 1,
+    PATCH = 2,
+    COTA = 4,
+    PARAM = 8,
+    SA = 16
 };
 
 enum class EffectiveMode {
     COLD = 1,
     LIVE = 2,
     LIVE_AND_COLD = 3
-};
-
-enum class NetType {
-    NO_NET = 0,
-    CELLULAR = 1,
-    METERED_WIFI = 2,
-    NOT_METERED_WIFI = 4,
-    CELLULAR_AND_METERED_WIFI = CELLULAR | METERED_WIFI,
-    CELLULAR_AND_NOT_METERED_WIFI = CELLULAR | NOT_METERED_WIFI,
-    WIFI = METERED_WIFI | NOT_METERED_WIFI,
-    CELLULAR_AND_WIFI = CELLULAR | WIFI
 };
 
 enum class Order {
@@ -142,13 +107,18 @@ enum class Order {
     INSTALL_AND_APPLY = INSTALL | APPLY
 };
 
-enum class EventClassify {
-    TASK = 0x01000000,
+enum class OptionsAfterUpgrade {
+    NORMAL = 0,
+    REBOOT = 1,
+    SHUTDOWN = 2
 };
 
 enum class BusinessSubType {
+    START_UP = 0,
     FIRMWARE = 1,
-    PARAM = 2
+    PARAM = 2,
+    ROLLBACK = 3,
+    ACCESSORY = 4
 };
 
 enum class DescriptionType {
@@ -162,8 +132,34 @@ enum class DescriptionFormat {
     SIMPLIFIED = 1
 };
 
+enum ForceUpgradeSwitch {
+    OPEN    = 0x01000000,
+    CLOSE   = 0x00000000,
+};
+
+enum ForceUpgradeDataNetworkOption {
+    CELLULAR_NOT_SUPPORT    = 0x00000000,
+    CELLULAR                = 0x00000001,
+    ROAMING                 = 0x00000002,
+    CELLULAR_AND_ROAMING    = CELLULAR | ROAMING,
+};
+
+enum class ForceUpgradeType {
+    NOT_SUPPORT            = ForceUpgradeSwitch::CLOSE,
+    CELLULAR_NOT_SUPPORT   = ForceUpgradeSwitch::OPEN | ForceUpgradeDataNetworkOption::CELLULAR_NOT_SUPPORT,
+    CELLULAR               = ForceUpgradeSwitch::OPEN | ForceUpgradeDataNetworkOption::CELLULAR,
+    CELLULAR_AND_ROAMING   = ForceUpgradeSwitch::OPEN | ForceUpgradeDataNetworkOption::CELLULAR_AND_ROAMING,
+};
+
+enum class EventClassify {
+    TASK = 0x01000000,
+    SYSTEM = 0x02000000,
+};
+
+const std::list g_eventClassifyList = { EventClassify::TASK, EventClassify::SYSTEM };
+
 enum class EventId {
-    EVENT_TASK_BASE = 0x01000000,
+    EVENT_TASK_BASE = CAST_UINT(EventClassify::TASK),
     EVENT_TASK_RECEIVE,
     EVENT_TASK_CANCEL,
     EVENT_DOWNLOAD_WAIT,
@@ -183,7 +179,11 @@ enum class EventId {
     EVENT_AUTH_START,
     EVENT_AUTH_SUCCESS,
     EVENT_DOWNLOAD_CANCEL,
-    EVENT_INITIALIZE
+    EVENT_INITIALIZE,
+    EVENT_TASK_CHANGE,
+    EVENT_VERSION_INFO_CHANGE,
+    SYSTEM_BASE = CAST_UINT(EventClassify::SYSTEM),
+    SYSTEM_BOOT_COMPLETE,
 };
 
 enum TaskBodyMemeberMask {
@@ -196,9 +196,11 @@ enum TaskBodyMemeberMask {
     VERSION_COMPONENT   = 0x01000000
 };
 
-static std::map<EventId, uint32_t> g_taskBodyTemplateMap = {
+const std::map<EventId, uint32_t> g_taskBodyTemplateMap = {
     { EventId::EVENT_TASK_RECEIVE,     VERSION_DIGEST_INFO },
+    { EventId::EVENT_TASK_CHANGE,      VERSION_DIGEST_INFO | UPGRADE_STATUS | PROGRESS },
     { EventId::EVENT_TASK_CANCEL,      VERSION_DIGEST_INFO },
+    { EventId::EVENT_VERSION_INFO_CHANGE,      VERSION_DIGEST_INFO | UPGRADE_STATUS },
     { EventId::EVENT_DOWNLOAD_WAIT,    VERSION_DIGEST_INFO | UPGRADE_STATUS | INSTALL_MODE },
     { EventId::EVENT_DOWNLOAD_START,   VERSION_DIGEST_INFO | INSTALL_MODE },
     { EventId::EVENT_DOWNLOAD_UPDATE,  VERSION_DIGEST_INFO | UPGRADE_STATUS | PROGRESS | INSTALL_MODE },
@@ -214,15 +216,17 @@ static std::map<EventId, uint32_t> g_taskBodyTemplateMap = {
     { EventId::EVENT_APPLY_START,      VERSION_DIGEST_INFO },
     { EventId::EVENT_UPGRADE_SUCCESS,  VERSION_DIGEST_INFO | VERSION_COMPONENT },
     { EventId::EVENT_UPGRADE_FAIL,     VERSION_DIGEST_INFO | VERSION_COMPONENT | ERROR_MESSAGE },
-    { EventId::EVENT_AUTH_START,       VERSION_DIGEST_INFO | VERSION_COMPONENT | UPGRADE_STATUS},
+    { EventId::EVENT_AUTH_START,       VERSION_DIGEST_INFO | VERSION_COMPONENT | UPGRADE_STATUS },
     { EventId::EVENT_AUTH_SUCCESS,     VERSION_DIGEST_INFO | VERSION_COMPONENT | UPGRADE_STATUS },
-    { EventId::EVENT_INITIALIZE,       UPGRADE_STATUS }
+    { EventId::EVENT_INITIALIZE,       UPGRADE_STATUS },
+    { EventId::SYSTEM_BOOT_COMPLETE,   UPGRADE_STATUS }
 };
 
 class UpgradeAction {
 public:
     static constexpr const char *UPGRADE = "upgrade";
     static constexpr const char *RECOVERY = "recovery";
+    static constexpr const char *ROLLBACK = "rollback";
 };
 
 class BusinessVendor {
@@ -238,6 +242,16 @@ struct BaseJsonStruct {
     {
         return GetJsonBuilder().ToJson();
     };
+};
+
+enum class DeviceType {
+    UNKNOWN = 0,
+    SMART_PHONE = 1,    // 手机
+    SMART_PAD = 2,      // 平板
+    SMART_TV = 4,       // 智能电视
+    TWS = 6,            // 真无线耳机
+    KEYBOARD = 7,       // 键盘
+    PEN  = 8            // 手写笔
 };
 
 struct BusinessType : public BaseJsonStruct {
@@ -264,6 +278,8 @@ struct UpgradeInfo {
     BusinessType businessType;
     std::string upgradeDevId;
     std::string controlDevId;
+    int32_t processId;
+    DeviceType deviceType;
 
     bool operator<(const UpgradeInfo &r) const
     {
@@ -278,6 +294,12 @@ struct UpgradeInfo {
 
         if (controlDevId < r.controlDevId) return true;
         if (controlDevId > r.controlDevId) return false;
+
+        if (processId < r.processId) return true;
+        if (processId > r.processId) return false;
+
+        if (deviceType < r.deviceType) return true;
+        if (deviceType > r.deviceType) return false;
 
         return false;
     }
@@ -296,24 +318,20 @@ struct SubscribeInfo : public BaseJsonStruct {
     std::string abilityName;
     std::string subscriberDevId;
     std::string devUpgradeId;
+    DeviceType deviceType = DeviceType::UNKNOWN;
+    std::string deviceName;
 
-    SubscribeInfo(BusinessSubType subType)
+    explicit SubscribeInfo(BusinessSubType subType)
     {
         businessType.subType = subType;
     }
+    SubscribeInfo() = default;
 
     JsonBuilder GetJsonBuilder() final;
 };
 
 struct VersionDigestInfo : public BaseJsonStruct {
     std::string versionDigest;
-
-    JsonBuilder GetJsonBuilder() final;
-};
-
-struct ErrorMessage : public BaseJsonStruct {
-    int32_t errorCode = 0;
-    std::string errorMessage;
 
     JsonBuilder GetJsonBuilder() final;
 };
@@ -338,6 +356,7 @@ struct PauseDownloadOptions {
 
 struct UpgradeOptions {
     Order order = Order::INSTALL;
+    OptionsAfterUpgrade optionsAfterUpgrade = OptionsAfterUpgrade::NORMAL;
 };
 
 struct ClearOptions {
@@ -350,6 +369,25 @@ enum class InstallMode {
     AUTO
 };
 
+enum class AutoUpgradeCondition {
+    IDLE = 0,
+};
+
+struct AccessoryDeviceInfo {
+    std::string macAddress;
+    DeviceType deviceType;
+    std::string deviceName;
+};
+
+struct ParamExtra : public BaseJsonStruct {
+    std::string classify;
+    std::string type;
+    std::string subType;
+    std::string maxRemindTime;
+
+    JsonBuilder GetJsonBuilder() final;
+};
+
 struct DescriptionInfo : public BaseJsonStruct {
     DescriptionType descriptionType = DescriptionType::CONTENT;
     std::string content;
@@ -357,9 +395,27 @@ struct DescriptionInfo : public BaseJsonStruct {
     JsonBuilder GetJsonBuilder() final;
 };
 
+enum class PolicyType {
+    DEFAULT = 0,
+    PROHIBIT,
+    UPGRADE_TO_SPECIFIC_VERSION,
+    WINDOWS,
+    POSTPONE
+};
+
+struct FirmwareExtra : public BaseJsonStruct {
+    ForceUpgradeType forceUpgradeType = ForceUpgradeType::NOT_SUPPORT;
+    int64_t lastUpdateTime;                            // 行业定制最晚升级时间
+    PolicyType customPolicyType = PolicyType::DEFAULT; // 行业定制策略类型
+    bool patchHasOUC = false;
+    std::string releaseRuleAttr;
+    JsonBuilder GetJsonBuilder() final;
+};
+
 struct ComponentDescription {
     std::string componentId;
     DescriptionInfo descriptionInfo;
+    DescriptionInfo notifyDescriptionInfo;
 };
 
 struct VersionComponent : public BaseJsonStruct {
@@ -419,41 +475,56 @@ struct Progress {
     std::string endReason;
 };
 
-struct ErrMsg {
-    int32_t errorCode = 0;
-    std::string errorMsg;
-};
-
 struct UpgradeInterval {
     uint64_t timeStart = 0;
     uint64_t timeEnd = 0;
 };
 
-struct BusinessError {
-    std::string message;
-    CallResult errorNum = CallResult::SUCCESS;
-    std::vector<ErrorMessage> data;
-
-    BusinessError &Build(CallResult callResult, const std::string &msg)
-    {
-        errorNum = callResult;
-        message = msg;
-        return *this;
-    }
-
-    BusinessError &AddErrorMessage(int32_t errorCode, const std::string &errorMessage)
-    {
-        ErrorMessage errMsg;
-        errMsg.errorCode = errorCode;
-        errMsg.errorMessage = errorMessage;
-        data.push_back(errMsg);
-        return *this;
-    }
-};
-
 struct UpgradePeriod {
     uint32_t start = 0;
     uint32_t end = 0;
+};
+
+struct UpdateTime {
+    int64_t lastUpdateTime = 0;
+    int64_t installWindowStart = 0;
+    int64_t installWindowEnd = 0;
+
+    friend void to_json(nlohmann::json &jsonObj, const UpdateTime &updateTime)
+    {
+        jsonObj["lastUpdateTime"] = updateTime.lastUpdateTime;
+        jsonObj["installWindowStart"] = updateTime.installWindowStart;
+        jsonObj["installWindowEnd"] = updateTime.installWindowEnd;
+    }
+
+    friend void from_json(const nlohmann::json &jsonObj, UpdateTime &updateTime)
+    {
+        JsonUtils::GetValueAndSetTo(jsonObj, "lastUpdateTime", updateTime.lastUpdateTime);
+        JsonUtils::GetValueAndSetTo(jsonObj, "installWindowStart", updateTime.installWindowStart);
+        JsonUtils::GetValueAndSetTo(jsonObj, "installWindowEnd", updateTime.installWindowEnd);
+    }
+};
+
+struct CustomPolicy {
+    PolicyType type = PolicyType::DEFAULT;
+    UpdateTime installTime;
+    std::string version;
+
+    friend void to_json(nlohmann::json &jsonObj, const CustomPolicy &policy)
+    {
+        jsonObj["type"] = policy.type;
+        jsonObj["installTime"] = policy.installTime;
+        jsonObj["version"] = policy.version;
+    }
+
+    friend void from_json(const nlohmann::json &jsonObj, CustomPolicy &policy)
+    {
+        int32_t typeInt = CAST_INT(PolicyType::DEFAULT);
+        JsonUtils::GetValueAndSetTo(jsonObj, "type", typeInt);
+        policy.type = static_cast<PolicyType>(typeInt);
+        JsonUtils::GetValueAndSetTo(jsonObj, "installTime", policy.installTime);
+        JsonUtils::GetValueAndSetTo(jsonObj, "version", policy.version);
+    }
 };
 
 struct UpgradePolicy {
@@ -472,7 +543,7 @@ struct EventClassifyInfo {
     std::string extraInfo;
 
     EventClassifyInfo() : eventClassify(EventClassify::TASK) {}
-    EventClassifyInfo(EventClassify classify) : eventClassify(classify) {}
+    explicit EventClassifyInfo(EventClassify classify) : eventClassify(classify) {}
     EventClassifyInfo(EventClassify classify, const std::string &info) : eventClassify(classify), extraInfo(info) {}
 };
 
@@ -480,8 +551,8 @@ struct EventInfo : public BaseJsonStruct {
     EventId eventId = EventId::EVENT_TASK_BASE;
     TaskBody taskBody;
 
-    EventInfo() {}
-    EventInfo(EventId id, TaskBody body) : eventId(id), taskBody(body) {}
+    EventInfo() = default;
+    EventInfo(EventId id, TaskBody body) : eventId(id), taskBody(std::move(body)) {}
 
     JsonBuilder GetJsonBuilder() final;
 };
@@ -489,6 +560,13 @@ struct EventInfo : public BaseJsonStruct {
 struct ConfigInfo {
     std::string businessDomain;
     uint32_t abInstallTimeout = 1800; // 1800s
+    std::string moduleLibPath;
+};
+
+struct SystemUpdateInfo {
+    std::string version;
+    int64_t firstReceivedTime;
+    std::string packageType;
 };
 
 enum class AuthType {
@@ -496,37 +574,16 @@ enum class AuthType {
     WD = 2
 };
 
-using CheckNewVersionDone = std::function<void(const BusinessError &businessError, const CheckResult &checkResult)>;
+enum class UpgAuthSignVer {
+    AUTH_SIGN_TYPE_HOTA = 0,
+    AUTH_SIGN_TYPE_PKI = 1
+};
+
 using OnEvent = std::function<void(const EventInfo &eventInfo)>;
 
 // 回调函数
 struct UpdateCallbackInfo {
-    CheckNewVersionDone checkNewVersionDone;
     OnEvent onEvent;
 };
-
-template<typename T>
-bool IsValidEnum(const std::list<T> &enumList, int32_t number)
-{
-    for (auto i : enumList) {
-        if (number == static_cast<int32_t>(i)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-class UpdateHelper {
-public:
-    static std::string BuildEventDevId(const UpgradeInfo &info);
-    static bool IsUpgradeFailed(UpgradeStatus status);
-};
-
-struct DirInfo {
-    std::string dirName;
-    int32_t dirPermissions;
-    bool isAllowDestroyContents = false; // 是否允许删除当前目录下的所有文件（包括子目录）
-};
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // UPDATE_HELPER_H
