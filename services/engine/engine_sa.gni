@@ -112,6 +112,7 @@ sa_include_dirs = [
   "$updateengine_root_path/services/osal/include",
   "$updateengine_root_path/services/service/include",
   "$updateengine_root_path/services/utils/include",
+  "$updateengine_root_path/interfaces/inner_api/common/include",
   "$updateengine_root_path/interfaces/inner_api/include",
   "//base/update/updater/interfaces/kits/include",  # package.h/updaterkits.h
   "//base/update/updater/services/include",  # fs_manager/mount.h
@@ -164,8 +165,11 @@ sa_include_dirs += firmware_include
 sa_include_dirs += sqlite_include
 sa_include_dirs += update_log_include
 sa_include_dirs += startup_include
+sa_include_dirs +=
+    [ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
 
 sa_deps = [
+  "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
   "//base/update/updater/services/fs_manager:libfsmanager",  # factory_reset_GetBlockDeviceByMountPoint_"fs_manager/mount.h"
   "//third_party/cJSON:cjson",
   "//third_party/curl:curl",

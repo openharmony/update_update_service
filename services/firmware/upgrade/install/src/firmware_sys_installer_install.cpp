@@ -55,7 +55,7 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
     int32_t ret = SysInstaller::SysInstallerKitsImpl::GetInstance().SysInstallerInit();
     if (ret != OHOS_SUCCESS) {
         FIRMWARE_LOGE("sys installer init failed");
-        errMsg_.errorMsg = "sys installer init failed";
+        errMsg_.errorMessage = "sys installer init failed";
         errMsg_.errorCode = DUPDATE_ERR_IPC_ERROR;
         return OHOS_FAILURE;
     }
@@ -63,7 +63,7 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
     int32_t updateStatus = SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateStatus();
     if (updateStatus != CAST_INT(SysInstaller::UpdateStatus::UPDATE_STATE_INIT)) {
         FIRMWARE_LOGE("StartUnpack status: %{public}d , system busy", updateStatus);
-        errMsg_.errorMsg = "sys installer is busy";
+        errMsg_.errorMessage = "sys installer is busy";
         errMsg_.errorCode = ret;
         return OHOS_FAILURE;
     }
@@ -80,7 +80,7 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
     sptr<SysInstaller::ISysInstallerCallbackFunc> cb = new SysInstallerCallback(callback);
     if (cb == nullptr) {
         FIRMWARE_LOGE("sys installer callback is nullptr");
-        errMsg_.errorMsg = "sys installer callback is nullptr";
+        errMsg_.errorMessage = "sys installer callback is nullptr";
         errMsg_.errorCode = DUPDATE_ERR_IPC_ERROR;
         return OHOS_FAILURE;
     }
@@ -88,14 +88,14 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
     ret = SysInstaller::SysInstallerKitsImpl::GetInstance().SetUpdateCallback(cb);
     if (ret != OHOS_SUCCESS) {
         FIRMWARE_LOGE("set sys installer callback failed");
-        errMsg_.errorMsg = "set sys installer callback failed";
+        errMsg_.errorMessage = "set sys installer callback failed";
         errMsg_.errorCode = ret;
         return OHOS_FAILURE;
     }
 
     ret = SysInstaller::SysInstallerKitsImpl::GetInstance().StartUpdatePackageZip(sysComponent.spath);
     if (ret != OHOS_SUCCESS) {
-        errMsg_.errorMsg = "sys installer StartUpdatePackageZip failed";
+        errMsg_.errorMessage = "sys installer StartUpdatePackageZip failed";
         errMsg_.errorCode = ret;
         FIRMWARE_LOGE("sys installer StartUpdatePackageZip failed ret = %{public}d", ret);
         return OHOS_FAILURE;
@@ -109,7 +109,7 @@ void SysInstallerInstall::InitInstallProgress()
     sysInstallProgress_.percent = 0;
     sysInstallProgress_.endReason = "";
     errMsg_.errorCode = 0;
-    errMsg_.errorMsg = "";
+    errMsg_.errorMessage = "";
 }
 
 int32_t SysInstallerInstall::WaitInstallResult()

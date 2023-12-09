@@ -25,6 +25,7 @@
 #include "update_service_stub.h"
 #include "update_system_event.h"
 #include "updater_sa_ipc_interface_code.h"
+#include "../../../interfaces/inner_api/modulemgr/include/module_manager.h"
 
 using namespace std;
 
@@ -151,13 +152,19 @@ int32_t UpdateServiceStub::GetTaskInfoStub(UpdateServiceStubPtr service,
     return INT_CALL_SUCCESS;
 }
 
-int32_t UpdateServiceStub::CheckNewVersionStub(UpdateServiceStubPtr service,
+int32_t UpdateServiceStub::CheckNewVersionStub(UpdateServiceStub::UpdateServiceStubPtr service,
     MessageParcel& data, MessageParcel& reply, MessageOption &option)
 {
     RETURN_FAIL_WHEN_SERVICE_NULL(service);
     UpgradeInfo upgradeInfo {};
     MessageParcelHelper::ReadUpgradeInfo(data, upgradeInfo);
-    return service->CheckNewVersion(upgradeInfo);
+    BusinessError businessError;
+    CheckResult checkResult;
+    int res = service->CheckNewVersion(upgradeInfo, businessError, checkResult);
+    ENGINE_CHECK(res == INT_CALL_SUCCESS, return res, "Failed to CheckNewVersion");
+    MessageParcelHelper::WriteBusinessError(reply, businessError);
+    MessageParcelHelper::WriteCheckResult(reply, checkResult);
+    return INT_CALL_SUCCESS;
 }
 
 int32_t UpdateServiceStub::DownloadVersionStub(UpdateServiceStubPtr service,
@@ -406,29 +413,34 @@ bool UpdateServiceStub::IsPermissionGranted(uint32_t code)
 int32_t UpdateServiceStub::OnRemoteRequest(uint32_t code,
     MessageParcel& data, MessageParcel& reply, MessageOption &option)
 {
-    if (data.ReadInterfaceToken() != GetDescriptor()) {
-        ENGINE_LOGI("UpdateServiceStub ReadInterfaceToken fail");
-        return CALL_RESULT_TO_IPC_RESULT(INT_CALL_IPC_ERR);
-    }
-
     ENGINE_LOGI("UpdateServiceStub func code %{public}u", code);
-    auto iter = requestFuncMap_.find(code);
-    if (iter == requestFuncMap_.end()) {
+    auto iter = ModuleManager::onRemoteRequestFuncMap_.find(code);
+    if (iter == ModuleManager::onRemoteRequestFuncMap_.end()) {
         ENGINE_LOGE("UpdateServiceStub OnRemoteRequest code %{public}u not found", code);
         return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
+    return ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
+}
+
+int32_t UpdateServiceStub::HandleRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
+    MessageOption &option)
+{
+    if (data.ReadInterfaceToken() != GetDescriptor()) {
+        ENGINE_LOGE("UpdateServiceStub ReadInterfaceToken fail");
+        return CALL_RESULT_TO_IPC_RESULT(INT_CALL_IPC_ERR);
+    }
 
     if (!IsCallerValid()) {
+        ENGINE_LOGE("UpdateServiceStub IsCallerValid false");
         return CALL_RESULT_TO_IPC_RESULT(INT_NOT_SYSTEM_APP);
     }
-
     if (!IsPermissionGranted(code)) {
+        ENGINE_LOGE("UpdateServiceStub code %{public}d IsPermissionGranted false", code);
         UpgradeInfo tmpInfo;
         MessageParcelHelper::ReadUpgradeInfo(data, tmpInfo);
-        SYS_EVENT_VERIFY_FAILED(0, UpdateHelper::BuildEventDevId(tmpInfo),
-            UpdateSystemEvent::EVENT_PERMISSION_VERIFY_FAILED);
         return CALL_RESULT_TO_IPC_RESULT(INT_APP_NOT_GRANTED);
     }
+    auto iter = requestFuncMap_.find(code);
     return CALL_RESULT_TO_IPC_RESULT((this->*(iter->second))(this, data, reply, option));
 }
 } // namespace UpdateEngine

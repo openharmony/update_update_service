@@ -17,16 +17,14 @@
 
 #include "update_log.h"
 
-namespace OHOS {
-namespace UpdateEngine {
-void UpdateCallback::OnCheckVersionDone(const BusinessError &businessError, const CheckResult &checkResult)
-{
-    ENGINE_LOGI("OnCheckVersionDone isExistNewVersion %{public}d", checkResult.isExistNewVersion);
-}
+namespace OHOS::UpdateEngine {
+UpdateCallback::UpdateCallback(const UpdateCallbackInfo &updateCallback) : updateCallback_(updateCallback) {}
 
 void UpdateCallback::OnEvent(const EventInfo &eventInfo)
 {
-    ENGINE_LOGI("OnEvent eventId %d", eventInfo.eventId);
+    ENGINE_LOGI("OnEvent eventId 0x%{public}08x", eventInfo.eventId);
+    if (updateCallback_.onEvent != nullptr) {
+        updateCallback_.onEvent(eventInfo);
+    }
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine

@@ -59,6 +59,15 @@ InstallType FirmwareUpdateHelper::GetInstallType()
     return installType;
 }
 
+bool FirmwareUpdateHelper::IsUpgradeFailed(UpgradeStatus status)
+{
+    return status == UpgradeStatus::DOWNLOAD_FAIL ||
+           status == UpgradeStatus::PACKAGE_TRANS_FAIL ||
+           status == UpgradeStatus::INSTALL_FAIL ||
+           status == UpgradeStatus::UPDATE_FAIL ||
+           status == UpgradeStatus::VERIFY_FAIL;
+}
+
 VersionComponent FirmwareUpdateHelper::BuildHotaVersionComponent(std::vector<FirmwareComponent> &hotaComponents)
 {
     VersionComponent hotaVersionComponent;

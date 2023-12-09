@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,23 +19,23 @@
 #include "iremote_broker.h"
 #include "iremote_proxy.h"
 
+#include "iservice_accessory_updater.h"
 #include "iservice_local_updater.h"
 #include "iservice_online_updater.h"
 #include "iservice_restorer.h"
 #include "iupdate_callback.h"
 #include "update_helper.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 class IUpdateService : public OHOS::IRemoteBroker, public IServiceOnlineUpdater, public IServiceRestorer,
-    public IServiceLocalUpdater {
+    public IServiceLocalUpdater, public IServiceAccessoryUpdater {
 public:
+
     virtual int32_t RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback>& updateCallback) = 0;
 
     virtual int32_t UnregisterUpdateCallback(const UpgradeInfo &info) = 0;
 
     DECLARE_INTERFACE_DESCRIPTOR(u"OHOS.Updater.IUpdateService");
 };
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine
 #endif // IUPDATE_SERVICE_H

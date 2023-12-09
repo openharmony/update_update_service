@@ -47,15 +47,6 @@ JsonBuilder VersionDigestInfo::GetJsonBuilder()
     return JsonBuilder().Append("{").Append("versionDigest", versionDigest).Append("}");
 }
 
-JsonBuilder ErrorMessage::GetJsonBuilder()
-{
-    return JsonBuilder()
-        .Append("{")
-        .Append("errorCode", errorCode)
-        .Append("errorMessage", errorMessage)
-        .Append("}");
-}
-
 JsonBuilder SubscribeInfo::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -65,6 +56,7 @@ JsonBuilder SubscribeInfo::GetJsonBuilder()
         .Append("abilityName", abilityName)
         .Append("subscriberDevId", subscriberDevId)
         .Append("devUpgradeId", devUpgradeId)
+        .Append("deviceType", CAST_INT(deviceType))
         .Append("}");
 }
 
@@ -77,12 +69,35 @@ JsonBuilder EventInfo::GetJsonBuilder()
         .Append("}");
 }
 
+JsonBuilder ParamExtra::GetJsonBuilder()
+{
+    return JsonBuilder()
+        .Append("{")
+        .Append("classify", classify)
+        .Append("type", type)
+        .Append("subType", subType)
+        .Append("maxRemindTime", maxRemindTime)
+        .Append("}");
+}
+
 JsonBuilder DescriptionInfo::GetJsonBuilder()
 {
     return JsonBuilder()
         .Append("{")
         .Append("descriptionType", CAST_INT(descriptionType))
         .Append("content", content)
+        .Append("}");
+}
+
+JsonBuilder FirmwareExtra::GetJsonBuilder()
+{
+    return JsonBuilder()
+        .Append("{")
+        .Append("forceUpgrade", CAST_INT(forceUpgradeType))
+        .Append("patchHasOUC", patchHasOUC)
+        .Append("releaseRuleAttr", releaseRuleAttr)
+        .Append("lastUpdateTime", lastUpdateTime)
+        .Append("customPolicyType", CAST_INT(customPolicyType))
         .Append("}");
 }
 
@@ -98,7 +113,7 @@ JsonBuilder VersionComponent::GetJsonBuilder()
         .Append("size", static_cast<int64_t>(size))
         .Append("effectiveMode", static_cast<int32_t>(effectiveMode))
         .Append("descriptionInfo", descriptionInfo.GetJsonBuilder())
-        .Append("componentExtra", componentExtra)
+        .Append("componentExtra", componentExtra, true)
         .Append("}");
 }
 
@@ -154,21 +169,6 @@ JsonBuilder TaskBody::GetJsonBuilder(EventId eventId)
         jsonBuilder.Append("versionComponents", GetArrayJsonBuidlerList(versionComponents));
     }
     return jsonBuilder.Append("}");
-}
-
-std::string UpdateHelper::BuildEventDevId(const UpgradeInfo &info)
-{
-    return std::string("{") + std::string("upgradeDevId: ") + info.upgradeDevId
-        + std::string(", controlDevId: ") + info.controlDevId + std::string(" }");
-}
-
-bool UpdateHelper::IsUpgradeFailed(UpgradeStatus status)
-{
-    return status == UpgradeStatus::DOWNLOAD_FAIL ||
-           status == UpgradeStatus::PACKAGE_TRANS_FAIL ||
-           status == UpgradeStatus::INSTALL_FAIL ||
-           status == UpgradeStatus::UPDATE_FAIL ||
-           status == UpgradeStatus::VERIFY_FAIL;
 }
 } // namespace UpdateEngine
 } // namespace OHOS

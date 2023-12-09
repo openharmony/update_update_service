@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,14 +14,13 @@
  */
 
 #include "restorer.h"
-#include "napi_util.h"
+
 #include "update_service_kits.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 napi_value Restorer::Napi::FactoryReset(napi_env env, napi_callback_info info)
 {
-    CLIENT_LOGI("Restorer::Napi::FactoryReset");
+    ENGINE_LOGI("Restorer::Napi::FactoryReset");
     Restorer* restorer = UnwrapJsObject<Restorer>(env, info);
     PARAM_CHECK_NAPI_CALL(env, restorer != nullptr, return nullptr, "Error get restorer");
     return restorer->FactoryReset(env, info);
@@ -30,21 +29,21 @@ napi_value Restorer::Napi::FactoryReset(napi_env env, napi_callback_info info)
 Restorer::Restorer(napi_env env, napi_value thisVar)
 {
     napi_ref thisReference = nullptr;
-    napi_create_reference(env, thisVar, 1, &thisReference);
+    constexpr int32_t refCount = 1; // 新引用的初始引用计数
+    napi_create_reference(env, thisVar, refCount, &thisReference);
     sessionsMgr_ = std::make_shared<SessionManager>(env, thisReference);
-    CLIENT_LOGI("Restorer::Restorer");
+    ENGINE_LOGI("Restorer::Restorer");
 }
 
 napi_value Restorer::FactoryReset(napi_env env, napi_callback_info info)
 {
     SessionParams sessionParams(SessionType::SESSION_FACTORY_RESET, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams,
-        [](SessionType type, void *context) -> int {
+        [](void *context) -> int {
             BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
             return UpdateServiceKits::GetInstance().FactoryReset(*businessError);
         });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to FactoryReset.");
     return retValue;
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine

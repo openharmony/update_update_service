@@ -21,8 +21,7 @@
 
 using namespace std;
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 int32_t UpdateCallbackStub::OnRemoteRequest(uint32_t code,
     MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
@@ -33,25 +32,12 @@ int32_t UpdateCallbackStub::OnRemoteRequest(uint32_t code,
 
     ENGINE_LOGI("UpdateCallbackStub OnRemoteRequest code is %{public}d", code);
     BusinessError businessError;
-    switch (code) {
-        case CHECK_VERSION: {
-            CheckResult checkResult;
-            MessageParcelHelper::ReadBusinessError(data, businessError);
-            MessageParcelHelper::ReadCheckResult(data, checkResult);
-            OnCheckVersionDone(businessError, checkResult);
-            break;
-        }
-        case ON_EVENT: {
-            EventInfo eventInfo;
-            MessageParcelHelper::ReadEventInfo(data, eventInfo);
-            OnEvent(eventInfo);
-            break;
-        }
-        default: {
-            return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
-        }
+    if (code == ON_EVENT) {
+        EventInfo eventInfo;
+        MessageParcelHelper::ReadEventInfo(data, eventInfo);
+        OnEvent(eventInfo);
+        return 0;
     }
-    return 0;
+    return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine

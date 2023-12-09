@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,61 +13,51 @@
  * limitations under the License.
  */
 
+#include "session_manager.h"
+
 #include <uv.h>
 
-#include "client_helper.h"
 #include "node_api.h"
 
+#include "client_helper.h"
 #include "update_define.h"
 #include "update_helper.h"
 #include "update_session.h"
-#include "session_manager.h"
 
 using namespace std;
 
-namespace OHOS {
-namespace UpdateEngine {
-SessionManager::SessionManager(napi_env env, napi_ref thisReference) : env_(env), thisReference_(thisReference) {}
+namespace OHOS::UpdateEngine {
+SessionManager::SessionManager(napi_env env, napi_ref thisReference) : env_(env), thisReference_(thisReference)
+{
+    ENGINE_LOGI("SessionManager constructor");
+}
 
 SessionManager::~SessionManager()
 {
-    Clear();
+    ENGINE_LOGI("SessionManager destructor");
+    if (thisReference_ != nullptr) {
+        napi_delete_reference(env_, thisReference_);
+        thisReference_ = nullptr;
+    }
 }
 
-void SessionManager::AddSession(std::shared_ptr<IUpdateSession> session)
+void SessionManager::AddSession(std::shared_ptr<BaseSession> session)
 {
     PARAM_CHECK(session != nullptr, return, "Invalid param");
-#ifndef UPDATER_API_TEST
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
-#endif
     sessions_.insert(make_pair(session->GetSessionId(), session));
 }
 
 void SessionManager::RemoveSession(uint32_t sessionId)
 {
-    CLIENT_LOGI("RemoveSession sess");
-#ifndef UPDATER_API_TEST
+    ENGINE_LOGI("RemoveSession sess");
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
-#endif
     sessions_.erase(sessionId);
-}
-
-void SessionManager::Clear()
-{
-    {
-        std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
-        sessions_.clear();
-    }
-    if (thisReference_ != nullptr) {
-        napi_delete_reference(env_, thisReference_);
-    }
 }
 
 bool SessionManager::GetFirstSessionId(uint32_t &sessionId)
 {
-#ifndef UPDATER_API_TEST
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
-#endif
     {
         if (sessions_.empty()) {
             return false;
@@ -79,9 +69,7 @@ bool SessionManager::GetFirstSessionId(uint32_t &sessionId)
 
 bool SessionManager::GetNextSessionId(uint32_t &sessionId)
 {
-#ifndef UPDATER_API_TEST
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
-#endif
     {
         auto iter = sessions_.find(sessionId);
         if (iter == sessions_.end()) {
@@ -117,7 +105,7 @@ int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t 
             eventType.compare(listener->GetEventType()) != 0) {
             continue;
         }
-        CLIENT_LOGI("ProcessUnsubscribe remove session");
+        ENGINE_LOGI("ProcessUnsubscribe remove session");
         if (argc == 1) {
             listener->RemoveHandlerRef(env_);
             RemoveSession(currSessId);
@@ -147,14 +135,16 @@ void SessionManager::Unsubscribe(const EventClassifyInfo &eventClassifyInfo, nap
 
         auto listener = static_cast<UpdateListener *>(iter->second.get());
         if (handle == nullptr && listener->IsSubscribeEvent(eventClassifyInfo)) {
-            CLIENT_LOGI("Unsubscribe, remove session %{public}d without handle", listener->GetSessionId());
+            ENGINE_LOGI("Unsubscribe, remove session %{public}d without handle", listener->GetSessionId());
             iter = sessions_.erase(iter);
+            listener->RemoveHandlerRef(env_);
             continue;
         }
 
         if (listener->IsSameListener(env_, eventClassifyInfo, handle)) {
-            CLIENT_LOGI("Unsubscribe, remove session %{public}d", listener->GetSessionId());
+            ENGINE_LOGI("Unsubscribe, remove session %{public}d", listener->GetSessionId());
             iter = sessions_.erase(iter);
+            listener->RemoveHandlerRef(env_);
             continue;
         }
 
@@ -162,7 +152,7 @@ void SessionManager::Unsubscribe(const EventClassifyInfo &eventClassifyInfo, nap
     }
 }
 
-IUpdateSession *SessionManager::FindSessionByHandle(napi_env env, const std::string &eventType, napi_value arg)
+BaseSession *SessionManager::FindSessionByHandle(napi_env env, const std::string &eventType, napi_value arg)
 {
     uint32_t nextSessId = 0;
     bool hasNext = GetFirstSessionId(nextSessId);
@@ -185,7 +175,7 @@ IUpdateSession *SessionManager::FindSessionByHandle(napi_env env, const std::str
     return nullptr;
 }
 
-IUpdateSession *SessionManager::FindSessionByHandle(napi_env env, const EventClassifyInfo &eventClassifyInfo,
+BaseSession *SessionManager::FindSessionByHandle(napi_env env, const EventClassifyInfo &eventClassifyInfo,
     napi_value arg)
 {
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
@@ -236,36 +226,9 @@ void SessionManager::PublishToJS(const EventClassifyInfo &eventClassifyInfo, con
     napi_close_handle_scope(env_, scope);
 }
 
-void SessionManager::Emit(const std::string &type, const BusinessError &businessError)
-{
-    CLIENT_LOGI("SessionManager::Emit %{public}s", type.c_str());
-    std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
-    uint32_t nextSessId = 0;
-    bool hasNext = GetFirstSessionId(nextSessId);
-    while (hasNext) {
-        uint32_t currSessId = nextSessId;
-        auto iter = sessions_.find(currSessId);
-        if (iter == sessions_.end()) {
-            break;
-        }
-        hasNext = GetNextSessionId(nextSessId);
-        if (iter->second == nullptr) {
-            CLIENT_LOGE("SessionManager::Emit error, updateSession is null, %{public}d", iter->first);
-            continue;
-        }
-        IUpdateSession *updateSession = (iter->second).get();
-        CLIENT_LOGI("SessionManager::Emit GetType %{public}d", updateSession->GetType());
-        if (updateSession->IsAsyncCompleteWork()) {
-            updateSession->OnAsyncComplete(businessError);
-        } else {
-            CLIENT_LOGI("SessionManager::Emit GetType unknown type");
-        }
-    }
-}
-
 void SessionManager::Emit(const EventClassifyInfo &eventClassifyInfo, const EventInfo &eventInfo)
 {
-    CLIENT_LOGI("SessionManager::Emit 0x%{public}x", CAST_INT(eventClassifyInfo.eventClassify));
+    ENGINE_LOGI("SessionManager::Emit 0x%{public}x", CAST_INT(eventClassifyInfo.eventClassify));
     uv_loop_s *loop = nullptr;
     napi_get_uv_event_loop(env_, &loop);
     PARAM_CHECK(loop != nullptr, return, "get event loop failed.");
@@ -291,5 +254,4 @@ void SessionManager::Emit(const EventClassifyInfo &eventClassifyInfo, const Even
         },
         uv_qos_default);
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine

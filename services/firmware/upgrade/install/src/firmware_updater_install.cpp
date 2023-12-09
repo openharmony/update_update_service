@@ -59,7 +59,7 @@ int32_t UpdaterInstall::DoUpdaterInstall(const std::vector<FirmwareComponent> &c
     if (!ret) {
         FIRMWARE_LOGE("RebootAndInstallUpgradePackage fail %{public}d", ret);
         errMsg_.errorCode = DUPDATE_ERR_UPDATE_REBOOT_FAIL;
-        errMsg_.errorMsg = "updater install is failed";
+        errMsg_.errorMessage = "updater install is failed";
         return OHOS_FAILURE;
     }
     return OHOS_SUCCESS;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,37 +15,40 @@
 
 #include "iupdater.h"
 
-#include "client_helper.h"
+#include "napi_common_define.h"
+#include "update_helper.h"
 #include "update_session.h"
 
-namespace OHOS {
-namespace UpdateEngine {
+namespace OHOS::UpdateEngine {
 napi_value IUpdater::On(napi_env env, napi_callback_info info)
 {
     size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = {0};
+    napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_TWO, return nullptr, "Error get cb info");
 
     EventClassifyInfo eventClassifyInfo;
     ClientStatus ret = ClientHelper::GetEventClassifyInfoFromArg(env, args[0], eventClassifyInfo);
     std::vector<std::pair<std::string, std::string>> paramInfos;
-    paramInfos.push_back({"eventClassifyInfo", "EventClassifyInfo"});
+    paramInfos.push_back({ "eventClassifyInfo", "EventClassifyInfo" });
     PARAM_CHECK_NAPI_CALL(env, ret == ClientStatus::CLIENT_SUCCESS,
-        ClientHelper::NapiThrowParamError(env, paramInfos);
+        NapiCommonUtils::NapiThrowParamError(env, paramInfos);
         return nullptr, "Error get eventClassifyInfo");
     PARAM_CHECK(sessionsMgr_->FindSessionByHandle(env, eventClassifyInfo, args[1]) == nullptr, return nullptr,
         "Handle has been sub");
 
     SessionParams sessionParams(SessionType::SESSION_SUBSCRIBE, CALLBACK_POSITION_TWO);
-    std::shared_ptr<UpdateSession> sess = std::make_shared<UpdateListener>(this, sessionParams, argc, false);
+    std::shared_ptr<BaseSession> sess = std::make_shared<UpdateListener>(this, sessionParams, argc, false);
     PARAM_CHECK_NAPI_CALL(env, sess != nullptr, return nullptr, "Failed to create listener");
 
     sessionsMgr_->AddSession(sess);
-    napi_value retValue = sess->StartWork(env, args,
-        [](SessionType type, void *context) -> int {
+    napi_value retValue = sess->StartWork(
+        env, args,
+        [&](void *context) -> int {
+            RegisterCallback();
             return 0;
-        }, nullptr);
+        },
+        nullptr);
     PARAM_CHECK(retValue != nullptr, sessionsMgr_->RemoveSession(sess->GetSessionId()); return nullptr,
         "Failed to SubscribeEvent.");
     return retValue;
@@ -54,29 +57,30 @@ napi_value IUpdater::On(napi_env env, napi_callback_info info)
 napi_value IUpdater::Off(napi_env env, napi_callback_info info)
 {
     size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = {0};
+    napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "Error get cb info");
 
     EventClassifyInfo eventClassifyInfo;
     ClientStatus ret = ClientHelper::GetEventClassifyInfoFromArg(env, args[0], eventClassifyInfo);
     std::vector<std::pair<std::string, std::string>> paramInfos;
-    paramInfos.push_back({"eventClassifyInfo", "EventClassifyInfo"});
+    paramInfos.push_back({ "eventClassifyInfo", "EventClassifyInfo" });
     PARAM_CHECK_NAPI_CALL(env, ret == ClientStatus::CLIENT_SUCCESS,
-        ClientHelper::NapiThrowParamError(env, paramInfos);
+        NapiCommonUtils::NapiThrowParamError(env, paramInfos);
         return nullptr, "Error get eventClassifyInfo");
 
     napi_value handle = nullptr;
     if (argc >= ARG_NUM_TWO) {
-        ret = NapiUtil::IsTypeOf(env, args[1], napi_function);
+        ret = NapiCommonUtils::IsTypeOf(env, args[1], napi_function);
         std::vector<std::pair<std::string, std::string>> paramErrors;
-        paramErrors.push_back({"callback", "napi_function"});
+        paramErrors.push_back({ "callback", "napi_function" });
         PARAM_CHECK_NAPI_CALL(env, ret == ClientStatus::CLIENT_SUCCESS,
-            ClientHelper::NapiThrowParamError(env, paramErrors);
+            NapiCommonUtils::NapiThrowParamError(env, paramErrors);
             return nullptr, "invalid type");
         handle = args[1];
     }
     sessionsMgr_->Unsubscribe(eventClassifyInfo, handle);
+    UnRegisterCallback();
     napi_value result;
     napi_create_int32(env, 0, &result);
     return result;
@@ -88,16 +92,16 @@ void IUpdater::GetUpdateResult(SessionType type, UpdateResult &result)
 }
 
 napi_value IUpdater::StartSession(napi_env env, napi_callback_info info, SessionParams &sessionParams,
-    IUpdateSession::DoWorkFunction function)
+    BaseSession::DoWorkFunction function)
 {
     size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = {0};
+    napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "Error get cb info");
 
-    CLIENT_LOGI("StartSession type %{public}d argc %{public}zu callbackStartIndex %{public}d",
+    ENGINE_LOGI("StartSession type %{public}d argc %{public}zu callbackStartIndex %{public}d",
         static_cast<int32_t>(sessionParams.type), argc, static_cast<int>(sessionParams.callbackStartIndex));
-    std::shared_ptr<IUpdateSession> sess = nullptr;
+    std::shared_ptr<BaseSession> sess = nullptr;
     if (argc > sessionParams.callbackStartIndex) {
         sess = std::make_shared<UpdateAsyncession>(this, sessionParams, argc);
     } else {
@@ -114,16 +118,22 @@ napi_value IUpdater::StartSession(napi_env env, napi_callback_info info, Session
 napi_value IUpdater::StartParamErrorSession(napi_env env, napi_callback_info info, CALLBACK_POSITION callbackPosition)
 {
     SessionParams sessionParams(SessionType::SESSION_REPLY_PARAM_ERROR, callbackPosition, true);
-    return StartSession(env, info, sessionParams, [](SessionType type, void *context) -> int {
+    return StartSession(env, info, sessionParams, [](void *context) -> int {
             return INT_PARAM_ERR;
         });
 }
 
 void IUpdater::NotifyEventInfo(const EventInfo &eventInfo)
 {
-    CLIENT_LOGI("NotifyEventInfo %{public}d", eventInfo.eventId);
-    EventClassifyInfo eventClassifyInfo(EventClassify::TASK);
+    ENGINE_LOGI("NotifyEventInfo 0x%{public}08x", eventInfo.eventId);
+    auto classify = EventClassify::TASK;
+    for (const auto item : g_eventClassifyList) {
+        if (CAST_UINT(eventInfo.eventId) & CAST_UINT(item)) {
+            classify = item;
+            break;
+        }
+    }
+    EventClassifyInfo eventClassifyInfo(classify);
     sessionsMgr_->Emit(eventClassifyInfo, eventInfo);
 }
-} // namespace UpdateEngine
-} // namespace OHOS
+} // namespace OHOS::UpdateEngine

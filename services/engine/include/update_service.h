@@ -41,7 +41,7 @@ public:
 
     int32_t UnregisterUpdateCallback(const UpgradeInfo &info) override;
 
-    int32_t CheckNewVersion(const UpgradeInfo &info) override;
+    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult) override;
 
     int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DownloadOptions &downloadOptions, BusinessError &businessError) override;
@@ -90,6 +90,17 @@ public:
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) override;
 
+    int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+        BusinessError &businessError) override;
+
+    int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+        BusinessError &businessError) override;
+
+    int32_t AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
+        uint32_t dataLen) override;
+
+    int32_t AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo) override;
+
     int Dump(int fd, const std::vector<std::u16string> &args) override;
 
     static sptr<UpdateService> GetInstance();
@@ -99,8 +110,9 @@ public:
 #ifndef UPDATER_UT
 protected:
 #endif
-    void OnStart() override;
-    void OnStop() override;
+    void OnStart(const SystemAbilityOnDemandReason &startReason) override;
+    int32_t OnIdle(const SystemAbilityOnDemandReason &idleReason) override;
+    void OnStop(const SystemAbilityOnDemandReason &stopReason) override;
 
 private:
     void DumpUpgradeCallback(const int fd);
@@ -137,6 +149,8 @@ private:
     static sptr<UpdateService> updateService_;
     std::shared_ptr<UpdateServiceImplManager> updateImplMgr_ = nullptr;
 };
+
+int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option);
 } // namespace UpdateEngine
 } // namespace OHOS
 #endif // UPDATE_SERVICE_H

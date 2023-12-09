@@ -28,7 +28,6 @@
 #include "string_utils.h"
 #include "update_service_cache.h"
 #include "update_service_util.h"
-#include "update_system_event.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -36,16 +35,30 @@ const std::string LANGUAGE_CHINESE = "<language name=\"zh-cn\" code=\"2052\">";
 const std::string LANGUAGE_ENGLISH = "<language name=\"en-us\" code=\"1033\">";
 const std::string LANGUAGE_END = "</language>";
 
-int32_t UpdateServiceImplFirmware::CheckNewVersion(const UpgradeInfo &info)
+int32_t UpdateServiceImplFirmware::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError,
+    CheckResult &checkResult)
 {
-    FIRMWARE_LOGI("CheckNewVersion");
-    DelayedSingleton<FirmwareManager>::GetInstance()->DoCheck([=](BusinessError &businessError,
-        CheckResult &checkResult) {
-        FIRMWARE_LOGI("CheckNewVersion result: %{public}d isExistNewVersion %{public}d", businessError.errorNum,
-            checkResult.isExistNewVersion);
-        UpdateServiceUtil::SearchCallback(
-            UpdateServiceCache::GetUpgradeInfo(BusinessSubType::FIRMWARE), businessError, checkResult);
-    });
+    wptr<UpdateServiceImplFirmware> weakPtr(this);
+    FirmwareManager::GetInstance()->DoCheck(
+        [&, weakPtr](BusinessError &error, CheckResult &result) {
+            sptr<UpdateServiceImplFirmware> firmwareSptr = weakPtr.promote();
+            if (firmwareSptr == nullptr) {
+                FIRMWARE_LOGE("UpdateServiceImplFirmware has been destructed, CheckNewVersion is TimeOut");
+                return;
+            }
+            businessError = error;
+            checkResult = result;
+            firmwareSptr->checkComplete_ = true;
+            firmwareSptr->conditionVariable_.notify_all();
+        });
+    std::unique_lock<std::mutex> lock(checkNewVersionMutex_);
+    constexpr int32_t waitTime = 40;
+    conditionVariable_.wait_for(lock, std::chrono::seconds(waitTime), [&] { return checkComplete_; });
+    if (!checkComplete_) {
+        FIRMWARE_LOGE("CheckNewVersion is time out");
+        businessError.errorNum = CallResult::TIME_OUT;
+        businessError.message = "CheckNewVersion TimeOut";
+    }
     return INT_CALL_SUCCESS;
 }
 
@@ -264,6 +277,20 @@ int32_t UpdateServiceImplFirmware::GetUpgradePolicy(const UpgradeInfo &info, Upg
     return INT_CALL_SUCCESS;
 }
 
+int32_t UpdateServiceImplFirmware::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
+    BusinessError &businessError)
+{
+    FIRMWARE_LOGI("SetCustomUpgradePolicy Unsupported");
+    return INT_CALL_SUCCESS;
+}
+
+int32_t UpdateServiceImplFirmware::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
+    BusinessError &businessError)
+{
+    FIRMWARE_LOGI("GetCustomUpgradePolicy Unsupported");
+    return INT_CALL_SUCCESS;
+}
+
 int32_t UpdateServiceImplFirmware::Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError)
 {
     FIRMWARE_LOGI("Cancel %{public}d", service);
@@ -286,7 +313,6 @@ void UpdateServiceImplFirmware::GetChangelogContent(std::string &dataXml, const 
         languageStart = LANGUAGE_CHINESE;
     }
     StringUtils::StringRemove(dataXml, languageStart, LANGUAGE_END);
-    return;
 }
 } // namespace UpdateEngine
 } // namespace OHOS

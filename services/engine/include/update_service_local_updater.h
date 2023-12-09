@@ -18,7 +18,7 @@
 
 #include "iservice_local_updater.h"
 
-#include "update_helper.h"
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UpdateEngine {

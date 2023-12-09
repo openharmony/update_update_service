@@ -70,7 +70,7 @@ void FirmwareInstallExecutor::DoInstall()
                                     progress.percent = component.progress;
                                     HandleInstallProgress(component, progress);
                                 },
-        [=](const bool result, const ErrMsg &errMsg) {
+        [=](const bool result, const ErrorMessage &errMsg) {
             HandleInstallResult(result, errMsg);
         },
         [=](const UpgradeStatus &status) {
@@ -109,7 +109,7 @@ void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &com
     installCallback_.installCallback(installCallbackInfo_);
 }
 
-void FirmwareInstallExecutor::HandleInstallResult(const bool result, const ErrMsg &errMsg)
+void FirmwareInstallExecutor::HandleInstallResult(const bool result, const ErrorMessage &errMsg)
 {
     FIRMWARE_LOGI("FirmwareInstallExecutor::HandleInstallResult, result =%{public}d", result);
     if (result) {
@@ -126,7 +126,7 @@ void FirmwareInstallExecutor::HandleInstallResult(const bool result, const ErrMs
     FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
     installCallbackInfo_.progress = taskProgress_;
     installCallbackInfo_.errorMessage.errorCode = errMsg.errorCode;
-    installCallbackInfo_.errorMessage.errorMessage = errMsg.errorMsg;
+    installCallbackInfo_.errorMessage.errorMessage = errMsg.errorMessage;
     installCallback_.installCallback(installCallbackInfo_);
 }
 } // namespace UpdateEngine

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,32 +13,24 @@
  * limitations under the License.
  */
 
-#ifndef IUPDATE_SESSION_H
-#define IUPDATE_SESSION_H
+#ifndef BASE_SESSION_H
+#define BASE_SESSION_H
 
 #include <functional>
+
 #include "js_native_api_types.h"
+#include "napi_structs_base.h"
 
-#include "update_helper.h"
-
-namespace OHOS {
-namespace UpdateEngine {
-class IUpdateSession {
+namespace OHOS::UpdateEngine {
+class BaseSession {
 public:
-    using DoWorkFunction = std::function<int(SessionType type, void *context)>;
+    using DoWorkFunction = std::function<int(void *context)>;
 
     virtual SessionType GetType() const = 0;
-
     virtual uint32_t GetSessionId() const = 0;
-
     virtual napi_value StartWork(napi_env env, const napi_value *args, DoWorkFunction worker, void *context) = 0;
-
-    virtual void NotifyJS(napi_env env, napi_value thisVar, const UpdateResult &result) = 0;
-
     virtual bool IsAsyncCompleteWork() = 0;
-
     virtual void OnAsyncComplete(const BusinessError &businessError) = 0;
 };
-} // namespace UpdateEngine
-} // namespace OHOS
-#endif // IUPDATE_SESSION_H
+} // namespace OHOS::UpdateEngine
+#endif // BASE_SESSION_H

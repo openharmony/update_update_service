@@ -16,7 +16,6 @@
 #include "base_callback_utils.h"
 
 #include "iupdate_callback.h"
-#include "update_define.h"
 #include "update_helper.h"
 #include "update_log.h"
 #include "update_notify.h"

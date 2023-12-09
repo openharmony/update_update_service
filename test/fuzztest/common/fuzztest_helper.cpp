@@ -65,10 +65,6 @@ FuzztestHelper::~FuzztestHelper()
 {
 }
 
-static void FtCheckNewVersionDone(const BusinessError &businessError, const CheckResult &checkResult)
-{
-}
-
 static void FtOnEvent(const EventInfo &eventInfo)
 {
 }
@@ -116,7 +112,6 @@ BusinessType FuzztestHelper::BuildBusinessType()
 UpdateCallbackInfo FuzztestHelper::BuildUpdateCallbackInfo()
 {
     UpdateCallbackInfo cb;
-    cb.checkNewVersionDone = FtCheckNewVersionDone;
     cb.onEvent = FtOnEvent;
     return cb;
 }

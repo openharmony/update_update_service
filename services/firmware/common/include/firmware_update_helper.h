@@ -46,7 +46,7 @@ public:
     static void BuildCurrentVersionInfo(CurrentVersionInfo &currentVersionInfo);
     static void BuildNewVersionInfo(const std::vector<FirmwareComponent> &components,
         std::vector<VersionComponent> &versionComponents);
-
+    static bool IsUpgradeFailed(UpgradeStatus status);
     static std::string BuildTaskId(const std::vector<FirmwareComponent> &componentList);
     static InstallType GetInstallType();
 
