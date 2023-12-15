@@ -15,9 +15,7 @@
 
 #include "firmware_sys_installer_install.h"
 
-#include <dirent.h>
 #include <iostream>
-#include <unistd.h>
 
 #include "isys_installer.h"
 #include "sys_installer_kits_impl.h"
