@@ -43,6 +43,9 @@ ohos_shared_library("$updateengine_inner_library_name") {
   branch_protector_ret = "pac_ret"
 
   defines = [ "DUAL_ADAPTER" ]
+  if (!ability_ability_runtime_enable) {
+    defines += [ "ABILITY_RUNTIME_INNER_ENABLE" ]
+  }
   sources = [
     "$updateengine_root_path/interfaces/inner_api/common/src/load_sa_service.cpp",
     "$updateengine_root_path/interfaces/inner_api/engine/update_service_kits_impl.cpp",
@@ -76,7 +79,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
   ]
 
   external_deps = [
-    "ability_runtime:ability_manager",
     "c_utils:utils",  # sptr
     "hilog:libhilog",
     "ipc:ipc_core",
@@ -84,6 +86,9 @@ ohos_shared_library("$updateengine_inner_library_name") {
     "samgr:samgr_proxy",
   ]
 
+  if (ability_ability_runtime_enable) {
+    external_deps += [ "ability_runtime:ability_manager" ]
+  }
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
 }

@@ -23,10 +23,7 @@ declare_args() {
   if (!defined(global_parts_info.ability_ability_base)) {
     ability_ability_base_enable = false
   }
-  ability_ability_runtime_enable = true
-  if (!defined(global_parts_info.ability_ability_runtime)) {
-    ability_ability_runtime_enable = false
-  }
+
   communication_netmanager_base_enable = true
   if (!defined(global_parts_info.communication_netmanager_base)) {
     communication_netmanager_base_enable = false
@@ -215,7 +212,10 @@ if (preference_native_preferences_enable) {
   sa_external_deps += [ "preferences:native_preferences" ]
 }
 
-sa_external_deps += firmware_external_deps
+if (ability_ability_runtime_enable) {
+  sa_external_deps += firmware_external_deps
+}
+
 sa_external_deps += sqlite_external_deps
 sa_external_deps += update_log_external_deps
 sa_external_deps += startup_external_deps
