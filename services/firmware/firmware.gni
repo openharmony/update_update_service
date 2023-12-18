@@ -48,15 +48,13 @@ firmware_include += ab_update_include
 firmware_include += download_include
 
 
-ab_update_src = [ "$firmware_root_path/upgrade/install/src/firmware_sys_installer_callback.cpp", ]
+ab_update_src = [
+  "$firmware_root_path/upgrade/install/src/firmware_sys_installer_callback.cpp",
+]
 if (ability_ability_runtime_enable) {
-  ab_update_src += [
-    "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install.cpp",
-  ]
+  ab_update_src += [ "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install.cpp" ]
 } else {
-  ab_update_src += [
-    "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install_empty.cpp",
-  ]
+  ab_update_src += [ "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install_empty.cpp" ]
 }
 
 firmware_src = [
