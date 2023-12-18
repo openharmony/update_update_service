@@ -38,7 +38,7 @@ ohos_shared_library("$updateengine_client_library_name") {
       "$updateengine_root_path/frameworks/js/napi/session/src/session_manager.cpp",
     ]
   } else {
-     sources = []
+    sources = []
   }
 
   include_dirs = [
