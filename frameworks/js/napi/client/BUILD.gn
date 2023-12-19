@@ -23,19 +23,22 @@ ohos_shared_library("$updateengine_client_library_name") {
   }
   branch_protector_ret = "pac_ret"
 
-  sources = [
-    "$updateengine_root_path/frameworks/js/napi/base/src/client_helper.cpp",
-    "$updateengine_root_path/frameworks/js/napi/base/src/define_property.cpp",
-    "$updateengine_root_path/frameworks/js/napi/base/src/iupdater.cpp",
-    "$updateengine_root_path/frameworks/js/napi/base/src/napi_common_utils.cpp",
-    "$updateengine_root_path/frameworks/js/napi/client/src/local_updater.cpp",
-    "$updateengine_root_path/frameworks/js/napi/client/src/restorer.cpp",
-    "$updateengine_root_path/frameworks/js/napi/client/src/update_client.cpp",
-    "$updateengine_root_path/frameworks/js/napi/client/src/update_module.cpp",
-    "$updateengine_root_path/frameworks/js/napi/client/src/update_session.cpp",
-    "$updateengine_root_path/frameworks/js/napi/session/src/napi_session.cpp",
-    "$updateengine_root_path/frameworks/js/napi/session/src/session_manager.cpp",
-  ]
+  sources = []
+  if (ability_ability_runtime_enable) {
+    sources += [
+      "$updateengine_root_path/frameworks/js/napi/base/src/client_helper.cpp",
+      "$updateengine_root_path/frameworks/js/napi/base/src/define_property.cpp",
+      "$updateengine_root_path/frameworks/js/napi/base/src/iupdater.cpp",
+      "$updateengine_root_path/frameworks/js/napi/base/src/napi_common_utils.cpp",
+      "$updateengine_root_path/frameworks/js/napi/client/src/local_updater.cpp",
+      "$updateengine_root_path/frameworks/js/napi/client/src/restorer.cpp",
+      "$updateengine_root_path/frameworks/js/napi/client/src/update_client.cpp",
+      "$updateengine_root_path/frameworks/js/napi/client/src/update_module.cpp",
+      "$updateengine_root_path/frameworks/js/napi/client/src/update_session.cpp",
+      "$updateengine_root_path/frameworks/js/napi/session/src/napi_session.cpp",
+      "$updateengine_root_path/frameworks/js/napi/session/src/session_manager.cpp",
+    ]
+  }
 
   include_dirs = [
     "$updateengine_root_path/frameworks/js/napi/base/include",
@@ -60,10 +63,13 @@ ohos_shared_library("$updateengine_client_library_name") {
     "c_utils:utils",  # sptr
     "hilog:libhilog",
     "ipc:ipc_core",
-    "napi:ace_napi",
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",
   ]
+
+  if (ability_ability_runtime_enable) {
+    external_deps += [ "napi:ace_napi" ]
+  }
 
   install_enable = true
   relative_install_dir = "module"
