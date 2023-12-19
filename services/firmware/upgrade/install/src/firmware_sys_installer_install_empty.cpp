@@ -13,45 +13,37 @@
  * limitations under the License.
  */
 
-#include "firmware_database.h"
+#include "firmware_sys_installer_install.h"
 
-#include "constant.h"
-#include "update_log.h"
+#include "firmware_log.h"
+#include "firmware_update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {
-const std::string FIRMWARE_DB_NAME = "/firmware_sqlite.db";
-constexpr int32_t FIRMWARE_DB_VERSION = 1;
-FirmwareDatabase::FirmwareDatabase()
-{
-    ENGINE_LOGI("FirmwareDatabase Constructor");
-}
 
-FirmwareDatabase::~FirmwareDatabase() {}
-
-std::string FirmwareDatabase::GetDbName()
-{
-    return FIRMWARE_DB_NAME;
-}
-
-int32_t FirmwareDatabase::GetDbVersion()
-{
-    return FIRMWARE_DB_VERSION;
-}
-
-void FirmwareDatabase::InitDbStoreDir()
-{
-    ENGINE_LOGI("FirmwareDatabase InitDbStoreDir");
-}
-
-std::string FirmwareDatabase::GetDbStoreDir()
-{
-    return "";
-}
-
-bool FirmwareDatabase::DeleteDbStore()
+bool SysInstallerInstall::IsComponentLegal(const std::vector<FirmwareComponent> &componentList)
 {
     return true;
+}
+
+bool SysInstallerInstall::PerformInstall(const std::vector<FirmwareComponent> &componentList)
+{
+    return true;
+}
+
+int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareComponent)
+{
+    return OHOS_SUCCESS;
+}
+
+void SysInstallerInstall::InitInstallProgress()
+{
+    FIRMWARE_LOGI("SysInstallerInstall InitInstallProgress");
+}
+
+int32_t SysInstallerInstall::WaitInstallResult()
+{
+    return OHOS_SUCCESS;
 }
 } // namespace UpdateEngine
 } // namespace OHOS

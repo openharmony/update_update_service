@@ -18,4 +18,8 @@ declare_args() {
       "//base/update/updateservice/services/engine/etc/updater_sa.cfg"
   update_service_sa_profile_path =
       "//base/update/updateservice/services/engine/sa_profile/3006.json"
+  ability_ability_runtime_enable = true
+  if (!defined(global_parts_info.ability_ability_runtime)) {
+    ability_ability_runtime_enable = false
+  }
 }
