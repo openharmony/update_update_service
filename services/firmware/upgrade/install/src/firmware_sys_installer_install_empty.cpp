@@ -13,19 +13,7 @@
  * limitations under the License.
  */
 
-#include "firmware_sys_installer_install.h"
-
-#include <iostream>
-
-#include "isys_installer.h"
-#include "sys_installer_kits_impl.h"
-
-#include "config_parse.h"
-#include "dupdate_errno.h"
-#include "firmware_constant.h"
 #include "firmware_log.h"
-#include "firmware_sys_installer_callback.h"
-#include "firmware_update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -47,11 +35,7 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
 
 void SysInstallerInstall::InitInstallProgress()
 {
-    sysInstallProgress_.status = UpgradeStatus::INSTALLING;
-    sysInstallProgress_.percent = 0;
-    sysInstallProgress_.endReason = "";
-    errMsg_.errorCode = 0;
-    errMsg_.errorMessage = "";
+    FIRMWARE_LOGI("SysInstallerInstall InitInstallProgress");
 }
 
 int32_t SysInstallerInstall::WaitInstallResult()
