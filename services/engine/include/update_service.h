@@ -90,17 +90,6 @@ public:
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) override;
 
-    int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
-        BusinessError &businessError) override;
-
-    int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
-        BusinessError &businessError) override;
-
-    int32_t AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
-        uint32_t dataLen) override;
-
-    int32_t AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo) override;
-
     int Dump(int fd, const std::vector<std::u16string> &args) override;
 
     static sptr<UpdateService> GetInstance();
