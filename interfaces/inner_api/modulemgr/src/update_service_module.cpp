@@ -15,13 +15,12 @@
 
 #include "update_service_module.h"
 
-#include <cstdint>
 #include <vector>
 
 #include "../include/module_log.h"
 #include "../include/module_manager.h"
 
-void RegisterFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest)
+void RegisterFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
     UTILS_LOGI("enter RegisterFunc");
     OHOS::UpdateEngine::ModuleManager::GetInstance().HookFunc(codes, handleRemoteRequest);

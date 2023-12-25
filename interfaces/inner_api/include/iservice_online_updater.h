@@ -66,12 +66,6 @@ public:
 
     virtual int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError) = 0;
 
-    virtual int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
-        BusinessError &businessError) = 0;
-
-    virtual int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
-        BusinessError &businessError) = 0;
-
     virtual int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError) = 0;
 };
 } // namespace OHOS::UpdateEngine

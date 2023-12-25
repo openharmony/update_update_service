@@ -19,7 +19,6 @@
 #include "iremote_broker.h"
 #include "iremote_proxy.h"
 
-#include "iservice_accessory_updater.h"
 #include "iservice_local_updater.h"
 #include "iservice_online_updater.h"
 #include "iservice_restorer.h"
@@ -28,7 +27,7 @@
 
 namespace OHOS::UpdateEngine {
 class IUpdateService : public OHOS::IRemoteBroker, public IServiceOnlineUpdater, public IServiceRestorer,
-    public IServiceLocalUpdater, public IServiceAccessoryUpdater {
+    public IServiceLocalUpdater {
 public:
 
     virtual int32_t RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback>& updateCallback) = 0;
