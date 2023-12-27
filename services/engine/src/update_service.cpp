@@ -36,8 +36,8 @@
 #include "update_service_restorer.h"
 #include "update_service_util.h"
 
-#include "../../../interfaces/inner_api/modulemgr/include/update_service_module.h"
-#include "../../../interfaces/inner_api/modulemgr/include/module_manager.h"
+#include "update_service_module.h"
+#include "module_manager.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -346,41 +346,6 @@ int32_t UpdateService::VerifyUpgradePackage(const std::string &packagePath, cons
     return localUpdater->VerifyUpgradePackage(packagePath, keyPath, businessError);
 }
 
-int32_t UpdateService::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
-                                              BusinessError &businessError)
-{
-    sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
-    if (onlineUpdater == nullptr) {
-        ENGINE_LOGI("SetCustomUpgradePolicy onlineUpdater null");
-        return INT_CALL_FAIL;
-    }
-    return onlineUpdater->SetCustomUpgradePolicy(info, policy, businessError);
-}
-
-int32_t UpdateService::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
-                                              BusinessError &businessError)
-{
-    sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
-    if (onlineUpdater == nullptr) {
-        ENGINE_LOGI("GetCustomUpgradePolicy localUpdater null");
-        return INT_CALL_FAIL;
-    }
-    return onlineUpdater->GetCustomUpgradePolicy(info, policy, businessError);
-}
-
-int32_t UpdateService::AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
-                                              uint32_t dataLen)
-{
-    ENGINE_LOGI("AccessoryConnectNotify Unsupported");
-    return INT_CALL_FAIL;
-}
-
-int32_t UpdateService::AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo)
-{
-    ENGINE_LOGI("AccessoryUnpairNotify Unsupported");
-    return INT_CALL_FAIL;
-}
-
 void BuildUpgradeInfoDump(const int fd, UpgradeInfo &info)
 {
     dprintf(fd, "---------------------upgrade info info--------------------\n");
@@ -467,7 +432,7 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
         ENGINE_LOGE("updateService_ null");
     }
 
-    std::vector<int> codes = {
+    std::vector<uint32_t> codes = {
         CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
         CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
         CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),

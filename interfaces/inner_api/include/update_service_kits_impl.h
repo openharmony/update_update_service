@@ -87,16 +87,6 @@ public:
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) final;
 
-    int32_t SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
-        BusinessError &businessError) final;
-
-    int32_t GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
-        BusinessError &businessError) final;
-
-    int32_t AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data, uint32_t dataLen) final;
-
-    int32_t AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo) final;
-
 protected:
     void RegisterCallback() override;
 

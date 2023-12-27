@@ -22,7 +22,7 @@
 
 namespace OHOS {
 namespace UpdateEngine {
-std::map<int, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
+std::map<uint32_t, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
 std::map<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
 std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
 
@@ -65,7 +65,7 @@ ModuleManager& ModuleManager::GetInstance()
     return moduleManager;
 }
 
-void ModuleManager::HookFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest)
+void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
     for (int code : codes) {
         if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {

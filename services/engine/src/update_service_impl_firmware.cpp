@@ -277,20 +277,6 @@ int32_t UpdateServiceImplFirmware::GetUpgradePolicy(const UpgradeInfo &info, Upg
     return INT_CALL_SUCCESS;
 }
 
-int32_t UpdateServiceImplFirmware::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
-    BusinessError &businessError)
-{
-    FIRMWARE_LOGI("SetCustomUpgradePolicy Unsupported");
-    return INT_CALL_SUCCESS;
-}
-
-int32_t UpdateServiceImplFirmware::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
-    BusinessError &businessError)
-{
-    FIRMWARE_LOGI("GetCustomUpgradePolicy Unsupported");
-    return INT_CALL_SUCCESS;
-}
-
 int32_t UpdateServiceImplFirmware::Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError)
 {
     FIRMWARE_LOGI("Cancel %{public}d", service);

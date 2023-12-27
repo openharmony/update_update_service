@@ -37,7 +37,7 @@ using RequestFuncType = int32_t (*)(uint32_t code,
 using LifeCycleFuncType = void (*)(const OHOS::SystemAbilityOnDemandReason &reason);
 using LifeCycleFuncReturnType = int32_t (*)(const OHOS::SystemAbilityOnDemandReason &reason);
 
-void RegisterFunc(std::vector<int> codes, RequestFuncType handleRemoteRequest);
+void RegisterFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest);
 
 void RegisterOnStartOnStopFunc(std::string phase, LifeCycleFuncType handlePhase);
 void RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase);

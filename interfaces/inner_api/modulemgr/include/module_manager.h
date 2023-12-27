@@ -38,14 +38,14 @@ public:
 
     void LoadModule(std::string libPath);
     bool IsModuleLoaded();
-    void HookFunc(std::vector<int>, RequestFuncType handleRemoteRequest);
+    void HookFunc(std::vector<uint32_t>, RequestFuncType handleRemoteRequest);
     int32_t HandleFunc(uint32_t code, MessageParcel& data, MessageParcel& reply, MessageOption &option);
     void HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop);
     void HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
     void HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle);
     int32_t HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
 
-    static std::map<int, RequestFuncType> onRemoteRequestFuncMap_;
+    static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
 
 private:
     int32_t retryInterval_ = 0;
