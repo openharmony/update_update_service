@@ -231,39 +231,4 @@ void UpdateServiceKitsImpl::RegisterCallback()
         remoteServer_->RegisterUpdateCallback(iter.first, iter.second);
     }
 }
-
-int32_t UpdateServiceKitsImpl::GetCustomUpgradePolicy(const UpgradeInfo &info, CustomPolicy &policy,
-    BusinessError &businessError)
-{
-    ENGINE_LOGI("UpdateServiceKitsImpl::GetCustomUpgradePolicy");
-    auto updateService = GetService();
-    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetCustomUpgradePolicy(info, policy, businessError);
-}
-
-int32_t UpdateServiceKitsImpl::SetCustomUpgradePolicy(const UpgradeInfo &info, const CustomPolicy &policy,
-    BusinessError &businessError)
-{
-    ENGINE_LOGI("UpdateServiceKitsImpl::SetCustomUpgradePolicy");
-    auto updateService = GetService();
-    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->SetCustomUpgradePolicy(info, policy, businessError);
-}
-
-int32_t UpdateServiceKitsImpl::AccessoryConnectNotify(const AccessoryDeviceInfo &deviceInfo, const uint8_t *data,
-    uint32_t dataLen)
-{
-    ENGINE_LOGI("UpdateServiceKitsImpl::AccessoryConnectNotify");
-    auto updateService = GetService();
-    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->AccessoryConnectNotify(deviceInfo, data, dataLen);
-}
-
-int32_t UpdateServiceKitsImpl::AccessoryUnpairNotify(const AccessoryDeviceInfo &deviceInfo)
-{
-    ENGINE_LOGI("UpdateServiceKitsImpl::AccessoryUnpairNotify");
-    auto updateService = GetService();
-    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->AccessoryUnpairNotify(deviceInfo);
-}
 } // namespace OHOS::UpdateEngine
