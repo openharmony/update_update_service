@@ -71,6 +71,7 @@ private:
         const std::vector<FirmwareComponent> &components);
     UpdateResultCode HandleFileResults(std::map<std::string, UpdateResult> &resultMap,
         const std::vector<FirmwareComponent> &components);
+    void ParseResult(const std::vector<std::string> &results, std::string &value, size_t index);
 };
 } // namespace UpdateEngine
 } // namespace OHOS
