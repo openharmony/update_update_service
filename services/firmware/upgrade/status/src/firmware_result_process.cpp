@@ -128,10 +128,10 @@ void FirmwareResultProcess::ParseUpdaterResultRecord(const std::string &resultLi
         updateResult.result = updateResult.result.substr(0, colonPlace);
         updateResult.reason = results[RESULT_INDEX].substr(colonPlace + SYMBOL_LENGTH);
     }
-    StringUtils::Trim(updaterReason.spath);
-    StringUtils::Trim(updaterReason.result);
-    StringUtils::Trim(updaterReason.reason);
-    resultMap.emplace(std::make_pair(updaterReason.spath, updaterReason));
+    StringUtils::Trim(updateResult.spath);
+    StringUtils::Trim(updateResult.result);
+    StringUtils::Trim(updateResult.reason);
+    resultMap.emplace(std::make_pair(updaterReason.spath, updateResult));
 }
 
 void FirmwareResultProcess::HandleFileError(std::map<std::string, UpdateResult> &resultMap,
