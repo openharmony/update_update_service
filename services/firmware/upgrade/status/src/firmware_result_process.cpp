@@ -131,7 +131,7 @@ void FirmwareResultProcess::ParseUpdaterResultRecord(const std::string &resultLi
     StringUtils::Trim(updateResult.spath);
     StringUtils::Trim(updateResult.result);
     StringUtils::Trim(updateResult.reason);
-    resultMap.emplace(std::make_pair(updaterReason.spath, updateResult));
+    resultMap.emplace(std::make_pair(updateResult.spath, updateResult));
 }
 
 void FirmwareResultProcess::HandleFileError(std::map<std::string, UpdateResult> &resultMap,
