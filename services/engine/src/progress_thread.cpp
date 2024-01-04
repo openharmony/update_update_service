@@ -261,7 +261,7 @@ bool DownloadThread::DealAbnormal(uint32_t percent)
 
 FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &mode)
 {
-    char *resolvedPath = realpath(fileName.c_str(), NULL);
+    char *resolvedPath = realpath(fileName.c_str(), nullptr);
     if (resolvedPath == nullptr) {
         ENGINE_LOGE("invalid path");
         return nullptr;
