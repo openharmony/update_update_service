@@ -123,6 +123,10 @@ private:
         cJSON *item = cJSON_GetObjectItem(root, "searchStatus");
         ENGINE_CHECK(item != nullptr, cJSON_Delete(root);
             return -1, "Error get searchStatus");
+        if (!cJSON_IsNumber(item)) {
+            FIRMWARE_LOGE("Error json parse");
+            return -1;
+        }
         return CAST_INT(static_cast<SearchStatus>(item->valueint));
     }
 

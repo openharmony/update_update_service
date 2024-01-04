@@ -88,7 +88,7 @@ void FirmwareDownloadExecutor::PerformDownload()
         Progress progress0 = {0, UpgradeStatus::DOWNLOADING, ""};
 
         std::string downloadFileName = downloadInfo.path;
-        size_t localFileLength = DownloadThread::GetLocalFileLength(downloadFileName);
+        int64_t localFileLength = static_cast<int64_t>(DownloadThread::GetLocalFileLength(downloadFileName));
         ENGINE_LOGI("Download %zu %s", localFileLength, downloadFileName.c_str());
         if (localFileLength == downloadInfo.packageSize && downloadInfo.packageSize != 0) {
             progress0.percent = DOWNLOAD_FINISH_PERCENT;

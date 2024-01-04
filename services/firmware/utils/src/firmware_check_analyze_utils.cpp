@@ -114,7 +114,7 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(nlohmann::json &root)
     std::string componentId;
     for (auto &result : root["checkResults"]) {
         FirmwareComponent component;
-        int32_t componetSize;
+        int32_t componetSize = 0;
         ret += JsonUtils::GetValueAndSetTo(result, "descriptPackageId", component.descriptPackageId);
         ret += JsonUtils::GetValueAndSetTo(result, "url", component.url);
         ret += JsonUtils::GetValueAndSetTo(result, "size", componetSize);

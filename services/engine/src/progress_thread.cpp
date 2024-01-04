@@ -32,7 +32,7 @@ bool ProgressThread::isCancel_ = false;
 
 ProgressThread::~ProgressThread() {}
 
-void ProgressThread::ExitThread()
+void ProgressThread::QuitDownloadThread()
 {
     {
         std::unique_lock<std::mutex> lock(mutex_);

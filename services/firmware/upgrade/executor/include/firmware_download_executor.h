@@ -43,7 +43,7 @@ private:
     std::vector<FirmwareComponent> components_;
     FirmwareProgressCallback firmwareProgressCallback_;
     FirmwareTask tasks_;
-    UpgradeStatus upgradeStatus_;
+    UpgradeStatus upgradeStatus_ = UpgradeStatus::INIT;
     std::shared_ptr<DownloadThread> downloadThread_ = nullptr;
 };
 } // namespace UpdateEngine
