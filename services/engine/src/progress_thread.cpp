@@ -266,7 +266,7 @@ FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &m
         ENGINE_LOGE("invalid path");
         return nullptr;
     }
-    FILE* fp = fopen(resolvedPath, "r");
+    FILE* fp = fopen(resolvedPath, mode.c_str());
     free(resolvedPath);
     return fp;
 }
