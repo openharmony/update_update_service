@@ -261,13 +261,12 @@ bool DownloadThread::DealAbnormal(uint32_t percent)
 
 FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &mode)
 {
-    char resolved_path[1024];
-    char *resolvedPath = realpath(fileName.c_str(), resolved_path);
-    if (resolvedPath == nullptr) {
+    char path[PATH_MAX + 1] = {0x00};
+    if ((strlen(fileName.c_str()) > PATH_MAX) || (realpath(fileName.c_str(), path) == nullptr)) {
         ENGINE_LOGE("invalid path");
         return nullptr;
     }
-    FILE* fp = fopen(resolvedPath, mode.c_str());
+    FILE* fp = fopen(path, mode.c_str());
     return fp;
 }
 } // namespace UpdateEngine
