@@ -90,6 +90,7 @@ protected:
     bool ProcessThreadExecute() override;
     void ProcessThreadExit() override;
     int32_t DownloadCallback(uint32_t percent, UpgradeStatus status, const std::string &error);
+    static FILE* FileOpen(const std::string &fileName, const std::string &mode);
 
 private:
     Progress downloadProgress_ {};
