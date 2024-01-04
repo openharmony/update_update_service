@@ -59,7 +59,7 @@ const std::string COLUMN_COMPONENT_EXTENDS6 = "extends6";
 
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 class FirmwareComponentTable final: public ITable<FirmwareComponent> {
-#else 
+#else
 class FirmwareComponentTable final {
 #endif
 public:
