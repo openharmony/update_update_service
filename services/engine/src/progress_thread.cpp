@@ -32,7 +32,7 @@ bool ProgressThread::isCancel_ = false;
 
 ProgressThread::~ProgressThread() {}
 
-void ProgressThread::ExitThread()
+void ProgressThread::QuitDownloadThread()
 {
     {
         std::unique_lock<std::mutex> lock(mutex_);
@@ -118,7 +118,7 @@ bool DownloadThread::ProcessThreadExecute()
     ENGINE_CHECK(!findDot,
         DownloadCallback(0, UpgradeStatus::DOWNLOAD_FAIL, "Failed to check file");
         return true, "Failed to check file %s", downloadFileName_.c_str());
-    downloadFile_ = fopen(downloadFileName_.c_str(), "ab+");
+    downloadFile_ = FileOpen(downloadFileName_, "ab+");
     ENGINE_CHECK(downloadFile_ != nullptr,
         DownloadCallback(0, UpgradeStatus::DOWNLOAD_FAIL, "Failed ot open file");
         return true, "Failed to open file %s", downloadFileName_.c_str());
@@ -228,7 +228,7 @@ size_t DownloadThread::GetLocalFileLength(const std::string &fileName)
     bool findDot = (fileName.find("/.") != std::string::npos) || (fileName.find("./") != std::string::npos);
     ENGINE_CHECK_NO_LOG(!findDot, return 0);
 
-    FILE* fp = fopen(fileName.c_str(), "r");
+    FILE* fp = FileOpen(fileName, "r");
     ENGINE_CHECK_NO_LOG(fp != nullptr, return 0);
     int ret = fseek(fp, 0, SEEK_END);
     ENGINE_CHECK_NO_LOG(ret == 0, fclose(fp);
@@ -257,6 +257,17 @@ bool DownloadThread::DealAbnormal(uint32_t percent)
         }
     }
     return dealResult;
+}
+
+FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &mode)
+{
+    char path[PATH_MAX + 1] = {0x00};
+    if ((strlen(fileName.c_str()) > PATH_MAX) || (realpath(fileName.c_str(), path) == nullptr)) {
+        ENGINE_LOGE("invalid path");
+        return nullptr;
+    }
+    FILE* fp = fopen(path, mode.c_str());
+    return fp;
 }
 } // namespace UpdateEngine
 } // namespace OHOS

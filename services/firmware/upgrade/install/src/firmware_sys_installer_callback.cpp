@@ -24,7 +24,8 @@ SysInstallerCallback::SysInstallerCallback(SysInstallerExecutorCallback &install
     sysInstallCallback_ = installCallback;
 }
 
-void SysInstallerCallback::OnUpgradeProgress(SysInstaller::UpdateStatus updateStatus, int percent, const std::string &resultMsg)
+void SysInstallerCallback::OnUpgradeProgress(SysInstaller::UpdateStatus updateStatus, int percent,
+    const std::string &resultMsg)
 {
     FIRMWARE_LOGI("sysInstallerCallback OnUpgradeProgress status %{public}d percent %{public}d", updateStatus, percent);
     InstallProgress installProgress = {};
