@@ -67,7 +67,7 @@ napi_value UpdateClient::GetOnlineUpdater(napi_env env, napi_callback_info info)
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "Error get cb info");
     std::vector<std::pair<std::string, std::string>> paramInfos;
     paramInfos.push_back({ "upgradeInfo", "UpgradeInfo" });
-    PARAM_CHECK_NAPI_CALL(env, argc >= 1, NapiCommonUtils::NapiThrowParamError(env, paramInfos);
+    PARAM_CHECK_NAPI_CALL(env, argc >= ARG_NUM_ONE, NapiCommonUtils::NapiThrowParamError(env, paramInfos);
         return nullptr, "Invalid param");
     PARAM_CHECK_NAPI_CALL(env, !isInit_, return result, "Has been init");
 
@@ -149,7 +149,8 @@ ClientStatus UpdateClient::ParseUpgOptions(napi_env env, napi_callback_info info
     size_t argc = MAX_ARGC;
     napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return ClientStatus::CLIENT_INVALID_PARAM, "Error get cb info");
+    PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_TWO,
+        return ClientStatus::CLIENT_INVALID_PARAM, "Error get cb info");
 
     ClientStatus ret = ClientHelper::GetVersionDigestInfoFromArg(env, args[0], versionDigestInfo);
     PARAM_CHECK(ret == ClientStatus::CLIENT_SUCCESS, return ClientStatus::CLIENT_INVALID_PARAM,
@@ -166,7 +167,8 @@ template <typename T> ClientStatus UpdateClient::ParseUpgOptions(napi_env env, n
     size_t argc = MAX_ARGC;
     napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return ClientStatus::CLIENT_INVALID_PARAM, "Error get cb info");
+    PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_ONE,
+        return ClientStatus::CLIENT_INVALID_PARAM, "Error get cb info");
 
     ClientStatus ret = ClientHelper::GetOptionsFromArg(env, args[0], options);
     PARAM_CHECK(ret == ClientStatus::CLIENT_SUCCESS, return ClientStatus::CLIENT_INVALID_PARAM,
@@ -316,7 +318,7 @@ napi_value UpdateClient::SetUpgradePolicy(napi_env env, napi_callback_info info)
     size_t argc = MAX_ARGC;
     napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "Error get cb info");
+    PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_ONE, return nullptr, "Error get cb info");
 
     ClientStatus ret = ClientHelper::GetUpgradePolicyFromArg(env, args[0], upgradePolicy_);
     std::vector<std::pair<std::string, std::string>> paramInfos;
