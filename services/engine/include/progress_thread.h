@@ -48,7 +48,7 @@ public:
 protected:
     int32_t StartProgress();
     void StopProgress();
-    void ExitThread();
+    void QuitDownloadThread();
     void ExecuteThreadFunc();
 
     virtual bool ProcessThreadExecute() = 0;
@@ -69,7 +69,7 @@ public:
     explicit DownloadThread(ProgressCallback callback) : ProgressThread(), callback_(callback) {}
     ~DownloadThread() override
     {
-        ProgressThread::ExitThread();
+        ProgressThread::QuitDownloadThread();
     }
 
     int32_t StartDownload(const std::string &fileName, const std::string &url);
@@ -90,6 +90,7 @@ protected:
     bool ProcessThreadExecute() override;
     void ProcessThreadExit() override;
     int32_t DownloadCallback(uint32_t percent, UpgradeStatus status, const std::string &error);
+    static FILE* FileOpen(const std::string &fileName, const std::string &mode);
 
 private:
     Progress downloadProgress_ {};
