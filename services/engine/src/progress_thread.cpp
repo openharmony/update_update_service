@@ -15,7 +15,6 @@
 
 #include "progress_thread.h"
 
-#include <climits>
 #include <unistd.h>
 #include <file_utils.h>
 
