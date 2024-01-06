@@ -83,7 +83,8 @@ napi_value LocalUpdater::VerifyUpgradePackage(napi_env env, napi_callback_info i
     size_t argc = MAX_ARGC;
     napi_value args[MAX_ARGC] = { 0 };
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_TWO, return nullptr, "Error get cb info");
+    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "Error get cb info");
+    PARAM_CHECK_NAPI_CALL(env, argc >= ARG_NUM_TWO, return nullptr, "Error get cb info");
 
     UpgradeFile upgradeFile;
     ClientStatus ret = ClientHelper::GetUpgradeFileFromArg(env, args[0], upgradeFile);
