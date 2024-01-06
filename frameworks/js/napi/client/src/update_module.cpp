@@ -54,8 +54,7 @@ napi_value JsConstructor(napi_env env, napi_callback_info info, Initializer init
     napi_value args[MAX_ARGC] = { 0 };
     napi_value thisVar = nullptr;
     void* data = nullptr;
-    napi_status status = napi_get_cb_info(env, info, &argc, args, &thisVar, &data);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_ONE, return nullptr, "Error get cb info");
+    napi_get_cb_info(env, info, &argc, args, &thisVar, &data);
 
     T* object = initializer(env, thisVar, args[0]);
     if (object == nullptr) {
