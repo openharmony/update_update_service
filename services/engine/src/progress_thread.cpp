@@ -266,7 +266,8 @@ FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &m
     if (pos != std::string::npos) {
         fileDir.erase(pos + 1);
     } else {
-        fileDir = ".";
+        ENGINE_LOGI("DownloadThread file %{public}s, mode: %{public}s", fileName.c_str(), mode.c_str());
+        return nullptr;
     }
 
     char *path = realpath(fileDir.c_str(), NULL);
