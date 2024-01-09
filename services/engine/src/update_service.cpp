@@ -477,7 +477,7 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
     }
 
     if (ModuleManager::GetInstance().IsModuleLoaded()) {
-        ENGINE_LOGI("IsModuleLoaded");
+        ENGINE_LOGI("IsModuleLoaded true");
         ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStart", startReason);
     }
 }
