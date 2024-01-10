@@ -261,6 +261,10 @@ bool DownloadThread::DealAbnormal(uint32_t percent)
 
 FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &mode)
 {
+    if (fileName.empty() || fileName.size() > PATH_MAX) {
+        ENGINE_LOGI("DownloadThread file is empty or exceed path_max");
+        return nullptr;
+    }
     std::string fileDir = fileName;
     auto pos = fileDir.find_last_of("/");
     if (pos != std::string::npos) {
