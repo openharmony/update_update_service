@@ -475,9 +475,9 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
     } else {
         ENGINE_LOGI("UpdaterService OnStart publish fail");
     }
-    // 如果是黄区，执行黄区方法
+
     if (ModuleManager::GetInstance().IsModuleLoaded()) {
-        ENGINE_LOGI("IsModuleLoaded true, init yellow");
+        ENGINE_LOGI("IsModuleLoaded true");
         ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStart", startReason);
     }
 }
