@@ -196,12 +196,12 @@ std::string FirmwareDownloadExecutor::GenerateDownloadTaskId()
     std::vector<std::string> downloadInfos;
     std::vector<FirmwareComponent> components;
     FirmwareComponentOperator().QueryAll(components);
-    for (auto component : components) {
+    for (const auto &component : components) {
         downloadInfos.push_back(component.descriptPackageId);
     }
     sort(downloadInfos.begin(), downloadInfos.end());
     std::string  srcString;
-    for (auto downloadInfo : downloadInfos) {
+    for (const auto &downloadInfo : downloadInfos) {
         srcString += downloadInfo;
     }
     return Sha256Utils::CalculateHashCode(srcString);
