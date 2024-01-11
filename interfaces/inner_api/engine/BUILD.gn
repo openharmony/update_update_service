@@ -50,11 +50,11 @@ ohos_shared_library("$updateengine_inner_library_name") {
     "$updateengine_root_path/interfaces/inner_api/common/src/load_sa_service.cpp",
     "$updateengine_root_path/interfaces/inner_api/engine/update_service_kits_impl.cpp",
     "$updateengine_root_path/interfaces/inner_api/engine/update_service_proxy.cpp",
+    "$updateengine_root_path/interfaces/inner_api/engine/message_parcel_helper.cpp",
+    "$updateengine_root_path/interfaces/inner_api/engine/update_helper.cpp",
     "$updateengine_root_path/services/callback/src/update_callback.cpp",
     "$updateengine_root_path/services/callback/src/update_callback_stub.cpp",
     "$updateengine_root_path/services/core/ability/log/src/update_log.cpp",
-    "$updateengine_root_path/services/engine/src/message_parcel_helper.cpp",
-    "$updateengine_root_path/services/engine/src/update_helper.cpp",
   ]
 
   include_dirs = [

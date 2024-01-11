@@ -15,7 +15,6 @@
 
 #include "update_helper.h"
 
-#include <cstring>
 #include <string>
 
 #include "encrypt_utils.h"
@@ -55,8 +54,9 @@ JsonBuilder SubscribeInfo::GetJsonBuilder()
         .Append("businessType", businessType.GetJsonBuilder())
         .Append("abilityName", abilityName)
         .Append("subscriberDevId", subscriberDevId)
-        .Append("devUpgradeId", devUpgradeId)
+        .Append("upgradeDevId", upgradeDevId)
         .Append("deviceType", CAST_INT(deviceType))
+        .Append("deviceName", deviceName)
         .Append("}");
 }
 

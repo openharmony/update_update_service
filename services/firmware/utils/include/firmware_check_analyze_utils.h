@@ -22,7 +22,7 @@
 #include "singleton.h"
 
 #include "firmware_common.h"
-#include "json_utils.h"
+#include "dupdate_json_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -27,7 +27,6 @@
 #include "firmware_constant.h"
 #include "firmware_log.h"
 #include "firmware_preferences_utils.h"
-#include "json_utils.h"
 #include "string_utils.h"
 #include "update_helper.h"
 

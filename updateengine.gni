@@ -12,6 +12,7 @@
 # limitations under the License.
 
 updateengine_client_library_name = "update"
+updateengine_session_library_name = "update_session"
 updateengine_inner_kits = "update_service_inner_kits"
 updateengine_inner_library_name = "updateservicekits"
 updateengine_library_name = "updateservice"

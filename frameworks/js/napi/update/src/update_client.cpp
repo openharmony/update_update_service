@@ -427,7 +427,7 @@ napi_value UpdateClient::GetTaskInfo(napi_env env, napi_callback_info info)
     return retValue;
 }
 
-void UpdateClient::GetUpdateResult(SessionType type, UpdateResult &result)
+void UpdateClient::GetUpdateResult(uint32_t type, UpdateResult &result)
 {
     ENGINE_LOGI("GetUpdateResult type %{public}d", type);
     result.type = type;

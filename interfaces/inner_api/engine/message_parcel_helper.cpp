@@ -298,26 +298,6 @@ int32_t MessageParcelHelper::WriteUpgradePolicy(MessageParcel &data, const Upgra
     return 0;
 }
 
-int32_t MessageParcelHelper::ReadCustomUpgradePolicy(MessageParcel &reply, CustomPolicy &policy)
-{
-    policy.version = Str16ToStr8(reply.ReadString16());
-    policy.type = static_cast<PolicyType>(reply.ReadUint32());
-    policy.installTime.lastUpdateTime = reply.ReadInt64();
-    policy.installTime.installWindowStart = reply.ReadInt64();
-    policy.installTime.installWindowEnd = reply.ReadInt64();
-    return 0;
-}
-
-int32_t MessageParcelHelper::WriteCustomUpgradePolicy(MessageParcel &data, const CustomPolicy &policy)
-{
-    data.WriteString16(Str8ToStr16(policy.version));
-    data.WriteUint32(CAST_UINT(policy.type));
-    data.WriteInt64(policy.installTime.lastUpdateTime);
-    data.WriteInt64(policy.installTime.installWindowStart);
-    data.WriteInt64(policy.installTime.installWindowEnd);
-    return 0;
-}
-
 int32_t MessageParcelHelper::ReadEventInfo(MessageParcel &reply, EventInfo &eventInfo)
 {
     eventInfo.eventId = static_cast<EventId>(reply.ReadUint32());
@@ -420,34 +400,6 @@ int32_t MessageParcelHelper::ReadClearOptions(MessageParcel &reply, ClearOptions
 int32_t MessageParcelHelper::WriteClearOptions(MessageParcel &data, const ClearOptions &clearOptions)
 {
     data.WriteUint32(static_cast<uint32_t>(clearOptions.status));
-    return 0;
-}
-
-int32_t MessageParcelHelper::ReadAccessoryUpgradeData(MessageParcel &reply, uint8_t **data, uint32_t &dataLen)
-{
-    dataLen = reply.ReadUint32();
-    *data = (const_cast<uint8_t *>(reply.ReadBuffer(dataLen)));
-    return 0;
-}
-
-int32_t MessageParcelHelper::WriteAccessoryUpgradeData(MessageParcel &message, const uint8_t *data, uint32_t dataLen)
-{
-    message.WriteUint32(dataLen);
-    message.WriteBuffer(data, dataLen);
-    return 0;
-}
-
-int32_t MessageParcelHelper::ReadAccessoryUpgradeDeviceInfo(MessageParcel &reply, AccessoryDeviceInfo &deviceInfo)
-{
-    deviceInfo.macAddress = Str16ToStr8(reply.ReadString16());
-    deviceInfo.deviceType = static_cast<DeviceType>(reply.ReadInt32());
-    return 0;
-}
-
-int32_t MessageParcelHelper::WriteAccessoryUpgradeDeviceInfo(MessageParcel &data, const AccessoryDeviceInfo &deviceInfo)
-{
-    data.WriteString16(Str8ToStr16(deviceInfo.macAddress));
-    data.WriteInt32(static_cast<int32_t>(deviceInfo.deviceType));
     return 0;
 }
 } // namespace UpdateEngine
