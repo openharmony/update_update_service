@@ -24,6 +24,7 @@
 
 namespace OHOS {
 namespace UpdateEngine {
+const int32_t DOWNLOAD_SLEEP_MILLISECONDS = 200;
 class FirmwareDownloadExecutor : public FirmwareIExecutor {
 public:
     FirmwareDownloadExecutor(const DownloadOptions &downloadOptions, FirmwareProgressCallback progressCallback)
@@ -37,6 +38,7 @@ private:
     void PerformDownload();
     void DownloadCallback(std::string serverUrl, std::string packageName, Progress progress);
     bool VerifyDownloadPkg(const std::string &pkgName, Progress &progress);
+    std::string GenerateDownloadTaskId();
 
 private:
     DownloadOptions downloadOptions_;

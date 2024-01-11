@@ -56,6 +56,21 @@ void FirmwareDownloadExecutor::DoDownload()
     GetTask();
     if (tasks_.downloadTaskId.empty()) {
         // 首次触发下载
+        std::this_thread::sleep_for(std::chrono::milliseconds(DOWNLOAD_SLEEP_MILLISECONDS));
+        GetTask();
+        FIRMWARE_LOGI("FirmwareDownloadExecutor StartDownload");
+        if (tasks_.downloadTaskId.empty()) {
+            std::string downloadTaskId = GenerateDownloadTaskId();
+            FIRMWARE_LOGI("DoDownload: %{public}s", downloadTaskId.c_str());
+            FirmwareTaskOperator().UpdateDownloadTaskIdByTaskId(tasks_.taskId, downloadTaskId);
+        } else {
+            FIRMWARE_LOGI("DoDownload Repeat subcommit");
+            Progress progress;
+            progress.status = UpgradeStatus::DOWNLOADING;
+            progress.endReason = "not perrmit repeat submmit";
+            firmwareProgressCallback_.progressCallback(progress);
+            return;
+        }
         PerformDownload();
     } else {
         // 恢复下载
@@ -174,6 +189,22 @@ bool FirmwareDownloadExecutor::VerifyDownloadPkg(const std::string &pkgName, Pro
         return false;
     }
     return true;
+}
+
+std::string FirmwareDownloadExecutor::GenerateDownloadTaskId()
+{
+    std::vector<std::string> downloadInfos;
+    std::vector<FirmwareComponent> components;
+    FirmwareComponentOperator().QueryAll(components);
+    for (auto component : components) {
+        downloadInfos.push_back(component.descriptPackageId);
+    }
+    sort(downloadInfos.begin(), downloadInfos.end());
+    std::string  srcString;
+    for (auto downloadInfo : downloadInfos) {
+        srcString += downloadInfo;
+    }
+    return Sha256Utils::CalculateHashCode(srcString);
 }
 } // namespace UpdateEngine
 } // namespace OHOS
