@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Huawei Device Co., Ltd.
+# Copyright (c) 2022 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -46,7 +46,9 @@ sa_sources = [
   "$updateengine_root_path/services/core/ability/utils/src/file_utils.cpp",
   "$updateengine_root_path/services/core/ability/utils/src/sha256_utils.cpp",
   "$updateengine_root_path/services/core/ability/utils/src/time_utils_proxy.cpp",
+  "$updateengine_root_path/services/engine/src/message_parcel_helper.cpp",
   "$updateengine_root_path/services/engine/src/progress_thread.cpp",
+  "$updateengine_root_path/services/engine/src/update_helper.cpp",
   "$updateengine_root_path/services/engine/src/update_service.cpp",
   "$updateengine_root_path/services/engine/src/update_service_cache.cpp",
   "$updateengine_root_path/services/engine/src/update_service_impl_firmware.cpp",
@@ -107,6 +109,8 @@ sa_include_dirs = [
   "$updateengine_root_path/services/osal/include",
   "$updateengine_root_path/services/service/include",
   "$updateengine_root_path/services/utils/include",
+  "$updateengine_root_path/interfaces/inner_api/common/include",
+  "$updateengine_root_path/interfaces/inner_api/include",
   "//base/update/updater/interfaces/kits/include",  # package.h/updaterkits.h
   "//base/update/updater/services/include",  # fs_manager/mount.h
   "//commonlibrary/utils_lite/include",  # OHOS_SUCCESS
@@ -163,7 +167,6 @@ sa_include_dirs +=
 
 sa_deps = [
   "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
-  "$updateengine_root_path/interfaces/inner_api/engine:updateservicekits",
   "//base/update/updater/services/fs_manager:libfsmanager",  # factory_reset_GetBlockDeviceByMountPoint_"fs_manager/mount.h"
   "//third_party/cJSON:cjson",
   "//third_party/curl:curl",

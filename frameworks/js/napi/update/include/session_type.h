@@ -45,7 +45,7 @@ public:
     static constexpr const uint32_t SESSION_GET_CUR_VERSION_DESCRIPTION = 19;
     static constexpr const uint32_t SESSION_GET_TASK_INFO = 20;
     static constexpr const uint32_t SESSION_REPLY_PARAM_ERROR = 21;
-    static constexpr const uint32_t SESSION_MAX = 22;
+    static constexpr const uint32_t SESSION_MAX = UINT32_MAX;
 
 public:
     static std::map<uint32_t, std::string> GetSessionFuncs();

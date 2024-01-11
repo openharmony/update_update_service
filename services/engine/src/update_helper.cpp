@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Copyright (c) 2021 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 #include "update_helper.h"
 
+#include <cstring>
 #include <string>
 
 #include "encrypt_utils.h"
@@ -54,9 +55,8 @@ JsonBuilder SubscribeInfo::GetJsonBuilder()
         .Append("businessType", businessType.GetJsonBuilder())
         .Append("abilityName", abilityName)
         .Append("subscriberDevId", subscriberDevId)
-        .Append("upgradeDevId", upgradeDevId)
+        .Append("devUpgradeId", devUpgradeId)
         .Append("deviceType", CAST_INT(deviceType))
-        .Append("deviceName", deviceName)
         .Append("}");
 }
 
