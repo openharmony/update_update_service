@@ -53,7 +53,7 @@ bool FirmwareDownloadDataProcessor::IsSpaceEnough(int64_t &requireTotalSize)
 {
     std::vector<FirmwareComponent> components;
     FirmwareComponentOperator().QueryAll(components);
-    for (FirmwareComponent &component : components) {
+    for (const FirmwareComponent &component : components) {
         requireTotalSize += (Firmware::ONE_HUNDRED - component.progress) * component.size / Firmware::ONE_HUNDRED;
     }
     bool isDownloadSpaceEnough = FirmwareFileUtils::IsSpaceEnough(requireTotalSize);
