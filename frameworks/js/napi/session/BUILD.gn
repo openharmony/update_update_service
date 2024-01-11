@@ -15,8 +15,7 @@ import("//build/ohos.gni")
 import("../../../../updateengine.gni")
 
 config("update_session_library_config") {
-  include_dirs =
-      [ "$updateengine_root_path/frameworks/js/napi/session/include" ]
+  include_dirs = [ "$updateengine_root_path/frameworks/js/napi/session/include" ]
 }
 
 ohos_static_library("$updateengine_session_library_name") {
@@ -38,7 +37,6 @@ ohos_static_library("$updateengine_session_library_name") {
 
   include_dirs = [
     "$updateengine_root_path/frameworks/js/napi/session/include",
-
     "$updateengine_root_path/services/core/ability/utils/include",
 
     "//third_party/json/include",
