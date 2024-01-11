@@ -390,5 +390,17 @@ int32_t MessageParcelHelper::WriteUpgradeOptions(MessageParcel &data, const Upgr
     data.WriteUint32(static_cast<uint32_t>(upgradeOptions.order));
     return 0;
 }
+
+int32_t MessageParcelHelper::ReadClearOptions(MessageParcel &reply, ClearOptions &clearOptions)
+{
+    clearOptions.status = static_cast<UpgradeStatus>(reply.ReadUint32());
+    return 0;
+}
+
+int32_t MessageParcelHelper::WriteClearOptions(MessageParcel &data, const ClearOptions &clearOptions)
+{
+    data.WriteUint32(static_cast<uint32_t>(clearOptions.status));
+    return 0;
+}
 } // namespace UpdateEngine
 } // namespace OHOS
