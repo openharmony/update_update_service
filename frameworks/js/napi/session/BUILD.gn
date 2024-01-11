@@ -55,8 +55,6 @@ ohos_static_library("update_session") {
     external_deps += [ "napi:ace_napi" ]
   }
 
-  install_enable = true
-  relative_install_dir = "update"
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
 
