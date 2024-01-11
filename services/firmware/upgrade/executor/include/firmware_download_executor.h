@@ -24,6 +24,7 @@
 
 namespace OHOS {
 namespace UpdateEngine {
+// 防止下载重复提交，设置查询时间间隔
 const int32_t DOWNLOAD_SLEEP_MILLISECONDS = 200;
 class FirmwareDownloadExecutor : public FirmwareIExecutor {
 public:
