@@ -39,6 +39,8 @@ ohos_static_library("$updateengine_session_library_name") {
   include_dirs = [
     "$updateengine_root_path/frameworks/js/napi/session/include",
 
+    "$updateengine_root_path/services/core/ability/utils/include",
+
     "//third_party/json/include",
     "//third_party/node/src",  # napi
   ]
