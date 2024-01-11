@@ -15,6 +15,7 @@
 
 #ifndef MIGRATE_SERVER_NET_MANAGER_MODEL_H
 #define MIGRATE_SERVER_NET_MANAGER_MODEL_H
+
 namespace OHOS::UpdateEngine {
 enum class NetType {
     NO_NET = 0,

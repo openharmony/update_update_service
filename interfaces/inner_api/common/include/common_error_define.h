@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "json_builder.h"
-#include "json_utils.h"
+#include "dupdate_json_utils.h"
 
 namespace OHOS::UpdateEngine {
 #define CAST_INT(enumClass) (static_cast<int32_t>(enumClass))

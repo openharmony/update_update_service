@@ -86,7 +86,7 @@ napi_value IUpdater::Off(napi_env env, napi_callback_info info)
     return result;
 }
 
-void IUpdater::GetUpdateResult(SessionType type, UpdateResult &result)
+void IUpdater::GetUpdateResult(uint32_t type, UpdateResult &result)
 {
     result.buildJSObject = ClientHelper::BuildUndefinedStatus;
 }

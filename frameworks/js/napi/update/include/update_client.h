@@ -55,7 +55,7 @@ public:
     napi_value ClearError(napi_env env, napi_callback_info info);
     napi_value TerminateUpgrade(napi_env env, napi_callback_info info);
 
-    void GetUpdateResult(SessionType type, UpdateResult &result) override;
+    void GetUpdateResult(uint32_t type, UpdateResult &result) override;
 
     // Notify the session.
     void NotifyDownloadProgress(const BusinessError &businessError, const Progress &progress);

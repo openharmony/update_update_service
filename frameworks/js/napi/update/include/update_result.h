@@ -17,6 +17,7 @@
 #define UPDATE_RESULT_H
 
 #include "napi_structs_base.h"
+#include "session_type.h"
 
 namespace OHOS::UpdateEngine {
 struct UpdateResult : NapiResult {

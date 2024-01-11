@@ -26,7 +26,7 @@ class BaseSession {
 public:
     using DoWorkFunction = std::function<int(void *context)>;
 
-    virtual SessionType GetType() const = 0;
+    virtual uint32_t GetType() const = 0;
     virtual uint32_t GetSessionId() const = 0;
     virtual napi_value StartWork(napi_env env, const napi_value *args, DoWorkFunction worker, void *context) = 0;
     virtual bool IsAsyncCompleteWork() = 0;

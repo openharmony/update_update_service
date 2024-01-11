@@ -61,6 +61,9 @@ enum class UpgradeStatus {
     VERIFYING = 30,
     VERIFY_FAIL,
     VERIFY_SUCCESS,
+    AUTHING,
+    AUTH_FAIL,
+    AUTH_SUCCESS,
     PACKAGE_TRANSING = 70,
     PACKAGE_TRANS_FAIL,
     PACKAGE_TRANS_SUCCESS,
@@ -317,7 +320,7 @@ struct SubscribeInfo : public BaseJsonStruct {
     BusinessType businessType;
     std::string abilityName;
     std::string subscriberDevId;
-    std::string devUpgradeId;
+    std::string upgradeDevId;
     DeviceType deviceType = DeviceType::UNKNOWN;
     std::string deviceName;
 

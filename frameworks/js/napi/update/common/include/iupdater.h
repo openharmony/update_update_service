@@ -31,7 +31,7 @@ public:
 
     napi_value On(napi_env env, napi_callback_info info);
     napi_value Off(napi_env env, napi_callback_info info);
-    virtual void GetUpdateResult(SessionType type, UpdateResult &result);
+    virtual void GetUpdateResult(uint32_t type, UpdateResult &result);
 
 protected:
     virtual void RegisterCallback() {}

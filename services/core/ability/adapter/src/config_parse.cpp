@@ -21,7 +21,7 @@
 #include <sstream>
 #include "constant.h"
 #include "firmware_constant.h"
-#include "json_utils.h"
+#include "dupdate_json_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {
