@@ -19,7 +19,7 @@ config("update_session_library_config") {
       [ "$updateengine_root_path/frameworks/js/napi/session/include" ]
 }
 
-ohos_shared_library("$updateengine_session_library_name") {
+ohos_static_library("update_session") {
   sanitize = {
     cfi = true
     cfi_cross_dso = true

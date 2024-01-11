@@ -21,7 +21,7 @@
 #include "update_define.h"
 
 namespace OHOS::UpdateEngine {
-constexpr int32_t STRING_MAX_LENGTH = 200;
+constexpr int32_t STRING_MAX_LENGTH = 400;
 
 int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, const std::string &attrName, int32_t &intValue)
 {

@@ -58,7 +58,6 @@
     },
     "build": {
       "modules": [
-        "//base/update/updateservice/frameworks/js/napi/session:update_session",
         "//base/update/updateservice/frameworks/js/napi/update:update",
         "//base/update/updateservice/interfaces/inner_api/engine:updateservicekits",
         "//base/update/updateservice/interfaces/inner_api/modulemgr:update_module_mgr",
@@ -68,13 +67,6 @@
         "//base/update/updateservice/services/engine/sa_profile:updater_sa_profile"
       ],
       "inner_api": [
-        {
-          "header": {
-            "header_base": "//base/update/updateservice/frameworks/js/napi/session/include",
-            "header_files": []
-          },
-          "name": "//base/update/updateservice/frameworks/js/napi/session:update_session"
-        },
         {
           "header": {
             "header_base": "//base/update/updateservice/interfaces/inner_api/include",

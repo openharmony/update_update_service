@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "json_builder.h"
-#include "dupdate_json_utils.h"
+#include "json_utils.h"
 
 namespace OHOS::UpdateEngine {
 #define CAST_INT(enumClass) (static_cast<int32_t>(enumClass))

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2024 Huawei Device Co., Ltd.
+* Copyright (c) 2023 Huawei Device Co., Ltd.
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -23,6 +23,7 @@
 #include "nlohmann/json.hpp"
 
 #include "update_define.h"
+#include "update_log.h"
 
 namespace OHOS::UpdateEngine {
 enum class JsonParseError {
@@ -40,9 +41,11 @@ public:
     static int32_t GetValueAndSetTo(const nlohmann::json &jsonObject, const std::string &key, T &value)
     {
         if (jsonObject.find(key) == jsonObject.end()) {
+            ENGINE_LOGI("parse error, missing prop : %{public}s ", key.c_str());
             return CAST_INT(JsonParseError::MISSING_PROP);
         }
         if (!CheckType(jsonObject.at(key), value)) {
+            ENGINE_LOGI("type is error : %{public}s ", key.c_str());
             return CAST_INT(JsonParseError::TYPE_ERROR);
         }
         GetValue(jsonObject, key, value);
@@ -68,7 +71,7 @@ public:
     }
 
     static int32_t GetValueAndSetToArray(const nlohmann::json &jsonObject, const std::string &key,
-        nlohmann::json &value)
+                                         nlohmann::json &value)
     {
         if (jsonObject.find(key) == jsonObject.end()) {
             return CAST_INT(JsonParseError::MISSING_PROP);
@@ -93,7 +96,7 @@ public:
     }
 
     static void SetJsonToVector(const nlohmann::json &jsonObject, const std::string &key,
-        std::vector<std::string> &vector)
+                                std::vector<std::string> &vector)
     {
         if (!IsArray(jsonObject, key)) {
             return;
@@ -108,12 +111,6 @@ public:
             return false;
         }
         return jsonObject.at(key).is_array();
-    }
-
-    template <typename T> static std::string StructToJsonStr(const T &value)
-    {
-        nlohmann::json jsonObj(value);
-        return jsonObj.dump();
     }
 
     template <typename T> static int32_t JsonStrToStruct(const std::string &jsonStr, T &value)

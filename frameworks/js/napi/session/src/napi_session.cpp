@@ -101,9 +101,7 @@ void NapiSession::ExecuteWork(napi_env env, void *data)
 void NapiSession::InitSessionFuncMap(const std::map<uint32_t, std::string> &funcMap)
 {
     ENGINE_LOGD("NapiSession::InitSessionFuncMap");
-    for (const auto &func: funcMap) {
-        sessionFuncMap_[func.first] = func.second;
-    }
+    sessionFuncMap_ = funcMap;
 }
 
 void NapiSession::GetSessionFuncParameter(std::string &funcName, std::string &permissionName)
