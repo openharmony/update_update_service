@@ -13,11 +13,11 @@
 
 declare_args() {
   update_service_dupdate_config_path =
-    "//base/update/updateservice/services/engine/etc/dupdate_config.json"
+      "//base/update/updateservice/services/engine/etc/dupdate_config.json"
   update_service_updater_sa_cfg_path =
-    "//base/update/updateservice/services/engine/etc/updater_sa.cfg"
+      "//base/update/updateservice/services/engine/etc/updater_sa.cfg"
   update_service_sa_profile_path =
-    "//base/update/updateservice/services/engine/sa_profile/3006.json"
+      "//base/update/updateservice/services/engine/sa_profile/3006.json"
   ability_ability_runtime_enable = true
   if (!defined(global_parts_info.ability_ability_runtime)) {
     ability_ability_runtime_enable = false
