@@ -33,7 +33,7 @@ constexpr unsigned int SHA256_TO_STRING_STEP = 2;
 std::string Sha256Utils::CalculateHashCode(std::string inputStr)
 {
     char result[SHA256_STRING_LEN] = {0};
-    if (!Sha256Calculate(reinterpret<const unsigned char *>(inputStr.c_str()), inputStr.length(),
+    if (!Sha256Calculate(reinterpret_cast<const unsigned char *>(inputStr.c_str()), inputStr.length(),
         result, SHA256_STRING_LEN)) {
         ENGINE_LOGE("CalculateHashCode fail, src = %s", inputStr.c_str());
         return "";
