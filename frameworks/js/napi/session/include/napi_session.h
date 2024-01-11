@@ -21,6 +21,7 @@
 #include <mutex>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "base_client.h"
 #include "base_session.h"
