@@ -25,6 +25,18 @@
 using namespace std;
 
 namespace OHOS::UpdateEngine {
+std::string GetFuncName(uint32_t sessionType)
+{
+    std::string funcName;
+    for (auto &func: SESSION_FUNC_MAP) {
+        if (func.first == sessionType) {
+            funcName = func.second;
+            break;
+        }
+    }
+    return funcName;
+}
+
 void UpdateAsyncession::CompleteWork(napi_env env, napi_status status)
 {
     ENGINE_LOGI("UpdateAsyncession::CompleteWork callbackNumber_: %{public}d, %{public}d",
@@ -34,12 +46,22 @@ void UpdateAsyncession::CompleteWork(napi_env env, napi_status status)
     NotifyJS(env, NULL, result);
 }
 
+std::string BaseUpdateSession::GetFunctionName()
+{
+    GetFuncName(sessionParams_.type);
+}
+
 void UpdatePromiseSession::CompleteWork(napi_env env, napi_status status)
 {
     ENGINE_LOGI("UpdatePromiseSession::CompleteWork status: %d", static_cast<int32_t>(status));
     UpdateResult result;
     GetUpdateResult(result);
     NotifyJS(env, NULL, result);
+}
+
+std::string BaseMigratePromiseSession::GetFunctionName()
+{
+    GetFuncName(sessionParams_.type);
 }
 
 napi_value UpdateListener::StartWork(napi_env env, size_t startIndex, const napi_value *args)
