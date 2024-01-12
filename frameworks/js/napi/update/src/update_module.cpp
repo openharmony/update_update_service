@@ -23,7 +23,6 @@
 #include "restorer.h"
 #include "update_client.h"
 #include "update_define.h"
-#include "napi_session.h"
 
 namespace OHOS::UpdateEngine {
 // class name
@@ -393,6 +392,5 @@ extern "C" __attribute__((constructor)) void RegisterModule(void)
 {
     ENGINE_LOGI("RegisterModule");
     napi_module_register(&g_module);
-    NapiSession::InitSessionFuncMap(SessionHelper::GetSessionFuncs());
 }
 } // namespace OHOS::UpdateEngine

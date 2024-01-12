@@ -67,7 +67,6 @@ public:
 
     static void CompleteWork(napi_env env, napi_status status, void *data);
     static void ExecuteWork(napi_env env, void *data);
-    static void InitSessionFuncMap(const std::map<uint32_t, std::string> &funcMap);
 
     bool IsAsyncCompleteWork() override
     {
@@ -80,6 +79,11 @@ protected:
     bool IsWorkExecuteSuccess() const
     {
         return workResult_ == INT_CALL_SUCCESS;
+    }
+
+    virtual std::string GetFunctionName()
+    {
+        return "";
     }
 
     virtual std::string GetFunctionPermissionName()
@@ -161,9 +165,6 @@ protected:
     std::condition_variable conditionVariable_;
     std::mutex conditionVariableMutex_;
     bool asyncExecuteComplete_ = false;
-
-private:
-    static std::map<uint32_t, std::string> sessionFuncMap_;
 
 private:
     void GetSessionFuncParameter(std::string &funcName, std::string &permissionName);
