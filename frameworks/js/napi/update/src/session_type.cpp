@@ -16,33 +16,33 @@
 #include "session_type.h"
 
 namespace OHOS::UpdateEngine {
-std::map<uint32_t, std::string> SessionType::sessionFuncMap_ = {
-    {SESSION_CHECK_VERSION,               "checkNewVersion"},
-    {SESSION_DOWNLOAD,                    "download"},
-    {SESSION_PAUSE_DOWNLOAD,              "pauseDownload"},
-    {SESSION_RESUME_DOWNLOAD,             "resumeDownload"},
-    {SESSION_UPGRADE,                     "upgrade"},
-    {SESSION_SET_POLICY,                  "setUpgradePolicy"},
-    {SESSION_GET_POLICY,                  "getUpgradePolicy"},
-    {SESSION_CLEAR_ERROR,                 "clearError"},
-    {SESSION_TERMINATE_UPGRADE,           "terminateUpgrade"},
-    {SESSION_GET_NEW_VERSION,             "getNewVersionInfo"},
-    {SESSION_GET_NEW_VERSION_DESCRIPTION, "getNewVersionDescription"},
-    {SESSION_SUBSCRIBE,                   "subscribe"},
-    {SESSION_UNSUBSCRIBE,                 "unsubscribe"},
-    {SESSION_GET_UPDATER,                 "getUpdater"},
-    {SESSION_APPLY_NEW_VERSION,           "applyNewVersion"},
-    {SESSION_FACTORY_RESET,               "factoryReset"},
-    {SESSION_VERIFY_PACKAGE,              "verifyPackage"},
-    {SESSION_CANCEL_UPGRADE,              "cancel"},
-    {SESSION_GET_CUR_VERSION,             "getCurrentVersionInfo"},
-    {SESSION_GET_CUR_VERSION_DESCRIPTION, "getCurrentVersionDescription"},
-    {SESSION_GET_TASK_INFO,               "getTaskInfo"},
-    {SESSION_REPLY_PARAM_ERROR,           "replyParamError"},
-    {SESSION_MAX,                         "max"}
+std::map<uint32_t, std::string> SessionHelper::sessionFuncMap_ = {
+    {SessionType::SESSION_CHECK_VERSION,               "checkNewVersion"},
+    {SessionType::SESSION_DOWNLOAD,                    "download"},
+    {SessionType::SESSION_PAUSE_DOWNLOAD,              "pauseDownload"},
+    {SessionType::SESSION_RESUME_DOWNLOAD,             "resumeDownload"},
+    {SessionType::SESSION_UPGRADE,                     "upgrade"},
+    {SessionType::SESSION_SET_POLICY,                  "setUpgradePolicy"},
+    {SessionType::SESSION_GET_POLICY,                  "getUpgradePolicy"},
+    {SessionType::SESSION_CLEAR_ERROR,                 "clearError"},
+    {SessionType::SESSION_TERMINATE_UPGRADE,           "terminateUpgrade"},
+    {SessionType::SESSION_GET_NEW_VERSION,             "getNewVersionInfo"},
+    {SessionType::SESSION_GET_NEW_VERSION_DESCRIPTION, "getNewVersionDescription"},
+    {SessionType::SESSION_SUBSCRIBE,                   "subscribe"},
+    {SessionType::SESSION_UNSUBSCRIBE,                 "unsubscribe"},
+    {SessionType::SESSION_GET_UPDATER,                 "getUpdater"},
+    {SessionType::SESSION_APPLY_NEW_VERSION,           "applyNewVersion"},
+    {SessionType::SESSION_FACTORY_RESET,               "factoryReset"},
+    {SessionType::SESSION_VERIFY_PACKAGE,              "verifyPackage"},
+    {SessionType::SESSION_CANCEL_UPGRADE,              "cancel"},
+    {SessionType::SESSION_GET_CUR_VERSION,             "getCurrentVersionInfo"},
+    {SessionType::SESSION_GET_CUR_VERSION_DESCRIPTION, "getCurrentVersionDescription"},
+    {SessionType::SESSION_GET_TASK_INFO,               "getTaskInfo"},
+    {SessionType::SESSION_REPLY_PARAM_ERROR,           "replyParamError"},
+    {SessionType::SESSION_MAX,                         "max"}
 };
 
-std::map<uint32_t, std::string> SessionType::GetSessionFuncs()
+std::map<uint32_t, std::string> SessionHelper::GetSessionFuncs()
 {
     return sessionFuncMap_;
 }
