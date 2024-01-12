@@ -1,4 +1,4 @@
-# Copyright (C) 2024-2024 Huawei Device Co., Ltd.
+# Copyright (c) 2024 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,6 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[cfi]
-type:*OHOS::UpdateEngine::NapiSession*
-src:*napi_session.cpp
+root_path = "//base/update/updateservice"
+session_sources = [
+    "$updateengine_root_path/frameworks/js/napi/session/src/napi_common_utils.cpp",
+    "$updateengine_root_path/frameworks/js/napi/session/src/napi_session.cpp",
+]
+
+session_include_dirs = [ "$updateengine_root_path/frameworks/js/napi/session/include" ]

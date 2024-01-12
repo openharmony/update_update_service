@@ -25,3 +25,4 @@ src:*update_client.cpp
 src:*update_session.cpp
 src:*session_manager.cpp
 src:*update_moudle.cpp
+src:*napi_session.cpp
