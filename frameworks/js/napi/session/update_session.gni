@@ -13,8 +13,8 @@
 
 root_path = "//base/update/updateservice"
 session_sources = [
-    "$updateengine_root_path/frameworks/js/napi/session/src/napi_common_utils.cpp",
-    "$updateengine_root_path/frameworks/js/napi/session/src/napi_session.cpp",
+    "$root_path/frameworks/js/napi/session/src/napi_common_utils.cpp",
+    "$root_path/frameworks/js/napi/session/src/napi_session.cpp",
 ]
 
-session_include_dirs = [ "$updateengine_root_path/frameworks/js/napi/session/include" ]
+session_include_dirs = [ "$root_path/frameworks/js/napi/session/include" ]
