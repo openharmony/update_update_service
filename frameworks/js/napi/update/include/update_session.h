@@ -44,10 +44,7 @@ public:
         migrateClient->GetUpdateResult(sessionParams_.type, result);
     }
 
-    std::string GetFunctionName() override
-    {
-        return GetFuncName(sessionParams_.type);
-    }
+    std::string GetFunctionName() override;
 
     std::string GetFunctionPermissionName() override
     {
@@ -83,10 +80,7 @@ public:
         migrateClient->GetUpdateResult(sessionParams_.type, result);
     }
 
-    std::string GetFunctionName() override
-    {
-        return GetFuncName(sessionParams_.type);
-    }
+    std::string GetFunctionName() override;
 
     std::string GetFunctionPermissionName() override
     {

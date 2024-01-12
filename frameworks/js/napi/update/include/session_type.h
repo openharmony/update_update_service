@@ -72,17 +72,5 @@ const std::map<uint32_t, std::string> SESSION_FUNC_MAP = {
     {SessionType::SESSION_REPLY_PARAM_ERROR,           "replyParamError"},
     {SessionType::SESSION_MAX,                         "max"}
 };
-
-std::string GetFuncName(uint32_t sessionType)
-{
-    std::string funcName;
-    for (auto &func: SESSION_FUNC_MAP) {
-        if (func.first == sessionType) {
-            funcName = func.second;
-            break;
-        }
-    }
-    return funcName;
-}
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SESSION_TYPE_H
