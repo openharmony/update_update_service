@@ -18,6 +18,7 @@ type:*OHOS::UpdateEngine::BaseUpdateSession*
 type:*OHOS::UpdateEngine::BaseMigratePromiseSession*
 type:*OHOS::UpdateEngine::UpdateAsyncession*
 type:*OHOS::UpdateEngine::BaseAsyncSession*
+type:*OHOS::UpdateEngine::NapiSession*
 type:*OHOS::UpdateEngine::BasePromiseSession*
 type:*OHOS::UpdateEngine::BaseMigratePromiseSession*
 src:*iupdater.cpp

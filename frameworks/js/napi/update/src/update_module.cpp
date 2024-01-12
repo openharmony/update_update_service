@@ -393,6 +393,6 @@ extern "C" __attribute__((constructor)) void RegisterModule(void)
 {
     ENGINE_LOGI("RegisterModule");
     napi_module_register(&g_module);
-    NapiSession::InitSessionFuncMap(SessionType::GetSessionFuncs());
+    NapiSession::InitSessionFuncMap(SessionHelper::GetSessionFuncs());
 }
 } // namespace OHOS::UpdateEngine
