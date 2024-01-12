@@ -35,7 +35,6 @@ std::string FirmwareUpdateHelper::BuildTaskId(const std::vector<FirmwareComponen
 void FirmwareUpdateHelper::ClearFirmwareInfo()
 {
     FIRMWARE_LOGI("ClearFirmwareInfo");
-    std::shared_ptr<FirmwarePreferencesUtil> preferencesUtil = DelayedSingleton<FirmwarePreferencesUtil>::GetInstance();
 
     FirmwareTask task;
     FirmwareTaskOperator firmwareTaskOperator;
@@ -101,16 +100,9 @@ void FirmwareUpdateHelper::BuildNewVersionInfo(const std::vector<FirmwareCompone
         }
     }
 
-    std::string hotaVersionNumber;
-    std::string hotaDisplayVersionNumber;
     if (!hotaComponents.empty()) {
         VersionComponent hotaVersionComponent = BuildHotaVersionComponent(hotaComponents);
-        hotaVersionNumber = hotaVersionComponent.innerVersion;
-        hotaDisplayVersionNumber = hotaVersionComponent.displayVersion;
         versionComponents.push_back(hotaVersionComponent);
-    } else {
-        hotaVersionNumber = DeviceAdapter::GetRealVersion();
-        hotaDisplayVersionNumber = DeviceAdapter::GetDisplayVersion();
     }
 }
 
