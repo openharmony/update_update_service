@@ -33,7 +33,6 @@ ohos_static_library("$updateengine_session_library_name") {
     sources += [
       "$updateengine_root_path/frameworks/js/napi/session/src/napi_common_utils.cpp",
       "$updateengine_root_path/frameworks/js/napi/session/src/napi_session.cpp",
-      "$updateengine_root_path/services/core/ability/log/src/update_log.cpp"
     ]
   }
 
