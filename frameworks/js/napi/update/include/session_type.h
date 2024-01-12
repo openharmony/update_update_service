@@ -73,11 +73,11 @@ const std::map<uint32_t, std::string> SESSION_FUNC_MAP = {
     {SessionType::SESSION_MAX,                         "max"}
 };
 
-std::string GetFuncName(SessionParams sessionParams)
+std::string GetFuncName(uint32_t sessionType)
 {
     std::string funcName;
     for (auto &func: SESSION_FUNC_MAP) {
-        if (func.first == sessionParams.type) {
+        if (func.first == sessionType) {
             funcName = func.second;
             break;
         }

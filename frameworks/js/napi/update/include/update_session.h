@@ -46,7 +46,7 @@ public:
 
     std::string GetFunctionName() override
     {
-        return GetFuncName(sessionParams_);
+        return GetFuncName(sessionParams_.type);
     }
 
     std::string GetFunctionPermissionName() override
@@ -85,7 +85,7 @@ public:
 
     std::string GetFunctionName() override
     {
-        return GetFuncName(sessionParams_);
+        return GetFuncName(sessionParams_.type);
     }
 
     std::string GetFunctionPermissionName() override
