@@ -34,7 +34,6 @@ ohos_shared_library("$updateengine_client_library_name") {
       "$updateengine_root_path/frameworks/js/napi/update/src/local_updater.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/restorer.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/session_manager.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/session_type.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/update_client.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/update_module.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/update_session.cpp",

@@ -44,6 +44,11 @@ public:
         migrateClient->GetUpdateResult(sessionParams_.type, result);
     }
 
+    std::string GetFunctionName() override
+    {
+        return GetFuncName(sessionParams_);
+    }
+
     std::string GetFunctionPermissionName() override
     {
         if (sessionParams_.type == SessionType::SESSION_FACTORY_RESET) {
@@ -76,6 +81,11 @@ public:
         result.businessError = businessError_;
         IUpdater *migrateClient = static_cast<IUpdater *>(client_);
         migrateClient->GetUpdateResult(sessionParams_.type, result);
+    }
+
+    std::string GetFunctionName() override
+    {
+        return GetFuncName(sessionParams_);
     }
 
     std::string GetFunctionPermissionName() override

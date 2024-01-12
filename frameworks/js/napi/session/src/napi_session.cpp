@@ -26,8 +26,6 @@ using namespace std;
 namespace OHOS::UpdateEngine {
 uint32_t g_sessionId = 0;
 
-std::map<uint32_t, std::string> NapiSession::sessionFuncMap_;
-
 NapiSession::NapiSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber)
     : sessionId(++g_sessionId), client_(client), sessionParams_(sessionParams), totalArgc_(argc),
     callbackNumber_(callbackNumber) {}
@@ -98,20 +96,9 @@ void NapiSession::ExecuteWork(napi_env env, void *data)
     sess->ExecuteWork(env);
 }
 
-void NapiSession::InitSessionFuncMap(const std::map<uint32_t, std::string> &funcMap)
-{
-    ENGINE_LOGD("NapiSession::InitSessionFuncMap");
-    sessionFuncMap_ = funcMap;
-}
-
 void NapiSession::GetSessionFuncParameter(std::string &funcName, std::string &permissionName)
 {
-    for (auto &[type, func] : sessionFuncMap_) {
-        if (type == sessionParams_.type) {
-            funcName = func;
-            break;
-        }
-    }
+    funcName = GetFunctionName();
     permissionName = GetFunctionPermissionName();
 }
 } // namespace OHOS::UpdateEngine
