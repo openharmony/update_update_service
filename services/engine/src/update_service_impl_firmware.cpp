@@ -40,7 +40,7 @@ int32_t UpdateServiceImplFirmware::CheckNewVersion(const UpgradeInfo &info, Busi
 {
     wptr<UpdateServiceImplFirmware> weakPtr(this);
     FirmwareManager::GetInstance()->DoCheck(
-        [&, weakPtr](BusinessError &error, CheckResult &result) {
+        [&, weakPtr](const BusinessError &error, const CheckResult &result) {
             sptr<UpdateServiceImplFirmware> firmwareSptr = weakPtr.promote();
             if (firmwareSptr == nullptr) {
                 FIRMWARE_LOGE("UpdateServiceImplFirmware has been destructed, CheckNewVersion is TimeOut");

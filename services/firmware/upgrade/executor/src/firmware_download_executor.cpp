@@ -103,7 +103,7 @@ void FirmwareDownloadExecutor::PerformDownload()
             });
         int32_t ret = downloadThread_->StartDownload(downloadFileName, downloadInfo.url);
         if (ret != 0) {
-            Progress progress0;
+            progress0 = {};
             progress0.status = UpgradeStatus::DOWNLOAD_FAIL;
             progress0.endReason = std::to_string(CAST_INT(DownloadEndReason::FAIL));
             firmwareProgressCallback_.progressCallback(progress0);
@@ -162,7 +162,7 @@ void FirmwareDownloadExecutor::DownloadCallback(std::string serverUrl, std::stri
 bool FirmwareDownloadExecutor::VerifyDownloadPkg(const std::string &pkgName, Progress &progress)
 {
     std::string verifyInfo = "";
-    for (auto &component : components_) {
+    for (const auto &component : components_) {
         if (component.spath == pkgName) {
             verifyInfo = component.verifyInfo;
             break;
