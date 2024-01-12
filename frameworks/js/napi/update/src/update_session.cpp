@@ -48,7 +48,7 @@ void UpdateAsyncession::CompleteWork(napi_env env, napi_status status)
 
 std::string BaseUpdateSession::GetFunctionName()
 {
-    GetFuncName(sessionParams_.type);
+    return GetFuncName(sessionParams_.type);
 }
 
 void UpdatePromiseSession::CompleteWork(napi_env env, napi_status status)
@@ -61,7 +61,7 @@ void UpdatePromiseSession::CompleteWork(napi_env env, napi_status status)
 
 std::string BaseMigratePromiseSession::GetFunctionName()
 {
-    GetFuncName(sessionParams_.type);
+    return GetFuncName(sessionParams_.type);
 }
 
 napi_value UpdateListener::StartWork(napi_env env, size_t startIndex, const napi_value *args)
