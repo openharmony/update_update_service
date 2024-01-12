@@ -21,32 +21,33 @@
 #include <string>
 
 namespace OHOS::UpdateEngine {
-class SessionType {
-public:
-    static constexpr const uint32_t SESSION_CHECK_VERSION = 0;
-    static constexpr const uint32_t SESSION_DOWNLOAD = 1;
-    static constexpr const uint32_t SESSION_PAUSE_DOWNLOAD = 2;
-    static constexpr const uint32_t SESSION_RESUME_DOWNLOAD = 3;
-    static constexpr const uint32_t SESSION_UPGRADE = 4;
-    static constexpr const uint32_t SESSION_SET_POLICY = 5;
-    static constexpr const uint32_t SESSION_GET_POLICY = 6;
-    static constexpr const uint32_t SESSION_CLEAR_ERROR = 7;
-    static constexpr const uint32_t SESSION_TERMINATE_UPGRADE = 8;
-    static constexpr const uint32_t SESSION_GET_NEW_VERSION = 9;
-    static constexpr const uint32_t SESSION_GET_NEW_VERSION_DESCRIPTION = 10;
-    static constexpr const uint32_t SESSION_SUBSCRIBE = 11;
-    static constexpr const uint32_t SESSION_UNSUBSCRIBE = 12;
-    static constexpr const uint32_t SESSION_GET_UPDATER = 13;
-    static constexpr const uint32_t SESSION_APPLY_NEW_VERSION = 14;
-    static constexpr const uint32_t SESSION_FACTORY_RESET = 15;
-    static constexpr const uint32_t SESSION_VERIFY_PACKAGE = 16;
-    static constexpr const uint32_t SESSION_CANCEL_UPGRADE = 17;
-    static constexpr const uint32_t SESSION_GET_CUR_VERSION = 18;
-    static constexpr const uint32_t SESSION_GET_CUR_VERSION_DESCRIPTION = 19;
-    static constexpr const uint32_t SESSION_GET_TASK_INFO = 20;
-    static constexpr const uint32_t SESSION_REPLY_PARAM_ERROR = 21;
-    static constexpr const uint32_t SESSION_MAX = UINT32_MAX;
+namespace SessionType {
+    constexpr uint32_t SESSION_CHECK_VERSION = 0;
+    constexpr uint32_t SESSION_DOWNLOAD = 1;
+    constexpr uint32_t SESSION_PAUSE_DOWNLOAD = 2;
+    constexpr uint32_t SESSION_RESUME_DOWNLOAD = 3;
+    constexpr uint32_t SESSION_UPGRADE = 4;
+    constexpr uint32_t SESSION_SET_POLICY = 5;
+    constexpr uint32_t SESSION_GET_POLICY = 6;
+    constexpr uint32_t SESSION_CLEAR_ERROR = 7;
+    constexpr uint32_t SESSION_TERMINATE_UPGRADE = 8;
+    constexpr uint32_t SESSION_GET_NEW_VERSION = 9;
+    constexpr uint32_t SESSION_GET_NEW_VERSION_DESCRIPTION = 10;
+    constexpr uint32_t SESSION_SUBSCRIBE = 11;
+    constexpr uint32_t SESSION_UNSUBSCRIBE = 12;
+    constexpr uint32_t SESSION_GET_UPDATER = 13;
+    constexpr uint32_t SESSION_APPLY_NEW_VERSION = 14;
+    constexpr uint32_t SESSION_FACTORY_RESET = 15;
+    constexpr uint32_t SESSION_VERIFY_PACKAGE = 16;
+    constexpr uint32_t SESSION_CANCEL_UPGRADE = 17;
+    constexpr uint32_t SESSION_GET_CUR_VERSION = 18;
+    constexpr uint32_t SESSION_GET_CUR_VERSION_DESCRIPTION = 19;
+    constexpr uint32_t SESSION_GET_TASK_INFO = 20;
+    constexpr uint32_t SESSION_REPLY_PARAM_ERROR = 21;
+    constexpr uint32_t SESSION_MAX = UINT32_MAX;
+} // namespace OHOS::UpdateEngine::SessionType
 
+class SessionHelper {
 public:
     static std::map<uint32_t, std::string> GetSessionFuncs();
 
