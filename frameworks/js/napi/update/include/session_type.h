@@ -16,8 +16,8 @@
 #ifndef UPDATE_SESSION_TYPE_H
 #define UPDATE_SESSION_TYPE_H
 
-#include <map>
 #include <cstdint>
+#include <map>
 #include <string>
 
 namespace OHOS::UpdateEngine {
