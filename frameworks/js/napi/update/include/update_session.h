@@ -30,8 +30,6 @@
 #include "update_client.h"
 
 namespace OHOS::UpdateEngine {
-
-
 class BaseUpdateSession : public BaseAsyncSession<UpdateResult> {
 public:
     BaseUpdateSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber)
