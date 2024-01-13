@@ -177,7 +177,7 @@ public:
     static std::string GetFuncName(uint32_t sessionType);
 
 private:
-    static std::map<uint32_t, std::string> sessionFuncMap_
+    static std::map<uint32_t, std::string> sessionFuncMap_;
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SESSION_H
