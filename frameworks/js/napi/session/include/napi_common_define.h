@@ -38,32 +38,6 @@ if (!(assertion)) {                     \
 
 #define INDEX(x) ((x) - 1)
 
-enum class SessionType {
-    SESSION_CHECK_VERSION = 0,
-    SESSION_DOWNLOAD,
-    SESSION_PAUSE_DOWNLOAD,
-    SESSION_RESUME_DOWNLOAD,
-    SESSION_UPGRADE,
-    SESSION_SET_POLICY,
-    SESSION_GET_POLICY,
-    SESSION_CLEAR_ERROR,
-    SESSION_TERMINATE_UPGRADE,
-    SESSION_GET_NEW_VERSION,
-    SESSION_GET_NEW_VERSION_DESCRIPTION,
-    SESSION_SUBSCRIBE,
-    SESSION_UNSUBSCRIBE,
-    SESSION_GET_UPDATER,
-    SESSION_APPLY_NEW_VERSION,
-    SESSION_FACTORY_RESET,
-    SESSION_VERIFY_PACKAGE,
-    SESSION_CANCEL_UPGRADE,
-    SESSION_GET_CUR_VERSION,
-    SESSION_GET_CUR_VERSION_DESCRIPTION,
-    SESSION_GET_TASK_INFO,
-    SESSION_REPLY_PARAM_ERROR,
-    SESSION_MAX
-};
-
 enum class ClientStatus {
     CLIENT_SUCCESS = 0,
     CLIENT_INVALID_PARAM = 1000,
@@ -88,6 +62,42 @@ enum CALLBACK_POSITION {
     CALLBACK_POSITION_FOUR,
     CALLBACK_MAX_POSITION
 };
+
+struct NativeClass {
+    std::string className;
+    napi_callback constructor;
+    napi_ref *constructorRef;
+    napi_property_descriptor *desc;
+    int descSize;
+};
+
+template<typename T>
+T *CreateJsObject(napi_env env, napi_callback_info info, napi_ref constructorRef, napi_value &jsObject)
+{
+    napi_value constructor = nullptr;
+    napi_status status = napi_get_reference_value(env, constructorRef, &constructor);
+    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr,
+        "CreateJsObject error, napi_get_reference_value fail");
+
+    size_t argc = MAX_ARGC;
+    napi_value args[MAX_ARGC] = {0};
+    status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    if (status != napi_ok) {
+        ENGINE_LOGI("CreateJsObject, napi_get_cb_info error");
+    }
+    status = napi_new_instance(env, constructor, argc, args, &jsObject);
+    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "CreateJsObject error, napi_new_instance fail");
+
+    T *nativeObject = nullptr;
+    status = napi_unwrap(env, jsObject, (void **) &nativeObject);
+    if (status != napi_ok) {
+        ENGINE_LOGE("CreateJsObject error, napi_unwrap fail");
+        napi_remove_wrap(env, jsObject, (void **) &nativeObject);
+        jsObject = nullptr;
+        return nullptr;
+    }
+    return nativeObject;
+}
 
 template <typename T> T *UnwrapJsObject(napi_env env, napi_callback_info info)
 {

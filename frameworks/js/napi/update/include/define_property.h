@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef DEFINE_PROPERTY_H
-#define DEFINE_PROPERTY_H
+#ifndef UPDATE_DEFINE_PROPERTY_H
+#define UPDATE_DEFINE_PROPERTY_H
 
 #include <string>
 #include <vector>
@@ -43,4 +43,4 @@ private:
     static void DefineBusinessVendor(napi_env env, napi_value exports);
 };
 } // namespace OHOS::UpdateEngine
-#endif // DEFINE_PROPERTY_H
+#endif // UPDATE_DEFINE_PROPERTY_H

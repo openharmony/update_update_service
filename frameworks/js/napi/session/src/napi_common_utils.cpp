@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@
 #include "update_define.h"
 
 namespace OHOS::UpdateEngine {
-constexpr int32_t STRING_MAX_LENGTH = 200;
+constexpr int32_t STRING_MAX_LENGTH = 400;
 
 int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, const std::string &attrName, int32_t &intValue)
 {

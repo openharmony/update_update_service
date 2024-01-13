@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,9 +50,6 @@ public:
     static int32_t ReadUpgradePolicy(MessageParcel &reply, UpgradePolicy &policy);
     static int32_t WriteUpgradePolicy(MessageParcel &data, const UpgradePolicy &policy);
 
-    static int32_t ReadCustomUpgradePolicy(MessageParcel &reply, CustomPolicy &policy);
-    static int32_t WriteCustomUpgradePolicy(MessageParcel &data, const CustomPolicy &policy);
-
     static int32_t ReadEventInfo(MessageParcel &reply, EventInfo &eventInfo);
     static int32_t WriteEventInfo(MessageParcel &data, const EventInfo &eventInfo);
 
@@ -76,15 +73,6 @@ public:
 
     static int32_t ReadClearOptions(MessageParcel &reply, ClearOptions &clearOptions);
     static int32_t WriteClearOptions(MessageParcel &data, const ClearOptions &clearOptions);
-
-    static int32_t CompareVersion(const std::string &version1, const std::string &version2);
-    static std::vector<std::string> SplitString(const std::string &str, const std::string &delimiter);
-
-    static int32_t ReadAccessoryUpgradeData(MessageParcel &reply, uint8_t **data, uint32_t &dataLen);
-    static int32_t WriteAccessoryUpgradeData(MessageParcel &message, const uint8_t *data, uint32_t dataLen);
-
-    static int32_t ReadAccessoryUpgradeDeviceInfo(MessageParcel &reply, AccessoryDeviceInfo &deviceInfo);
-    static int32_t WriteAccessoryUpgradeDeviceInfo(MessageParcel &data, const AccessoryDeviceInfo &deviceInfo);
 };
 } // namespace OHOS::UpdateEngine
 #endif // MESSAGE_PARCEL_HELPER_H

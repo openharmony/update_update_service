@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -86,7 +86,7 @@ napi_value IUpdater::Off(napi_env env, napi_callback_info info)
     return result;
 }
 
-void IUpdater::GetUpdateResult(SessionType type, UpdateResult &result)
+void IUpdater::GetUpdateResult(uint32_t type, UpdateResult &result)
 {
     result.buildJSObject = ClientHelper::BuildUndefinedStatus;
 }

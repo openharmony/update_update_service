@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Copyright (c) 2024 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,6 +13,7 @@
 
 import("//build/ohos.gni")
 import("../../../../updateengine.gni")
+import("../session/update_session.gni")
 
 ohos_shared_library("$updateengine_client_library_name") {
   sanitize = {
@@ -26,33 +27,30 @@ ohos_shared_library("$updateengine_client_library_name") {
   sources = []
   if (ability_ability_runtime_enable) {
     sources += [
-      "$updateengine_root_path/frameworks/js/napi/base/src/client_helper.cpp",
-      "$updateengine_root_path/frameworks/js/napi/base/src/define_property.cpp",
-      "$updateengine_root_path/frameworks/js/napi/base/src/iupdater.cpp",
-      "$updateengine_root_path/frameworks/js/napi/base/src/napi_common_utils.cpp",
-      "$updateengine_root_path/frameworks/js/napi/client/src/local_updater.cpp",
-      "$updateengine_root_path/frameworks/js/napi/client/src/restorer.cpp",
-      "$updateengine_root_path/frameworks/js/napi/client/src/update_client.cpp",
-      "$updateengine_root_path/frameworks/js/napi/client/src/update_module.cpp",
-      "$updateengine_root_path/frameworks/js/napi/client/src/update_session.cpp",
-      "$updateengine_root_path/frameworks/js/napi/session/src/napi_session.cpp",
-      "$updateengine_root_path/frameworks/js/napi/session/src/session_manager.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/common/src/client_helper.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/common/src/iupdater.cpp",
+
+      "$updateengine_root_path/frameworks/js/napi/update/src/define_property.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/src/local_updater.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/src/restorer.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/src/session_manager.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/src/update_client.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/src/update_module.cpp",
+      "$updateengine_root_path/frameworks/js/napi/update/src/update_session.cpp",
     ]
+    sources += session_sources
   }
 
   include_dirs = [
-    "$updateengine_root_path/frameworks/js/napi/base/include",
-    "$updateengine_root_path/frameworks/js/napi/client/include",
-    "$updateengine_root_path/frameworks/js/napi/session/include",
-
-    "$updateengine_root_path/interfaces/inner_api/common/include",
-    "$updateengine_root_path/interfaces/inner_api/include",
+    "$updateengine_root_path/frameworks/js/napi/update/common/include",
+    "$updateengine_root_path/frameworks/js/napi/update/include",
 
     "$updateengine_root_path/services/core/ability/utils/include",
 
     "//third_party/json/include",
     "//third_party/node/src",  # napi
   ]
+  include_dirs += session_include_dirs
 
   deps = [
     "$updateengine_root_path/interfaces/inner_api/engine:$updateengine_inner_library_name",

@@ -11,15 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-updateengine_client_library_name = "update"
-updateengine_inner_kits = "update_service_inner_kits"
-updateengine_inner_library_name = "updateservicekits"
-updateengine_library_name = "updateservice"
-updateengine_part_name = "update_service"
-updateengine_root_path = "//base/update/updateservice"
-updateengine_test_name = "update_service_test"
-updateengine_unittest_name = "update_service_unittest"
-updateengine_adapter_config =
-    "$updateengine_root_path/adapter/default_config/feature_config"
+root_path = "//base/update/updateservice"
+session_sources = [
+  "$root_path/frameworks/js/napi/session/src/napi_common_utils.cpp",
+  "$root_path/frameworks/js/napi/session/src/napi_session.cpp",
+]
 
-import("$updateengine_adapter_config/standard/config.gni")
+session_include_dirs = [ "$root_path/frameworks/js/napi/session/include" ]

@@ -44,6 +44,8 @@ public:
         migrateClient->GetUpdateResult(sessionParams_.type, result);
     }
 
+    std::string GetFunctionName() override;
+
     std::string GetFunctionPermissionName() override
     {
         if (sessionParams_.type == SessionType::SESSION_FACTORY_RESET) {
@@ -77,6 +79,8 @@ public:
         IUpdater *migrateClient = static_cast<IUpdater *>(client_);
         migrateClient->GetUpdateResult(sessionParams_.type, result);
     }
+
+    std::string GetFunctionName() override;
 
     std::string GetFunctionPermissionName() override
     {
@@ -164,6 +168,14 @@ private:
     napi_ref handlerRef_ = nullptr;
     std::mutex mutex_;
     EventClassifyInfo eventClassifyInfo_;
+};
+
+class SessionFuncHelper {
+public:
+    static std::string GetFuncName(uint32_t sessionType);
+
+private:
+    static std::map<uint32_t, std::string> sessionFuncMap_;
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SESSION_H

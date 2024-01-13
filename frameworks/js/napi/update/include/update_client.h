@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,7 +55,7 @@ public:
     napi_value ClearError(napi_env env, napi_callback_info info);
     napi_value TerminateUpgrade(napi_env env, napi_callback_info info);
 
-    void GetUpdateResult(SessionType type, UpdateResult &result) override;
+    void GetUpdateResult(uint32_t type, UpdateResult &result) override;
 
     // Notify the session.
     void NotifyDownloadProgress(const BusinessError &businessError, const Progress &progress);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@ using namespace std;
 
 namespace OHOS::UpdateEngine {
 uint32_t g_sessionId = 0;
+
 NapiSession::NapiSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber)
     : sessionId(++g_sessionId), client_(client), sessionParams_(sessionParams), totalArgc_(argc),
     callbackNumber_(callbackNumber) {}
@@ -97,12 +98,7 @@ void NapiSession::ExecuteWork(napi_env env, void *data)
 
 void NapiSession::GetSessionFuncParameter(std::string &funcName, std::string &permissionName)
 {
-    for (auto &[type, func] : SESSION_FUNC_MAP) {
-        if (type == sessionParams_.type) {
-            funcName = func;
-            break;
-        }
-    }
+    funcName = GetFunctionName();
     permissionName = GetFunctionPermissionName();
 }
 } // namespace OHOS::UpdateEngine

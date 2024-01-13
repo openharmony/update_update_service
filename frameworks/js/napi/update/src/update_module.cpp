@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,14 +25,6 @@
 #include "update_define.h"
 
 namespace OHOS::UpdateEngine {
-struct NativeClass {
-    std::string className;
-    napi_callback constructor;
-    napi_ref* constructorRef;
-    napi_property_descriptor *desc;
-    int descSize;
-};
-
 // class name
 const std::string CLASS_NAME_UPDATE_CLIENT = "UpdateClient";
 const std::string CLASS_NAME_RESTORER = "Restorer";
@@ -116,34 +108,6 @@ napi_value JsConstructorLocalUpdater(napi_env env, napi_callback_info info)
     };
     auto finalizer = [](napi_env env, void* data, void* hint) {};
     return JsConstructor<LocalUpdater>(env, info, initializer, finalizer);
-}
-
-template<typename T>
-T* CreateJsObject(napi_env env, napi_callback_info info, napi_ref constructorRef, napi_value& jsObject)
-{
-    napi_value constructor = nullptr;
-    napi_status status = napi_get_reference_value(env, constructorRef, &constructor);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr,
-        "CreateJsObject error, napi_get_reference_value fail");
-
-    size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = { 0 };
-    status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    if (status != napi_ok) {
-        ENGINE_LOGI("CreateJsObject, napi_get_cb_info error");
-    }
-    status = napi_new_instance(env, constructor, argc, args, &jsObject);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "CreateJsObject error, napi_new_instance fail");
-
-    T *nativeObject = nullptr;
-    status = napi_unwrap(env, jsObject, (void**)&nativeObject);
-    if (status != napi_ok) {
-        ENGINE_LOGE("CreateJsObject error, napi_unwrap fail");
-        napi_remove_wrap(env, jsObject, (void**)&nativeObject);
-        jsObject = nullptr;
-        return nullptr;
-    }
-    return nativeObject;
 }
 
 napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
@@ -426,6 +390,7 @@ static napi_module g_module = {
  */
 extern "C" __attribute__((constructor)) void RegisterModule(void)
 {
+    ENGINE_LOGI("RegisterModule");
     napi_module_register(&g_module);
 }
 } // namespace OHOS::UpdateEngine
