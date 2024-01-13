@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 #ifndef MIGRATE_SERVER_NET_MANAGER_MODEL_H
 #define MIGRATE_SERVER_NET_MANAGER_MODEL_H
+
 namespace OHOS::UpdateEngine {
 enum class NetType {
     NO_NET = 0,
