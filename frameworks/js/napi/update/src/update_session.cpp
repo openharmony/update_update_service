@@ -150,7 +150,6 @@ void UpdateListener::RemoveHandlerRef(napi_env env)
     handlerRef_ = nullptr;
 }
 
-
 std::map <uint32_t, std::string> SessionFuncHelper::sessionFuncMap_ = {
     {SessionType::SESSION_CHECK_VERSION,               "checkNewVersion"},
     {SessionType::SESSION_DOWNLOAD,                    "download"},
@@ -180,10 +179,10 @@ std::map <uint32_t, std::string> SessionFuncHelper::sessionFuncMap_ = {
 std::string SessionFuncHelper::GetFuncName(uint32_t sessionType)
 {
     auto funcIter = sessionFuncMap_.find(sessionType);
-    if (funcIter == sessionFuncMap_.end) {
+    if (funcIter == sessionFuncMap_.end()) {
         ENGINE_LOGE("SessionFuncHelper::GetFuncName failed sessionType:%{public}d", sessionType);
         return "";
     }
-    return funcIter.second;
+    return funcIter->second;
 }
 } // namespace OHOS::UpdateEngine
