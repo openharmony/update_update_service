@@ -181,7 +181,7 @@ std::string SessionFuncHelper::GetFuncName(uint32_t sessionType)
 {
     auto funcIter = sessionFuncMap_.find(sessionType);
     if (funcIter == sessionFuncMap_.end) {
-        ENGINE_LOGI("SessionFuncHelper::GetFuncName failed sessionType:%{public}d", sessionType);
+        ENGINE_LOGE("SessionFuncHelper::GetFuncName failed sessionType:%{public}d", sessionType);
         return "";
     }
     return funcIter.second;
