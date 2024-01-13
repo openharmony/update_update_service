@@ -150,7 +150,7 @@ void UpdateListener::RemoveHandlerRef(napi_env env)
     handlerRef_ = nullptr;
 }
 
-std::map <uint32_t, std::string> SessionFuncHelper::sessionFuncMap_ = {
+std::map<uint32_t, std::string> SessionFuncHelper::sessionFuncMap_ = {
     {SessionType::SESSION_CHECK_VERSION,               "checkNewVersion"},
     {SessionType::SESSION_DOWNLOAD,                    "download"},
     {SessionType::SESSION_PAUSE_DOWNLOAD,              "pauseDownload"},
