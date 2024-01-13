@@ -18,8 +18,8 @@
 
 #include <functional>
 
-#include "napi_common_define.h"
 #include "common_error_define.h"
+#include "napi_common_define.h"
 
 namespace OHOS::UpdateEngine {
 struct SessionParams {

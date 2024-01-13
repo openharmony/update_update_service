@@ -17,11 +17,11 @@
 #define NAPI_SESSION_H
 
 #include <condition_variable>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "base_client.h"
 #include "base_session.h"
