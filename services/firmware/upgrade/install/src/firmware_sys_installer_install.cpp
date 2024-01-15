@@ -40,11 +40,17 @@ bool SysInstallerInstall::IsComponentLegal(const std::vector<FirmwareComponent> 
 bool SysInstallerInstall::PerformInstall(const std::vector<FirmwareComponent> &componentList)
 {
     FIRMWARE_LOGI("SysInstallerInstall::PerformInstall");
+    if (componentList.empty()) {
+        return false;
+    }
+    int32_t successCount = 0;
     for (const auto &component : componentList) {
         onInstallCallback_.onFirmwareStatus(UpgradeStatus::INSTALLING);
-        return DoSysInstall(component) == OHOS_SUCCESS;
+        if (DoSysInstall(component) == OHOS_SUCCESS) {
+            successCount ++;
+        }
     }
-    return false;
+    return successCount == componentList.size();
 }
 
 int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareComponent)
