@@ -16,6 +16,7 @@
 #ifndef FIRMWARE_DOWNLOAD_EXECUTOR_H
 #define FIRMWARE_DOWNLOAD_EXECUTOR_H
 
+#include <mutex>
 #include "firmware_component.h"
 #include "firmware_iexecutor.h"
 #include "firmware_task.h"
@@ -24,14 +25,13 @@
 
 namespace OHOS {
 namespace UpdateEngine {
-// 防止下载重复提交，设置查询时间间隔
-const int32_t DOWNLOAD_SLEEP_MILLISECONDS = 200;
 class FirmwareDownloadExecutor : public FirmwareIExecutor {
 public:
     FirmwareDownloadExecutor(const DownloadOptions &downloadOptions, FirmwareProgressCallback progressCallback)
         : downloadOptions_(downloadOptions), firmwareProgressCallback_(progressCallback) {}
     ~FirmwareDownloadExecutor() = default;
     void Execute() final;
+    static bool isDownloading_;
 
 private:
     void DoDownload();
@@ -39,7 +39,6 @@ private:
     void PerformDownload();
     void DownloadCallback(std::string serverUrl, std::string packageName, Progress progress);
     bool VerifyDownloadPkg(const std::string &pkgName, Progress &progress);
-    std::string GenerateDownloadTaskId();
 
 private:
     DownloadOptions downloadOptions_;
@@ -48,6 +47,7 @@ private:
     FirmwareTask tasks_;
     UpgradeStatus upgradeStatus_;
     std::shared_ptr<DownloadThread> downloadThread_ = nullptr;
+    static std::mutex downloadMutex_;
 };
 } // namespace UpdateEngine
 } // namespace OHOS

@@ -34,6 +34,8 @@
 namespace OHOS {
 namespace UpdateEngine {
 const mode_t MKDIR_MODE = 0777;
+bool FirmwareDownloadExecutor::isDownloading_ = false;
+std::mutex FirmwareDownloadExecutor::downloadMutex_;
 void FirmwareDownloadExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareDownloadExecutor::Execute");
@@ -56,20 +58,19 @@ void FirmwareDownloadExecutor::DoDownload()
     GetTask();
     if (tasks_.downloadTaskId.empty()) {
         // 首次触发下载
-        std::this_thread::sleep_for(std::chrono::milliseconds(DOWNLOAD_SLEEP_MILLISECONDS));
-        GetTask();
         FIRMWARE_LOGI("FirmwareDownloadExecutor StartDownload");
-        if (tasks_.downloadTaskId.empty()) {
-            std::string downloadTaskId = GenerateDownloadTaskId();
-            FIRMWARE_LOGI("DoDownload: %{public}s", downloadTaskId.c_str());
-            FirmwareTaskOperator().UpdateDownloadTaskIdByTaskId(tasks_.taskId, downloadTaskId);
-        } else {
-            FIRMWARE_LOGI("DoDownload Repeat subcommit");
-            Progress progress;
-            progress.status = UpgradeStatus::DOWNLOADING;
-            progress.endReason = "not perrmit repeat submmit";
-            firmwareProgressCallback_.progressCallback(progress);
-            return;
+        {
+            std::lock_guard<std::mutex> lock(downloadMutex_);
+            FIRMWARE_LOGI("DoDownload isDownloading_ %{public}s", StringUtils::GetBoolStr(isDownloading_).c_str());
+            if (isDownloading_) {
+                FIRMWARE_LOGI("DoDownload Repeat subcommit");
+                Progress progress;
+                progress.status = UpgradeStatus::DOWNLOADING;
+                progress.endReason = "not perrmit repeat submmit";
+                firmwareProgressCallback_.progressCallback(progress);
+                return;
+            }
+            isDownloading_ = true;
         }
         PerformDownload();
     } else {
@@ -189,22 +190,6 @@ bool FirmwareDownloadExecutor::VerifyDownloadPkg(const std::string &pkgName, Pro
         return false;
     }
     return true;
-}
-
-std::string FirmwareDownloadExecutor::GenerateDownloadTaskId()
-{
-    std::vector<std::string> downloadInfos;
-    std::vector<FirmwareComponent> components;
-    FirmwareComponentOperator().QueryAll(components);
-    for (const auto &component : components) {
-        downloadInfos.push_back(component.descriptPackageId);
-    }
-    sort(downloadInfos.begin(), downloadInfos.end());
-    std::string  srcString;
-    for (const auto &downloadInfo : downloadInfos) {
-        srcString += downloadInfo;
-    }
-    return Sha256Utils::CalculateHashCode(srcString);
 }
 } // namespace UpdateEngine
 } // namespace OHOS
