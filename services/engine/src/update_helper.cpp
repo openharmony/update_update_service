@@ -70,35 +70,12 @@ JsonBuilder EventInfo::GetJsonBuilder()
         .Append("}");
 }
 
-JsonBuilder ParamExtra::GetJsonBuilder()
-{
-    return JsonBuilder()
-        .Append("{")
-        .Append("classify", classify)
-        .Append("type", type)
-        .Append("subType", subType)
-        .Append("maxRemindTime", maxRemindTime)
-        .Append("}");
-}
-
 JsonBuilder DescriptionInfo::GetJsonBuilder()
 {
     return JsonBuilder()
         .Append("{")
         .Append("descriptionType", CAST_INT(descriptionType))
         .Append("content", content)
-        .Append("}");
-}
-
-JsonBuilder FirmwareExtra::GetJsonBuilder()
-{
-    return JsonBuilder()
-        .Append("{")
-        .Append("forceUpgrade", CAST_INT(forceUpgradeType))
-        .Append("patchHasOUC", patchHasOUC)
-        .Append("releaseRuleAttr", releaseRuleAttr)
-        .Append("lastUpdateTime", lastUpdateTime)
-        .Append("customPolicyType", CAST_INT(customPolicyType))
         .Append("}");
 }
 
