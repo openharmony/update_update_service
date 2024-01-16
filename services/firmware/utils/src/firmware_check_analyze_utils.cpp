@@ -125,7 +125,6 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(nlohmann::json &root)
         ret += JsonUtils::GetValueAndSetTo(result, "versionName", component.targetBlVersionNumber);
         component.targetBlDisplayVersionNumber = component.targetBlVersionNumber;
         component.blVersionType = 1;
-        component.targetBlVersionNumber = component.targetBlVersionNumber;
         component.componentId = component.descriptPackageId;
         component.versionPackageType = PackageType::NORMAL;
         componentId = component.descriptPackageId;
