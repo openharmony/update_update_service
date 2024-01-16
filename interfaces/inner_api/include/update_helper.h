@@ -376,42 +376,10 @@ enum class AutoUpgradeCondition {
     IDLE = 0,
 };
 
-struct AccessoryDeviceInfo {
-    std::string macAddress;
-    DeviceType deviceType;
-    std::string deviceName;
-};
-
-struct ParamExtra : public BaseJsonStruct {
-    std::string classify;
-    std::string type;
-    std::string subType;
-    std::string maxRemindTime;
-
-    JsonBuilder GetJsonBuilder() final;
-};
-
 struct DescriptionInfo : public BaseJsonStruct {
     DescriptionType descriptionType = DescriptionType::CONTENT;
     std::string content;
 
-    JsonBuilder GetJsonBuilder() final;
-};
-
-enum class PolicyType {
-    DEFAULT = 0,
-    PROHIBIT,
-    UPGRADE_TO_SPECIFIC_VERSION,
-    WINDOWS,
-    POSTPONE
-};
-
-struct FirmwareExtra : public BaseJsonStruct {
-    ForceUpgradeType forceUpgradeType = ForceUpgradeType::NOT_SUPPORT;
-    int64_t lastUpdateTime;                            // 行业定制最晚升级时间
-    PolicyType customPolicyType = PolicyType::DEFAULT; // 行业定制策略类型
-    bool patchHasOUC = false;
-    std::string releaseRuleAttr;
     JsonBuilder GetJsonBuilder() final;
 };
 
@@ -508,28 +476,6 @@ struct UpdateTime {
     }
 };
 
-struct CustomPolicy {
-    PolicyType type = PolicyType::DEFAULT;
-    UpdateTime installTime;
-    std::string version;
-
-    friend void to_json(nlohmann::json &jsonObj, const CustomPolicy &policy)
-    {
-        jsonObj["type"] = policy.type;
-        jsonObj["installTime"] = policy.installTime;
-        jsonObj["version"] = policy.version;
-    }
-
-    friend void from_json(const nlohmann::json &jsonObj, CustomPolicy &policy)
-    {
-        int32_t typeInt = CAST_INT(PolicyType::DEFAULT);
-        JsonUtils::GetValueAndSetTo(jsonObj, "type", typeInt);
-        policy.type = static_cast<PolicyType>(typeInt);
-        JsonUtils::GetValueAndSetTo(jsonObj, "installTime", policy.installTime);
-        JsonUtils::GetValueAndSetTo(jsonObj, "version", policy.version);
-    }
-};
-
 struct UpgradePolicy {
     bool downloadStrategy = false;
     bool autoUpgradeStrategy = false;
@@ -564,22 +510,6 @@ struct ConfigInfo {
     std::string businessDomain;
     uint32_t abInstallTimeout = 1800; // 1800s
     std::string moduleLibPath;
-};
-
-struct SystemUpdateInfo {
-    std::string version;
-    int64_t firstReceivedTime;
-    std::string packageType;
-};
-
-enum class AuthType {
-    PKI = 1,
-    WD = 2
-};
-
-enum class UpgAuthSignVer {
-    AUTH_SIGN_TYPE_HOTA = 0,
-    AUTH_SIGN_TYPE_PKI = 1
 };
 
 using OnEvent = std::function<void(const EventInfo &eventInfo)>;
