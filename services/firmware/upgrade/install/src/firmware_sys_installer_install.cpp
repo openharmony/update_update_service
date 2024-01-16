@@ -43,13 +43,14 @@ bool SysInstallerInstall::PerformInstall(const std::vector<FirmwareComponent> &c
     if (componentList.empty()) {
         return false;
     }
+    int32_t successCount = 0;
     for (const auto &component : componentList) {
         onInstallCallback_.onFirmwareStatus(UpgradeStatus::INSTALLING);
-        if (DoSysInstall(component) != OHOS_SUCCESS) {
-            return false;
-        }
+        if (DoSysInstall(component) == OHOS_SUCCESS) {
+            successCount ++;
+        }  
     }
-    return true;
+    return successCount == componentList.size();
 }
 
 int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareComponent)
