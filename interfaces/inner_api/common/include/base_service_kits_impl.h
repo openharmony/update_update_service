@@ -83,7 +83,7 @@ template <typename SERVICE> sptr<SERVICE> BaseServiceKitsImpl<SERVICE>::GetServi
     ENGINE_LOGI("GetService recreate service instance");
     sptr<ISystemAbilityManager> manager = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
     ENGINE_CHECK(manager != nullptr, return nullptr, "manager is nullptr");
-    sptr<IRemoteObject> object = manager->GetSystemAbility(systemAbilityId_);
+    sptr<IRemoteObject> object = manager->CheckSystemAbility(systemAbilityId_);
     if (object == nullptr) {
         ENGINE_CHECK(LoadSaService::GetInstance()->TryLoadSa(systemAbilityId_), return nullptr, "TryLoadSa fail");
         object = manager->GetSystemAbility(systemAbilityId_);
@@ -111,7 +111,7 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::AddDeathRecipient
 
 template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(const wptr<IRemoteObject> &remote)
 {
-    ENGINE_LOGD("Remote is dead, do ResetService");
+    ENGINE_LOGI("Remote is dead, do ResetService");
     std::lock_guard<std::mutex> lock(remoteServerLock_);
     if (deathRecipient_ != nullptr && remote != nullptr) {
         remote->RemoveDeathRecipient(deathRecipient_);
