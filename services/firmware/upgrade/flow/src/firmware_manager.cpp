@@ -34,7 +34,6 @@
 #include "firmware_iexecute_mode.h"
 #include "firmware_log.h"
 #include "firmware_manual_check_mode.h"
-#include "firmware_download_executor.h"
 #include "firmware_download_mode.h"
 #include "firmware_install_apply_mode.h"
 #include "firmware_status_cache.h"
@@ -163,7 +162,6 @@ void FirmwareManager::DoCancelDownload(BusinessError &businessError)
         return;
     }
     ProgressThread::isCancel_ = true;
-    FirmwareDownloadExecutor::isDownloading_ = false;
     return;
 }
 
@@ -205,7 +203,7 @@ void FirmwareManager::DoDownload(const DownloadOptions &downloadOptions, Busines
     std::shared_ptr<FirmwareIExecuteMode> executeMode =
         std::make_shared<FirmwareDownloadMode>(downloadOptions, businessError, [=]() {
             FIRMWARE_LOGI("FirmwareManager DoDownload finish");
-            FirmwareDownloadExecutor::isDownloading_ = false;
+            DelayedSingleton<FirmwareStatusCache>::GetInstance()->SetIsDownloading(false);
             delete flowManager;
         });
     flowManager->SetExecuteMode(executeMode);
