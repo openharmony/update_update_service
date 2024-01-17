@@ -45,5 +45,23 @@ int64_t StatusCache::GetCurrentTime()
     }
     return timeUtilsProxy_->GetTimestamp();
 }
+
+bool StatusCache::IsDownloading()
+{
+    if (lastDownloadTime_ != -1 && abs(GetCurrentTime() - lastDownloadTime_) > Constant::ONE_SECONDS) {
+        // 当前时间与上次下载时间间隔超过1秒钟，允许再次触发下载
+        ENGINE_LOGE("minus time is more than one seconds");
+        return false;
+    }
+    return isDownloading_;
+}
+
+void StatusCache::SetIsDownloading(bool isDownloading)
+{
+    isDownloading_ = isDownloading;
+    if (isDownloading_) {
+        lastDownloadTime_ = GetCurrentTime();
+    }
+}
 } // namespace UpdateEngine
 } // namespace OHOS

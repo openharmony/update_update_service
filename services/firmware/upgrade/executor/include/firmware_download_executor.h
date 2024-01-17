@@ -31,7 +31,6 @@ public:
         : downloadOptions_(downloadOptions), firmwareProgressCallback_(progressCallback) {}
     ~FirmwareDownloadExecutor() = default;
     void Execute() final;
-    static bool isDownloading_;
 
 private:
     void DoDownload();
@@ -47,7 +46,6 @@ private:
     FirmwareTask tasks_;
     UpgradeStatus upgradeStatus_;
     std::shared_ptr<DownloadThread> downloadThread_ = nullptr;
-    static std::mutex downloadMutex_;
 };
 } // namespace UpdateEngine
 } // namespace OHOS

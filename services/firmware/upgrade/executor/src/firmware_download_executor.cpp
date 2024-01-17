@@ -34,8 +34,6 @@
 namespace OHOS {
 namespace UpdateEngine {
 const mode_t MKDIR_MODE = 0777;
-bool FirmwareDownloadExecutor::isDownloading_ = false;
-std::mutex FirmwareDownloadExecutor::downloadMutex_;
 void FirmwareDownloadExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareDownloadExecutor::Execute");
@@ -58,20 +56,6 @@ void FirmwareDownloadExecutor::DoDownload()
     GetTask();
     if (tasks_.downloadTaskId.empty()) {
         // 首次触发下载
-        FIRMWARE_LOGI("FirmwareDownloadExecutor StartDownload");
-        {
-            std::lock_guard<std::mutex> lock(downloadMutex_);
-            FIRMWARE_LOGI("DoDownload isDownloading_ %{public}s", StringUtils::GetBoolStr(isDownloading_).c_str());
-            if (isDownloading_) {
-                FIRMWARE_LOGI("DoDownload Repeat subcommit");
-                Progress progress;
-                progress.status = UpgradeStatus::DOWNLOADING;
-                progress.endReason = "not perrmit repeat submmit";
-                firmwareProgressCallback_.progressCallback(progress);
-                return;
-            }
-            isDownloading_ = true;
-        }
         PerformDownload();
     } else {
         // 恢复下载
