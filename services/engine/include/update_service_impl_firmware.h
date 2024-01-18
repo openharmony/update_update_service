@@ -80,7 +80,6 @@ private:
         DelayedSingleton<FirmwarePreferencesUtil>::GetInstance();
     std::condition_variable conditionVariable_;
     std::mutex checkNewVersionMutex_;
-    static std::mutex downloadMutex_;
     bool checkComplete_ = false;
     void GetChangelogContent(std::string &dataXml, const std::string &language);
 };
