@@ -16,7 +16,6 @@
 #ifndef FIRMWARE_DOWNLOAD_EXECUTOR_H
 #define FIRMWARE_DOWNLOAD_EXECUTOR_H
 
-#include <mutex>
 #include "firmware_component.h"
 #include "firmware_iexecutor.h"
 #include "firmware_task.h"
