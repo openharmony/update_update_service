@@ -60,6 +60,7 @@ int32_t UpdateServiceImplFirmware::CheckNewVersion(const UpgradeInfo &info, Busi
         businessError.errorNum = CallResult::TIME_OUT;
         businessError.message = "CheckNewVersion TimeOut";
     }
+    weakPtr->checkComplete_ = false;
     return INT_CALL_SUCCESS;
 }
 
