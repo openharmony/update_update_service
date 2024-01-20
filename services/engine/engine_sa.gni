@@ -123,37 +123,9 @@ sa_include_dirs = [
   "//third_party/cJSON/",
 ]
 
-if (!ability_ability_base_enable || !ability_ability_runtime_enable) {
-  sa_include_dirs += [
-    "//foundation/ability/ability_base/interfaces/inner_api/base/include",
-    "//foundation/ability/ability_base/interfaces/kits/native/uri/include",
-    "//foundation/ability/ability_base/interfaces/kits/native/want/include",
-    "//foundation/ability/ability_runtime/frameworks/simulator/common/include",
-    "//foundation/ability/ability_runtime/interfaces/inner_api/ability_manager/include",
-    "//foundation/ability/ability_runtime/interfaces/inner_api/app_manager/include/appmgr",
-    "//foundation/ability/ability_runtime/interfaces/kits/native/ability/native",
-    "//foundation/bundlemanager/bundle_framework/interfaces/inner_api/appexecfwk_base/include",
-  ]
-}
-
-if (!preference_native_preferences_enable) {
-  sa_include_dirs += [
-    "//foundation/distributeddatamgr/preferences/interfaces/inner_api/include",
-  ]
-}
-
-if (!communication_netmanager_base_enable) {
-  sa_include_dirs += [
-    "//foundation/communication/netmanager_base/interfaces/innerkits/include",
-    "//foundation/communication/netmanager_base/interfaces/innerkits/netconnclient/include",
-    "//foundation/communication/netmanager_base/interfaces/innerkits/netconnclient/include/proxy",
-  ]
-}
-
 if (!relational_store_native_rdb_enable) {
   sa_include_dirs += [
     "//base/update/updateservice/services/core/ability/sqlite/core/include",
-    "//foundation/distributeddatamgr/relational_store/interfaces/inner_api/rdb/include",
   ]
 }
 
@@ -161,8 +133,6 @@ sa_include_dirs += firmware_include
 sa_include_dirs += sqlite_include
 sa_include_dirs += update_log_include
 sa_include_dirs += startup_include
-sa_include_dirs +=
-    [ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
 
 sa_deps = [
   "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
@@ -191,8 +161,8 @@ sa_external_deps = [
   "ipc:ipc_core",
   "safwk:system_ability_fwk",
   "samgr:samgr_proxy",
-  "updater:libpackageExt",  # "package/package.h"
-  "updater:libupdaterkits",  # "updaterkits/updaterkits.h"
+  "updater:libpackage_shared",  # "package/package.h"
+  "updater:libupdater_shared",  # "updaterkits/updaterkits.h"
 ]
 
 if (ability_ability_base_enable) {
@@ -204,12 +174,6 @@ if (ability_ability_base_enable) {
 if (ability_ability_runtime_enable) {
   sa_external_deps += [ "ability_runtime:ability_manager" ]
 }
-if (communication_netmanager_base_enable) {
-  sa_external_deps += [ "netmanager_base:net_conn_manager_if" ]
-}
-if (preference_native_preferences_enable) {
-  sa_external_deps += [ "preferences:native_preferences" ]
-}
 
 if (ability_ability_runtime_enable) {
   sa_external_deps += firmware_external_deps
@@ -218,7 +182,7 @@ if (ability_ability_runtime_enable) {
 sa_external_deps += sqlite_external_deps
 sa_external_deps += update_log_external_deps
 sa_external_deps += startup_external_deps
-
+sa_external_deps += [ "relational_store:native_rdb" ]
 sa_public_deps = []
 sa_public_deps += startup_public_deps
 
