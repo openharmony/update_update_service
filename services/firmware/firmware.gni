@@ -102,7 +102,7 @@ firmware_src += ab_update_src
 
 firmware_external_deps = [ "sys_installer:libsysinstallerkits" ]
 
-ab_update_deps = [ "ipc_client:libsysinstallerkits"]
+ab_update_deps = [ "ipc_client:libsysinstallerkits" ]
 
 firmware_deps = []
 firmware_deps += ab_update_deps
