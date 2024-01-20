@@ -27,9 +27,7 @@ sqlite_src = []
 if (relational_store_native_rdb_enable) {
   sqlite_root_path = "$updateengine_root_path/services/core/ability/sqlite"
   sqlite_external_deps += [ "relational_store:native_rdb" ]
-  sqlite_include += [
-    "$sqlite_root_path/core/include",
-  ]
+  sqlite_include += [ "$sqlite_root_path/core/include" ]
   sqlite_src += [ "$sqlite_root_path/core/src/sqlite_db.cpp" ]
   sqlite_defines += [ "RELATIONAL_STORE_NATIVE_RDB_ENABLE" ]
 }
