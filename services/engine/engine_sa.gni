@@ -133,6 +133,8 @@ sa_include_dirs += firmware_include
 sa_include_dirs += sqlite_include
 sa_include_dirs += update_log_include
 sa_include_dirs += startup_include
+sa_include_dirs +=
+    [ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
 
 sa_deps = [
   "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
@@ -161,8 +163,8 @@ sa_external_deps = [
   "ipc:ipc_core",
   "safwk:system_ability_fwk",
   "samgr:samgr_proxy",
-  "updater:libpackage_shared",  # "package/package.h"
-  "updater:libupdater_shared",  # "updaterkits/updaterkits.h"
+  "updater:libpackageExt",  # "package/package.h"
+  "updater:libupdaterkits",  # "updaterkits/updaterkits.h"
 ]
 
 if (ability_ability_base_enable) {
@@ -175,6 +177,10 @@ if (ability_ability_runtime_enable) {
   sa_external_deps += [ "ability_runtime:ability_manager" ]
 }
 
+sa_external_deps += [ "netmanager_base:net_conn_manager_if" ]
+sa_external_deps += [ "preferences:native_preferences" ]
+sa_external_deps += [ "relational_store:native_rdb" ]
+
 if (ability_ability_runtime_enable) {
   sa_external_deps += firmware_external_deps
 }
@@ -182,7 +188,7 @@ if (ability_ability_runtime_enable) {
 sa_external_deps += sqlite_external_deps
 sa_external_deps += update_log_external_deps
 sa_external_deps += startup_external_deps
-sa_external_deps += [ "relational_store:native_rdb" ]
+
 sa_public_deps = []
 sa_public_deps += startup_public_deps
 

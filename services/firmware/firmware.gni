@@ -17,10 +17,10 @@ import("$updateengine_root_path/services/core/ability/sqlite/sqlite.gni")
 firmware_root_path = "$updateengine_root_path/services/firmware"
 
 ab_update_include =
-    [ "//base/update/sys_installer/interfaces/inner_api/include" ]
+    [ "$updateengine_sysinstaller_path/interfaces/inner_api/include" ]
 
 download_include = [
-  "//base/update/updateservice/services/core/ability/download/data/include",
+  "$updateengine_root_path/services/core/ability/download/data/include",
 ]
 
 firmware_include = [
@@ -101,7 +101,7 @@ firmware_src += ab_update_src
 
 firmware_external_deps = [ "sys_installer:libsysinstallerkits" ]
 
-ab_update_deps = [ "ipc_client:libsysinstallerkits" ]
+ab_update_deps = []
 
 firmware_deps = []
 firmware_deps += ab_update_deps
