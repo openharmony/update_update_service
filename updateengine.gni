@@ -21,6 +21,5 @@ updateengine_test_name = "update_service_test"
 updateengine_unittest_name = "update_service_unittest"
 updateengine_adapter_config =
     "$updateengine_root_path/adapter/default_config/feature_config"
-updateengine_sysinstaller_path = "//base/update/sys_installer"
 
 import("$updateengine_adapter_config/standard/config.gni")
