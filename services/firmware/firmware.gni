@@ -17,10 +17,10 @@ import("$updateengine_root_path/services/core/ability/sqlite/sqlite.gni")
 firmware_root_path = "$updateengine_root_path/services/firmware"
 
 ab_update_include =
-    [ "$updateengine_sysinstaller_path/interfaces/inner_api/include" ]
+    [ "//base/update/sys_installer/interfaces/inner_api/include" ]
 
 download_include =
-    [ "$updateengine_root_path/services/core/ability/download/data/include" ]
+    [ "//base/update/updateservice/services/core/ability/download/data/include" ]
 
 firmware_include = [
   "$firmware_root_path/alarm/include",
@@ -55,8 +55,6 @@ firmware_src = [
   "$firmware_root_path/callback/src/firmware_callback_utils.cpp",
   "$firmware_root_path/common/src/firmware_update_helper.cpp",
   "$firmware_root_path/data/manager/src/firmware_preferences_utils.cpp",
-  "$firmware_root_path/event/src/firmware_event_listener.cpp",
-  "$firmware_root_path/upgrade/data_processor/src/firmware_check_data_processor.cpp",
   "$firmware_root_path/upgrade/data_processor/src/firmware_download_data_processor.cpp",
   "$firmware_root_path/upgrade/data_processor/src/firmware_install_data_processor.cpp",
   "$firmware_root_path/upgrade/executor/src/firmware_apply_executor.cpp",
@@ -68,15 +66,30 @@ firmware_src = [
   "$firmware_root_path/upgrade/install/src/firmware_install.cpp",
   "$firmware_root_path/upgrade/install/src/firmware_updater_install.cpp",
   "$firmware_root_path/upgrade/install/src/firmware_install_factory.cpp",
-  "$firmware_root_path/upgrade/mode/src/firmware_manual_check_mode.cpp",
-  "$firmware_root_path/upgrade/mode/src/firmware_download_mode.cpp",
-  "$firmware_root_path/upgrade/mode/src/firmware_install_apply_mode.cpp",
   "$firmware_root_path/upgrade/status/src/firmware_status_cache.cpp",
   "$firmware_root_path/upgrade/status/src/firmware_result_process.cpp",
   "$firmware_root_path/utils/src/firmware_check_analyze_utils.cpp",
   "$firmware_root_path/utils/src/firmware_changelog_utils.cpp",
   "$firmware_root_path/utils/src/firmware_combine_version_utils.cpp",
 ]
+
+if (communication_netmanager_base_enable) {
+  firmware_src += [
+    "$firmware_root_path/event/src/firmware_event_listener.cpp",
+    "$firmware_root_path/upgrade/data_processor/src/firmware_check_data_processor.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_download_mode.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_manual_check_mode.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_install_apply_mode.cpp",
+  ]
+} else {
+  firmware_src += [
+    "$firmware_root_path/event/src/firmware_event_listener_empty.cpp",
+    "$firmware_root_path/upgrade/data_processor/src/firmware_check_data_processor_empty.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_download_mode_empty.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_manual_check_mode_empty.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_install_apply_mode_empty.cpp",
+  ]
+}
 
 if (relational_store_native_rdb_enable) {
   firmware_src += [
@@ -98,7 +111,7 @@ if (relational_store_native_rdb_enable) {
 }
 firmware_src += ab_update_src
 
-firmware_external_deps = [ "sys_installer:libsysinstallerkits" ]
+firmware_external_deps = [ "sys_installer:libsysinstaller_shared" ]
 
 ab_update_deps = []
 

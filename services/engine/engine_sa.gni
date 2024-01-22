@@ -24,10 +24,6 @@ declare_args() {
     ability_ability_base_enable = false
   }
 
-  communication_netmanager_base_enable = true
-  if (!defined(global_parts_info.communication_netmanager_base)) {
-    communication_netmanager_base_enable = false
-  }
   preference_native_preferences_enable = true
   if (!defined(global_parts_info.distributeddatamgr_preferences)) {
     preference_native_preferences_enable = false
@@ -163,8 +159,8 @@ sa_external_deps = [
   "ipc:ipc_core",
   "safwk:system_ability_fwk",
   "samgr:samgr_proxy",
-  "updater:libpackageExt",  # "package/package.h"
-  "updater:libupdaterkits",  # "updaterkits/updaterkits.h"
+  "updater:libpackage_shared",  # "package/package.h"
+  "updater:libupdater_shared",  # "updaterkits/updaterkits.h"
 ]
 
 if (ability_ability_base_enable) {
@@ -177,9 +173,13 @@ if (ability_ability_runtime_enable) {
   sa_external_deps += [ "ability_runtime:ability_manager" ]
 }
 
-sa_external_deps += [ "netmanager_base:net_conn_manager_if" ]
-sa_external_deps += [ "preferences:native_preferences" ]
-sa_external_deps += [ "relational_store:native_rdb" ]
+if (communication_netmanager_base_enable) {
+  sa_external_deps += [ "netmanager_base:net_conn_manager_if" ]
+}
+
+if (preference_native_preferences_enable) {
+  sa_external_deps += [ "preferences:native_preferences" ]
+}
 
 if (ability_ability_runtime_enable) {
   sa_external_deps += firmware_external_deps

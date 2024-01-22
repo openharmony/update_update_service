@@ -22,7 +22,9 @@
 #include "config_parse.h"
 #include "dupdate_errno.h"
 #include "dupdate_upgrade_helper.h"
+#ifdef NATIVE_PREFERENCES_ENABLE
 #include "dupdate_net_manager.h"
+#endif
 #include "file_utils.h"
 #include "firmware_callback_utils.h"
 #include "firmware_changelog_utils.h"
@@ -314,6 +316,7 @@ void FirmwareManager::HandleBootComplete()
 void FirmwareManager::HandleNetChanged()
 {
     FIRMWARE_LOGI("HandleNetChanged");
+    #ifdef NATIVE_PREFERENCES_ENABLE
     if (!DelayedSingleton<NetManager>::GetInstance()->IsNetAvailable()) {
         FIRMWARE_LOGE("HandleNetChanged network not available.");
         ProgressThread::isNoNet_ = true;
@@ -342,6 +345,7 @@ void FirmwareManager::HandleNetChanged()
             DoAutoDownload(task);
         }
     }
+    #endif
 }
 
 // updater调用后正常启动
