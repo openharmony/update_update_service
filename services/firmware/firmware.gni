@@ -19,8 +19,9 @@ firmware_root_path = "$updateengine_root_path/services/firmware"
 ab_update_include =
     [ "//base/update/sys_installer/interfaces/inner_api/include" ]
 
-download_include =
-    [ "//base/update/updateservice/services/core/ability/download/data/include" ]
+download_include = [
+  "//base/update/updateservice/services/core/ability/download/data/include",
+  ]
 
 firmware_include = [
   "$firmware_root_path/alarm/include",
