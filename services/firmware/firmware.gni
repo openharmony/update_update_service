@@ -21,7 +21,7 @@ ab_update_include =
 
 download_include = [
   "//base/update/updateservice/services/core/ability/download/data/include",
-  ]
+]
 
 firmware_include = [
   "$firmware_root_path/alarm/include",
