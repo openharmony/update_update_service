@@ -42,7 +42,7 @@ FirmwareStep FirmwareDownloadMode::GetStepAfterInit()
 FirmwareStep FirmwareDownloadMode::GetStepAfterDownload()
 {
     FIRMWARE_LOGI("GetStepAfterDownload downloadOptions %{public}d", CAST_INT(downloadOptions_.order));
-    return FirmwareStep::COMPLETE;;
+    return FirmwareStep::COMPLETE;
 }
 
 void FirmwareDownloadMode::DownloadPauseProcess(const FirmwareTask &task, const ErrorMessage &errorMessage)
