@@ -15,21 +15,7 @@
 
 #include "firmware_check_data_processor.h"
 
-#include "config_parse.h"
-#include "constant.h"
-#include "firmware_changelog_utils.h"
-#include "firmware_combine_version_utils.h"
-#include "firmware_common.h"
-#include "firmware_component_operator.h"
-#include "firmware_constant.h"
-#include "firmware_callback_utils.h"
 #include "firmware_log.h"
-#include "firmware_task_operator.h"
-#include "device_adapter.h"
-#include "firmware_update_helper.h"
-#include "string_utils.h"
-#include "time_utils.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

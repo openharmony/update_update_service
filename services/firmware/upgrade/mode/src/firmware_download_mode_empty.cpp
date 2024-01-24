@@ -15,16 +15,8 @@
 
 #include "firmware_download_mode.h"
 
-#include "dupdate_errno.h"
-#include "firmware_callback_utils.h"
-#include "firmware_common.h"
 #include "firmware_constant.h"
 #include "firmware_log.h"
-#include "firmware_preferences_utils.h"
-#include "firmware_status_cache.h"
-#include "firmware_task_operator.h"
-#include "firmware_update_helper.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {
