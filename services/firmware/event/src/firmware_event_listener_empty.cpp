@@ -15,10 +15,7 @@
 
 #include "firmware_event_listener.h"
 
-#include "constant.h"
 #include "firmware_log.h"
-#include "firmware_manager.h"
-#include "update_define.h"
 
 namespace OHOS {
 namespace UpdateEngine {
