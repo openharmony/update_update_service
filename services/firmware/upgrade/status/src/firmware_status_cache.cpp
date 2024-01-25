@@ -47,20 +47,12 @@ void FirmwareStatusCache::SetIsChecking(bool isChecking)
     statusCache_->SetIsChecking(isChecking);
 }
 
-bool FirmwareStatusCache::IsDownloading()
+bool FirmwareStatusCache::IsDownloadTriggered()
 {
     if (statusCache_ == nullptr) {
         return false;
     }
-    return statusCache_->IsDownloading();
-}
-
-void FirmwareStatusCache::SetIsDownloading(bool isDownloading)
-{
-    if (statusCache_ == nullptr) {
-        return;
-    }
-    statusCache_->SetIsDownloading(isDownloading);
+    return statusCache_->IsDownloadTriggered();
 }
 } // namespace UpdateEngine
 } // namespace OHOS

@@ -203,7 +203,6 @@ void FirmwareManager::DoDownload(const DownloadOptions &downloadOptions, Busines
     std::shared_ptr<FirmwareIExecuteMode> executeMode =
         std::make_shared<FirmwareDownloadMode>(downloadOptions, businessError, [=]() {
             FIRMWARE_LOGI("FirmwareManager DoDownload finish");
-            DelayedSingleton<FirmwareStatusCache>::GetInstance()->SetIsDownloading(false);
             delete flowManager;
         });
     flowManager->SetExecuteMode(executeMode);

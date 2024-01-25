@@ -29,7 +29,7 @@ constexpr int32_t ONE_DAY_HOUR = 24;
 constexpr int32_t ONE_HOUR_MINUTES = 60;
 constexpr int32_t ONE_MINUTE_SECONDS = 60;
 constexpr int32_t FIVE_MINUTES_SECONDS = 5 * Constant::ONE_MINUTE_SECONDS;
-constexpr int32_t ONE_SECONDS = 1;
+constexpr int32_t MILLESECONDS = 1000;
 
 static const std::string DUPDATE_ENGINE_CONFIG_PATH = "/system/etc/update/dupdate_config.json";
 
