@@ -126,7 +126,7 @@ napi_value UpdateClient::CancelUpgrade(napi_env env, napi_callback_info info)
             return UpdateServiceKits::GetInstance().Cancel(upgradeInfo_, CAST_INT(UpdaterSaInterfaceCode::DOWNLOAD),
                 *businessError);
     });
-    PARAM_CHECK(ret != nullptr, return nullptr, "Failed to start worker.");
+    PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
 }
 
