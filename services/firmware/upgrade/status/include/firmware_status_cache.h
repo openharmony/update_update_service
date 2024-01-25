@@ -28,8 +28,7 @@ class FirmwareStatusCache : public DelayedSingleton<FirmwareStatusCache> {
 public:
     bool IsChecking();
     void SetIsChecking(bool isChecking);
-    bool IsDownloading();
-    void SetIsDownloading(bool isDownloading);
+    bool IsDownloadTriggered();
 private:
     std::shared_ptr<StatusCache> statusCache_ = nullptr;
 };

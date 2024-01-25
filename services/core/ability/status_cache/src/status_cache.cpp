@@ -17,6 +17,7 @@
 
 #include "constant.h"
 #include "update_log.h"
+#include "time_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -46,22 +47,20 @@ int64_t StatusCache::GetCurrentTime()
     return timeUtilsProxy_->GetTimestamp();
 }
 
-bool StatusCache::IsDownloading()
+bool StatusCache::IsDownloadTriggered()
 {
-    if (lastDownloadTime_ != -1 && abs(GetCurrentTime() - lastDownloadTime_) > Constant::ONE_SECONDS) {
-        // 当前时间与上次下载时间间隔超过1秒钟，允许再次触发下载
-        ENGINE_LOGE("minus time is more than one seconds");
+    if (lastDownloadTime_ == -1) {
+        lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
         return false;
     }
-    return isDownloading_;
-}
 
-void StatusCache::SetIsDownloading(bool isDownloading)
-{
-    isDownloading_ = isDownloading;
-    if (isDownloading_) {
-        lastDownloadTime_ = GetCurrentTime();
+    if (abs(TimeUtils::GetTimestampByMilliseconds() - lastDownloadTime_) <
+        Constant::MILLESECONDS) {
+        // 当前时间与上次下载时间间隔小于1秒钟，不允许重复触发下载
+        ENGINE_LOGE("minus time is less than one seconds");
+        return true;
     }
+    return false;
 }
 } // namespace UpdateEngine
 } // namespace OHOS
