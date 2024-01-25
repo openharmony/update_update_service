@@ -119,26 +119,14 @@ napi_value UpdateClient::CheckNewVersion(napi_env env, napi_callback_info info)
 
 napi_value UpdateClient::CancelUpgrade(napi_env env, napi_callback_info info)
 {
-    size_t argc = MAX_ARGC;
-    napi_value args[MAX_ARGC] = { 0 };
-    napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc == 0, return nullptr, "Error get cb info");
     ENGINE_LOGI("CancelUpgrade");
     SessionParams sessionParams(SessionType::SESSION_CANCEL_UPGRADE, CALLBACK_POSITION_ONE, true);
-    std::shared_ptr<BaseSession> sess = nullptr;
-    sess = std::make_shared<UpdateAsyncessionNoCallback>(this, sessionParams, argc);
-    PARAM_CHECK_NAPI_CALL(env, sess != nullptr, return nullptr, "Failed to create update session");
-    sessionsMgr_->AddSession(sess);
-    napi_value retValue = sess->StartWork(
-        env, args,
-        [=](void *context) -> int {
-            BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+    napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
+        BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
             return UpdateServiceKits::GetInstance().Cancel(upgradeInfo_, CAST_INT(UpdaterSaInterfaceCode::DOWNLOAD),
                 *businessError);
-        },
-        nullptr);
-    PARAM_CHECK(retValue != nullptr, sessionsMgr_->RemoveSession(sess->GetSessionId());
-        return nullptr, "Failed to start worker.");
+    });
+    PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
 }
 
