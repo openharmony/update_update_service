@@ -31,11 +31,13 @@ bool ModuleManager::isLoaded = false;
 void ModuleManager::LoadModule(std::string libPath)
 {
     std::string prefix = "/system/lib64/updateext";
+    std::string modulePrefix = "/module_update/3006/lib64/updateext";
     std::string suffix = ".so";
-    if ((libPath.substr(0, prefix.length()) != prefix) ||
-            (libPath.substr(libPath.length() - suffix.length(), suffix.length()) != suffix)) {
-        UTILS_LOGE("LoadModule lib path invalid");
-        return;
+    if ((libPath.substr(0, prefix.length()) != prefix &&
+        libPath.substr(0, modulePrefix.length()) != modulePrefix) ||
+        (libPath.substr(libPath.length() - suffix.length(), suffix.length()) != suffix)) {
+            UTILS_LOGE("LoadModule lib path invalid");
+            return;
     }
     UTILS_LOGD("LoadModule so path: %{public}s", libPath.c_str());
     if (dueModuleHandler == nullptr) {
