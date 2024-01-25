@@ -22,7 +22,7 @@
 #include "config_parse.h"
 #include "dupdate_errno.h"
 #include "dupdate_upgrade_helper.h"
-#ifdef NATIVE_PREFERENCES_ENABLE
+#ifdef NETMANAGER_BASE_ENABLE
 #include "dupdate_net_manager.h"
 #endif
 #include "file_utils.h"
@@ -316,7 +316,7 @@ void FirmwareManager::HandleBootComplete()
 void FirmwareManager::HandleNetChanged()
 {
     FIRMWARE_LOGI("HandleNetChanged");
-    #ifdef NATIVE_PREFERENCES_ENABLE
+    #ifdef NETMANAGER_BASE_ENABLE
     if (!DelayedSingleton<NetManager>::GetInstance()->IsNetAvailable()) {
         FIRMWARE_LOGE("HandleNetChanged network not available.");
         ProgressThread::isNoNet_ = true;
