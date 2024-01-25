@@ -60,6 +60,7 @@ bool StatusCache::IsDownloadTriggered()
         ENGINE_LOGE("minus time is less than one seconds");
         return true;
     }
+    lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
     return false;
 }
 } // namespace UpdateEngine
