@@ -15,7 +15,9 @@
 
 #include "update_service_restorer.h"
 
+#ifndef UPDATER_FUZZ
 #include "fs_manager/mount.h"
+#endif
 #include "updaterkits/updaterkits.h"
 
 #include "update_define.h"
