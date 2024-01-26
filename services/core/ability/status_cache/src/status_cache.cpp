@@ -56,7 +56,7 @@ bool StatusCache::IsDownloadTriggered()
 
     if (abs(TimeUtils::GetTimestampByMilliseconds() - lastDownloadTime_) < Constant::MILLESECONDS) {
         // 当前时间与上次下载时间间隔小于1秒钟，不允许重复触发下载
-        ENGINE_LOGI("interval time is less than one seconds");
+        ENGINE_LOGI("interval time within one seconds");
         return true;
     }
     lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
