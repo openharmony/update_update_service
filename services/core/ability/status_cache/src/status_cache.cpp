@@ -16,8 +16,8 @@
 #include "status_cache.h"
 
 #include "constant.h"
-#include "update_log.h"
 #include "time_utils.h"
+#include "update_log.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -54,10 +54,9 @@ bool StatusCache::IsDownloadTriggered()
         return false;
     }
 
-    if (abs(TimeUtils::GetTimestampByMilliseconds() - lastDownloadTime_) <
-        Constant::MILLESECONDS) {
+    if (abs(TimeUtils::GetTimestampByMilliseconds() - lastDownloadTime_) < Constant::MILLESECONDS) {
         // 当前时间与上次下载时间间隔小于1秒钟，不允许重复触发下载
-        ENGINE_LOGE("minus time is less than one seconds");
+        ENGINE_LOGI("interval time is less than one seconds");
         return true;
     }
     lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
