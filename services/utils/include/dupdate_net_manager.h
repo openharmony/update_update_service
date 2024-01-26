@@ -21,7 +21,9 @@
 #include <set>
 
 #include "dupdate_inet_observer.h"
+#ifdef NETMANAGER_BASE_ENABLE
 #include "dupdate_net_observer.h"
+#endif
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -49,7 +51,9 @@ public:
 private:
     bool IsBaseNetType(NetType netType);
 
+#ifdef NETMANAGER_BASE_ENABLE
     sptr<NetObserver> observer_ = nullptr;
+#endif
     std::mutex netChangeMutex_;
     NetType netType_ = NetType::NO_NET;
     std::map<NetChangeCallbackType, NetChangeCallback> netChangeCallbackMap_;

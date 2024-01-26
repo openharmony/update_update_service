@@ -13,18 +13,30 @@
  * limitations under the License.
  */
 
-#include "firmware_task_table.h"
+#include "firmware_event_listener.h"
+
+#include "firmware_log.h"
 
 namespace OHOS {
 namespace UpdateEngine {
-std::string FirmwareTaskTable::GetTableName()
+FirmwareEventListener::FirmwareEventListener()
 {
-    return "";
+    FIRMWARE_LOGD("FirmwareEventListener::FirmwareEventListener");
 }
 
-std::string FirmwareTaskTable::GetTableCreateSql()
+FirmwareEventListener::~FirmwareEventListener()
 {
-    return "";
+    FIRMWARE_LOGD("FirmwareEventListener::~FirmwareEventListener");
+}
+
+void FirmwareEventListener::RegisterNetChangedListener()
+{
+    FIRMWARE_LOGI("FirmwareEventListener RegisterNetChangedListener");
+}
+
+void FirmwareEventListener::UnregisterNetChangedListener()
+{
+    FIRMWARE_LOGI("FirmwareEventListener UnregisterNetChangedListener");
 }
 } // namespace UpdateEngine
 } // namespace OHOS
