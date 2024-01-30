@@ -15,6 +15,7 @@
 
 #include "firmware_manual_check_mode.h"
 
+#include "check_result.h"
 #include "dupdate_errno.h"
 #include "dupdate_net_manager.h"
 #include "firmware_callback_utils.h"
@@ -26,7 +27,7 @@
 #include "firmware_status_cache.h"
 #include "firmware_task.h"
 #include "firmware_task_operator.h"
-#include "update_helper.h"
+#include "search_status.h"
 
 namespace OHOS {
 namespace UpdateEngine {

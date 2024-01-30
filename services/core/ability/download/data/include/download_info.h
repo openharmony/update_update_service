@@ -16,11 +16,11 @@
 #ifndef DOWNLOAD_INFO_H
 #define DOWNLOAD_INFO_H
 
+#include <cstdio>
+#include <map>
 #include <string>
 
 #include "encrypt_utils.h"
-#include "update_define.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

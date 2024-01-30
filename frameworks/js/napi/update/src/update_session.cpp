@@ -20,7 +20,6 @@
 #include "client_helper.h"
 #include "napi_common_utils.h"
 #include "update_define.h"
-#include "update_helper.h"
 
 using namespace std;
 

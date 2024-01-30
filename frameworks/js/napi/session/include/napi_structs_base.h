@@ -18,7 +18,7 @@
 
 #include <functional>
 
-#include "common_error_define.h"
+#include "business_error.h"
 #include "napi_common_define.h"
 
 namespace OHOS::UpdateEngine {

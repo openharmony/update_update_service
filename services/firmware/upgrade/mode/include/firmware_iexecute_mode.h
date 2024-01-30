@@ -16,10 +16,14 @@
 #ifndef FIRMWARE_IEXECUTE_MODE_H
 #define FIRMWARE_IEXECUTE_MODE_H
 
+#include "business_error.h"
+#include "check_result.h"
+#include "download_options.h"
 #include "firmware_common.h"
 #include "firmware_component.h"
 #include "firmware_iexecutor.h"
-#include "update_helper.h"
+#include "progress.h"
+#include "upgrade_options.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -20,7 +20,7 @@
 
 #include <mutex>
 
-#include "update_helper.h"
+#include "upgrade_info.h"
 
 namespace OHOS {
 namespace UpdateEngine {

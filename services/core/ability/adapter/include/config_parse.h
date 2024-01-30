@@ -18,7 +18,7 @@
 
 #include "singleton.h"
 
-#include "update_helper.h"
+#include "config_info.h"
 
 namespace OHOS {
 namespace UpdateEngine {

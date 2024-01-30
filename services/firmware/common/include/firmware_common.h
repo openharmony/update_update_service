@@ -24,7 +24,7 @@
 #include "encrypt_utils.h"
 #include "firmware_component.h"
 #include "firmware_log.h"
-#include "update_helper.h"
+#include "update_define.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -15,8 +15,6 @@
 
 #include "updateservicecancel_fuzzer.h"
 
-#include "update_helper.h"
-
 using namespace OHOS::UpdateEngine;
 
 namespace OHOS {

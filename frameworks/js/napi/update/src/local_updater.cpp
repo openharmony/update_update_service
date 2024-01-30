@@ -17,6 +17,7 @@
 
 #include "napi_common_utils.h"
 #include "update_define.h"
+#include "update_callback_info.h"
 #include "update_service_kits.h"
 
 namespace OHOS::UpdateEngine {

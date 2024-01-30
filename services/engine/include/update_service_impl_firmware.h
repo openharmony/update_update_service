@@ -22,7 +22,6 @@
 
 #include "firmware_preferences_utils.h"
 #include "firmware_task.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -20,7 +20,6 @@
 
 #include "firmware_component.h"
 #include "firmware_install.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

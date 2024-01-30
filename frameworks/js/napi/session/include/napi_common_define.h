@@ -24,6 +24,7 @@
 #include "update_log.h"
 
 namespace OHOS::UpdateEngine {
+constexpr int32_t COMPONENT_ERR = 11500000;
 #define PARAM_CHECK(validCheck, exper, ...)  \
 if (!(validCheck)) {                     \
     ENGINE_LOGE(__VA_ARGS__);            \

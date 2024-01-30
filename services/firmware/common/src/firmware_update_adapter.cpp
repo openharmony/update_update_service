@@ -34,7 +34,6 @@
 #include "firmware_preferences_utils.h"
 #include "firmware_task.h"
 #include "time_utils.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -15,8 +15,8 @@
 
 #include "update_callback_proxy.h"
 
+#include "event_info.h"
 #include "message_parcel_helper.h"
-#include "update_helper.h"
 #include "update_log.h"
 
 namespace OHOS::UpdateEngine {

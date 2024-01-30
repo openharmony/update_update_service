@@ -20,9 +20,22 @@
 
 #include "node_api.h"
 
+#include "clear_options.h"
+#include "description_format.h"
+#include "description_options.h"
+#include "download_options.h"
+#include "event_classify_info.h"
+#include "event_info.h"
 #include "napi_common_utils.h"
-#include "update_helper.h"
+#include "network_type.h"
+#include "order.h"
+#include "pause_download_options.h"
+#include "resume_download_options.h"
 #include "update_result.h"
+#include "upgrade_file.h"
+#include "upgrade_info.h"
+#include "upgrade_options.h"
+#include "upgrade_policy.h"
 
 namespace OHOS::UpdateEngine {
 class ClientHelper {

@@ -19,9 +19,9 @@
 
 #include "client_helper.h"
 #include "napi_common_utils.h"
-#include "update_helper.h"
 #include "update_service_kits.h"
 #include "update_session.h"
+#include "update_callback_info.h"
 #include "updater_sa_ipc_interface_code.h"
 
 using namespace std;

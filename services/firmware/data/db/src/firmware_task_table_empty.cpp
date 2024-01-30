@@ -15,6 +15,9 @@
 
 #include "firmware_task_table.h"
 
+#include "itable.h"
+#include "update_define.h"
+
 namespace OHOS {
 namespace UpdateEngine {
 std::string FirmwareTaskTable::GetTableName()

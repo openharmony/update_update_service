@@ -16,9 +16,11 @@
 #ifndef FIRMWARE_IEXECUTOR_H
 #define FIRMWARE_IEXECUTOR_H
 
+#include "error_message.h"
 #include "firmware_common.h"
 #include "firmware_component.h"
 #include "firmware_log.h"
+#include "progress.h"
 
 namespace OHOS {
 namespace UpdateEngine {

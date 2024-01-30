@@ -16,14 +16,15 @@
 #ifndef FIRMWARE_INSTALL_APPLY_MODE_H
 #define FIRMWARE_INSTALL_APPLY_MODE_H
 
+#include "business_error.h"
+#include "device_adapter.h"
 #include "firmware_common.h"
 #include "firmware_download_data_processor.h"
 #include "firmware_iexecute_mode.h"
 #include "firmware_install_data_processor.h"
 #include "firmware_preferences_utils.h"
 #include "firmware_task.h"
-#include "device_adapter.h"
-#include "update_helper.h"
+#include "upgrade_options.h"
 
 namespace OHOS {
 namespace UpdateEngine {

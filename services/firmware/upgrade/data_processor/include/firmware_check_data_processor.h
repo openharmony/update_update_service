@@ -16,9 +16,11 @@
 #ifndef FIRMWARE_CHECK_DATA_PROCESSOR_H
 #define FIRMWARE_CHECK_DATA_PROCESSOR_H
 
+#include "check_result.h"
 #include "firmware_common.h"
 #include "firmware_component.h"
 #include "firmware_preferences_utils.h"
+#include "new_version_info.h"
 
 namespace OHOS {
 namespace UpdateEngine {

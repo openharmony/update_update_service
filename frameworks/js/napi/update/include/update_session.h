@@ -25,9 +25,7 @@
 #include "base_async_session.h"
 #include "base_promise_session.h"
 #include "iupdater.h"
-#include "iupdate_service.h"
 #include "napi_session.h"
-#include "update_client.h"
 
 namespace OHOS::UpdateEngine {
 class BaseUpdateSession : public BaseAsyncSession<UpdateResult> {

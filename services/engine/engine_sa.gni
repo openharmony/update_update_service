@@ -13,7 +13,6 @@
 
 import("//base/update/updateservice/updateengine.gni")
 import("//build/ohos.gni")
-import("$updateengine_root_path/services/core/ability/log/log.gni")
 import("$updateengine_root_path/services/core/ability/sqlite/sqlite.gni")
 import("$updateengine_root_path/services/firmware/firmware.gni")
 import("$updateengine_root_path/services/startup/startup.gni")
@@ -31,9 +30,7 @@ declare_args() {
 }
 
 sa_sources = [
-  "$updateengine_root_path/services/callback/src/update_callback.cpp",
   "$updateengine_root_path/services/callback/src/update_callback_proxy.cpp",
-  "$updateengine_root_path/services/callback/src/update_callback_stub.cpp",
   "$updateengine_root_path/services/core/ability/adapter/src/config_parse.cpp",
   "$updateengine_root_path/services/core/ability/adapter/src/device_adapter.cpp",
   "$updateengine_root_path/services/core/ability/alarm/src/alarm_manager.cpp",
@@ -42,9 +39,7 @@ sa_sources = [
   "$updateengine_root_path/services/core/ability/utils/src/file_utils.cpp",
   "$updateengine_root_path/services/core/ability/utils/src/sha256_utils.cpp",
   "$updateengine_root_path/services/core/ability/utils/src/time_utils_proxy.cpp",
-  "$updateengine_root_path/services/engine/src/message_parcel_helper.cpp",
   "$updateengine_root_path/services/engine/src/progress_thread.cpp",
-  "$updateengine_root_path/services/engine/src/update_helper.cpp",
   "$updateengine_root_path/services/engine/src/update_service.cpp",
   "$updateengine_root_path/services/engine/src/update_service_cache.cpp",
   "$updateengine_root_path/services/engine/src/update_service_impl_firmware.cpp",
@@ -83,7 +78,6 @@ if (preference_native_preferences_enable) {
 
 sa_sources += firmware_src
 sa_sources += sqlite_src
-sa_sources += update_log_src
 sa_sources += startup_src
 
 sa_include_dirs = [
@@ -94,7 +88,6 @@ sa_include_dirs = [
   "$updateengine_root_path/services/core/ability/alarm/include",
   "$updateengine_root_path/services/core/ability/callback/include",
   "$updateengine_root_path/services/core/ability/common/include",
-  "$updateengine_root_path/services/core/ability/define/include",
   "$updateengine_root_path/services/core/ability/model/include",
   "$updateengine_root_path/services/core/ability/net/include",
   "$updateengine_root_path/services/core/ability/preference/include",
@@ -127,13 +120,14 @@ if (!relational_store_native_rdb_enable) {
 
 sa_include_dirs += firmware_include
 sa_include_dirs += sqlite_include
-sa_include_dirs += update_log_include
 sa_include_dirs += startup_include
 sa_include_dirs +=
     [ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
 
 sa_deps = [
   "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
+  "$updateengine_root_path/interfaces/inner_api/engine:$updateengine_inner_library_name",
+  "$updateengine_root_path/common:common",
   "//base/update/updater/services/fs_manager:libfsmanager",  # factory_reset_GetBlockDeviceByMountPoint_"fs_manager/mount.h"
   "//third_party/cJSON:cjson",
   "//third_party/curl:curl",
@@ -146,7 +140,6 @@ sa_deps = [
 ]
 
 sa_deps += firmware_deps
-sa_deps += update_log_deps
 sa_deps += startup_deps
 
 sa_external_deps = [

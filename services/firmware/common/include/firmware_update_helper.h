@@ -20,6 +20,7 @@
 
 #include "nlohmann/json.hpp"
 
+#include "current_version_info.h"
 #include "firmware_changelog_utils.h"
 #include "firmware_constant.h"
 #include "firmware_combine_version_utils.h"
@@ -33,7 +34,7 @@
 #include "device_adapter.h"
 #include "sha256_utils.h"
 #include "time_utils.h"
-#include "update_helper.h"
+#include "version_component.h"
 
 namespace OHOS {
 namespace UpdateEngine {

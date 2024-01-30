@@ -16,8 +16,15 @@
 #ifndef UPDATE_RESULT_H
 #define UPDATE_RESULT_H
 
+#include "check_result.h"
+#include "current_version_info.h"
 #include "napi_structs_base.h"
+#include "new_version_info.h"
+#include "progress.h"
 #include "session_type.h"
+#include "task_info.h"
+#include "upgrade_policy.h"
+#include "version_description_info.h"
 
 namespace OHOS::UpdateEngine {
 struct UpdateResult : NapiResult {
