@@ -11,7 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-update_log_external_deps = [ "hilog:libhilog" ]
+update_log_external_deps = [ 
+  "hilog:libhilog",
+  "updater:libupdaterlog_shared",
+  ]
 update_log_deps = []
 update_log_include = [ "ability/log/include" ]
 update_log_src = [ "ability/log/src/update_log.cpp" ]
