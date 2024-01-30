@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include "iupdate_service.h"
-#include "update_helper.h"
+#include "update_callback_info.h"
 
 namespace OHOS::UpdateEngine {
 class UpdateServiceKits {

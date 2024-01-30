@@ -29,7 +29,6 @@
 #include "firmware_update_helper.h"
 #include "progress_thread.h"
 #include "string_utils.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

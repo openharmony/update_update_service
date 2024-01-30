@@ -25,6 +25,8 @@
 
 #include "base_client.h"
 #include "base_session.h"
+#include "business_error.h"
+#include "call_result.h"
 #include "napi_common_define.h"
 #include "napi_common_utils.h"
 #include "napi_structs_base.h"

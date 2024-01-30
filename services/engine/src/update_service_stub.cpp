@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+#include <string_ex.h>
+
 #include "accesstoken_kit.h"
 #include "access_token.h"
 #include "ipc_skeleton.h"
@@ -20,7 +22,6 @@
 #include "securec.h"
 #include "tokenid_kit.h"
 #include "update_define.h"
-#include "update_helper.h"
 #include "update_log.h"
 #include "update_service_stub.h"
 #include "update_system_event.h"
@@ -38,6 +39,8 @@ constexpr const pid_t EDM_UID = 3057;
 
 #define RETURN_FAIL_WHEN_SERVICE_NULL(service) \
     ENGINE_CHECK((service) != nullptr, return INT_CALL_IPC_ERR, "service null")
+
+#define CALL_RESULT_TO_IPC_RESULT(callResult) ((callResult) + CALL_RESULT_OFFSET)
 
 UpdateServiceStub::UpdateServiceStub()
 {

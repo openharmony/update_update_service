@@ -21,7 +21,8 @@
 #include <thread>
 #include <file_utils.h>
 #include "curl/curl.h"
-#include "update_helper.h"
+
+#include "progress.h"
 
 namespace OHOS {
 namespace UpdateEngine {

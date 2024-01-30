@@ -29,7 +29,6 @@
 #include "firmware_preferences_utils.h"
 #include "json_utils.h"
 #include "string_utils.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

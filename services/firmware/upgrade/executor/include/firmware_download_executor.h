@@ -16,11 +16,11 @@
 #ifndef FIRMWARE_DOWNLOAD_EXECUTOR_H
 #define FIRMWARE_DOWNLOAD_EXECUTOR_H
 
+#include "download_options.h"
 #include "firmware_component.h"
 #include "firmware_iexecutor.h"
 #include "firmware_task.h"
 #include "progress_thread.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

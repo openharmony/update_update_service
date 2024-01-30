@@ -69,6 +69,13 @@
       "inner_api": [
         {
           "header": {
+            "header_base": "//base/update/updateservice/common/ability/log/include",
+            "header_files": []
+          },
+          "name": "//base/update/updateservice/common:common"
+        },
+        {
+          "header": {
             "header_base": "//base/update/updateservice/interfaces/inner_api/include",
             "header_files": []
           },

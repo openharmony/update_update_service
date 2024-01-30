@@ -1,0 +1,27 @@
+
+import("//build/ohos.gni")
+import("//base/update/updateservice/updateengine.gni")
+import("common.gni")
+
+config("update_service_common_config") {
+  include_dirs = common_include
+}
+
+ohos_shared_library("common") {
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+  branch_protector_ret = "pac_ret"
+
+  include_dirs = common_include
+  sources = common_sources
+  deps = common_deps
+  external_deps = common_external_deps
+
+  public_configs = [ ":update_service_common_config" ]
+
+  part_name = "$updateengine_part_name"
+  subsystem_name = "updater"
+}

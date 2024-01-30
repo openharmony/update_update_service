@@ -22,7 +22,9 @@
 #include "js_native_api.h"
 #include "js_native_api_types.h"
 
-#include "common_error_define.h"
+#include "business_error.h"
+#include "call_result.h"
+#include "error_message.h"
 #include "napi_common_define.h"
 
 namespace OHOS::UpdateEngine {

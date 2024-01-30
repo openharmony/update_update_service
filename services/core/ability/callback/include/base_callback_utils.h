@@ -18,8 +18,15 @@
 
 #include <string>
 
+#include "business_sub_type.h"
+#include "error_message.h"
+#include "event_id.h"
+#include "event_info.h"
 #include "iupdate_callback.h"
-#include "update_helper.h"
+#include "progress.h"
+#include "upgrade_status.h"
+#include "upgrade_info.h"
+#include "version_component.h"
 
 namespace OHOS {
 namespace UpdateEngine {

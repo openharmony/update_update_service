@@ -1,0 +1,52 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("ability/define/define.gni")
+import("ability/log/log.gni")
+import("ability/sa_loader/sa_loader.gni")
+import("ability/sys_event/sys_event.gni")
+import("ability/utils/utils.gni")
+import("model/model.gni")
+
+common_external_deps = []
+common_external_deps += define_external_deps
+common_external_deps += update_log_external_deps
+common_external_deps += sa_loader_external_deps
+common_external_deps += sys_event_external_deps
+common_external_deps += utils_external_deps
+common_external_deps += model_external_deps
+
+common_deps = []
+common_deps += define_deps
+common_deps += update_log_deps
+common_deps += sa_loader_deps
+common_deps += sys_event_deps
+common_deps += utils_deps
+common_deps += model_deps
+
+common_include = []
+common_include += define_include
+common_include += update_log_include
+common_include += sa_loader_include
+common_include += sys_event_include
+common_include += utils_include
+common_include += model_include
+
+
+common_sources = []
+common_sources += define_src
+common_sources += update_log_src
+common_sources += sa_loader_src
+common_sources += sys_event_src
+common_sources += utils_src
+common_sources += model_src

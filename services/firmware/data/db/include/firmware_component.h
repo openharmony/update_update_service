@@ -18,7 +18,9 @@
 
 #include <string>
 
-#include "update_helper.h"
+#include "package_type.h"
+#include "update_define.h"
+#include "upgrade_status.h"
 
 namespace OHOS {
 namespace UpdateEngine {

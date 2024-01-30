@@ -46,7 +46,6 @@
 #include "startup_schedule.h"
 #include "string_utils.h"
 #include "time_utils.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -22,6 +22,9 @@
 #include "firmware_database.h"
 #include "firmware_task_table.h"
 #include "firmware_task.h"
+#include "network_type.h"
+#include "order.h"
+
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 #include "table_base_operator.h"
 #endif

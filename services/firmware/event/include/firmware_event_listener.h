@@ -19,7 +19,6 @@
 #include "singleton.h"
 
 #include "dupdate_inet_observer.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

@@ -18,8 +18,9 @@
 
 #include "iremote_broker.h"
 #include "iremote_proxy.h"
+
+#include "event_info.h"
 #include "iupdate_callback.h"
-#include "update_helper.h"
 
 namespace OHOS::UpdateEngine {
 class UpdateCallbackProxy : public IRemoteProxy<IUpdateCallback> {

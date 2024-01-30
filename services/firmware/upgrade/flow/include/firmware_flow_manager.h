@@ -16,11 +16,11 @@
 #ifndef FIRMWARE_FLOW_MANAGER_H
 #define FIRMWARE_FLOW_MANAGER_H
 
-#include "update_helper.h"
 #include "firmware_common.h"
 #include "firmware_component.h"
 #include "firmware_iexecute_mode.h"
 #include "firmware_iexecutor.h"
+#include "progress.h"
 
 namespace OHOS {
 namespace UpdateEngine {

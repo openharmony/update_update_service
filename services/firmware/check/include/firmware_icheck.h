@@ -37,7 +37,7 @@
 #include "device_adapter.h"
 #include "firmware_update_helper.h"
 #include "network_response.h"
-#include "update_helper.h"
+#include "search_status.h"
 #include "update_service_util.h"
 
 constexpr int32_t PORT_NUMBER = 5022;
