@@ -17,7 +17,7 @@ sa_loader_external_deps = [
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",
 ]
-if (!ability_ability_runtime_enable) {
+if (ability_ability_runtime_enable) {
     sa_loader_external_deps += [ "ability_runtime:ability_manager" ]
 }
 
