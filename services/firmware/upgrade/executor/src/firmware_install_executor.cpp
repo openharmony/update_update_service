@@ -106,7 +106,10 @@ void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &com
     // 整体进度插入到 task 表
     FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
     installCallbackInfo_.progress = taskProgress_;
-    installCallback_.installCallback(installCallbackInfo_);
+    // 避免安装过程中,失败重复提交事件, 安装中才回调进度信息, 其他情况在结果回调中处理
+    if (taskProgress_.status == UpgradeStatus::INSTALLING) {
+        installCallback_.installCallback(installCallbackInfo_);
+    }
 }
 
 void FirmwareInstallExecutor::HandleInstallResult(const bool result, const ErrorMessage &errMsg)
