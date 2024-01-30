@@ -13,7 +13,6 @@
 
 utils_external_deps = []
 utils_deps = [
-    "//third_party/cJSON:cjson",
     "//third_party/json:nlohmann_json_static"
 ]
 utils_include = [
