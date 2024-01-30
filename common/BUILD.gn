@@ -15,6 +15,11 @@ ohos_shared_library("common") {
   }
   branch_protector_ret = "pac_ret"
 
+  defines = []
+  if (!ability_ability_runtime_enable) {
+    defines += [ "ABILITY_RUNTIME_INNER_ENABLE" ]
+  }
+
   include_dirs = common_include
   sources = common_sources
   deps = common_deps
