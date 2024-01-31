@@ -31,16 +31,6 @@ static const std::string ENCRYPT_STR = "****";
 
 class EncryptUtils {
 public:
-    static int64_t GetRand(int32_t min, int32_t max)
-    {
-        // 随机 min ~ max值
-        if (max < min) {
-            return min;
-        }
-        srand(time(nullptr));
-        return min + rand() % (max - min);
-    }
-
     static std::string EncryptUrl(const std::string &url)
     {
         std::string encryptUrl = url;
