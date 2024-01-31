@@ -51,6 +51,11 @@ struct BusinessType : public BaseJsonStruct {
         return false;
     }
 
+    bool operator!=(const BusinessType &businessType) const
+    {
+        return vendor != businessType.vendor || CAST_INT(subType) != CAST_INT(businessType.subType);
+    }
+
     JsonBuilder GetJsonBuilder() final;
 };
 } // namespace OHOS::UpdateEngine
