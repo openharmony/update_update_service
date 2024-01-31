@@ -42,7 +42,6 @@ foundations_include += sys_event_include
 foundations_include += utils_include
 foundations_include += model_include
 
-
 foundations_sources = []
 foundations_sources += define_src
 foundations_sources += update_log_src
