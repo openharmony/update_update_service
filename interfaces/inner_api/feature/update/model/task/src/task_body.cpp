@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include "update_log.h"
 #include "task_body.h"
 #include "task_body_member_mask.h"
+#include "update_log.h"
 
 namespace OHOS::UpdateEngine {
 JsonBuilder GetJsonBuilder(VersionComponent &versionComponent)

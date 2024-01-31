@@ -69,10 +69,10 @@
       "inner_api": [
         {
           "header": {
-            "header_base": "//base/update/updateservice/common/ability/log/include",
+            "header_base": "//base/update/updateservice/foundations",
             "header_files": []
           },
-          "name": "//base/update/updateservice/common:common"
+          "name": "//base/update/updateservice/foundations:foundations"
         },
         {
           "header": {

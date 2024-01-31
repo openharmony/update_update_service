@@ -20,8 +20,8 @@
 
 #include "nlohmann/json.hpp"
 
+#include "anonymous_utils.h"
 #include "constant.h"
-#include "encrypt_utils.h"
 #include "firmware_component.h"
 #include "firmware_log.h"
 #include "update_define.h"

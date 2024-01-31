@@ -20,7 +20,7 @@
 
 #include "nlohmann/json.hpp"
 
-#include "encrypt_utils.h"
+#include "anonymous_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {

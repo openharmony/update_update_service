@@ -21,8 +21,8 @@
 
 #include "nlohmann/json.hpp"
 
+#include "dupdate_json_utils.h"
 #include "json_builder.h"
-#include "json_utils.h"
 
 namespace OHOS::UpdateEngine {
 struct ErrorMessage {
@@ -39,15 +39,6 @@ struct ErrorMessage {
     {
         JsonUtils::GetValueAndSetTo(jsonObj, "errorCode", message.errorCode);
         JsonUtils::GetValueAndSetTo(jsonObj, "errorMessage", message.errorMessage);
-    }
-
-    JsonBuilder GetJsonBuilder()
-    {
-        return JsonBuilder()
-            .Append("{")
-            .Append("errorCode", errorCode)
-            .Append("errorMessage", errorMessage)
-            .Append("}");
     }
 };
 } // namespace OHOS::UpdateEngine

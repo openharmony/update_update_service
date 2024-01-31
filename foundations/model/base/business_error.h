@@ -22,9 +22,9 @@
 #include "nlohmann/json.hpp"
 
 #include "call_result.h"
+#include "dupdate_json_utils.h"
 #include "error_message.h"
 #include "json_builder.h"
-#include "json_utils.h"
 
 namespace OHOS::UpdateEngine {
 struct BusinessError {

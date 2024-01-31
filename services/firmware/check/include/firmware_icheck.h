@@ -29,7 +29,7 @@
 #include "parameter.h"
 #include "parameters.h"
 
-#include "encrypt_utils.h"
+#include "anonymous_utils.h"
 #include "firmware_check_analyze_utils.h"
 #include "firmware_common.h"
 #include "firmware_component.h"

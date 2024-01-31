@@ -28,7 +28,7 @@ const std::string OUC_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
 
 struct SubscribeInfo : public BaseJsonStruct {
     std::string upgradeApp = OUC_PACKAGE_NAME;
-    BusinessType businessType;
+    BusinessType businessType = {};
     std::string abilityName;
     std::string subscriberDevId;
     std::string upgradeDevId;
@@ -39,6 +39,7 @@ struct SubscribeInfo : public BaseJsonStruct {
     {
         businessType.subType = subType;
     }
+
     SubscribeInfo() = default;
 
     JsonBuilder GetJsonBuilder() final;
