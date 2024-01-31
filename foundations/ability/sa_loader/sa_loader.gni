@@ -11,6 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import("//base/update/updateservice/updateengine.gni")
+
 sa_loader_external_deps = [
     "c_utils:utils",  # sptr
     "ipc:ipc_core",
