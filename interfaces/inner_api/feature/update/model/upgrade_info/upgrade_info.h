@@ -33,34 +33,27 @@ struct UpgradeInfo {
 
     bool operator<(const UpgradeInfo &other) const
     {
-        if (upgradeApp != other.upgradeApp)
-        {
+        if (upgradeApp != other.upgradeApp) {
             return upgradeApp < other.upgradeApp;
         }
         
-
-        if (businessType != other.businessType)
-        {
+        if (businessType != other.businessType) {
             return businessType < other.businessType;
         }
 
-        if (upgradeDevId != other.upgradeDevId)
-        {
+        if (upgradeDevId != other.upgradeDevId) {
             return upgradeDevId < other.upgradeDevId;
         }
 
-        if (controlDevId != other.controlDevId)
-        {
+        if (controlDevId != other.controlDevId) {
             return controlDevId < other.controlDevId;
         }
 
-        if (processId != other.processId)
-        {
+        if (processId != other.processId) {
             return processId < other.processId;
         }
 
-        if (deviceType != other.deviceType)
-        {
+        if (deviceType != other.deviceType) {
             return deviceType < other.deviceType;
         }
 
