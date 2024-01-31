@@ -14,10 +14,10 @@
 api_external_deps = []
 api_deps = []
 api_include = [
-    "../feature/update/api/callback",
-    "../feature/update/api/local_updater",
-    "../feature/update/api/online_updater",
-    "../feature/update/api/restorer",
-    "../feature/update/api/update_service",
+  "../feature/update/api/callback",
+  "../feature/update/api/local_updater",
+  "../feature/update/api/online_updater",
+  "../feature/update/api/restorer",
+  "../feature/update/api/update_service",
 ]
 api_src = []
