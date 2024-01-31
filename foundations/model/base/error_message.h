@@ -40,6 +40,15 @@ struct ErrorMessage {
         JsonUtils::GetValueAndSetTo(jsonObj, "errorCode", message.errorCode);
         JsonUtils::GetValueAndSetTo(jsonObj, "errorMessage", message.errorMessage);
     }
+
+    JsonBuilder GetJsonBuilder()
+    {
+        return JsonBuilder()
+            .Append("{")
+            .Append("errorCode", errorCode)
+            .Append("errorMessage", errorMessage)
+            .Append("}");
+    }
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_ERROR_MESSAGE_H
