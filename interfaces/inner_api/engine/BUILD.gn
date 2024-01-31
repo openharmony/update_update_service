@@ -60,8 +60,8 @@ ohos_shared_library("$updateengine_inner_library_name") {
   public_configs = [ ":updateengine_inner_library_native_config" ]
 
   deps = [
-    "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
     "$updateengine_root_path/foundations:foundations",
+    "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
     "//third_party/bounds_checking_function:libsec_static",
     "//third_party/json:nlohmann_json_static",
   ]
