@@ -18,35 +18,35 @@ import("ability/sys_event/sys_event.gni")
 import("ability/utils/utils.gni")
 import("model/model.gni")
 
-common_external_deps = []
-common_external_deps += define_external_deps
-common_external_deps += update_log_external_deps
-common_external_deps += sa_loader_external_deps
-common_external_deps += sys_event_external_deps
-common_external_deps += utils_external_deps
-common_external_deps += model_external_deps
+foundations_external_deps = []
+foundations_external_deps += define_external_deps
+foundations_external_deps += update_log_external_deps
+foundations_external_deps += sa_loader_external_deps
+foundations_external_deps += sys_event_external_deps
+foundations_external_deps += utils_external_deps
+foundations_external_deps += model_external_deps
 
-common_deps = []
-common_deps += define_deps
-common_deps += update_log_deps
-common_deps += sa_loader_deps
-common_deps += sys_event_deps
-common_deps += utils_deps
-common_deps += model_deps
+foundations_deps = []
+foundations_deps += define_deps
+foundations_deps += update_log_deps
+foundations_deps += sa_loader_deps
+foundations_deps += sys_event_deps
+foundations_deps += utils_deps
+foundations_deps += model_deps
 
-common_include = []
-common_include += define_include
-common_include += update_log_include
-common_include += sa_loader_include
-common_include += sys_event_include
-common_include += utils_include
-common_include += model_include
+foundations_include = []
+foundations_include += define_include
+foundations_include += update_log_include
+foundations_include += sa_loader_include
+foundations_include += sys_event_include
+foundations_include += utils_include
+foundations_include += model_include
 
 
-common_sources = []
-common_sources += define_src
-common_sources += update_log_src
-common_sources += sa_loader_src
-common_sources += sys_event_src
-common_sources += utils_src
-common_sources += model_src
+foundations_sources = []
+foundations_sources += define_src
+foundations_sources += update_log_src
+foundations_sources += sa_loader_src
+foundations_sources += sys_event_src
+foundations_sources += utils_src
+foundations_sources += model_src
