@@ -26,7 +26,6 @@ feature_include = []
 feature_include += api_include
 feature_include += model_include
 
-
 feature_sources = []
 feature_sources += api_src
 feature_sources += model_src
