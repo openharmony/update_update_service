@@ -22,12 +22,12 @@
 #include <string>
 
 #include "constant.h"
+#include "dupdate_json_utils.h"
 #include "file_utils.h"
 #include "firmware_combine_version_utils.h"
 #include "firmware_constant.h"
 #include "firmware_log.h"
 #include "firmware_preferences_utils.h"
-#include "json_utils.h"
 #include "string_utils.h"
 
 namespace OHOS {

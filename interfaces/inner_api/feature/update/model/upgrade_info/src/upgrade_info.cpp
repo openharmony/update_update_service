@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "encrypt_utils.h"
+#include "anonymous_utils.h"
 #include "upgrade_info.h"
 #include "update_define.h"
 

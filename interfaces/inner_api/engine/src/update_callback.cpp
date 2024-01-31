@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "../include/update_callback.h"
+#include "update_callback.h"
 
 #include "update_log.h"
 

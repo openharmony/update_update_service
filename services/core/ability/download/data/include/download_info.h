@@ -20,7 +20,7 @@
 #include <map>
 #include <string>
 
-#include "encrypt_utils.h"
+#include "anonymous_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {

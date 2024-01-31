@@ -25,31 +25,44 @@ namespace OHOS::UpdateEngine {
 const std::string LOCAL_UPGRADE_INFO = "LocalUpgradeInfo";
 struct UpgradeInfo {
     std::string upgradeApp;
-    BusinessType businessType;
+    BusinessType businessType = {};
     std::string upgradeDevId;
     std::string controlDevId;
     int32_t processId;
-    DeviceType deviceType;
+    DeviceType deviceType = DeviceType::UNKNOWN;
 
-    bool operator<(const UpgradeInfo &r) const
+    bool operator<(const UpgradeInfo &other) const
     {
-        if (upgradeApp < r.upgradeApp) return true;
-        if (upgradeApp > r.upgradeApp) return false;
+        if (upgradeApp != other.upgradeApp)
+        {
+            return upgradeApp < other.upgradeApp;
+        }
+        
 
-        if (businessType < r.businessType) return true;
-        if (r.businessType < businessType) return false;
+        if (businessType != other.businessType)
+        {
+            return businessType < other.businessType;
+        }
 
-        if (upgradeDevId < r.upgradeDevId) return true;
-        if (upgradeDevId > r.upgradeDevId) return false;
+        if (upgradeDevId != other.upgradeDevId)
+        {
+            return upgradeDevId < other.upgradeDevId;
+        }
 
-        if (controlDevId < r.controlDevId) return true;
-        if (controlDevId > r.controlDevId) return false;
+        if (controlDevId != other.controlDevId)
+        {
+            return controlDevId < other.controlDevId;
+        }
 
-        if (processId < r.processId) return true;
-        if (processId > r.processId) return false;
+        if (processId != other.processId)
+        {
+            return processId < other.processId;
+        }
 
-        if (deviceType < r.deviceType) return true;
-        if (deviceType > r.deviceType) return false;
+        if (deviceType != other.deviceType)
+        {
+            return deviceType < other.deviceType;
+        }
 
         return false;
     }

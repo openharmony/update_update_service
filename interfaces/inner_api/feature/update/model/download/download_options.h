@@ -16,8 +16,8 @@
 #ifndef UPDATE_SERVICE_DOWNLOAD_OPTIONS_H
 #define UPDATE_SERVICE_DOWNLOAD_OPTIONS_H
 
-#include "order.h"
 #include "network_type.h"
+#include "order.h"
 
 namespace OHOS::UpdateEngine {
 struct DownloadOptions {
