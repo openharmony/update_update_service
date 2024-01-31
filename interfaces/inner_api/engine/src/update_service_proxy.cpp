@@ -24,7 +24,9 @@
 #include "update_log.h"
 #include "updater_sa_ipc_interface_code.h"
 
-#define RETURN_WHEN_REMOTE_NULL(remote) ENGINE_CHECK((remote) != nullptr, return INT_CALL_IPC_ERR, "Can not get remote")
+namespace OHOS::UpdateEngine {
+#define RETURN_WHEN_REMOTE_NULL(remote) \
+    ENGINE_CHECK((remote) != nullptr, return INT_CALL_IPC_ERR, "Can not get remote")
 
 #define IPC_RESULT_TO_CALL_RESULT(result)           \
     if ((result) == ERR_NONE) {                     \
@@ -35,7 +37,6 @@
         result = INT_CALL_IPC_ERR;                  \
     }
 
-namespace OHOS::UpdateEngine {
 #define RETURN_WHEN_TOKEN_WRITE_FAIL(data)                             \
     if (!(data).WriteInterfaceToken(GetDescriptor())) {                \
         ENGINE_LOGE("UpdateServiceProxy WriteInterfaceToken fail");    \
