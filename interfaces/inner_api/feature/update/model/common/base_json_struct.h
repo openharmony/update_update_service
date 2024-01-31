@@ -26,7 +26,8 @@ struct BaseJsonStruct {
 
     virtual JsonBuilder GetJsonBuilder() = 0;
 
-    virtual std::string ToJson() {
+    virtual std::string ToJson()
+    {
         return GetJsonBuilder().ToJson();
     };
 };
