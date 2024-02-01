@@ -11,7 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-utils_external_deps = [ "json:nlohmann_json_static" ]
-utils_deps = []
-utils_include = [ "ability/utils/include" ]
+json_component_path = "../../../../third_party"
+
+utils_external_deps = []
+utils_deps = [ "$json_component_path/json:nlohmann_json_static"
+]
+utils_include = [
+  "ability/utils/include",
+  "$json_component_path/json/include",
+]
 utils_src = []

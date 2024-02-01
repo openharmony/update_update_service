@@ -58,7 +58,6 @@
     },
     "build": {
       "modules": [
-        "//base/update/updateservice/foundations:foundations",
         "//base/update/updateservice/frameworks/js/napi/update:update",
         "//base/update/updateservice/interfaces/inner_api/engine:updateservicekits",
         "//base/update/updateservice/interfaces/inner_api/modulemgr:update_module_mgr",
