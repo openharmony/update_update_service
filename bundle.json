@@ -36,6 +36,7 @@
         "access_token",
         "hisysevent",
         "init",
+        "json",
         "updater",
         "ability_base",
         "ability_runtime",
@@ -47,7 +48,6 @@
       "third_party": [
         "curl",
         "libxml2",
-        "json",
         "cJSON",
         "bounds_checking_function",
         "glib",
