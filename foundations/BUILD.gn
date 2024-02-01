@@ -32,7 +32,8 @@ ohos_shared_library("foundations") {
     defines += [ "ABILITY_RUNTIME_INNER_ENABLE" ]
   }
 
-  include_dirs = foundations_include
+  include_dirs = [ "//third_party/json/include" ]
+  include_dirs += foundations_include
   sources = foundations_sources
   deps = foundations_deps
   external_deps = foundations_external_deps
