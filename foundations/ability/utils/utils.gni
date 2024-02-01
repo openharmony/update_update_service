@@ -13,8 +13,5 @@
 
 utils_external_deps = []
 utils_deps = [ "//third_party/json:nlohmann_json_static" ]
-utils_include = [
-  "ability/utils/include",
-  "//third_party/json/include",
-]
+utils_include = [ "ability/utils/include" ]
 utils_src = []
