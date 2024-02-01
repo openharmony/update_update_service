@@ -122,7 +122,7 @@ sa_include_dirs += firmware_include
 sa_include_dirs += sqlite_include
 sa_include_dirs += startup_include
 sa_include_dirs +=
-[ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
+    [ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
 
 sa_deps = [
   "$updateengine_root_path/foundations:foundations",
