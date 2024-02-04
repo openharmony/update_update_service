@@ -24,8 +24,6 @@ ohos_prebuilt_etc("updater_sa.rc") {
 
 config("updateengine_inner_library_native_config") {
   include_dirs = [
-    "$updateengine_root_path/foundations/ability/utils/include",
-    "$updateengine_root_path/foundations/model/base",
     "$updateengine_root_path/interfaces/inner_api/include",
     "//third_party/json/include",
   ]
@@ -61,8 +59,9 @@ ohos_shared_library("$updateengine_inner_library_name") {
 
   public_configs = [ ":updateengine_inner_library_native_config" ]
 
+  public_deps = [ "$updateengine_root_path/foundations:foundations" ]
+
   deps = [
-    "$updateengine_root_path/foundations:foundations",
     "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
     "//third_party/bounds_checking_function:libsec_static",
   ]

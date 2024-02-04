@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_CALL_RESULT_H
 #define UPDATE_SERVICE_CALL_RESULT_H
 
-#include <cstdint>
+#include "update_define.h"
 
 namespace OHOS::UpdateEngine {
 constexpr int CALL_RESULT_OFFSET = 2000;
@@ -40,18 +40,18 @@ enum class CallResult {
     NET_ERROR = 503
 };
 
-constexpr int32_t INT_CALL_SUCCESS = static_cast<int32_t>(CallResult::SUCCESS);
-constexpr int32_t INT_CALL_FAIL = static_cast<int32_t>(CallResult::FAIL);
-constexpr int32_t INT_UN_SUPPORT = static_cast<int32_t>(CallResult::UN_SUPPORT);
-constexpr int32_t INT_FORBIDDEN = static_cast<int32_t>(CallResult::FORBIDDEN);
-constexpr int32_t INT_CALL_IPC_ERR = static_cast<int32_t>(CallResult::IPC_ERR);
-constexpr int32_t INT_APP_NOT_GRANTED = static_cast<int32_t>(CallResult::APP_NOT_GRANTED);
-constexpr int32_t INT_NOT_SYSTEM_APP = static_cast<int32_t>(CallResult::NOT_SYSTEM_APP);
-constexpr int32_t INT_PARAM_ERR = static_cast<int32_t>(CallResult::PARAM_ERR);
-constexpr int32_t INT_DEV_UPG_INFO_ERR = static_cast<int32_t>(CallResult::DEV_UPG_INFO_ERR);
-constexpr int32_t INT_TIME_OUT = static_cast<int32_t>(CallResult::TIME_OUT);
-constexpr int32_t INT_DB_ERROR = static_cast<int32_t>(CallResult::DB_ERROR);
-constexpr int32_t INT_IO_ERROR = static_cast<int32_t>(CallResult::IO_ERROR);
-constexpr int32_t INT_NET_ERROR = static_cast<int32_t>(CallResult::NET_ERROR);
+constexpr int32_t INT_CALL_SUCCESS = CAST_INT(CallResult::SUCCESS);
+constexpr int32_t INT_CALL_FAIL = CAST_INT(CallResult::FAIL);
+constexpr int32_t INT_UN_SUPPORT = CAST_INT(CallResult::UN_SUPPORT);
+constexpr int32_t INT_FORBIDDEN = CAST_INT(CallResult::FORBIDDEN);
+constexpr int32_t INT_CALL_IPC_ERR = CAST_INT(CallResult::IPC_ERR);
+constexpr int32_t INT_APP_NOT_GRANTED = CAST_INT(CallResult::APP_NOT_GRANTED);
+constexpr int32_t INT_NOT_SYSTEM_APP = CAST_INT(CallResult::NOT_SYSTEM_APP);
+constexpr int32_t INT_PARAM_ERR = CAST_INT(CallResult::PARAM_ERR);
+constexpr int32_t INT_DEV_UPG_INFO_ERR = CAST_INT(CallResult::DEV_UPG_INFO_ERR);
+constexpr int32_t INT_TIME_OUT = CAST_INT(CallResult::TIME_OUT);
+constexpr int32_t INT_DB_ERROR = CAST_INT(CallResult::DB_ERROR);
+constexpr int32_t INT_IO_ERROR = CAST_INT(CallResult::IO_ERROR);
+constexpr int32_t INT_NET_ERROR = CAST_INT(CallResult::NET_ERROR);
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_CALL_RESULT_H

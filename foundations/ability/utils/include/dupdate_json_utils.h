@@ -22,6 +22,8 @@
 
 #include "nlohmann/json.hpp"
 
+#include "update_define.h"
+
 namespace OHOS::UpdateEngine {
 enum class JsonParseError {
     ERR_OK = 0,
@@ -38,13 +40,13 @@ public:
     static int32_t GetValueAndSetTo(const nlohmann::json &jsonObject, const std::string &key, T &value)
     {
         if (jsonObject.find(key) == jsonObject.end()) {
-            return static_cast<int32_t>(JsonParseError::MISSING_PROP);
+            return CAST_INT(JsonParseError::MISSING_PROP);
         }
         if (!CheckType(jsonObject.at(key), value)) {
-            return static_cast<int32_t>(JsonParseError::TYPE_ERROR);
+            return CAST_INT(JsonParseError::TYPE_ERROR);
         }
         GetValue(jsonObject, key, value);
-        return static_cast<int32_t>(JsonParseError::ERR_OK);
+        return CAST_INT(JsonParseError::ERR_OK);
     }
 
     static bool ParseAndGetJsonObject(const std::string &jsonStr, nlohmann::json &root)
@@ -69,13 +71,13 @@ public:
         nlohmann::json &value)
     {
         if (jsonObject.find(key) == jsonObject.end()) {
-            return static_cast<int32_t>(JsonParseError::MISSING_PROP);
+            return CAST_INT(JsonParseError::MISSING_PROP);
         }
         if (!jsonObject.at(key).is_array()) {
-            return static_cast<int32_t>(JsonParseError::TYPE_ERROR);
+            return CAST_INT(JsonParseError::TYPE_ERROR);
         }
         jsonObject.at(key).get_to(value);
-        return static_cast<int32_t>(JsonParseError::ERR_OK);
+        return CAST_INT(JsonParseError::ERR_OK);
     }
 
     static void SetJsonToVector(nlohmann::json &jsonObject, std::vector<std::string> &vector)
@@ -117,14 +119,14 @@ public:
     template <typename T> static int32_t JsonStrToStruct(const std::string &jsonStr, T &value)
     {
         if (jsonStr.empty()) {
-            return static_cast<int32_t>(JsonParseError::COMMOM_ERROR);
+            return CAST_INT(JsonParseError::COMMOM_ERROR);
         }
         nlohmann::json jsonObj = nlohmann::json::parse(jsonStr, nullptr, false);
         if (!jsonObj.is_discarded() && CheckType(jsonObj, value)) {
             value = jsonObj.get<T>();
-            return static_cast<int32_t>(JsonParseError::ERR_OK);
+            return CAST_INT(JsonParseError::ERR_OK);
         }
-        return static_cast<int32_t>(JsonParseError::TYPE_ERROR);
+        return CAST_INT(JsonParseError::TYPE_ERROR);
     }
 
 private:
