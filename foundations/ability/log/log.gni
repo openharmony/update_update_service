@@ -11,10 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import("//base/update/updateservice/updateengine.gni")
+
 update_log_external_deps = [ 
   "hilog:libhilog",
   "updater:libupdaterlog_shared",
 ]
 update_log_deps = []
-update_log_include = [ "ability/log/include" ]
-update_log_src = [ "ability/log/src/update_log.cpp" ]
+update_log_include = [ "$updateengine_root_path/foundations/ability/log/include" ]
+update_log_src = [ "$updateengine_root_path/foundations/ability/log/src/update_log.cpp" ]
