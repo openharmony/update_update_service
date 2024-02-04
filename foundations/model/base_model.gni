@@ -13,5 +13,5 @@
 
 base_model_external_deps = []
 base_model_deps = []
-base_model_include = [ "model/base" ]
+base_model_include = [ "model/include" ]
 base_model_src = []
