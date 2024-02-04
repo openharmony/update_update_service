@@ -24,6 +24,7 @@ ohos_prebuilt_etc("updater_sa.rc") {
 
 config("updateengine_inner_library_native_config") {
   include_dirs = [
+    "$updateengine_root_path/foundations/model/base",
     "$updateengine_root_path/interfaces/inner_api/include",
     "//third_party/json/include",
   ]
