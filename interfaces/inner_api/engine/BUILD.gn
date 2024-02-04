@@ -13,8 +13,8 @@
 
 import("//base/update/updateservice/updateengine.gni")
 import("//build/ohos.gni")
-import("../feature/feature.gni")
 import("../../../foundations/foundations.gni")
+import("../feature/feature.gni")
 
 ohos_prebuilt_etc("updater_sa.rc") {
   source = "etc/updater_sa.rc"
@@ -77,6 +77,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
   ]
 
   include_dirs += feature_include
+  include_dirs += foundations_include
   sources += feature_sources
   deps += feature_deps
   external_deps += feature_external_deps
