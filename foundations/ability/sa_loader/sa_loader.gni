@@ -24,5 +24,5 @@ if (ability_ability_runtime_enable) {
 }
 
 sa_loader_deps = []
-sa_loader_include = [ "ability/sa_loader/include" ]
-sa_loader_src = [ "ability/sa_loader/src/load_sa_service.cpp" ]
+sa_loader_include = [ "$updateengine_root_path/foundations/ability/sa_loader/include" ]
+sa_loader_src = [ "$updateengine_root_path/foundations/ability/sa_loader/src/load_sa_service.cpp" ]

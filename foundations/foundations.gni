@@ -11,12 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("ability/define/define.gni")
-import("ability/log/log.gni")
-import("ability/sa_loader/sa_loader.gni")
-import("ability/sys_event/sys_event.gni")
-import("ability/utils/utils.gni")
-import("model/base_model.gni")
+import("//base/update/updateservice/foundations/ability/define/define.gni")
+import("//base/update/updateservice/foundations/ability/log/log.gni")
+import("//base/update/updateservice/foundations/ability/sa_loader/sa_loader.gni")
+import("//base/update/updateservice/foundations/ability/sys_event/sys_event.gni")
+import("//base/update/updateservice/foundations/ability/utils/utils.gni")
+import("//base/update/updateservice/foundations/model/base_model.gni")
 
 foundations_external_deps = []
 foundations_external_deps += define_external_deps
