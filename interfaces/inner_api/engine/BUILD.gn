@@ -14,7 +14,7 @@
 import("//base/update/updateservice/updateengine.gni")
 import("//build/ohos.gni")
 import("../feature/feature.gni")
-import("../../foundations/foundations.gni")
+import("../../../foundations/foundations.gni")
 
 ohos_prebuilt_etc("updater_sa.rc") {
   source = "etc/updater_sa.rc"
