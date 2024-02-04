@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-model_external_deps = []
-model_deps = []
-model_include = [ "model/base" ]
-model_src = []
+base_model_external_deps = []
+base_model_deps = []
+base_model_include = [ "model/base" ]
+base_model_src = []
