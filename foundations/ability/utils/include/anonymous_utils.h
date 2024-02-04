@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef ENCRYPT_UTILS_H
-#define ENCRYPT_UTILS_H
+#ifndef ANONYMOUS_UTILS_H
+#define ANONYMOUS_UTILS_H
 
 #include <chrono>
 #include <cstdio>
@@ -29,9 +29,9 @@ static const int32_t ENCRYPT_LENGTH = 4; // 需要替换*的长度
 static const int32_t ENCRYPT_TOTAL_LENGTH = 8; // 敏感数据匿名化后最长长度
 static const std::string ENCRYPT_STR = "****";
 
-class EncryptUtils {
+class AnonymousUtils {
 public:
-    static std::string EncryptUrl(const std::string &url)
+    static std::string AnonymousUrl(const std::string &url)
     {
         std::string encryptUrl = url;
         std::string httpsPrefix = "https://";
@@ -49,7 +49,7 @@ public:
         return encryptUrl;
     }
 
-    static std::string EncryptString(std::string inputStr)
+    static std::string AnonymousString(std::string inputStr)
     {
         if (inputStr.empty()) {
             return inputStr;
@@ -70,4 +70,4 @@ public:
 };
 } // namespace UpdateEngine
 } // namespace OHOS
-#endif // ENCRYPT_UTILS_H
+#endif // ANONYMOUS_UTILS_H

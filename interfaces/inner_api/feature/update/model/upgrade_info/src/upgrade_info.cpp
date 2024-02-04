@@ -23,8 +23,8 @@ std::string UpgradeInfo::ToString() const
     std::string output = "upgradeApp:" + upgradeApp;
     output += ",businessType(vender:" + businessType.vendor;
     output += ",subType:" + std::to_string(CAST_INT(businessType.subType));
-    output += "),upgradeDevId:" + EncryptUtils::EncryptString(upgradeDevId);
-    output += ",controlDevId:" + EncryptUtils::EncryptString(controlDevId);
+    output += "),upgradeDevId:" + AnonymousUtils::AnonymousString(upgradeDevId);
+    output += ",controlDevId:" + AnonymousUtils::AnonymousString(controlDevId);
     return output;
 }
 } // namespace OHOS::UpdateEngine

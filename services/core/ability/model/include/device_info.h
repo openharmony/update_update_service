@@ -32,8 +32,8 @@ public:
     nlohmann::ordered_json ToJson(bool isPrint)
     {
         nlohmann::ordered_json json = nlohmann::ordered_json::object();
-        json["udid"] = isPrint ? EncryptUtils::EncryptString(udid) : udid;
-        json["deviceId"] = isPrint ? EncryptUtils::EncryptString(deviceId) : deviceId;
+        json["udid"] = isPrint ? AnonymousUtils::AnonymousString(udid) : udid;
+        json["deviceId"] = isPrint ? AnonymousUtils::AnonymousString(deviceId) : deviceId;
         return json;
     }
 };
