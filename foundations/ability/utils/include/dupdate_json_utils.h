@@ -22,8 +22,6 @@
 
 #include "nlohmann/json.hpp"
 
-#include "update_define.h"
-
 namespace OHOS::UpdateEngine {
 enum class JsonParseError {
     ERR_OK = 0,

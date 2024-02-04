@@ -21,8 +21,6 @@
 #include <stdlib.h>
 #include <string>
 
-#include "update_log.h"
-
 namespace OHOS {
 namespace UpdateEngine {
 static const int32_t ENCRYPT_LENGTH = 4; // 需要替换*的长度
