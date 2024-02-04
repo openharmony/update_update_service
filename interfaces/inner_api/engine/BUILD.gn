@@ -77,7 +77,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
   ]
 
   include_dirs += feature_include
-  include_dirs += foundations_include
   sources += feature_sources
   deps += feature_deps
   external_deps += feature_external_deps

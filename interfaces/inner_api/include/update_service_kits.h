@@ -17,8 +17,24 @@
 #define UPDATE_SERVICE_KITS_H
 
 #include <iostream>
-#include "iupdate_service.h"
+
+#include "business_error.h"
+#include "check_result.h"
+#include "clear_options.h"
+#include "current_version_info.h"
+#include "description_options.h"
+#include "download_options.h"
+#include "iupdate_callback.h"
+#include "pause_download_options.h"
+#include "resume_download_options.h"
+#include "new_version_info.h"
 #include "update_callback_info.h"
+#include "upgrade_info.h"
+#include "upgrade_options.h"
+#include "upgrade_policy.h"
+#include "task_info.h"
+#include "version_description_info.h"
+#include "version_digest_info.h"
 
 namespace OHOS::UpdateEngine {
 class UpdateServiceKits {
