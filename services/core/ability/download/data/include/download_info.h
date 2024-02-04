@@ -58,7 +58,7 @@ public:
         return std::string("DownloadInfo: ")
         .append("id=").append(std::to_string(id)).append(",")
         .append("taskId=").append(taskId).append(",")
-        .append("url=").append(EncryptUtils::EncryptUrl(url)).append(",")
+        .append("url=").append(AnonymousUtils::AnonymousUrl(url)).append(",")
         .append("path=").append(path).append(",")
         .append("veriftInfo=").append(veriftInfo).append(",")
         .append("retryTimes=").append(std::to_string(retryTimes)).append(",")
