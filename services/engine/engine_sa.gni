@@ -125,7 +125,7 @@ sa_include_dirs +=
     [ "//base/update/updateservice/interfaces/innner_api/modulemgr/include" ]
 
 sa_deps = [
-  "$updateengine_root_path/foundations:foundations",
+  "$updateengine_root_path/foundations:update_foundations",
   "$updateengine_root_path/interfaces/inner_api/engine:$updateengine_inner_library_name",
   "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
   "//base/update/updater/services/fs_manager:libfsmanager",  # factory_reset_GetBlockDeviceByMountPoint_"fs_manager/mount.h"

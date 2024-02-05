@@ -19,7 +19,7 @@ config("update_service_foundations_config") {
   include_dirs = foundations_include
 }
 
-ohos_shared_library("foundations") {
+ohos_shared_library("update_foundations") {
   sanitize = {
     cfi = true
     cfi_cross_dso = true
