@@ -15,5 +15,6 @@ import("//base/update/updateservice/updateengine.gni")
 
 sys_event_external_deps = []
 sys_event_deps = []
-sys_event_include = [ "$updateengine_root_path/foundations/ability/sys_event/include" ]
+sys_event_include =
+    [ "$updateengine_root_path/foundations/ability/sys_event/include" ]
 sys_event_src = []
