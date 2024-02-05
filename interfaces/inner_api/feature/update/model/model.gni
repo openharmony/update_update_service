@@ -27,7 +27,6 @@ model_include = [
   "../feature/update/model/task",
   "../feature/update/model/upgrade",
   "../feature/update/model/upgrade_info",
-  "../feature/update/model/upgrade",
   "../feature/update/model/version_info",
   "../feature/update/model/version_info/current_version",
   "../feature/update/model/version_info/description",

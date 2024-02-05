@@ -30,18 +30,12 @@ struct BusinessType : public BaseJsonStruct {
 
     bool operator<(const BusinessType &businessType) const
     {
-        if (vendor < businessType.vendor) {
-            return true;
-        }
-        if (vendor > businessType.vendor) {
-            return false;
+        if (vendor != businessType.vendor) {
+            return vendor < businessType.vendor;
         }
 
-        if (CAST_INT(subType) < CAST_INT(businessType.subType)) {
-            return true;
-        }
-        if (CAST_INT(subType) > CAST_INT(businessType.subType)) {
-            return true;
+        if (subType != businessType.subType) {
+            return CAST_INT(subType) < CAST_INT(businessType.subType);
         }
 
         return false;
