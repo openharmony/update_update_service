@@ -15,5 +15,6 @@ import("//base/update/updateservice/updateengine.gni")
 
 base_model_external_deps = []
 base_model_deps = []
-base_model_include = [ "$updateengine_root_path/foundations/model/include" ]
+base_model_include =
+    [ "$updateengine_root_path/foundations/model/include" ]
 base_model_src = []

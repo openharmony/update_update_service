@@ -15,5 +15,6 @@ import("//base/update/updateservice/updateengine.gni")
 
 define_external_deps = []
 define_deps = []
-define_include = [ "$updateengine_root_path/foundations/ability/define/include" ]
+define_include =
+    [ "$updateengine_root_path/foundations/ability/define/include" ]
 define_src = []
