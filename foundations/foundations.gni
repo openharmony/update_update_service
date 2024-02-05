@@ -13,8 +13,10 @@
 
 import("//base/update/updateservice/foundations/ability/define/define.gni")
 import("//base/update/updateservice/foundations/ability/log/log.gni")
-import("//base/update/updateservice/foundations/ability/sa_loader/sa_loader.gni")
-import("//base/update/updateservice/foundations/ability/sys_event/sys_event.gni")
+import(
+    "//base/update/updateservice/foundations/ability/sa_loader/sa_loader.gni")
+import(
+    "//base/update/updateservice/foundations/ability/sys_event/sys_event.gni")
 import("//base/update/updateservice/foundations/ability/utils/utils.gni")
 import("//base/update/updateservice/foundations/model/base_model.gni")
 
