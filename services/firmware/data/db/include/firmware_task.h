@@ -19,7 +19,9 @@
 #include <string>
 
 #include "firmware_common.h"
-#include "update_helper.h"
+#include "network_type.h"
+#include "order.h"
+#include "update_define.h"
 
 namespace OHOS {
 namespace UpdateEngine {

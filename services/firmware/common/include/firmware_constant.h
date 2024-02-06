@@ -19,7 +19,6 @@
 #include <vector>
 
 #include "constant.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

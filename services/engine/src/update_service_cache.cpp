@@ -15,9 +15,12 @@
 
 #include "update_service_cache.h"
 
+#include <cstdint>
+
 #include "update_define.h"
-#include "update_helper.h"
 #include "update_log.h"
+#include "upgrade_info.h"
+#include "upgrade_interval.h"
 
 namespace OHOS {
 namespace UpdateEngine {

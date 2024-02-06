@@ -17,14 +17,13 @@
 
 #include <thread>
 
+#include "event_id.h"
 #include "firmware_callback_utils.h"
 #include "firmware_component_operator.h"
 #include "firmware_constant.h"
 #include "firmware_install_factory.h"
 #include "firmware_log.h"
 #include "firmware_task_operator.h"
-#include "firmware_update_helper.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

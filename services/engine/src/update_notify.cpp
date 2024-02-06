@@ -17,7 +17,7 @@
 
 #include "iservice_registry.h"
 
-#include "update_helper.h"
+#include "subscribe_info.h"
 #include "update_log.h"
 
 namespace OHOS {

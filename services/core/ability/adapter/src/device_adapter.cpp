@@ -27,11 +27,10 @@
 #include "parameter.h"
 #include "securec.h"
 
+#include "anonymous_utils.h"
 #include "constant.h"
 #include "config_parse.h"
-#include "encrypt_utils.h"
 #include "update_log.h"
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

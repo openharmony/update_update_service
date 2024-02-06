@@ -1,0 +1,45 @@
+# Copyright (c) 2024 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+model_external_deps = []
+model_deps = []
+model_include = [
+  "../feature/update/model/check",
+  "../feature/update/model/clear",
+  "../feature/update/model/common",
+  "../feature/update/model/download",
+  "../feature/update/model/event",
+  "../feature/update/model/event/on_off",
+  "../feature/update/model/install",
+  "../feature/update/model/message_parcel/include",
+  "../feature/update/model/policy",
+  "../feature/update/model/subscribe",
+  "../feature/update/model/task",
+  "../feature/update/model/upgrade",
+  "../feature/update/model/upgrade_info",
+  "../feature/update/model/version_info",
+  "../feature/update/model/version_info/current_version",
+  "../feature/update/model/version_info/description",
+  "../feature/update/model/version_info/new_version",
+]
+model_src = [
+  "../feature/update/model/event/src/event_info.cpp",
+  "../feature/update/model/message_parcel/src/message_parcel_helper.cpp",
+  "../feature/update/model/subscribe/src/subscribe_info.cpp",
+  "../feature/update/model/task/src/task_body.cpp",
+  "../feature/update/model/upgrade_info/src/business_type.cpp",
+  "../feature/update/model/upgrade_info/src/upgrade_info.cpp",
+  "../feature/update/model/version_info/description/src/description_info.cpp",
+  "../feature/update/model/version_info/src/version_component.cpp",
+  "../feature/update/model/version_info/src/version_digest_info.cpp",
+]

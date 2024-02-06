@@ -24,7 +24,6 @@
 #include "iremote_stub.h"
 #include "system_ability.h"
 
-#include "update_helper.h"
 #include "update_service_impl_manager.h"
 #include "update_service_stub.h"
 

@@ -16,7 +16,6 @@
 #include "iupdater.h"
 
 #include "napi_common_define.h"
-#include "update_helper.h"
 #include "update_session.h"
 
 namespace OHOS::UpdateEngine {

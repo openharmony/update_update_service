@@ -16,12 +16,8 @@
 #include "base_callback_utils.h"
 
 #include "iupdate_callback.h"
-#include "update_define.h"
-#include "update_helper.h"
 #include "update_log.h"
-#include "update_service.h"
 #include "update_service_cache.h"
-#include "update_service_util.h"
 
 namespace OHOS {
 namespace UpdateEngine {

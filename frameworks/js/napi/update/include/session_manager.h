@@ -24,7 +24,8 @@
 #include "js_native_api_types.h"
 
 #include "base_session.h"
-#include "update_helper.h"
+#include "event_classify_info.h"
+#include "event_info.h"
 
 namespace OHOS::UpdateEngine {
 class SessionManager {

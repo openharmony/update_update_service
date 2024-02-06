@@ -1,0 +1,53 @@
+# Copyright (c) 2024 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//base/update/updateservice/foundations/ability/define/define.gni")
+import("//base/update/updateservice/foundations/ability/log/log.gni")
+import(
+    "//base/update/updateservice/foundations/ability/sa_loader/sa_loader.gni")
+import(
+    "//base/update/updateservice/foundations/ability/sys_event/sys_event.gni")
+import("//base/update/updateservice/foundations/ability/utils/utils.gni")
+import("//base/update/updateservice/foundations/model/base_model.gni")
+
+foundations_external_deps = []
+foundations_external_deps += define_external_deps
+foundations_external_deps += update_log_external_deps
+foundations_external_deps += sa_loader_external_deps
+foundations_external_deps += sys_event_external_deps
+foundations_external_deps += utils_external_deps
+foundations_external_deps += base_model_external_deps
+
+foundations_deps = []
+foundations_deps += define_deps
+foundations_deps += update_log_deps
+foundations_deps += sa_loader_deps
+foundations_deps += sys_event_deps
+foundations_deps += utils_deps
+foundations_deps += base_model_deps
+
+foundations_include = []
+foundations_include += define_include
+foundations_include += update_log_include
+foundations_include += sa_loader_include
+foundations_include += sys_event_include
+foundations_include += utils_include
+foundations_include += base_model_include
+
+foundations_sources = []
+foundations_sources += define_src
+foundations_sources += update_log_src
+foundations_sources += sa_loader_src
+foundations_sources += sys_event_src
+foundations_sources += utils_src
+foundations_sources += base_model_src

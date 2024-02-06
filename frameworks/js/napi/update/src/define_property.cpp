@@ -15,10 +15,22 @@
 
 #include "define_property.h"
 
+#include "business_sub_type.h"
+#include "business_vendor.h"
+#include "call_result.h"
+#include "component_type.h"
+#include "description_format.h"
+#include "description_type.h"
+#include "effective_mode.h"
+#include "event_classify.h"
+#include "event_id.h"
 #include "napi_common_utils.h"
+#include "network_type.h"
+#include "order.h"
 #include "string_utils.h"
 #include "update_define.h"
-#include "update_helper.h"
+#include "upgrade_action.h"
+#include "upgrade_status.h"
 
 #define DECLARE_ENUM_PROPERTY(item)      \
     {StringUtils::GetEnumValueString(#item), NapiCommonUtils::CreateUint32(env, CAST_UINT((item)))}

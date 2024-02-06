@@ -18,7 +18,6 @@
 #include <dlfcn.h>
 #include <unistd.h>
 #include <updater_sa_ipc_interface_code.h>
-#include <update_callback_stub.h>
 
 #include "iservice_registry.h"
 #include "ohos_types.h"

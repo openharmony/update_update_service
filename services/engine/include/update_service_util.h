@@ -17,7 +17,9 @@
 #define UPDATE_SERVICE_UTIL_H
 
 #include "iupdate_callback.h"
-#include "update_helper.h"
+#include "progress.h"
+#include "task_body.h"
+#include "upgrade_info.h"
 
 namespace OHOS {
 namespace UpdateEngine {
