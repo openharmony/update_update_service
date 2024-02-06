@@ -16,7 +16,13 @@
 #ifndef UPDATE_CLIENT_H
 #define UPDATE_CLIENT_H
 
+#include "check_result.h"
+#include "current_version_info.h"
 #include "iupdater.h"
+#include "new_version_info.h"
+#include "progress.h"
+#include "task_info.h"
+#include "version_description_info.h"
 
 namespace OHOS::UpdateEngine {
 class UpdateClient : public IUpdater {

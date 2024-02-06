@@ -16,13 +16,16 @@
 #ifndef FIRMWARE_DOWNLOAD_MODE_H
 #define FIRMWARE_DOWNLOAD_MODE_H
 
+#include "business_error.h"
+#include "device_adapter.h"
+#include "download_options.h"
+#include "error_message.h"
 #include "firmware_common.h"
 #include "firmware_download_data_processor.h"
 #include "firmware_iexecute_mode.h"
 #include "firmware_install_data_processor.h"
 #include "firmware_task.h"
-#include "device_adapter.h"
-#include "update_helper.h"
+#include "progress.h"
 
 namespace OHOS {
 namespace UpdateEngine {

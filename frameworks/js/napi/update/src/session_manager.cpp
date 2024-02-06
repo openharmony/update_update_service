@@ -21,7 +21,6 @@
 
 #include "client_helper.h"
 #include "update_define.h"
-#include "update_helper.h"
 #include "update_session.h"
 
 using namespace std;

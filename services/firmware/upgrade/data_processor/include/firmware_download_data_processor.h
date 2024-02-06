@@ -18,7 +18,7 @@
 
 #include "firmware_common.h"
 #include "firmware_task.h"
-#include "update_helper.h"
+#include "progress.h"
 
 namespace OHOS {
 namespace UpdateEngine {

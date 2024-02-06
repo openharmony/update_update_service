@@ -18,7 +18,9 @@
 
 #include "singleton.h"
 
+#include "business_error.h"
 #include "constant.h"
+#include "download_options.h"
 #include "firmware_common.h"
 #include "firmware_flow_manager.h"
 #include "firmware_result_process.h"
@@ -26,7 +28,7 @@
 #include "device_adapter.h"
 #include "firmware_preferences_utils.h"
 #include "schedule_task.h"
-#include "update_helper.h"
+#include "upgrade_options.h"
 
 namespace OHOS {
 namespace UpdateEngine {

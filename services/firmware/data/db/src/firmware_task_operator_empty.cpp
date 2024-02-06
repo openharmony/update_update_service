@@ -18,7 +18,8 @@
 #include <memory>
 
 #include "time_utils.h"
-#include "update_helper.h"
+#include "network_type.h"
+#include "order.h"
 
 namespace OHOS {
 namespace UpdateEngine {

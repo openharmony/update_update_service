@@ -29,7 +29,7 @@
 #include "parameter.h"
 #include "parameters.h"
 
-#include "encrypt_utils.h"
+#include "anonymous_utils.h"
 #include "firmware_check_analyze_utils.h"
 #include "firmware_common.h"
 #include "firmware_component.h"
@@ -37,7 +37,7 @@
 #include "device_adapter.h"
 #include "firmware_update_helper.h"
 #include "network_response.h"
-#include "update_helper.h"
+#include "search_status.h"
 #include "update_service_util.h"
 
 constexpr int32_t PORT_NUMBER = 5022;

@@ -16,8 +16,8 @@
 #ifndef FIRMWARE_MANUAL_CHECK_MODE_H
 #define FIRMWARE_MANUAL_CHECK_MODE_H
 
+#include "business_error.h"
 #include "firmware_check_data_processor.h"
-
 #include "firmware_common.h"
 #include "firmware_component.h"
 #include "firmware_iexecute_mode.h"

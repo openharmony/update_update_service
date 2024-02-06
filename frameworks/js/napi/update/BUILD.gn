@@ -29,7 +29,6 @@ ohos_shared_library("$updateengine_client_library_name") {
     sources += [
       "$updateengine_root_path/frameworks/js/napi/update/common/src/client_helper.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/common/src/iupdater.cpp",
-
       "$updateengine_root_path/frameworks/js/napi/update/src/define_property.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/local_updater.cpp",
       "$updateengine_root_path/frameworks/js/napi/update/src/restorer.cpp",
@@ -45,24 +44,19 @@ ohos_shared_library("$updateengine_client_library_name") {
     "$updateengine_root_path/frameworks/js/napi/update/common/include",
     "$updateengine_root_path/frameworks/js/napi/update/include",
 
-    "$updateengine_root_path/services/core/ability/utils/include",
-
     "//third_party/json/include",
     "//third_party/node/src",  # napi
   ]
   include_dirs += session_include_dirs
 
   deps = [
+    "$updateengine_root_path/foundations:update_foundations",
     "$updateengine_root_path/interfaces/inner_api/engine:$updateengine_inner_library_name",
-    "//third_party/json:nlohmann_json_static",
   ]
 
   external_deps = [
     "c_utils:utils",  # sptr
     "hilog:libhilog",
-    "ipc:ipc_core",
-    "safwk:system_ability_fwk",
-    "samgr:samgr_proxy",
   ]
 
   if (ability_ability_runtime_enable) {

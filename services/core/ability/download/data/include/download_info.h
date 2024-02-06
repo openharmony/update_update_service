@@ -16,11 +16,11 @@
 #ifndef DOWNLOAD_INFO_H
 #define DOWNLOAD_INFO_H
 
+#include <cstdio>
+#include <map>
 #include <string>
 
-#include "encrypt_utils.h"
-#include "update_define.h"
-#include "update_helper.h"
+#include "anonymous_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -58,7 +58,7 @@ public:
         return std::string("DownloadInfo: ")
         .append("id=").append(std::to_string(id)).append(",")
         .append("taskId=").append(taskId).append(",")
-        .append("url=").append(EncryptUtils::EncryptUrl(url)).append(",")
+        .append("url=").append(AnonymousUtils::AnonymousUrl(url)).append(",")
         .append("path=").append(path).append(",")
         .append("veriftInfo=").append(veriftInfo).append(",")
         .append("retryTimes=").append(std::to_string(retryTimes)).append(",")

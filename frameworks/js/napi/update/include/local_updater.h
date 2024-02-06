@@ -18,7 +18,6 @@
 
 #include "iupdater.h"
 #include "node_api.h"
-#include "update_helper.h"
 
 namespace OHOS::UpdateEngine {
 class LocalUpdater : public IUpdater {

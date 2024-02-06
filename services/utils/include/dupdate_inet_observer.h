@@ -18,7 +18,7 @@
 
 #include <functional>
 
-#include "update_helper.h"
+#include "network_type.h"
 
 namespace OHOS {
 namespace UpdateEngine {

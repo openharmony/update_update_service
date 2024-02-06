@@ -21,10 +21,11 @@
 #include "firmware_component.h"
 #include "firmware_component_table.h"
 #include "firmware_database.h"
+#include "upgrade_status.h"
+
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 #include "table_base_operator.h"
 #endif
-#include "update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {

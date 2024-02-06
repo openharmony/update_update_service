@@ -16,7 +16,11 @@
 #ifndef UPDATE_SERVICE_CACHE_H
 #define UPDATE_SERVICE_CACHE_H
 
-#include "update_helper.h"
+#include <cstdint>
+
+#include "business_sub_type.h"
+#include "upgrade_info.h"
+#include "upgrade_interval.h"
 
 namespace OHOS {
 namespace UpdateEngine {

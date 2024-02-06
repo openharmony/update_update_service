@@ -21,9 +21,13 @@
 #include "node_api.h"
 #include "unistd.h"
 
+#include "check_result.h"
+#include "component_description.h"
+#include "current_version_info.h"
 #include "napi_common_define.h"
+#include "task_body_member_mask.h"
 #include "update_define.h"
-#include "update_helper.h"
+#include "version_description_info.h"
 
 namespace OHOS::UpdateEngine {
 void ClientHelper::TrimString(std::string &str)
