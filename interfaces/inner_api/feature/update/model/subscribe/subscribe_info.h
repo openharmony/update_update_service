@@ -20,7 +20,7 @@
 
 #include "base_json_struct.h"
 #include "business_type.h"
-#include "device_type.h"
+#include "update_device_type.h"
 
 namespace OHOS::UpdateEngine {
 const std::string OUC_PACKAGE_NAME = "com.ohos.updateapp";

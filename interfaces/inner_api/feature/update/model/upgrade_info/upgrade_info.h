@@ -19,7 +19,7 @@
 #include <string>
 
 #include "business_type.h"
-#include "device_type.h"
+#include "update_device_type.h"
 
 namespace OHOS::UpdateEngine {
 const std::string LOCAL_UPGRADE_INFO = "LocalUpgradeInfo";
