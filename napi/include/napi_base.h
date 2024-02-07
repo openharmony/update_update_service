@@ -44,14 +44,14 @@ public:
         ENGINE_LOGI("HandleFunc method: %{public}s", method.c_str());
         napi_value result = clientContext->getNapiParam_(env, info,clientContext);
         if (result == nullptr) {
-            ENGINE_LOGE("HandleFunc GetMigrateStatusParam_ fail");
+            ENGINE_LOGE("HandleFunc GetMigrateStatusParam fail");
             return nullptr;
         }
         if (!Execute(env, clientContext)) {
             ENGINE_LOGE("HandleFunc Execute error");
             return result;
         }
-        ENGINE_LOGI("HandleFunc method: %{puiblic}s complete", method.c_str());
+        ENGINE_LOGI("HandleFunc method: %{public}s complete", method.c_str());
         return result;
     }
 
@@ -68,7 +68,7 @@ public:
             paramInfos.emplace_back("callback", "napi_function");
             PARAM_CHECK(callbackValueType == napi_function, NapiCommonUtils::NapiThrowParamError(env, paramInfos);
                return nullptr, "Failed to GetCallbackParam");
-            napi_create_preference(env, args[callbackPosition], 1, &clientContext->callbackRef_);
+            napi_create_reference(env, args[callbackPosition], 1, &clientContext->callbackRef_);
             napi_get_undefined(env, &result); //创建接口返回值对象
         } else {
             napi_create_promise(env, &clientContext->deferred_, &result);
