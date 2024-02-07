@@ -19,6 +19,7 @@
 #include "singleton.h"
 
 #include <set>
+#include <map>
 
 #include "dupdate_inet_observer.h"
 #ifdef NETMANAGER_BASE_ENABLE
