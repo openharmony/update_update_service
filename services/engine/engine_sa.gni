@@ -121,7 +121,6 @@ sa_include_dirs = [
   "//third_party/glib",
   "//third_party/openssl/include",
   "//third_party/cJSON/",
-  "//third_party/json/include",
 ]
 
 if (!ability_ability_base_enable || !ability_ability_runtime_enable) {
