@@ -18,6 +18,7 @@
 
 #include "singleton.h"
 
+#include <map>
 #include <set>
 
 #include "dupdate_inet_observer.h"
