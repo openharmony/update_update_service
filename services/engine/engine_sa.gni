@@ -110,7 +110,6 @@ sa_include_dirs = [
   "//third_party/glib",
   "//third_party/openssl/include",
   "//third_party/cJSON/",
-  "//third_party/json/include",
 ]
 
 if (!relational_store_native_rdb_enable) {
