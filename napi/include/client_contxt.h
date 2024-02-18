@@ -39,12 +39,12 @@ struct ClientContext {
               paramInfos_(std::move(paramInfos)),
               getIpcBusinessError_(getIpcBusinessError)
         {
-            ENGINE_LOGI("ClientContext construct");
+            ENGINE_LOGD("ClientContext construct");
         }
 
     ~ClientContext()
     {
-        ENGINE_LOGI("~ClientContext destruct");
+        ENGINE_LOGD("~ClientContext destruct");
     }
 
     std::string method_; //执行的接口名

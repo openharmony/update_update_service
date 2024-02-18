@@ -127,7 +127,7 @@ public:
         napi_status callbackStatus = isSuccess ? napi_resolve_deferred(env, clientContext->deferred_, result[1]) :
                                                  napi_reject_deferred(env, clientContext->deferred_, result[0]);
         if (callbackStatus != napi_ok) {
-            ENGINE_LOGE("GetMigrateInfoComplete reply error: %{public}d", callbackStatus);
+            ENGINE_LOGE("ExecutePromiseFunc error: %{public}d", callbackStatus);
         }
     }
 
@@ -147,7 +147,7 @@ public:
         }
         resultStatus = napi_delete_reference(env, clientContext->callbackRef_);
         if (resultStatus != napi_ok) {
-            ENGINE_LOGE("napi_call_function failed result=%{public}d", resultStatus);
+            ENGINE_LOGE("napi_delete_reference failed result=%{public}d", resultStatus);
         }
     }
 
