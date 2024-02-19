@@ -140,7 +140,8 @@ public:
             return;
         }
         napi_value userRet = nullptr;
-        resultStatus = napi_call_function(env, nullptr, callback, COUNT_OF(result), result, &userRet);
+        constexpr size_t resultCount = 2;
+        resultStatus = napi_call_function(env, nullptr, callback, resultCount, result, &userRet);
         if (resultStatus != napi_ok) {
             ENGINE_LOGE("napi_call_function failed result=%{public}d", resultStatus);
             return;
