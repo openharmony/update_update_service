@@ -29,7 +29,7 @@ struct ClientContext {
     typedef napi_value (*GetNapiParam)(napi_env env, napi_callback_info info, std::unique_ptr<T> &clientContext);
     typedef void (*GetIpcBusinessError)(const std::string &funcName, int32_t ipcRequestCode,
         BusinessError &businessError);
-    typedef napi_value (*CreateNapiValue)(napi_env env, const T& context);
+    typedef napi_value (*CreateNapiValue)(napi_env env, const T &context);
 
     ClientContext(std::string method, GetNapiParam getNapiParam, napi_async_execute_callback executeFunc,
         std::vector<std::pair<std::string, std::string>> paramInfos, GetIpcBusinessError getIpcBusinessError)
