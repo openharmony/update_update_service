@@ -24,11 +24,11 @@
 namespace OHOS::UpdateEngine {
 template <class INTERFACE> class Container {
 public:
-    using funcType = std::function<std::shared_ptr<INTERFACE>()>;
+    using FuncType = std::function<std::shared_ptr<INTERFACE>()>;
 
     ~Container() = default;
     // 单例模式
-    static Container &instance()
+    static Container &Instance()
     {
         static Container instance; // c++11 静态局部变量保证线程安全
         return instance;
