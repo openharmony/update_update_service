@@ -42,7 +42,7 @@ public:
         }
         std::string method = clientContext->method_;
         ENGINE_LOGI("HandleFunc method: %{public}s", method.c_str());
-        napi_value result = clientContext->getNapiParam_(env, info,clientContext);
+        napi_value result = clientContext->getNapiParam_(env, info, clientContext);
         if (result == nullptr) {
             ENGINE_LOGE("HandleFunc GetMigrateStatusParam fail");
             return nullptr;
