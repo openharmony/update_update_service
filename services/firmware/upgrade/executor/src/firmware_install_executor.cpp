@@ -99,7 +99,8 @@ void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &com
         component.versionId.c_str(), progress.status, progress.percent);
     FirmwareComponentOperator().UpdateProgressByUrl(component.url, progress.status, progress.percent);
 
-    taskProgress_.status = progress.status;
+    // 避免安装失败重复提交事件, 进度回调状态置为安装中
+    taskProgress_.status = UpgradeStatus::INSTALLING;
     taskProgress_.percent = progress.percent;
 
     // 整体进度插入到 task 表
