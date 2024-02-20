@@ -58,7 +58,7 @@ public:
     static napi_value GetCallbackParam(napi_env env, uint32_t argNum, size_t argc, napi_value args[],
         std::unique_ptr<T> &clientContext)
     {
-        //接口调用返回值,非返回内容
+        // 接口调用返回值,非返回内容
         napi_value result = nullptr;
         if (argc >= argNum) {
             uint32_t callbackPosition = argNum - 1;
@@ -69,7 +69,7 @@ public:
             PARAM_CHECK(callbackValueType == napi_function, NapiCommonUtils::NapiThrowParamError(env, paramInfos);
                return nullptr, "Failed to GetCallbackParam");
             napi_create_reference(env, args[callbackPosition], 1, &clientContext->callbackRef_);
-            napi_get_undefined(env, &result); //创建接口返回值对象
+            napi_get_undefined(env, &result); // 创建接口返回值对象
         } else {
             napi_create_promise(env, &clientContext->deferred_, &result);
         }

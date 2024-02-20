@@ -48,7 +48,7 @@ public:
             return nullptr;
         }
         FuncType function = createMap_[functionType];
-        //获取容器中对象时实例化
+        // 获取容器中对象时实例化
         return function();
     }
 
@@ -58,7 +58,7 @@ private:
     Container(Container &&) = delete;
 
 private:
-    //存储注入对象的回调函数
+    // 存储注入对象的回调函数
     std::unordered_map<uint32_t, FuncType> createMap_;
 };
 
