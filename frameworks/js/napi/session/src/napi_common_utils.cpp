@@ -36,6 +36,28 @@ int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, const std::strin
     return CAST_INT(ClientStatus::CLIENT_FAIL);
 }
 
+int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, int32_t &intValue)
+{
+    napi_valuetype valueType;
+    napi_status status = napi_typeof(env, arg, &valueType);
+    PARAM_CHECK(status == napi_ok && valueType == napi_number,
+        return CAST_INT(ClientStatus::CLIENT_INVALID_TYPE), "invalid type");
+    napi_get_value_int32(env, arg, &intValue);
+    PARAM_CHECK(status == napi_ok, return CAST_INT(ClientStatus::CLIENT_INVALID_TYPE), "Error get GetInt32");
+    return CAST_INT(ClientStatus::CLIENT_SUCCESS);
+}
+
+int32_t NapiCommonUtils::GetUInt32(napi_env env, napi_value arg, uint32_t &uintValue)
+{
+    napi_valuetype valueType;
+    napi_status status = napi_typeof(env, arg, &valueType);
+    PARAM_CHECK(status == napi_ok && valueType == napi_number,
+        return CAST_INT(ClientStatus::CLIENT_INVALID_TYPE), "invalid type");
+    napi_get_value_uint32(env, arg, &uintValue);
+    PARAM_CHECK(status == napi_ok, return CAST_INT(ClientStatus::CLIENT_INVALID_TYPE), "Error get GetUInt32");
+    return CAST_INT(ClientStatus::CLIENT_SUCCESS);
+}
+
 int32_t NapiCommonUtils::GetBool(napi_env env, napi_value arg, const std::string &attrName, bool &value)
 {
     bool result = false;
@@ -259,6 +281,15 @@ int32_t NapiCommonUtils::ConvertToErrorCode(CallResult callResult)
     } else {
         return COMPONENT_ERR + CAST_INT(callResult);
     }
+}
+
+napi_value NapiCommonUtils::BuildCallFuncResult(napi_env env, const BusinessError &businessError)
+{
+    napi_value obj;
+    napi_status status = napi_create_object(env, &obj);
+    PARAM_CHECK(status == napi_ok, return obj, "Failed to create napi_create_object %{public}d", CAST_INT(status));
+    napi_get_boolean(env, businessError.errorNum == CallResult::SUCCESS, &obj);
+    return obj;
 }
 
 bool NapiCommonUtils::IsCommonError(CallResult callResult)

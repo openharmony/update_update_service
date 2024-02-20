@@ -32,6 +32,8 @@ class NapiCommonUtils {
 public:
     static int32_t GetBool(napi_env env, napi_value arg, const std::string &attrName, bool &value);
     static int32_t GetInt32(napi_env env, napi_value arg, const std::string &attrName, int32_t &intValue);
+    static int32_t GetInt32(napi_env env, napi_value arg, int32_t &intValue);
+    static int32_t GetUInt32(napi_env env, napi_value arg, uint32_t &uintValue);
     static int32_t GetString(napi_env env, napi_value arg, const std::string &attrName, std::string &strValue);
     static int32_t GetString(napi_env env, napi_value arg, std::string &strValue);
 
@@ -52,6 +54,8 @@ public:
     static napi_value BuildThrowError(napi_env env, const BusinessError &businessError);
     static int32_t BuildBusinessError(napi_env env, napi_value &obj, const BusinessError &businessError);
     static int32_t ConvertToErrorCode(CallResult callResult);
+
+    static napi_value BuildCallFuncResult(napi_env env, const BusinessError &businessError);
 
 protected:
     static ClientStatus CheckNapiObjectType(napi_env env, const napi_value &arg);
