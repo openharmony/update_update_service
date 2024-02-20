@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef MIGRATE_NAPI_BASE_H
-#define MIGRATE_NAPI_BASE_H
+#ifndef NAPI_BASE_H
+#define NAPI_BASE_H
 
 #include <memory>
 
@@ -166,4 +166,4 @@ public:
     }
 };
 } // namespace OHOS::UpdateEngine
-#endif // MIGRATE_NAPI_BASE_H
+#endif // NAPI_BASE_H
