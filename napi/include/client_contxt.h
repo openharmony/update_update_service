@@ -47,20 +47,20 @@ struct ClientContext {
         ENGINE_LOGD("~ClientContext destruct");
     }
 
-    std::string method_; //执行的接口名
+    std::string method_; // 执行的接口名
     BusinessError businessError_;
     int32_t ipcRequestCode_ = 0;
 
-    GetNapiParam getNapiParam_ = nullptr; //napi获取参数
-    CreateNapiValue createValueFunc_ = nullptr; //通过ipc返回结果, 构建napi结果对象函数
+    GetNapiParam getNapiParam_ = nullptr; // napi获取参数
+    CreateNapiValue createValueFunc_ = nullptr; // 通过ipc返回结果, 构建napi结果对象函数
 
-    napi_async_execute_callback executeFunc_; //异步执行函数
-    napi_ref callbackRef_ = nullptr; //callback 回调
-    napi_deferred deferred_ = nullptr; //promise deferred对象
+    napi_async_execute_callback executeFunc_; // 异步执行函数
+    napi_ref callbackRef_ = nullptr; // callback 回调
+    napi_deferred deferred_ = nullptr; // promise deferred对象
     napi_async_work work_ = nullptr;
 
-    std::vector<std::pair<std::string, std::string>> paramInfos_; //入参校验异常返回结果
-    GetIpcBusinessError getIpcBusinessError_; //通过ipc返回异常，构造BusinessError
+    std::vector<std::pair<std::string, std::string>> paramInfos_; // 入参校验异常返回结果
+    GetIpcBusinessError getIpcBusinessError_; // 通过ipc返回异常，构造BusinessError
 };
 } // namespace OHOS::UpdateEngine
 #endif // CLIENT_CONTEXT_H
