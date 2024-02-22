@@ -59,7 +59,8 @@ bool FileUtils::IsSpaceEnough(const std::string &filePath, const int64_t require
     } else {
         ENGINE_LOGE("statfs fail, error code = %{public}d", ret);
     }
-    ENGINE_LOGI("free space=%{public}llu, required space=%{public}llu", freeSpace, static_cast<uint64_t>(requiredSpace));
+    ENGINE_LOGI("free space=%{public}llu, required space=%{public}llu", freeSpace,
+        static_cast<uint64_t>(requiredSpace));
     return freeSpace >= static_cast<uint64_t>(requiredSpace);
 }
 
