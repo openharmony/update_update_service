@@ -35,6 +35,12 @@ public:
         return static_cast<int64_t>(currentTime);
     }
 
+    static int64_t GetTimestampByMilliseconds()
+    {
+        return std::chrono::duration_cast<std::chrono::milliseconds>
+            (std::chrono::system_clock::now().time_since_epoch()).count();
+    }
+
     static std::string GetPrintTimeStr(int64_t time)
     {
         time_t printTime = static_cast<time_t>(time);
