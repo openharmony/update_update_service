@@ -42,6 +42,7 @@ public:
 
 protected:
     sptr<SERVICE> GetService();
+    void RefreshingService();
     virtual void RegisterCallback(){};
 
 protected:
@@ -107,6 +108,16 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::AddDeathRecipient
             ENGINE_LOGE("Failed to add death recipient");
         }
     }
+}
+
+template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::RefreshingService()
+{
+    ENGINE_LOGI("RefreshingService, do ResetService");
+    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    if (remoteServer_ != nullptr) {
+        remoteServer_ = nullptr;
+    }
+    
 }
 
 template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(const wptr<IRemoteObject> &remote)
