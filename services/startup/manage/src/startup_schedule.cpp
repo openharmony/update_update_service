@@ -62,5 +62,19 @@ bool StartupSchedule::Schedule(const ScheduleTask &task)
     ENGINE_LOGI("StartServiceByTimer finish, ret is %{public}d", ret);
     return ret == 0;
 }
+
+bool OnDemandSchedule(const std::vector<ScheduleTask> &tasks)
+{
+    if (tasks.empty()) {
+        ENGINE_LOGE("scheduleTasks is null");
+        return false;
+    }
+    for (const auto &task : tasks) {
+        ENGINE_LOGI("OnDemandSchedule task %{public}s", task.ToString().c_str());
+    }
+    auto isSuccess = SystemAbilityOperator().UpdateStartupPolicy(tasks);
+    ENGINE_LOGI("OnDemandSchedule %{public}s", isSuccess ? "success" : "failure");
+    return isSuccess;
+}
 } // namespace UpdateEngine
 } // namespace OHOS

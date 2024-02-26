@@ -60,12 +60,14 @@ bool ScheduleManager::TaskManage(ScheduleTask &scheduleTask)
 
 bool ScheduleManager::TaskSchedule(const ScheduleTask &scheduleTask)
 {
+    std::vector<ScheduleTask> scheduleTasks;
     if (startupSchedule_ == nullptr) {
         ENGINE_LOGE("TaskSchedule startupSchedule null, return false");
         return false;
     }
     ENGINE_LOGI("TaskSchedule: %{public}s", scheduleTask.ToString().c_str());
-    return startupSchedule_->Schedule(scheduleTask);
+    scheduleTasks.emplace_back(scheduleTask);
+    return startupSchedule_->OnDemandSchedule(scheduleTasks);
 }
 } // namespace UpdateEngine
 } // namespace OHOS
