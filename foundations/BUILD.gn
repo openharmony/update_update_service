@@ -39,6 +39,7 @@ ohos_shared_library("update_foundations") {
 
   public_configs = [ ":update_service_foundations_config" ]
 
+  innerapi_tags = [ "platformsdk" ]
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
 }
