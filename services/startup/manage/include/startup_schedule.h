@@ -31,6 +31,7 @@ public:
     virtual void RegisterLooper(const ScheduleLooper &looper) = 0;
     virtual void UnregisterLooper() = 0;
     virtual bool Schedule(const ScheduleTask &task) = 0;
+    virtual bool OnDemandSchedule(const std::vector<ScheduleTask> &tasks) = 0;
 };
 
 class StartupSchedule final : public IStartupSchedule, public AlarmManager, public DelayedSingleton<StartupSchedule> {
@@ -40,6 +41,7 @@ public:
     void RegisterLooper(const ScheduleLooper &looper) final;
     void UnregisterLooper() final;
     bool Schedule(const ScheduleTask &task) final;
+    bool OnDemandSchedule(const std::vector<ScheduleTask> &tasks) final;
 };
 } // namespace UpdateEngine
 } // namespace OHOS
