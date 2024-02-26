@@ -117,7 +117,6 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::RefreshingService
     if (remoteServer_ != nullptr) {
         remoteServer_ = nullptr;
     }
-    
 }
 
 template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(const wptr<IRemoteObject> &remote)
