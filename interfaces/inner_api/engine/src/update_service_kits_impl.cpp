@@ -47,6 +47,7 @@ int32_t UpdateServiceKitsImpl::RegisterUpdateCallback(const UpgradeInfo &info, c
     int32_t ret = updateService->RegisterUpdateCallback(info, remoteUpdateCallback);
     remoteUpdateCallbackMap_[info] = remoteUpdateCallback;
     ENGINE_LOGI("RegisterUpdateCallback %{public}s", ret == INT_CALL_SUCCESS ? "success" : "failure");
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
     return ret;
 }
 
@@ -58,7 +59,9 @@ int32_t UpdateServiceKitsImpl::UnregisterUpdateCallback(const UpgradeInfo &info)
     ENGINE_LOGI("UnregisterUpdateCallback");
     std::lock_guard<std::mutex> lock(remoteServerLock_);
     remoteUpdateCallbackMap_.erase(info);
-    return updateService->UnregisterUpdateCallback(info);
+    int32_t ret = updateService->UnregisterUpdateCallback(info);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError,
@@ -68,7 +71,9 @@ int32_t UpdateServiceKitsImpl::CheckNewVersion(const UpgradeInfo &info, Business
 
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->CheckNewVersion(info, businessError, checkResult);
+    int32_t ret = updateService->CheckNewVersion(info, businessError, checkResult);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
@@ -77,7 +82,9 @@ int32_t UpdateServiceKitsImpl::Download(const UpgradeInfo &info, const VersionDi
     ENGINE_LOGI("UpdateServiceKitsImpl::Download");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->Download(info, versionDigestInfo, downloadOptions, businessError);
+    int32_t ret = updateService->Download(info, versionDigestInfo, downloadOptions, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::PauseDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
@@ -86,7 +93,9 @@ int32_t UpdateServiceKitsImpl::PauseDownload(const UpgradeInfo &info, const Vers
     ENGINE_LOGI("UpdateServiceKitsImpl::PauseDownload");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->PauseDownload(info, versionDigestInfo, pauseDownloadOptions, businessError);
+    int32_t ret = updateService->PauseDownload(info, versionDigestInfo, pauseDownloadOptions, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::ResumeDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
@@ -95,7 +104,9 @@ int32_t UpdateServiceKitsImpl::ResumeDownload(const UpgradeInfo &info, const Ver
     ENGINE_LOGI("UpdateServiceKitsImpl::ResumeDownload");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->ResumeDownload(info, versionDigestInfo, resumeDownloadOptions, businessError);
+    int32_t ret = updateService->ResumeDownload(info, versionDigestInfo, resumeDownloadOptions, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::Upgrade(const UpgradeInfo &info, const VersionDigestInfo &versionDigest,
@@ -104,7 +115,9 @@ int32_t UpdateServiceKitsImpl::Upgrade(const UpgradeInfo &info, const VersionDig
     ENGINE_LOGI("UpdateServiceKitsImpl::Upgrade");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->Upgrade(info, versionDigest, upgradeOptions, businessError);
+    int32_t ret = updateService->Upgrade(info, versionDigest, upgradeOptions, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::ClearError(const UpgradeInfo &info, const VersionDigestInfo &versionDigest,
@@ -113,7 +126,9 @@ int32_t UpdateServiceKitsImpl::ClearError(const UpgradeInfo &info, const Version
     ENGINE_LOGI("UpdateServiceKitsImpl::ClearError");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->ClearError(info, versionDigest, clearOptions, businessError);
+    int32_t ret = updateService->ClearError(info, versionDigest, clearOptions, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError)
@@ -121,7 +136,9 @@ int32_t UpdateServiceKitsImpl::TerminateUpgrade(const UpgradeInfo &info, Busines
     ENGINE_LOGI("UpdateServiceKitsImpl::TerminateUpgrade");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->TerminateUpgrade(info, businessError);
+    int32_t ret = updateService->TerminateUpgrade(info, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::GetNewVersionInfo(const UpgradeInfo &info, NewVersionInfo &newVersionInfo,
@@ -130,7 +147,9 @@ int32_t UpdateServiceKitsImpl::GetNewVersionInfo(const UpgradeInfo &info, NewVer
     ENGINE_LOGI("UpdateServiceKitsImpl::GetNewVersionInfo");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetNewVersionInfo(info, newVersionInfo, businessError);
+    int32_t ret = updateService->GetNewVersionInfo(info, newVersionInfo, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::GetNewVersionDescription(const UpgradeInfo &info,
@@ -140,8 +159,10 @@ int32_t UpdateServiceKitsImpl::GetNewVersionDescription(const UpgradeInfo &info,
     ENGINE_LOGI("UpdateServiceKitsImpl::GetNewVersionDescription");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetNewVersionDescription(info, versionDigestInfo, descriptionOptions,
+    int32_t ret = updateService->GetNewVersionDescription(info, versionDigestInfo, descriptionOptions,
         newVersionDescriptionInfo, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::GetCurrentVersionInfo(const UpgradeInfo &info, CurrentVersionInfo &currentVersionInfo,
@@ -150,7 +171,9 @@ int32_t UpdateServiceKitsImpl::GetCurrentVersionInfo(const UpgradeInfo &info, Cu
     ENGINE_LOGI("UpdateServiceKitsImpl::GetCurrentVersionInfo");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetCurrentVersionInfo(info, currentVersionInfo, businessError);
+    int32_t ret = updateService->GetCurrentVersionInfo(info, currentVersionInfo, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::GetCurrentVersionDescription(const UpgradeInfo &info,
@@ -160,8 +183,10 @@ int32_t UpdateServiceKitsImpl::GetCurrentVersionDescription(const UpgradeInfo &i
     ENGINE_LOGI("UpdateServiceKitsImpl::GetCurrentVersionDescription");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetCurrentVersionDescription(info, descriptionOptions, currentVersionDescriptionInfo,
+    int32_t ret = updateService->GetCurrentVersionDescription(info, descriptionOptions, currentVersionDescriptionInfo,
         businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError)
@@ -169,7 +194,9 @@ int32_t UpdateServiceKitsImpl::GetTaskInfo(const UpgradeInfo &info, TaskInfo &ta
     ENGINE_LOGI("UpdateServiceKitsImpl::GetTaskInfo");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetTaskInfo(info, taskInfo, businessError);
+    int32_t ret = updateService->GetTaskInfo(info, taskInfo, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::SetUpgradePolicy(const UpgradeInfo &info, const UpgradePolicy &policy,
@@ -178,7 +205,9 @@ int32_t UpdateServiceKitsImpl::SetUpgradePolicy(const UpgradeInfo &info, const U
     ENGINE_LOGI("UpdateServiceKitsImpl::SetUpgradePolicy");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->SetUpgradePolicy(info, policy, businessError);
+    int32_t ret = updateService->SetUpgradePolicy(info, policy, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy,
@@ -187,7 +216,9 @@ int32_t UpdateServiceKitsImpl::GetUpgradePolicy(const UpgradeInfo &info, Upgrade
     ENGINE_LOGI("UpdateServiceKitsImpl::GetUpgradePolicy");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->GetUpgradePolicy(info, policy, businessError);
+    int32_t ret = updateService->GetUpgradePolicy(info, policy, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError)
@@ -195,7 +226,9 @@ int32_t UpdateServiceKitsImpl::Cancel(const UpgradeInfo &info, int32_t service, 
     ENGINE_LOGI("UpdateServiceKitsImpl::Cancel %d", service);
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->Cancel(info, service, businessError);
+    int32_t ret = updateService->Cancel(info, service, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
@@ -203,7 +236,9 @@ int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
     ENGINE_LOGI("UpdateServiceKitsImpl::FactoryReset");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->FactoryReset(businessError);
+    int32_t ret = updateService->FactoryReset(businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
@@ -212,7 +247,9 @@ int32_t UpdateServiceKitsImpl::ApplyNewVersion(const UpgradeInfo &info, const st
     ENGINE_LOGI("UpdateServiceKitsImpl::ApplyNewVersion");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->ApplyNewVersion(info, miscFile, packageName, businessError);
+    int32_t ret = updateService->ApplyNewVersion(info, miscFile, packageName, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 int32_t UpdateServiceKitsImpl::VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
@@ -221,7 +258,9 @@ int32_t UpdateServiceKitsImpl::VerifyUpgradePackage(const std::string &packagePa
     ENGINE_LOGI("UpdateServiceKitsImpl::VerifyUpgradePackage");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    return updateService->VerifyUpgradePackage(packagePath, keyPath, businessError);
+    int32_t ret = updateService->VerifyUpgradePackage(packagePath, keyPath, businessError);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, RefreshingService(), "ipc error");
+    return ret;
 }
 
 void UpdateServiceKitsImpl::RegisterCallback()
