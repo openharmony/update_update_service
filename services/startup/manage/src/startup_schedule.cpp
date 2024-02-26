@@ -21,6 +21,7 @@
 #include "constant.h"
 #include "firmware_preferences_utils.h"
 #include "startup_constant.h"
+#include "system_ability_operator.h"
 #include "time_utils.h"
 #include "update_log.h"
 
