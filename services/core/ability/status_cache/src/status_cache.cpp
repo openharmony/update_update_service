@@ -16,6 +16,7 @@
 #include "status_cache.h"
 
 #include "constant.h"
+#include "time_utils.h"
 #include "update_log.h"
 
 namespace OHOS {
@@ -44,6 +45,22 @@ int64_t StatusCache::GetCurrentTime()
         return 0;
     }
     return timeUtilsProxy_->GetTimestamp();
+}
+
+bool StatusCache::IsDownloadTriggered()
+{
+    if (lastDownloadTime_ == -1) {
+        lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
+        return false;
+    }
+
+    if (abs(TimeUtils::GetTimestampByMilliseconds() - lastDownloadTime_) < Constant::MILLESECONDS) {
+        // 当前时间与上次下载时间间隔小于1秒钟，不允许重复触发下载
+        ENGINE_LOGI("interval time within one seconds");
+        return true;
+    }
+    lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
+    return false;
 }
 } // namespace UpdateEngine
 } // namespace OHOS

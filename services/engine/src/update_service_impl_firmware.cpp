@@ -22,6 +22,7 @@
 #include "firmware_component_operator.h"
 #include "firmware_log.h"
 #include "firmware_manager.h"
+#include "firmware_status_cache.h"
 #include "firmware_task_operator.h"
 #include "device_adapter.h"
 #include "firmware_update_helper.h"
@@ -59,6 +60,7 @@ int32_t UpdateServiceImplFirmware::CheckNewVersion(const UpgradeInfo &info, Busi
         businessError.errorNum = CallResult::TIME_OUT;
         businessError.message = "CheckNewVersion TimeOut";
     }
+    weakPtr->checkComplete_ = false;
     return INT_CALL_SUCCESS;
 }
 
@@ -67,6 +69,13 @@ int32_t UpdateServiceImplFirmware::Download(const UpgradeInfo &info, const Versi
 {
     FIRMWARE_LOGI("Download allowNetwork:%{public}d order:%{public}d", CAST_INT(downloadOptions.allowNetwork),
         CAST_INT(downloadOptions.order));
+    //控制1秒内重复点击下载
+    if (DelayedSingleton<FirmwareStatusCache>::GetInstance()->IsDownloadTriggered()) {
+        FIRMWARE_LOGI("on downloading, not perrmit repeat submmit");
+        businessError.Build(CallResult::FAIL, "repeat download error");
+        return INT_CALL_SUCCESS;
+    }
+
     FirmwareTask task;
     FirmwareTaskOperator firmwareTaskOperator;
     firmwareTaskOperator.QueryTask(task);
