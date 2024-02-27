@@ -42,7 +42,7 @@ public:
 
 protected:
     sptr<SERVICE> GetService();
-    void RefreshingService();
+    void ResetRemoteService();
     virtual void RegisterCallback(){};
 
 protected:
@@ -110,14 +110,13 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::AddDeathRecipient
     }
 }
 
-template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::RefreshingService()
+template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetRemoteService()
 {
-    ENGINE_LOGI("RefreshingService, do ResetService");
+    ENGINE_LOGI("ResetRemoteService, do ResetService");
     std::lock_guard<std::mutex> lock(remoteServerLock_);
     if (remoteServer_ != nullptr) {
         remoteServer_ = nullptr;
     }
-    
 }
 
 template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(const wptr<IRemoteObject> &remote)
