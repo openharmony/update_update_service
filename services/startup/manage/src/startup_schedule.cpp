@@ -64,7 +64,7 @@ bool StartupSchedule::Schedule(const ScheduleTask &task)
     return ret == 0;
 }
 
-bool OnDemandSchedule(const std::vector<ScheduleTask> &tasks)
+bool StartupSchedule::OnDemandSchedule(const std::vector<ScheduleTask> &tasks)
 {
     if (tasks.empty()) {
         ENGINE_LOGE("scheduleTasks is null");

@@ -27,6 +27,7 @@
       "components": [
         "ability_runtime",
         "c_utils",
+        "common_event_service",
         "hilog",
         "ipc",
         "safwk",
