@@ -42,6 +42,7 @@ public:
 
 protected:
     sptr<SERVICE> GetService();
+    void ResetRemoteService();
     virtual void RegisterCallback(){};
 
 protected:
@@ -106,6 +107,15 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::AddDeathRecipient
         if ((object->IsProxyObject()) && (!object->AddDeathRecipient(deathRecipient_))) {
             ENGINE_LOGE("Failed to add death recipient");
         }
+    }
+}
+
+template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetRemoteService()
+{
+    ENGINE_LOGI("ResetRemoteService, do ResetService");
+    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    if (remoteServer_ != nullptr) {
+        remoteServer_ = nullptr;
     }
 }
 
