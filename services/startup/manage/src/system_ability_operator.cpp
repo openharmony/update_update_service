@@ -1,0 +1,143 @@
+/*
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "system_ability_operator.h"
+
+#include <iservice_registry.h>
+
+#include "common_event_support.h"
+#include "errors.h"
+#include "network_type.h"
+#include "system_ability_definition.h"
+
+#include "update_log.h"
+
+namespace OHOS {
+namespace UpdateEngine {
+bool SystemAbilityOperator::UpdateStartupPolicy(const std::vector<ScheduleTask> &scheduleTasks)
+{
+    ENGINE_LOGI("UpdateStartupPolicy");
+    constexpr uint64_t validMinInterval = 30;
+    std::vector<SystemAbilityOnDemandEvent> abilityOnDemandEvents;
+    for (const auto &task : scheduleTasks) {
+        // 启停policy中增加网络变更事件
+        if (task.netType != CAST_INT(NetType::NO_NET)) {
+            abilityOnDemandEvents.emplace_back(CreateNetConnectedEvent());
+            ENGINE_LOGI("UpdateStartupPolicy update net connected event");
+            continue;
+        }
+
+        // 启停policy中增加TIMED事件
+        if (task.minDelayTime >= validMinInterval) {
+            abilityOnDemandEvents.emplace_back(CreateTimedEvent(task.minDelayTime));
+            ENGINE_LOGI("UpdateStartupPolicy update timed event, loop interval %{public}s",
+                std::to_string(task.minDelayTime).c_str());
+        } else {
+            ENGINE_LOGI("UpdateStartupPolicy failure, invalid loop interval %{public}s",
+                std::to_string(task.minDelayTime).c_str());
+            return false;
+        }
+    }
+    return UpdateStartupOnDemandPolicy(abilityOnDemandEvents);
+}
+
+SystemAbilityOnDemandEvent SystemAbilityOperator::CreateTimedEvent(uint64_t nextStartDuration)
+{
+    const std::string timedEventName = "loopevent"; // TIMED 事件名称，不可更改
+
+    SystemAbilityOnDemandEvent timedEvent;
+    timedEvent.eventId = OnDemandEventId::TIMED_EVENT;
+    timedEvent.name = timedEventName;
+    timedEvent.value = std::to_string(nextStartDuration);
+    return timedEvent;
+}
+
+SystemAbilityOnDemandEvent SystemAbilityOperator::CreateNetConnectedEvent()
+{
+    const std::string connectivityChangeStatusConnected = "3"; // 网络状态连接成功，不可更改
+
+    SystemAbilityOnDemandEvent netConnectedEvent;
+    netConnectedEvent.eventId = OnDemandEventId::COMMON_EVENT;
+    netConnectedEvent.name = OHOS::EventFwk::CommonEventSupport::COMMON_EVENT_CONNECTIVITY_CHANGE;
+    netConnectedEvent.value = connectivityChangeStatusConnected;
+    return netConnectedEvent;
+}
+
+bool SystemAbilityOperator::UpdateStartupOnDemandPolicy(const std::vector<SystemAbilityOnDemandEvent> &events)
+{
+    ENGINE_LOGI("UpdateStartupOnDemandPolicy");
+    auto samgr = GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        ENGINE_LOGE("UpdateStartupOnDemandPolicy failure, caused by samgr object null");
+        return false;
+    }
+
+    auto ret = samgr->UpdateOnDemandPolicy(UPDATE_DISTRIBUTED_SERVICE_ID, OnDemandPolicyType::START_POLICY, events);
+    if (ret != ERR_OK) {
+        ENGINE_LOGE("UpdateStartupOnDemandPolicy failure, caused by samgr interface call fail, error code %{public}d",
+            ret);
+        return false;
+    }
+
+    ENGINE_LOGD("UpdateStartupOnDemandPolicy success");
+    return true;
+}
+
+bool SystemAbilityOperator::UnloadSystemAbility()
+{
+    ENGINE_LOGI("UnloadSystemAbility");
+    auto samgr = GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr object null");
+        return false;
+    }
+
+    auto ret = samgr->UnloadSystemAbility(UPDATE_DISTRIBUTED_SERVICE_ID);
+    if (ret != ERR_OK) {
+        ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr interface call fail, error code %{public}d", ret);
+        return false;
+    }
+
+    ENGINE_LOGD("UnloadSystemAbility success");
+    return true;
+}
+
+std::vector<SystemAbilityOnDemandEvent> SystemAbilityOperator::GetStartupOnDemandPolicy()
+{
+    ENGINE_LOGI("GetStartupOnDemandPolicy");
+    auto samgr = GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr object null");
+        return {};
+    }
+
+    std::vector<SystemAbilityOnDemandEvent> events;
+    int32_t ret = samgr->GetOnDemandPolicy(UPDATE_DISTRIBUTED_SERVICE_ID, OnDemandPolicyType::START_POLICY, events);
+    if (ret != ERR_OK) {
+        ENGINE_LOGE("GetStartupOnDemandPolicy failure, caused by samgr interface call fail, error code %{public}d",
+            ret);
+        return {};
+    }
+
+    ENGINE_LOGD("GetStartupOnDemandPolicy success");
+    return events;
+}
+
+inline sptr<ISystemAbilityManager> SystemAbilityOperator::GetSystemAbilityManager() const
+{
+    return SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+}
+} // namespace UpdateEngine
+} // namespace OHOS
