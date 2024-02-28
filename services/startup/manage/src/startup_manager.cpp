@@ -126,6 +126,9 @@ void StartupManager::SAExit() const
         return;
     }
     int32_t res = sm->UnloadSystemAbility(UPDATE_DISTRIBUTED_SERVICE_ID);
+    if (res == ERR_OK) {
+        DelayedSingleton<StartupSchedule>::GetInstance()->UnregisterLooper();
+    }
     ENGINE_LOGI("UnloadSystemAbility res is %{public}d", res);
 }
 
