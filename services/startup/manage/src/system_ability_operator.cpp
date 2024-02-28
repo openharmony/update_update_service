@@ -32,14 +32,7 @@ bool SystemAbilityOperator::UpdateStartupPolicy(const std::vector<ScheduleTask> 
     constexpr uint64_t validMinInterval = 30;
     std::vector<SystemAbilityOnDemandEvent> abilityOnDemandEvents;
     for (const auto &task : scheduleTasks) {
-        // 启停policy中增加网络变更事件
-        if (task.netType != CAST_INT(NetType::NO_NET)) {
-            abilityOnDemandEvents.emplace_back(CreateNetConnectedEvent());
-            ENGINE_LOGI("UpdateStartupPolicy update net connected event");
-            continue;
-        }
-
-        // 启停policy中增加TIMED事件
+         // 启停policy中增加TIMED事件
         if (task.minDelayTime >= validMinInterval) {
             abilityOnDemandEvents.emplace_back(CreateTimedEvent(task.minDelayTime));
             ENGINE_LOGI("UpdateStartupPolicy update timed event, loop interval %{public}s",
@@ -62,17 +55,6 @@ SystemAbilityOnDemandEvent SystemAbilityOperator::CreateTimedEvent(uint64_t next
     timedEvent.name = timedEventName;
     timedEvent.value = std::to_string(nextStartDuration);
     return timedEvent;
-}
-
-SystemAbilityOnDemandEvent SystemAbilityOperator::CreateNetConnectedEvent()
-{
-    const std::string connectivityChangeStatusConnected = "3"; // 网络状态连接成功，不可更改
-
-    SystemAbilityOnDemandEvent netConnectedEvent;
-    netConnectedEvent.eventId = OnDemandEventId::COMMON_EVENT;
-    netConnectedEvent.name = OHOS::EventFwk::CommonEventSupport::COMMON_EVENT_CONNECTIVITY_CHANGE;
-    netConnectedEvent.value = connectivityChangeStatusConnected;
-    return netConnectedEvent;
 }
 
 bool SystemAbilityOperator::UpdateStartupOnDemandPolicy(const std::vector<SystemAbilityOnDemandEvent> &events)

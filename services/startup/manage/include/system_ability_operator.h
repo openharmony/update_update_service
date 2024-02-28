@@ -40,7 +40,6 @@ public:
 
 private:
     SystemAbilityOnDemandEvent CreateTimedEvent(uint64_t nextStartDuration);
-    SystemAbilityOnDemandEvent CreateNetConnectedEvent();
     bool UpdateStartupOnDemandPolicy(const std::vector<SystemAbilityOnDemandEvent> &events);
     sptr<ISystemAbilityManager> GetSystemAbilityManager() const;
 };
