@@ -44,6 +44,7 @@
         "netmanager_base",
         "preferences",
         "sys_installer",
+        "time_service",
         "relational_store"
       ],
       "third_party": [

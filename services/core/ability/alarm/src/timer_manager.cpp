@@ -15,65 +15,73 @@
 
 #include "timer_manager.h"
 
-#include "string_utils.h"
-#include "update_log.h"
+#include "update_define.h"
 
 namespace OHOS {
 namespace UpdateEngine {
-constexpr int32_t SECOND_MILLIS = 1000;
+constexpr int32_t ONE_SECOND_MILLISECONDS = 1000;
 
 TimerManager::TimerManager()
 {
-    ENGINE_LOGD("TimerManager::TimerManager");
+    ENGINE_LOGD("TimerManager Constructor");
+    timer_ = std::make_shared<OHOS::Utils::Timer>("Firmware Timer");
+    uint32_t ret = timer_->Setup();
+    ENGINE_LOGD("TimerManager build timer result %{public}d", ret);
 }
 
 TimerManager::~TimerManager()
 {
-    ENGINE_LOGD("TimerManager::~TimerManager");
+    ENGINE_LOGD("TimerManager Destructor");
     if (timer_ != nullptr) {
-        for (auto &[alarmType, timerId] : lastRegisterTimeIdMap_) {
+        for (auto &[alarmType, timerId] : registeredTimerIdMap_) {
             timer_->Unregister(timerId);
         }
         timer_->Shutdown();
     }
 }
 
-void TimerManager::RegisterRepeatingAlarm(
-    AlarmType alarmType, int64_t repeatingTime, const OHOS::Utils::Timer::TimerCallback &callback)
+bool TimerManager::RegisterLooperEvent(EventType eventType, int64_t looperInterval,
+    const OHOS::Utils::Timer::TimerCallback &callback)
 {
-    ENGINE_LOGI("TimerManager RegisterRepeatingAlarm type %{public}d repeatingTime %{public}ld success",
-        static_cast<AlarmType>(alarmType), repeatingTime);
-    BuildTimer();
-    UnregisterRepeatingAlarm(alarmType);
-    uint32_t registerTimerId = timer_->Register(callback, repeatingTime * SECOND_MILLIS, false);
-    std::lock_guard<std::mutex> lockGuard(mutex_);
-    lastRegisterTimeIdMap_.emplace(alarmType, registerTimerId);
-}
-
-void TimerManager::UnregisterRepeatingAlarm(AlarmType alarmType)
-{
-    std::lock_guard<std::mutex> lockGuard(mutex_);
-    bool isSuccess = false;
-    auto result = lastRegisterTimeIdMap_.find(alarmType);
-    if (result != lastRegisterTimeIdMap_.end()) {
-        uint32_t lastRegisterTimerId = result->second;
-        if (timer_ != nullptr) {
-            timer_->Unregister(lastRegisterTimerId);
-        }
-        lastRegisterTimeIdMap_.erase(result);
-        isSuccess = true;
-    }
-    ENGINE_LOGI("TimerManager UnregisterRepeatingAlarm type %{public}d status %{public}s",
-        static_cast<AlarmType>(alarmType), StringUtils::GetBoolStr(isSuccess).c_str());
-}
-
-void TimerManager::BuildTimer()
-{
+    ENGINE_LOGI("TimerManager registerLooperEvent EventType %{puiblic}d", CAST_INT(eventType));
+    UnregisterLooperEvent(eventType);
+    auto weakThis = weak_from_this();
     if (timer_ == nullptr) {
-        timer_ = std::make_shared<OHOS::Utils::Timer>("OTA Timer");
-        uint32_t ret = timer_->Setup();
-        ENGINE_LOGI("TimerManager BuildTimer result %{public}d", ret);
+        ENGINE_LOGE("Timer is nullptr!");
+        return false;
     }
+    uint32_t registerTimerId = timer_->Register(
+        [weakThis, eventType, callback]() {
+            if (weakThis.expired()) { // 判断宿主是否销毁
+                ENGINE_LOGE("TimerManager is destroyed");
+                return;
+            }
+            ENGINE_LOGD("Looper EventType %{publoc}d triggered", CAST_INT(eventType));
+            callback();
+        },
+        looperInterval * ONE_SECOND_MILLISECONDS, false);
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    registeredTimerIdMap_.emplace(eventType, registerTimerId);
+    ENGINE_LOGD("TimerManager registerLooperEvent EventType %{public}d success", CAST_INT(eventType));
+    return true;
+}
+
+void TimerManager::UnregisterLooperEvent(EventType eventType)
+{
+    ENGINE_LOGI("TimerManager UnregisterLooperEvent EventType %{puiblic}d", CAST_INT(eventType));
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    auto result = registeredTimerIdMap_.find(eventType);
+    if (result == registeredTimerIdMap_.end()) {
+        ENGINE_LOGD("EventType %{public}d has not been registered", CAST_INT(eventType));
+        return;
+    }
+    if (timer_ != nullptr) {
+        timer_->Unregister(result->second);
+    } else {
+        ENGINE_LOGE("Timer is nullptr");
+    }
+    registeredTimerIdMap_.erase(result);
+    ENGINE_LOGD("TimerManager UnregisterLooperEvent EventType %{public}d success", CAST_INT(eventType));
 }
 } // namespace UpdateEngine
 } // namespace OHOS
