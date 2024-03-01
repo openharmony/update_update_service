@@ -17,7 +17,7 @@
 
 #include "service_control.h"
 
-#include "alarm_helper.h"
+#include "alarm_timer_utils.h"
 #include "constant.h"
 #include "firmware_preferences_utils.h"
 #include "startup_constant.h"
@@ -27,7 +27,8 @@
 
 namespace OHOS {
 namespace UpdateEngine {
-StartupSchedule::StartupSchedule() : AlarmManager(AlarmType::STARTUP_TIME_LOOPER, AlarmHelper::GetStartupAlarmTypeStr())
+constexpr uint64_t STARTUP_LOOPER_INTERVAL = 180; // 动态启停定时器轮询周期
+StartupSchedule::StartupSchedule()
 {
     ENGINE_LOGD("StartupSchedule constructor");
 }
@@ -39,14 +40,19 @@ StartupSchedule::~StartupSchedule()
 
 void StartupSchedule::RegisterLooper(const ScheduleLooper &looper)
 {
+    UnregisterLooper();
     ENGINE_LOGI("RegisterLooper");
-    RegisterRepeatingAlarm(BusinessAlarmType::STARTUP, [=]() { looper(); });
+    int64_t startTime = AlarmTimerUtils::GetSystemBootTime() + STARTUP_LOOPER_INTERVAL * Constant::MILLESECONDS;
+    looperTimerId_ = AlarmTimerUtils::RegisterRepeatAlarm(startTime, STARTUP_LOOPER_INTERVAL, [=]() { looper(); });
 }
 
 void StartupSchedule::UnregisterLooper()
 {
     ENGINE_LOGI("UnregisterLooper");
-    UnregisterRepeatingAlarm(BusinessAlarmType::STARTUP);
+    if (looperTimerId_ > 0) {
+        AlarmTimerUtils::UnregisterAlarm(looperTimerId_);
+    }
+    looperTimerId_ = 0;
 }
 
 bool StartupSchedule::Schedule(const ScheduleTask &task)
