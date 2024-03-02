@@ -21,7 +21,7 @@ using namespace testing::ext;
 using namespace testing;
 
 namespace OHOS::UpdateEngine {
-class UpdateLogTest : public testing::test {
+class UpdateLogTest : public testing::Test {
 public:
     static void SetupTestCase(void) {};
     static void TearDownTestCase(void) {};
