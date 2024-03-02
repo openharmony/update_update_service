@@ -39,7 +39,7 @@ public:
     std::vector<SystemAbilityOnDemandEvent> GetStartupOnDemandPolicy() final;
 
 private:
-    SystemAbilityOnDemandEvent CreateTimedEvent(uint64_t nextStartDuration);
+    SystemAbilityOnDemandEvent CreateTimedEvent(const uint64_t nextStartDuration);
     bool UpdateStartupOnDemandPolicy(const std::vector<SystemAbilityOnDemandEvent> &events);
     sptr<ISystemAbilityManager> GetSystemAbilityManager() const;
 };
