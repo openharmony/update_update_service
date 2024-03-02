@@ -38,7 +38,7 @@ bool SystemAbilityOperator::UpdateStartupPolicy(const std::vector<ScheduleTask> 
             ENGINE_LOGI("UpdateStartupPolicy update timed event, loop interval %{public}s",
                 std::to_string(task.minDelayTime).c_str());
         } else {
-            ENGINE_LOGI("UpdateStartupPolicy failure, invalid loop interval %{public}s",
+            ENGINE_LOGE("UpdateStartupPolicy failure, invalid loop interval %{public}s",
                 std::to_string(task.minDelayTime).c_str());
             return false;
         }
@@ -46,7 +46,7 @@ bool SystemAbilityOperator::UpdateStartupPolicy(const std::vector<ScheduleTask> 
     return UpdateStartupOnDemandPolicy(abilityOnDemandEvents);
 }
 
-SystemAbilityOnDemandEvent SystemAbilityOperator::CreateTimedEvent(uint64_t nextStartDuration)
+SystemAbilityOnDemandEvent SystemAbilityOperator::CreateTimedEvent(const uint64_t nextStartDuration)
 {
     const std::string timedEventName = "loopevent"; // TIMED 事件名称，不可更改
 
@@ -82,11 +82,11 @@ bool SystemAbilityOperator::UnloadSystemAbility()
     ENGINE_LOGI("UnloadSystemAbility");
     auto samgr = GetSystemAbilityManager();
     if (samgr == nullptr) {
-        ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr object null");
+        ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr object null!");
         return false;
     }
 
-    auto ret = samgr->UnloadSystemAbility(UPDATE_DISTRIBUTED_SERVICE_ID);
+    int32_t ret = samgr->UnloadSystemAbility(UPDATE_DISTRIBUTED_SERVICE_ID);
     if (ret != ERR_OK) {
         ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr interface call fail, error code %{public}d", ret);
         return false;
@@ -96,12 +96,12 @@ bool SystemAbilityOperator::UnloadSystemAbility()
     return true;
 }
 
-std::vector<SystemAbilityOnDemandEvent> SystemAbilityOperator::GetStartupOnDemandPolicy()
+std::vector<SystemAbilityOnDemandEvent> SystemAbilityOperator::GetStarrtupOnDemandPolicy()
 {
     ENGINE_LOGI("GetStartupOnDemandPolicy");
     auto samgr = GetSystemAbilityManager();
     if (samgr == nullptr) {
-        ENGINE_LOGE("UnloadSystemAbility failure, caused by samgr object null");
+        ENGINE_LOGE("GetStarrtupOnDemandPolicy failure, caused by samgr object null");
         return {};
     }
 
