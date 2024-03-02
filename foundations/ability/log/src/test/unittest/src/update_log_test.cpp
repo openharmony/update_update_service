@@ -65,7 +65,7 @@ HWTEST_F(UpdateLogTest, TestGetLogLevel, TestSize.Level1)
     UpdateLog log;
     UpdateLogLevel level = UpdateLogLevel::UPDATE_ERROR;
     log.SetLogLevel(level);
-    ASSERT_EQ(level, log.TestGetLogLevel());
+    ASSERT_EQ(level, log.GetLogLevel());
 }
 
 /**
