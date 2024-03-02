@@ -11,9 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/test.gni")
 import("//base/update/updateservice/foundations/ability/log/log.gni")
 import("//base/update/updateservice/updateengine.gni")
+import("//build/test.gni")
 
 module_output_path = "$updateengine_part_name/$updateengine_unittest_name"
 
@@ -31,4 +31,5 @@ ohos_unittest("UpdateLogTest") {
 
     sources += [ "$updateengine_root_path/foundations/ability/log/src/test/unittest/src/update_log_test.cpp" ]
     deps = [ "//third_party/googletest:gtest_main" ]
+    part_name = "update_service"
 }
