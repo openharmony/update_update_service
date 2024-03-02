@@ -96,7 +96,7 @@ bool SystemAbilityOperator::UnloadSystemAbility()
     return true;
 }
 
-std::vector<SystemAbilityOnDemandEvent> SystemAbilityOperator::GetStarrtupOnDemandPolicy()
+std::vector<SystemAbilityOnDemandEvent> SystemAbilityOperator::GetStartupOnDemandPolicy()
 {
     ENGINE_LOGI("GetStartupOnDemandPolicy");
     auto samgr = GetSystemAbilityManager();
