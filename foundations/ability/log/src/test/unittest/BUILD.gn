@@ -25,7 +25,7 @@ config("module_private_config") {
 ohos_unittest("UpdateLogTest") {
     module_out_path = module_output_path
     configs = [ ":module_private_config" ]
-    include_dir = update_log_include
+    include_dirs = update_log_include
     sources = update_log_src
     external_deps = update_log_external_deps
 
