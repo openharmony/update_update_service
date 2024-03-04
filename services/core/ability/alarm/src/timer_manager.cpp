@@ -24,7 +24,7 @@ constexpr int32_t ONE_SECOND_MILLISECONDS = 1000;
 TimerManager::TimerManager()
 {
     ENGINE_LOGD("TimerManager Constructor");
-    timer_ = std::make_shared<OHOS::Utils::Timer>("Firmware Timer");
+    timer_ = std::make_shared<OHOS::Utils::Timer>("Update Service Timer");
     uint32_t ret = timer_->Setup();
     ENGINE_LOGD("TimerManager build timer result %{public}d", ret);
 }
