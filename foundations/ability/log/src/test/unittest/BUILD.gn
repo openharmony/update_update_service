@@ -23,13 +23,13 @@ config("module_private_config") {
 }
 
 ohos_unittest("UpdateLogTest") {
-    module_out_path = module_output_path
-    configs = [ ":module_private_config" ]
-    include_dirs = update_log_include
-    sources = update_log_src
-    external_deps = update_log_external_deps
+  module_out_path = module_output_path
+  configs = [ ":module_private_config" ]
+  include_dirs = update_log_include
+  sources = update_log_src
+  external_deps = update_log_external_deps
 
-    sources += [ "$updateengine_root_path/foundations/ability/log/src/test/unittest/src/update_log_test.cpp" ]
-    deps = [ "//third_party/googletest:gtest_main" ]
-    part_name = updateengine_part_name
+  sources += [ "$updateengine_root_path/foundations/ability/log/src/test/unittest/src/update_log_test.cpp" ]
+  deps = [ "//third_party/googletest:gtest_main" ]
+  part_name = updateengine_part_name
 }
