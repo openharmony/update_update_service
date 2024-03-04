@@ -16,7 +16,5 @@ import("../../updateengine.gni")
 
 group("unittest") {
   testonly = true
-  deps = [
-    "$updateengine_root_path/foundations/ability/log/src/test/unittest:UpdateLogTest"
-  ]
+  deps = [ "$updateengine_root_path/foundations/ability/log/src/test/unittest:UpdateLogTest" ]
 }
