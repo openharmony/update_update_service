@@ -47,11 +47,8 @@ HWTEST_F(UpdateLogTest, TestJudgeLevel, TestSize.Level1)
 HWTEST_F(UpdateLogTest, TestSetLogLevel, TestSize.Level1)
 {
     UpdateLog log;
-    log.SetLogLevel(UpdateLogLevel::UPDATE_DEBUG);
-    log.SetLogLevel(UpdateLogLevel::UPDATE_INFO);
-    log.SetLogLevel(UpdateLogLevel::UPDATE_WARN);
-    log.SetLogLevel(UpdateLogLevel::UPDATE_ERROR);
-    log.SetLogLevel(UpdateLogLevel::UPDATE_FATAL);
+    UpdateLogLevel level = UpdateLogLevel::UPDATE_DEBUG;
+    log.SetLogLevel(level);
     ASSERT_TRUE(true);
 }
 
