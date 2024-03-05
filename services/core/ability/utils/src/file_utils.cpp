@@ -51,17 +51,16 @@ bool FileUtils::IsFileExist(const std::string &fileName)
 
 bool FileUtils::IsSpaceEnough(const std::string &filePath, const int64_t requiredSpace)
 {
-    std::error_code errorCode;
     uint64_t freeSpace = 0;
-    const std::filesystem::space_info spaceInfo = std::filesystem::space(filePath, errorCode);
-    if (errorCode.operator bool()) {
-        ENGINE_LOGE("get disk free error, error code = %d", errorCode.value());
+    struct statfs diskStatfs;
+    int ret = statfs(filePath.c_str(), &diskStatfs);
+    if (ret >= 0) {
+        freeSpace = (uint64_t)diskStatfs.f_bsize * (uint64_t)diskStatfs.f_bavail;
     } else {
-        freeSpace = static_cast<std::uint64_t>(spaceInfo.free);
-        ENGINE_LOGI("free space of [%s] is [%lu]", filePath.c_str(), (unsigned long long)freeSpace);
+        ENGINE_LOGE("statfs fail, error code = %{public}d", ret);
     }
-    ENGINE_LOGI("free space=%{public}lu, required space=%{public}ld", static_cast<uint64_t>(freeSpace),
-        static_cast<int64_t>(requiredSpace));
+    ENGINE_LOGI("free space=%{public}llu, required space=%{public}llu", freeSpace,
+        static_cast<uint64_t>(requiredSpace));
     return freeSpace >= static_cast<uint64_t>(requiredSpace);
 }
 
