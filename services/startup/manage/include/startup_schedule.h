@@ -18,7 +18,6 @@
 
 #include "singleton.h"
 
-#include "alarm_manager.h"
 #include "schedule_task.h"
 
 namespace OHOS {
@@ -31,15 +30,20 @@ public:
     virtual void RegisterLooper(const ScheduleLooper &looper) = 0;
     virtual void UnregisterLooper() = 0;
     virtual bool Schedule(const ScheduleTask &task) = 0;
+    virtual bool OnDemandSchedule(const std::vector<ScheduleTask> &tasks) = 0;
 };
 
-class StartupSchedule final : public IStartupSchedule, public AlarmManager, public DelayedSingleton<StartupSchedule> {
+class StartupSchedule final : public IStartupSchedule, public DelayedSingleton<StartupSchedule> {
     DECLARE_DELAYED_SINGLETON(StartupSchedule);
 
 public:
     void RegisterLooper(const ScheduleLooper &looper) final;
     void UnregisterLooper() final;
     bool Schedule(const ScheduleTask &task) final;
+    bool OnDemandSchedule(const std::vector<ScheduleTask> &tasks) final;
+
+private:
+    uint64_t looperTimerId_ = 0;
 };
 } // namespace UpdateEngine
 } // namespace OHOS
