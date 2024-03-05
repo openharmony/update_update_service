@@ -1,4 +1,4 @@
-/*
+Ôªø/*
  * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,20 +23,25 @@
 
 namespace OHOS {
 namespace UpdateEngine {
-enum class EventType {
-    STARTUP_IDLE_LOOPER_EVENT = 1
+enum class AlarmType {
+    STARTUP_TIME_LOOPER = 1,
+    FIRMWARE_TIME_LOOPER = 2,
+    PARAM_TIME_LOOPER = 3,
 };
 
-class TimerManager : public DelayedSingleton<TimerManager>, public std::enable_shared_from_this<TimerManager> {
+class TimerManager : public DelayedSingleton<TimerManager> {
     DECLARE_DELAYED_SINGLETON(TimerManager);
 
 public:
-    bool RegisterLooperEvent(EventType eventType, int64_t looperInterval,
-        const OHOS::Utils::Timer::TimerCallback &callback); // looperInterval£∫—≠ª∑º‰∏Ù, µ•Œª£∫√Î
-    void UnregisterLooperEvent(EventType eventType);
+    void RegisterRepeatingAlarm(
+        AlarmType alarmType, int64_t repeatingTime, const OHOS::Utils::Timer::TimerCallback &callback);
+    void UnregisterRepeatingAlarm(AlarmType alarmType);
 
 private:
-    std::map<EventType, uint32_t> registeredTimerIdMap_;
+    void BuildTimer();
+
+private:
+    std::map<AlarmType, uint32_t> lastRegisterTimeIdMap_;
     std::shared_ptr<OHOS::Utils::Timer> timer_ = nullptr;
     std::mutex mutex_;
 };
