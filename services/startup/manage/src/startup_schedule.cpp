@@ -17,16 +17,18 @@
 
 #include "service_control.h"
 
-#include "alarm_helper.h"
+#include "alarm_timer_utils.h"
 #include "constant.h"
 #include "firmware_preferences_utils.h"
 #include "startup_constant.h"
+#include "system_ability_operator.h"
 #include "time_utils.h"
 #include "update_log.h"
 
 namespace OHOS {
 namespace UpdateEngine {
-StartupSchedule::StartupSchedule() : AlarmManager(AlarmType::STARTUP_TIME_LOOPER, AlarmHelper::GetStartupAlarmTypeStr())
+constexpr uint64_t STARTUP_LOOPER_INTERVAL = 180; // 动态启停定时器轮询周期
+StartupSchedule::StartupSchedule()
 {
     ENGINE_LOGD("StartupSchedule constructor");
 }
@@ -38,14 +40,19 @@ StartupSchedule::~StartupSchedule()
 
 void StartupSchedule::RegisterLooper(const ScheduleLooper &looper)
 {
+    UnregisterLooper();
     ENGINE_LOGI("RegisterLooper");
-    RegisterRepeatingAlarm(BusinessAlarmType::STARTUP, [=]() { looper(); });
+    int64_t startTime = AlarmTimerUtils::GetSystemBootTime() + STARTUP_LOOPER_INTERVAL * Constant::MILLESECONDS;
+    looperTimerId_ = AlarmTimerUtils::RegisterRepeatAlarm(startTime, STARTUP_LOOPER_INTERVAL, [=]() { looper(); });
 }
 
 void StartupSchedule::UnregisterLooper()
 {
     ENGINE_LOGI("UnregisterLooper");
-    UnregisterRepeatingAlarm(BusinessAlarmType::STARTUP);
+    if (looperTimerId_ > 0) {
+        AlarmTimerUtils::UnregisterAlarm(looperTimerId_);
+    }
+    looperTimerId_ = 0;
 }
 
 bool StartupSchedule::Schedule(const ScheduleTask &task)
@@ -61,6 +68,20 @@ bool StartupSchedule::Schedule(const ScheduleTask &task)
     int32_t ret = StartServiceByTimer(Startup::UPDATER_SA_NAME.c_str(), scheduleTime);
     ENGINE_LOGI("StartServiceByTimer finish, ret is %{public}d", ret);
     return ret == 0;
+}
+
+bool StartupSchedule::OnDemandSchedule(const std::vector<ScheduleTask> &tasks)
+{
+    if (tasks.empty()) {
+        ENGINE_LOGE("scheduleTasks is null");
+        return false;
+    }
+    for (const auto &task : tasks) {
+        ENGINE_LOGI("OnDemandSchedule task %{public}s", task.ToString().c_str());
+    }
+    auto isSuccess = SystemAbilityOperator().UpdateStartupPolicy(tasks);
+    ENGINE_LOGI("OnDemandSchedule %{public}s", isSuccess ? "success" : "failure");
+    return isSuccess;
 }
 } // namespace UpdateEngine
 } // namespace OHOS
