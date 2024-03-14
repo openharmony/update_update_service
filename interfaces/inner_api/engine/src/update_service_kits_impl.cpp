@@ -39,7 +39,7 @@ int32_t UpdateServiceKitsImpl::RegisterUpdateCallback(const UpgradeInfo &info, c
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
 
-    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
 
     // 以下代码中sptr<IUpdateCallback>不能修改为auto,否则在重注册时有概率出现Crash
     sptr<IUpdateCallback> remoteUpdateCallback(new UpdateCallback(cb));
@@ -57,7 +57,7 @@ int32_t UpdateServiceKitsImpl::UnregisterUpdateCallback(const UpgradeInfo &info)
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
 
     ENGINE_LOGI("UnregisterUpdateCallback");
-    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     remoteUpdateCallbackMap_.erase(info);
     int32_t ret = updateService->UnregisterUpdateCallback(info);
     ENGINE_CHECK((ret) == INT_CALL_SUCCESS, ResetRemoteService(), "UnregisterUpdateCallback ipc error");

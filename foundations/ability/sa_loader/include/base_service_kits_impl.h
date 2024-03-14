@@ -46,7 +46,7 @@ protected:
     virtual void RegisterCallback(){};
 
 protected:
-    std::mutex remoteServerLock_;
+    std::recursive_mutex remoteServerLock_;
     sptr<SERVICE> remoteServer_ = nullptr;
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ = nullptr;
     int32_t systemAbilityId_;
@@ -62,7 +62,7 @@ private:
 template <typename SERVICE> BaseServiceKitsImpl<SERVICE>::~BaseServiceKitsImpl()
 {
     ENGINE_LOGI("BaseServiceKitsImpl desConstructor");
-    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     if (isNeedAddDeathRecipient_ && remoteServer_ != nullptr && deathRecipient_ != nullptr) {
         sptr<IRemoteObject> object = remoteServer_->AsObject();
         if (object != nullptr) {
@@ -77,7 +77,7 @@ template <typename SERVICE> BaseServiceKitsImpl<SERVICE>::~BaseServiceKitsImpl()
 template <typename SERVICE> sptr<SERVICE> BaseServiceKitsImpl<SERVICE>::GetService()
 {
     ENGINE_LOGI("GetService entry");
-    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     if (remoteServer_ != nullptr) {
         return remoteServer_;
     }
@@ -113,7 +113,7 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::AddDeathRecipient
 template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetRemoteService()
 {
     ENGINE_LOGI("ResetRemoteService, do ResetService");
-    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     if (remoteServer_ != nullptr) {
         remoteServer_ = nullptr;
     }
@@ -122,7 +122,7 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetRemoteServic
 template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(const wptr<IRemoteObject> &remote)
 {
     ENGINE_LOGI("Remote is dead, do ResetService");
-    std::lock_guard<std::mutex> lock(remoteServerLock_);
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     if (deathRecipient_ != nullptr && remote != nullptr) {
         remote->RemoveDeathRecipient(deathRecipient_);
     }
