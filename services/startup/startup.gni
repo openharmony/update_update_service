@@ -32,6 +32,11 @@ startup_src = [
   "$startup_root_path/manage/src/schedule_config.cpp",
   "$startup_root_path/manage/src/schedule_manager.cpp",
   "$startup_root_path/manage/src/startup_manager.cpp",
-  "$startup_root_path/manage/src/startup_schedule.cpp",
   "$startup_root_path/manage/src/system_ability_operator.cpp",
 ]
+
+if (ability_ability_runtime_enable) {
+  startup_src += [ "$startup_root_path/manage/src/startup_schedule.cpp" ]
+} else {
+  startup_src += [ "$startup_root_path/manage/src/startup_schedule_empty.cpp" ]
+}

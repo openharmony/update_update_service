@@ -17,7 +17,6 @@
 
 #include <iservice_registry.h>
 
-#include "common_event_support.h"
 #include "errors.h"
 #include "network_type.h"
 #include "system_ability_definition.h"
