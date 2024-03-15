@@ -36,11 +36,7 @@ startup_src = [
 ]
 
 if (ability_ability_runtime_enable) {
-  startup_src += [
-    "$startup_root_path/manage/src/startup_schedule.cpp",
-  ]
+  startup_src += [ "$startup_root_path/manage/src/startup_schedule.cpp" ]
 } else {
-  startup_src += [
-    "$startup_root_path/manage/src/startup_schedule_empty.cpp",
-  ]
+  startup_src += [ "$startup_root_path/manage/src/startup_schedule_empty.cpp" ]
 }
