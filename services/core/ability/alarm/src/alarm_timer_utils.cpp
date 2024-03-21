@@ -15,9 +15,10 @@
 
 #include "alarm_timer_utils.h"
 
-#include "time_service_client.h"
+#include <cinttypes>
 
 #include "constant.h"
+#include "time_service_client.h"
 #include "time_utils.h"
 #include "update_log.h"
 
@@ -67,7 +68,7 @@ uint64_t AlarmTimerUtils::RegisterAlarm(int64_t time, const AlarmTimerCallback &
 
     int64_t currentTime = TimeUtils::GetTimestamp();
     if (currentTime >= time) {
-        ENGINE_LOGE("register time is outdated, register time %{public}lld", time);
+        ENGINE_LOGE("register time is outdated, register time %{public}" PRIu64 "", time);
         return 0;
     }
     int64_t tiggerTimeMs = time * Constant::MILLESECONDS;
@@ -77,7 +78,7 @@ uint64_t AlarmTimerUtils::RegisterAlarm(int64_t time, const AlarmTimerCallback &
 
 uint64_t AlarmTimerUtils::RegisterRepeatAlarm(int64_t time, int64_t repeatTime, const AlarmTimerCallback &callback)
 {
-    ENGINE_LOGI("register repeat timer, start time %{public}d, repeat %{public}d", time, repeatTime);
+    ENGINE_LOGI("register repeat timer, start time %{public}" PRId64 ", repeat %{public}" PRId64 "", time, repeatTime);
     auto timerInfo = std::make_shared<TimerTaskInfo>();
     uint8_t timerType = static_cast<uint8_t>(timerInfo->TIMER_TYPE_REALTIME);
     timerInfo->SetType(static_cast<int>(timerType));
@@ -94,21 +95,22 @@ uint64_t AlarmTimerUtils::RegisterTimer(int64_t time, const std::shared_ptr<Misc
     sptr<MiscServices::TimeServiceClient> systemTimer = MiscServices::TimeServiceClient::GetInstance();
     uint64_t timerId = systemTimer->CreateTimer(timerInfo);
     if (timerId == 0) {
-        ENGINE_LOGE("CreateTimer failed, register tim %{public}lld", time);
+        ENGINE_LOGE("CreateTimer failed, register tim %{public}" PRId64 "", time);
         return 0;
     }
     // 将秒时间戳改为毫秒时间戳, alarm定时器不支持秒为单位的时间戳
     if (!systemTimer->StartTimer(timerId, static_cast<uint64_t>(time))) {
-        ENGINE_LOGE("StartTimer failed, register time %{public}lld", time);
+        ENGINE_LOGE("StartTimer failed, register time %{public}" PRId64"", time);
         return 0;
     }
-    ENGINE_LOGI("register timer success, register time %{public}lld, timerId %{public}d", time, timerId);
+    ENGINE_LOGI("register timer success, register time %{public}" PRId64 ", timerId %{public}" PRIu64 "",
+        time, timerId);
     return timerId;
 }
 
 void AlarmTimerUtils::UnregisterAlarm(uint64_t timerId)
 {
-    ENGINE_LOGI("UnregisterAlarm, timerId %{public}d", timerId);
+    ENGINE_LOGI("UnregisterAlarm, timerId %{public}" PRIu64 "", timerId);
     sptr<MiscServices::TimeServiceClient> systemTimer = MiscServices::TimeServiceClient::GetInstance();
     if (systemTimer != nullptr) {
         systemTimer->DestroyTimer(timerId);
@@ -124,7 +126,7 @@ uint64_t AlarmTimerUtils::GetSystemBootTime()
         return 0;
     }
     uint64_t bootTime = static_cast<uint64_t>(currentBootTime);
-    ENGINE_LOGI("GetSystemBootTime bootTime : %{public}lld", bootTime);
+    ENGINE_LOGI("GetSystemBootTime bootTime : %{public}" PRIu64 "", bootTime);
     return bootTime;
 }
 } // namespace UpdateEngine

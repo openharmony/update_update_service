@@ -16,21 +16,19 @@
 #ifndef FIRMWARE_LOG_H
 #define FIRMWARE_LOG_H
 
-#include "hilog/log.h"
-
 #include "update_log.h"
 
 namespace OHOS {
 namespace UpdateEngine {
 static constexpr OHOS::HiviewDFX::HiLogLabel FIRMWARE_UPDATE_LABEL = {LOG_CORE, 0xD002E00, "UPDATE_FIRMWARE"};
 
-#define FIRMWARE_LOGD(fmt, ...) PRINT_LOGD(FIRMWARE_UPDATE_LABEL, fmt, ##__VA_ARGS__)
-#define FIRMWARE_LOGI(fmt, ...) PRINT_LOGI(FIRMWARE_UPDATE_LABEL, fmt, ##__VA_ARGS__)
-#define FIRMWARE_LOGE(fmt, ...) PRINT_LOGE(FIRMWARE_UPDATE_LABEL, fmt, ##__VA_ARGS__)
+#define FIRMWARE_LOGD(fmt, ...) PRINT_HILOGD(UPDATE_FIRMWARE_TAG, fmt, ##__VA_ARGS__)
+#define FIRMWARE_LOGI(fmt, ...) PRINT_HILOGI(UPDATE_FIRMWARE_TAG, fmt, ##__VA_ARGS__)
+#define FIRMWARE_LOGE(fmt, ...) PRINT_HILOGE(UPDATE_FIRMWARE_TAG, fmt, ##__VA_ARGS__)
 
-#define FIRMWARE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(FIRMWARE_UPDATE_LABEL, fmt, args)
-#define FIRMWARE_LONG_LOGI(fmt, args) PRINT_LONG_LOGI(FIRMWARE_UPDATE_LABEL, fmt, args)
-#define FIRMWARE_LONG_LOGE(fmt, args) PRINT_LONG_LOGE(FIRMWARE_UPDATE_LABEL, fmt, args)
+#define FIRMWARE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(UPDATE_FIRMWARE_TAG, FIRMWARE_UPDATE_LABEL, fmt, args)
+#define FIRMWARE_LONG_LOGI(fmt, args) PRINT_LONG_LOGI(UPDATE_FIRMWARE_TAG, FIRMWARE_UPDATE_LABEL, fmt, args)
+#define FIRMWARE_LONG_LOGE(fmt, args) PRINT_LONG_LOGE(UPDATE_FIRMWARE_TAG, FIRMWARE_UPDATE_LABEL, fmt, args)
 } // namespace UpdateEngine
 } // namespace OHOS
 #endif // FIRMWARE_LOG_H
