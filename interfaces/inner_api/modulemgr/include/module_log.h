@@ -17,14 +17,10 @@
 #ifndef UPDATE_SERVICE__MODULE_LOG_H
 #define UPDATE_SERVICE__MODULE_LOG_H
 
-#include "hilog/log.h"
+#include "update_log.h"
 
-constexpr OHOS::HiviewDFX::HiLogLabel MODULE_MGR_LABEL = {LOG_CORE, 0xD002E00, "UPDATER_MODULE_MGR"};
-
-#define UTILS_LOGF(...) (void)OHOS::HiviewDFX::HiLog::Fatal(MODULE_MGR_LABEL, __VA_ARGS__)
-#define UTILS_LOGE(...) (void)OHOS::HiviewDFX::HiLog::Error(MODULE_MGR_LABEL, __VA_ARGS__)
-#define UTILS_LOGW(...) (void)OHOS::HiviewDFX::HiLog::Warn(MODULE_MGR_LABEL, __VA_ARGS__)
-#define UTILS_LOGI(...) (void)OHOS::HiviewDFX::HiLog::Info(MODULE_MGR_LABEL, __VA_ARGS__)
-#define UTILS_LOGD(...) (void)OHOS::HiviewDFX::HiLog::Debug(MODULE_MGR_LABEL, __VA_ARGS__)
+#define UTILS_LOGE(fmt, ...) PRINT_HILOGE(OHOS::UpdateEngine::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
+#define UTILS_LOGI(fmt, ...) PRINT_HILOGI(OHOS::UpdateEngine::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
+#define UTILS_LOGD(fmt, ...) PRINT_HILOGD(OHOS::UpdateEngine::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
 
 #endif // UPDATE_SERVICE__MODULE_LOG_H

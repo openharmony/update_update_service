@@ -15,6 +15,7 @@
 
 #include "file_utils.h"
 
+#include <cinttypes>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -59,7 +60,7 @@ bool FileUtils::IsSpaceEnough(const std::string &filePath, const int64_t require
     } else {
         ENGINE_LOGE("statfs fail, error code = %{public}d", ret);
     }
-    ENGINE_LOGI("free space=%{public}llu, required space=%{public}llu", freeSpace,
+    ENGINE_LOGI("free space=%{public}" PRIu64 ", required space=%{public}" PRIu64 "", freeSpace,
         static_cast<uint64_t>(requiredSpace));
     return freeSpace >= static_cast<uint64_t>(requiredSpace);
 }
