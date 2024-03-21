@@ -99,40 +99,40 @@ private:
 #define R_FILENAME    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
 #define R_FORMATED(fmt, ...) "[%{public}s] %{public}s#]" fmt, R_FILENAME, __FUNCTION__, ##__VA_ARGS__
 
-#define EXEC_PRINT_HILOG(module, fmtlabel, level, fmt)    \
-    if ((level) == UpdateLogLevel::UPDATE_ERROR) {    \
-        EXEC_PRINT_HILOGE(module, fmtlabel, fmt);    \
-    } else if ((level) == UpdateLogLevel::UPDATE_DEBUG) {    \
-       EXEC_PRINT_HILOGD(module, fmtlabel, fmt);    \
-    } else {    \
-       EXEC_PRINT_HILOGI(module, fmtlabel, fmt);    \
+#define EXEC_PRINT_HILOG(module, fmtlabel, level, fmt)        \
+    if ((level) == UpdateLogLevel::UPDATE_ERROR) {            \
+        EXEC_PRINT_HILOGE(module, fmtlabel, fmt);             \
+    } else if ((level) == UpdateLogLevel::UPDATE_DEBUG) {     \
+       EXEC_PRINT_HILOGD(module, fmtlabel, fmt);              \
+    } else {                                                  \
+       EXEC_PRINT_HILOGI(module, fmtlabel, fmt);              \
     }
 
-#define EXEC_PRINT_HILOGE(module, fmtlabel, fmt, ...)    \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {    \
-        PRINT_HILOGE(module, "%{public}s", fmt);    \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {    \
-       PRINT_HILOGE(module, "%{private}s", fmt);    \
-    } else {    \
-       PRINT_HILOGE(module, "%s", fmt);    \
+#define EXEC_PRINT_HILOGE(module, fmtlabel, fmt, ...)         \
+    if (fmtlabel == PUBLIC_FMT_LABEL) {                       \
+        PRINT_HILOGE(module, "%{public}s", fmt);              \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) {               \
+       PRINT_HILOGE(module, "%{private}s", fmt);              \
+    } else {                                                  \
+       PRINT_HILOGE(module, "%s", fmt);                       \
     }
 
-#define EXEC_PRINT_HILOGD(module, fmtlabel, fmt, ...)    \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {    \
-        PRINT_HILOGD(module, "%{public}s", fmt);    \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {    \
-       PRINT_HILOGD(module, "%{private}s", fmt);    \
-    } else {    \
-       PRINT_HILOGD(module, "%s", fmt);    \
+#define EXEC_PRINT_HILOGD(module, fmtlabel, fmt, ...)         \
+    if (fmtlabel == PUBLIC_FMT_LABEL) {                       \
+        PRINT_HILOGD(module, "%{public}s", fmt);              \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) {               \
+       PRINT_HILOGD(module, "%{private}s", fmt);              \
+    } else {                                                  \
+       PRINT_HILOGD(module, "%s", fmt);                       \
     }
 
-#define EXEC_PRINT_HILOGI(module, fmtlabel, fmt, ...)    \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {    \
-        PRINT_HILOGI(module, "%{public}s", fmt);    \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {    \
-       PRINT_HILOGI(module, "%{private}s", fmt);    \
-    } else {    \
-       PRINT_HILOGI(module, "%s", fmt);    \
+#define EXEC_PRINT_HILOGI(module, fmtlabel, fmt, ...)         \
+    if (fmtlabel == PUBLIC_FMT_LABEL) {                       \
+        PRINT_HILOGI(module, "%{public}s", fmt);              \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) {               \
+       PRINT_HILOGI(module, "%{private}s", fmt);              \
+    } else {                                                  \
+       PRINT_HILOGI(module, "%s", fmt);                       \
     }
 
 #define PRINT_HILOGE(module, fmt, ...) (void)HILOG_IMPL(LOG_CORE, LOG_ERROR,    \
@@ -149,11 +149,11 @@ private:
 #define ENGINE_LOGI(fmt, ...) PRINT_HILOGI(UPDATE_ENGINE_TAG, fmt, ##__VA_ARGS__)
 #define ENGINE_LOGD(fmt, ...) PRINT_HILOGD(UPDATE_ENGINE_TAG, fmt, ##__VA_ARGS__)
 
-#define PRINT_LONG_LOGD(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,    \
+#define PRINT_LONG_LOGD(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,                \
     UpdateLogLevel::UPDATE_DEBUG, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
-#define PRINT_LONG_LOGI(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,    \
+#define PRINT_LONG_LOGI(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,                \
     UpdateLogLevel::UPDATE_INFO, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
-#define PRINT_LONG_LOGE(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,    \
+#define PRINT_LONG_LOGE(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,                \
     UpdateLogLevel::UPDATE_ERROR, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
 
 #define ENGINE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(UPDATE_ENGINE_TAG, UPDATE_LABEL, fmt, args)
