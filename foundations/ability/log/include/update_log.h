@@ -101,38 +101,38 @@ private:
 
 #define EXEC_PRINT_HILOG(module, fmtlabel, level, fmt)        \
     if ((level) == UpdateLogLevel::UPDATE_ERROR) {            \
-        EXEC_PRINT_HILOGE(module, fmtlabel, fmt);             \
-    } else if ((level) == UpdateLogLevel::UPDATE_DEBUG) {     \
-       EXEC_PRINT_HILOGD(module, fmtlabel, fmt);              \
-    } else {                                                  \
-       EXEC_PRINT_HILOGI(module, fmtlabel, fmt);              \
+        EXEC_PRINT_HILOGE(module, fmtlabel, fmt);            \
+    } else if ((level) == UpdateLogLevel::UPDATE_DEBUG) {    \
+       EXEC_PRINT_HILOGD(module, fmtlabel, fmt);            \
+    } else {                                                \
+       EXEC_PRINT_HILOGI(module, fmtlabel, fmt);            \
     }
 
-#define EXEC_PRINT_HILOGE(module, fmtlabel, fmt, ...)         \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {                       \
-        PRINT_HILOGE(module, "%{public}s", fmt);              \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {               \
-       PRINT_HILOGE(module, "%{private}s", fmt);              \
-    } else {                                                  \
-       PRINT_HILOGE(module, "%s", fmt);                       \
+#define EXEC_PRINT_HILOGE(module, fmtlabel, fmt, ...)        \
+    if (fmtlabel == PUBLIC_FMT_LABEL) {                    \
+        PRINT_HILOGE(module, "%{public}s", fmt);            \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) {            \
+       PRINT_HILOGE(module, "%{private}s", fmt);            \
+    } else {                                                \
+       PRINT_HILOGE(module, "%s", fmt);                    \
     }
 
-#define EXEC_PRINT_HILOGD(module, fmtlabel, fmt, ...)         \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {                       \
-        PRINT_HILOGD(module, "%{public}s", fmt);              \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {               \
-       PRINT_HILOGD(module, "%{private}s", fmt);              \
-    } else {                                                  \
-       PRINT_HILOGD(module, "%s", fmt);                       \
+#define EXEC_PRINT_HILOGD(module, fmtlabel, fmt, ...)        \
+    if (fmtlabel == PUBLIC_FMT_LABEL) {                    \
+        PRINT_HILOGD(module, "%{public}s", fmt);            \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) {            \
+       PRINT_HILOGD(module, "%{private}s", fmt);            \
+    } else {                                                \
+       PRINT_HILOGD(module, "%s", fmt);                    \
     }
 
-#define EXEC_PRINT_HILOGI(module, fmtlabel, fmt, ...)         \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {                       \
-        PRINT_HILOGI(module, "%{public}s", fmt);              \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {               \
-       PRINT_HILOGI(module, "%{private}s", fmt);              \
-    } else {                                                  \
-       PRINT_HILOGI(module, "%s", fmt);                       \
+#define EXEC_PRINT_HILOGI(module, fmtlabel, fmt, ...)        \
+    if (fmtlabel == PUBLIC_FMT_LABEL) {                    \
+        PRINT_HILOGI(module, "%{public}s", fmt);            \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) {            \
+       PRINT_HILOGI(module, "%{private}s", fmt);            \
+    } else {                                                \
+       PRINT_HILOGI(module, "%s", fmt);                    \
     }
 
 #define PRINT_HILOGE(module, fmt, ...) (void)HILOG_IMPL(LOG_CORE, LOG_ERROR,    \
