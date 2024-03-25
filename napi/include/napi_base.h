@@ -129,7 +129,7 @@ public:
         constexpr size_t resultLength = 2;
         if (len < resultLength)
         {
-            ENGINE_LOGE("length error:%{public}ld", len);
+            ENGINE_LOGE("length error:%{public}zu", len);
             return;
         }
         napi_status callbackStatus = isSuccess ? napi_resolve_deferred(env, clientContext->deferred_, result[1]) :
