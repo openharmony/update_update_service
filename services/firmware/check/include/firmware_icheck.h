@@ -55,6 +55,7 @@ namespace UpdateEngine {
 using CheckCallback = std::function<void(CheckStatus status, const Duration &duration,
     const std::vector<FirmwareComponent> &firmwareCheckResultList, const CheckAndAuthInfo &checkAndAuthInfo)>;
 
+using cJSONPtr = std::unique_ptr<cJSON, decltype(&cJSON_Delete)>;
 struct FirmwareCheckCallback {
     CheckCallback callback;
 };
@@ -116,7 +117,6 @@ public:
 private:
     int32_t ParseJsonFile(const std::vector<char> &buffer, NetworkResponse &response)
     {
-        using cJSONPtr = std::unique_ptr<cJSON, decltype(&cJSON_Delete)>;
         response.content.assign(buffer.begin(), buffer.end());
         response.status = static_cast<int64_t>(HttpConstant::SUCCESS);
         cJSONPtr root(cJSON_Parse(buffer.data()), cJSON_Delete);
