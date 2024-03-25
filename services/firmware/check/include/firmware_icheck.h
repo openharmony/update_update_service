@@ -121,7 +121,8 @@ private:
         response.status = static_cast<int64_t>(HttpConstant::SUCCESS);
         cJSONPtr root(cJSON_Parse(buffer.data()), cJSON_Delete);
         ENGINE_CHECK(root != nullptr, return -1, "Error get root");
-        cJSONPtr item(cJSON_GetObjectItem(root, "searchStatus"), cJSON_Delete);
+        cJSON *item = cJSON_GetObjectItem(root.get(), "searchStatus");
+        ENGINE_CHECK(root != nullptr, return -1, "Error get searchStatus");
         if (!cJSON_IsNumber(item)) {
             FIRMWARE_LOGE("Error json parse");
             return -1;
