@@ -17,6 +17,7 @@
 #define UPDATE_SERVICE_MODULE_MANAGER_H
 
 #include <map>
+#include <mutex>
 #include <set>
 #include <string>
 #include <vector>
@@ -53,6 +54,9 @@ private:
     static std::map<std::string, LifeCycleFuncType> onStartOnStopFuncMap_;
     static std::map<std::string, LifeCycleFuncReturnType> onIdleFuncMap_;
     static bool isLoaded;
+    static std::mutex onRemoteRequestFuncMapMutex_;
+    static std::mutex onStartOnStopFuncMapMutex_;
+    static std::mutex onIdleFuncMapMutex_;
 };
 } // namespace UpdateEngine
 } // namespace OHOS

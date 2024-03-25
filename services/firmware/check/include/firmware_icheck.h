@@ -55,6 +55,7 @@ namespace UpdateEngine {
 using CheckCallback = std::function<void(CheckStatus status, const Duration &duration,
     const std::vector<FirmwareComponent> &firmwareCheckResultList, const CheckAndAuthInfo &checkAndAuthInfo)>;
 
+using cJSONPtr = std::unique_ptr<cJSON, decltype(&cJSON_Delete)>;
 struct FirmwareCheckCallback {
     CheckCallback callback;
 };
@@ -118,11 +119,10 @@ private:
     {
         response.content.assign(buffer.begin(), buffer.end());
         response.status = static_cast<int64_t>(HttpConstant::SUCCESS);
-        cJSON *root = cJSON_Parse(buffer.data());
+        cJSONPtr root(cJSON_Parse(buffer.data()), cJSON_Delete);
         ENGINE_CHECK(root != nullptr, return -1, "Error get root");
-        cJSON *item = cJSON_GetObjectItem(root, "searchStatus");
-        ENGINE_CHECK(item != nullptr, cJSON_Delete(root);
-            return -1, "Error get searchStatus");
+        cJSON *item = cJSON_GetObjectItem(root.get(), "searchStatus");
+        ENGINE_CHECK(root != nullptr, return -1, "Error get searchStatus");
         if (!cJSON_IsNumber(item)) {
             FIRMWARE_LOGE("Error json parse");
             return -1;
