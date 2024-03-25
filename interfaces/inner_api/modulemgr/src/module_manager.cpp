@@ -44,34 +44,27 @@ void ModuleManager::LoadModule(std::string libPath)
             return;
     }
     UTILS_LOGD("LoadModule so path: %{public}s", libPath.c_str());
-    if (dueModuleHandler == nullptr)
-    {
+    if (dueModuleHandler == nullptr) {
         constexpr int32_t maxRetryTimes = 1;
         int32_t retryTimes = 0;
         char dealPath[PATH_MAX] = {};
-        if (realpath(libPath.c_str(), dealPath) == nullptr)
-        {
+        if (realpath(libPath.c_str(), dealPath) == nullptr) {
             UTILS_LOGE("soPath %{private}s is not exist or invalid", libPath.c_str());
             return;
         }
-        do
-        {
+        do {
             dueModuleHandler = dlopen(dealPath, RTLD_LAZY);
-            if (dueModuleHandler != nullptr)
-            {
+            if (dueModuleHandler != nullptr) {
                 isLoaded = true;
                 break;
             }
             UTILS_LOGE("openSo path: %{public}s fail", libPath.c_str());
             retryTimes++;
-            if (retryInterval_ > 0 && retryTimes <= maxRetryTimes)
-            {
+            if (retryInterval_ > 0 && retryTimes <= maxRetryTimes) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(retryInterval_));
             }
         } while (retryTimes <= maxRetryTimes);
-    }
-    else
-    {
+    } else {
         isLoaded = true;
         UTILS_LOGD("openSo ok");
     }
