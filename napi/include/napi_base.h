@@ -96,6 +96,7 @@ public:
 
     static void Complete(napi_env env, napi_status status, void *data)
     {
+        constexpr size_t resultLen = 2;
         T *clientContext = static_cast<T *>(data);
 
         napi_value finalResult = nullptr;
@@ -110,20 +111,27 @@ public:
                 clientContext->businessError_);
         }
 
-        napi_value result[] = { nullptr, nullptr };
+        napi_value result[resultLen] = { nullptr, nullptr };
         bool isSuccess = BuildResult(env, clientContext, finalResult, result);
         if (clientContext->deferred_) { // promise调用
-            ExecutePromiseFunc(env, clientContext, result, isSuccess);
+            ExecutePromiseFunc(env, clientContext, result, resultLen, isSuccess);
         } else {
-            ExecuteCallbackFunc(env, clientContext, result);
+            ExecuteCallbackFunc(env, clientContext, result, resultLen);
         }
         napi_delete_async_work(env, clientContext->work_);
         delete clientContext; // Execute 中释放控制权的指针，在此处释放
         clientContext = nullptr;
     }
 
-    static void ExecutePromiseFunc(napi_env env, T *clientContext, napi_value const * result, bool isSuccess)
+    static void ExecutePromiseFunc(napi_env env, T *clientContext, napi_value const * result, size_t len
+        bool isSuccess)
     {
+        constexpr size_t resultLength = 2;
+        if (len < resultLength)
+        {
+            ENGINE_LOGE("length error:%{public}ld", len);
+            return;
+        }
         napi_status callbackStatus = isSuccess ? napi_resolve_deferred(env, clientContext->deferred_, result[1]) :
                                                  napi_reject_deferred(env, clientContext->deferred_, result[0]);
         if (callbackStatus != napi_ok) {
@@ -131,7 +139,7 @@ public:
         }
     }
 
-    static void ExecuteCallbackFunc(napi_env env, T *clientContext, napi_value *result)
+    static void ExecuteCallbackFunc(napi_env env, T *clientContext, napi_value *result, size_t len)
     {
         napi_value callback = nullptr;
         napi_status resultStatus = napi_get_reference_value(env, clientContext->callbackRef_, &callback);
@@ -140,8 +148,7 @@ public:
             return;
         }
         napi_value userRet = nullptr;
-        constexpr size_t resultCount = 2;
-        resultStatus = napi_call_function(env, nullptr, callback, resultCount, result, &userRet);
+        resultStatus = napi_call_function(env, nullptr, callback, len, result, &userRet);
         if (resultStatus != napi_ok) {
             ENGINE_LOGE("napi_call_function failed result=%{public}d", resultStatus);
             return;

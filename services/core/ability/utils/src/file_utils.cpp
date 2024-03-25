@@ -16,6 +16,7 @@
 #include "file_utils.h"
 
 #include <cinttypes>
+#include <climits>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -203,8 +204,14 @@ bool FileUtils::CreatDirWithPermission(const std::string &fileDir, int32_t dirPe
 
 std::string FileUtils::ReadDataFromFile(const std::string &filePath)
 {
+    char dealPath[PATH_MAX] = {};
+    if (realpath(filePath.c_str(), dealPath) == nullptr)
+    {
+        ENGINE_LOGE("filePath %{private}s is not exist or invalid", filePath.c_str());
+        return false;
+    }
     std::ifstream readFile;
-    readFile.open(filePath);
+    readFile.open(dealPath);
     if (readFile.fail()) {
         ENGINE_LOGI("open file from %{public}s err", filePath.c_str());
         return "";
