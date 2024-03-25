@@ -78,7 +78,7 @@ ModuleManager& ModuleManager::GetInstance()
 
 void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
-    std::lock_guardstd::mutex guard(onRemoteRequestFuncMapMutex_);
+    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
         if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {
             UTILS_LOGE("code not exist %{public}d onRemoteRequestFuncMap_", code);
@@ -110,7 +110,7 @@ bool ModuleManager::IsModuleLoaded()
 
 void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop)
 {
-    std::lock_guardstd::mutex guard(onStartOnStopFuncMapMutex_);
+    std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGE("phase exist already %{public}s onStartOnStopFuncMap_", phase.c_str());
         onStartOnStopFuncMap_.insert(std::make_pair(phase, handleSAOnStartOnStop));
@@ -132,7 +132,7 @@ void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::Syste
 
 void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle)
 {
-    std::lock_guardstd::mutex guard(onIdleFuncMapMutex_);
+    std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGE("phase exist already %{public}s onIdleFuncMap_", phase.c_str());
         onIdleFuncMap_.insert(std::make_pair(phase, handleSAOnIdle));
