@@ -207,7 +207,7 @@ std::string FileUtils::ReadDataFromFile(const std::string &filePath)
     char dealPath[PATH_MAX] = {};
     if (realpath(filePath.c_str(), dealPath) == nullptr) {
         ENGINE_LOGE("filePath %{private}s is not exist or invalid", filePath.c_str());
-        return false;
+        return "";
     }
     std::ifstream readFile;
     readFile.open(dealPath);
