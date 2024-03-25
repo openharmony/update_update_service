@@ -116,11 +116,12 @@ public:
 private:
     int32_t ParseJsonFile(const std::vector<char> &buffer, NetworkResponse &response)
     {
+        using cJSONPtr = std::unique_ptr<cJSON, decltype(&cJSON_Delete)>;
         response.content.assign(buffer.begin(), buffer.end());
         response.status = static_cast<int64_t>(HttpConstant::SUCCESS);
-        cJSON *root = cJSON_Parse(buffer.data());
+        cJSONPtr root(cJSON_Parse(buffer.data()), cJSON_Delete);
         ENGINE_CHECK(root != nullptr, return -1, "Error get root");
-        cJSON *item = cJSON_GetObjectItem(root, "searchStatus");
+        cJSONPtr item(cJSON_GetObjectItem(root, "searchStatus"), cJSON_Delete);
         ENGINE_CHECK(item != nullptr, cJSON_Delete(root);
             return -1, "Error get searchStatus");
         if (!cJSON_IsNumber(item)) {
