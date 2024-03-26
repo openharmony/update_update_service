@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string>
 #include <time.h>
+#include <random>
 
 #include "update_log.h"
 
@@ -57,8 +58,12 @@ public:
         if (maxTime < minTime) {
             return minTime;
         }
-        srand((time(NULL)));
-        return minTime + rand() % (maxTime - minTime);
+        constexpr uint32_t randMin = 0;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(randMin, maxTime - minTime - 1);
+        int64_t randomNumber = dis(gen);
+        return randomNumber;
     }
 
     static int64_t GetSystemBootDuration()
