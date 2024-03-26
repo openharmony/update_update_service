@@ -127,7 +127,7 @@ void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::Syste
     } else {
         UTILS_LOGD("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
         ((LifeCycleFuncType)onStartOnStopFuncMap_[phase])(reason);
-        if ( phase == std::string("OnStop")) {
+        if (phase == "OnStop") {
             if (dueModuleHandler != nullptr) {
                 isLoaded = false;
                 dlclose(dueModuleHandler);
