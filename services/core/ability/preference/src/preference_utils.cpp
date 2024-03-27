@@ -121,7 +121,7 @@ bool PreferencesUtil::SaveInner(
     if (ptr == nullptr) {
         ENGINE_LOGE("ptr is null");
         return false;
-    } 
+    }
     return ptr->PutLong(key, value) == NativePreferences::E_OK;
 }
 
