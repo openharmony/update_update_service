@@ -123,12 +123,11 @@ public:
         clientContext = nullptr;
     }
 
-    static void ExecutePromiseFunc(napi_env env, T *clientContext, napi_value const * result, size_t len
+    static void ExecutePromiseFunc(napi_env env, T *clientContext, napi_value const * result, size_t len,
         bool isSuccess)
     {
         constexpr size_t resultLength = 2;
-        if (len < resultLength)
-        {
+        if (len < resultLength) {
             ENGINE_LOGE("length error:%{public}zu", len);
             return;
         }

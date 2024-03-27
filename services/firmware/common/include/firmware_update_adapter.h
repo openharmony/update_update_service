@@ -26,7 +26,6 @@ namespace OHOS {
 namespace UpdateEngine {
 class FirmwareUpdateAdapter final : public DeviceAdapter {
 public:
-    static std::string GetRequestId();
     static std::string GetUpdateAction();
     static std::string GetBusinessDomain();
 };
