@@ -124,15 +124,15 @@ void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::Syste
 {
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGE("HandleOnStartOnStopFunc phase %{public}s not exist", phase.c_str());
-    } else {
-        UTILS_LOGD("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
-        ((LifeCycleFuncType)onStartOnStopFuncMap_[phase])(reason);
-        if (phase == "OnStop") {
-            if (dueModuleHandler != nullptr) {
-                isLoaded = false;
-                dlclose(dueModuleHandler);
-                UTILS_LOGD("dlclose so over");
-            }
+        return;
+    }
+    UTILS_LOGD("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
+    ((LifeCycleFuncType)onStartOnStopFuncMap_[phase])(reason);
+    if (phase == "OnStop") {
+        if (dueModuleHandler != nullptr) {
+            isLoaded = false;
+            dlclose(dueModuleHandler);
+            UTILS_LOGD("dlclose so over");
         }
     }
 }
