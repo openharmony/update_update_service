@@ -88,30 +88,50 @@ bool PreferencesUtil::Save(const std::string &key, const T &value)
 bool PreferencesUtil::SaveInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const std::string &value)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return false;
+    }
     return ptr->PutString(key, value) == NativePreferences::E_OK;
 }
 
 bool PreferencesUtil::SaveInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const int &value)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return false;
+    }
     return ptr->PutInt(key, value) == NativePreferences::E_OK;
 }
 
 bool PreferencesUtil::SaveInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const bool &value)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return false;
+    }
     return ptr->PutBool(key, value) == NativePreferences::E_OK;
 }
 
 bool PreferencesUtil::SaveInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const int64_t &value)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return false;
+    } 
     return ptr->PutLong(key, value) == NativePreferences::E_OK;
 }
 
 bool PreferencesUtil::SaveInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const float &value)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return false;
+    }
     return ptr->PutFloat(key, value) == NativePreferences::E_OK;
 }
 
@@ -155,30 +175,50 @@ T PreferencesUtil::Obtain(const std::string &key, const T &defValue)
 std::string PreferencesUtil::ObtainInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const std::string &defValue)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return defValue;
+    }
     return ptr->GetString(key, defValue);
 }
 
 int PreferencesUtil::ObtainInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const int &defValue)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return defValue;
+    }
     return ptr->GetInt(key, defValue);
 }
 
 bool PreferencesUtil::ObtainInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const bool &defValue)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return defValue;
+    }
     return ptr->GetBool(key, defValue);
 }
 
 int64_t PreferencesUtil::ObtainInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const int64_t &defValue)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return defValue;
+    }
     return ptr->GetLong(key, defValue);
 }
 
 float PreferencesUtil::ObtainInner(
     std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const float &defValue)
 {
+    if (ptr == nullptr) {
+        ENGINE_LOGE("ptr is null");
+        return defValue;
+    }
     return ptr->GetFloat(key, defValue);
 }
 
