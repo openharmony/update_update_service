@@ -18,10 +18,10 @@
 
 #include <chrono>
 #include <cstdio>
+#include <random>
 #include <stdlib.h>
 #include <string>
 #include <time.h>
-#include <random>
 
 #include "update_log.h"
 
