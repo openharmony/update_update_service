@@ -20,6 +20,9 @@ config("module_mgr_library_native_config") {
 
 ohos_shared_library("update_module_mgr") {
   sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
     cfi = true
     cfi_cross_dso = true
     debug = false
