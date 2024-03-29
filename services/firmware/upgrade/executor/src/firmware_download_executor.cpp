@@ -15,6 +15,7 @@
 
 #include "firmware_download_executor.h"
 
+#include <cinttypes>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <thread>
