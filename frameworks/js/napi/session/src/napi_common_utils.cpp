@@ -150,11 +150,7 @@ ClientStatus NapiCommonUtils::IsTypeOf(napi_env env, napi_value arg, napi_valuet
 ClientStatus NapiCommonUtils::CreateReference(napi_env env, napi_value arg, uint32_t refcount, napi_ref &reference)
 {
     napi_status status = napi_create_reference(env, arg, refcount, &reference);
-    if (status != napi_ok) {
-        ENGINE_LOGE("Failed to create reference");
-        napi_delete_reference(env, reference);
-        return ClientStatus::CLIENT_FAIL;
-    }
+    PARAM_CHECK(status == napi_ok, return ClientStatus::CLIENT_FAIL, "Failed to create reference");
     return ClientStatus::CLIENT_SUCCESS;
 }
 
