@@ -42,7 +42,8 @@ void StartupSchedule::RegisterLooper(const ScheduleLooper &looper)
 {
     UnregisterLooper();
     ENGINE_LOGI("RegisterLooper");
-    int64_t startTime = AlarmTimerUtils::GetSystemBootTime() + STARTUP_LOOPER_INTERVAL * Constant::MILLESECONDS;
+    int64_t startTime = static_cast<int64_t>(AlarmTimerUtils::GetSystemBootTime()) +
+     static_cast<int64_t>(STARTUP_LOOPER_INTERVAL) * Constant::MILLESECONDS;
     looperTimerId_ = AlarmTimerUtils::RegisterRepeatAlarm(startTime, STARTUP_LOOPER_INTERVAL, [=]() { looper(); });
 }
 
