@@ -35,8 +35,9 @@ template <typename T>
 std::vector<JsonBuilder> GetArrayJsonBuilderList(const std::vector<T> &valueList)
 {
     std::vector<JsonBuilder> jsonBuilderList;
-    std::transform(valueList.begin(), valueList.end(), jsonBuilderList.begin(),
-        [](const T& value) { return GetJsonBuilder(value); });
+    for (T value : valueList) {
+        jsonBuilderList.push_back(GetJsonBuilder(value));
+    }
     return jsonBuilderList;
 }
 
