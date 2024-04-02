@@ -42,7 +42,7 @@ void ReadErrorMessages(MessageParcel &reply, std::vector<ErrorMessage> &errorMes
     }
 }
 
-void WriteErrorMessages(MessageParcel &data, const std::vector<ErrorMessage> errorMessages)
+void WriteErrorMessages(MessageParcel &data, const std::vector<ErrorMessage> &errorMessages)
 {
     data.WriteInt32(static_cast<int32_t>(errorMessages.size()));
     for (size_t i = 0; i < errorMessages.size(); i++) {
