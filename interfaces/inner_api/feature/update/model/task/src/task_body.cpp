@@ -14,7 +14,6 @@
  */
 
 #include "task_body.h"
-
 #include "task_body_member_mask.h"
 #include "update_log.h"
 
