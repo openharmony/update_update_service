@@ -34,7 +34,7 @@ JsonBuilder GetJsonBuilder(ErrorMessage &errorMessage)
 template <typename T>
 std::vector<JsonBuilder> GetArrayJsonBuilderList(const std::vector<T> &valueList)
 {
-    std::vector jsonBuilderList(valueList.size());
+    std::vector<JsonBuilder> jsonBuilderList;
     std::transform(valueList.begin(), valueList.end(), jsonBuilderList.begin(),
         [](const T& value) { return GetJsonBuilder(value); });
     return jsonBuilderList;
