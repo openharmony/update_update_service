@@ -15,8 +15,6 @@
 
 #include "task_body.h"
 
-#include <algorithm>
-
 #include "task_body_member_mask.h"
 #include "update_log.h"
 
