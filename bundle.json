@@ -26,8 +26,11 @@
     "deps": {
       "components": [
         "ability_runtime",
+        "bounds_checking_function",
         "c_utils",
+        "cJSON",
         "common_event_service",
+        "curl",
         "hilog",
         "ipc",
         "safwk",
@@ -38,24 +41,21 @@
         "hisysevent",
         "init",
         "json",
+        "libxml2",
+        "mbedtls",
         "updater",
         "ability_base",
         "ability_runtime",
         "netmanager_base",
+        "openssl",
         "preferences",
         "sys_installer",
         "time_service",
         "relational_store"
       ],
       "third_party": [
-        "curl",
-        "libxml2",
-        "cJSON",
-        "bounds_checking_function",
         "glib",
-        "jsoncpp",
-        "mbedtls",
-        "openssl"
+        "jsoncpp"
       ]
     },
     "build": {
