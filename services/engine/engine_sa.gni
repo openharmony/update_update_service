@@ -99,7 +99,7 @@ sa_include_dirs = [
   "$updateengine_root_path/services/utils/include",
   "$updateengine_root_path/interfaces/inner_api/common/include",
   "$updateengine_root_path/interfaces/inner_api/include",
-  "//commonlibrary/utils_lite/include",  # OHOS_SUCCESS 
+  "//commonlibrary/utils_lite/include",  # OHOS_SUCCESS
 ]
 
 if (!relational_store_native_rdb_enable) {
