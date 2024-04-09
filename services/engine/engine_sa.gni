@@ -133,6 +133,7 @@ sa_external_deps = [
   "hisysevent:libhisysevent",
   "init:libbegetutil",
   "ipc:ipc_core",
+  "json:nlohmann_json_static",
   "libxml2:libxml2",
   "mbedtls:mbedtls_shared",
   "openssl:libcrypto_shared",
