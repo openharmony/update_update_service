@@ -53,10 +53,7 @@
         "time_service",
         "relational_store"
       ],
-      "third_party": [
-        "glib",
-        "jsoncpp"
-      ]
+      "third_party": []
     },
     "build": {
       "modules": [
