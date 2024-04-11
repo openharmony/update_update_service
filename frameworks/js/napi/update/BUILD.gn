@@ -56,6 +56,7 @@ ohos_shared_library("$updateengine_client_library_name") {
 
   external_deps = [
     "c_utils:utils",  # sptr
+    "eventhandler:libeventhandler",
     "hilog:libhilog",
   ]
 

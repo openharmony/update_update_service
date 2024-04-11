@@ -20,6 +20,8 @@
 #include "../include/module_log.h"
 #include "../include/module_manager.h"
 
+namespace OHOS {
+namespace UpdateEngine {
 void RegisterFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
     UTILS_LOGI("enter RegisterFunc");
@@ -35,3 +37,5 @@ void RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase)
 {
     OHOS::UpdateEngine::ModuleManager::GetInstance().HookOnIdleFunc(phase, handlePhase);
 }
+} // namespace UpdateEngine
+} // namespace OHOS
