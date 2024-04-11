@@ -16,8 +16,7 @@ import("$updateengine_root_path/services/core/ability/sqlite/sqlite.gni")
 
 firmware_root_path = "$updateengine_root_path/services/firmware"
 
-ab_update_include =
-    [ "//base/update/sys_installer/interfaces/inner_api/include" ]
+ab_update_include = []
 
 download_include = [
   "//base/update/updateservice/services/core/ability/download/data/include",
@@ -46,6 +45,7 @@ firmware_include += download_include
 ab_update_src = [
   "$firmware_root_path/upgrade/install/src/firmware_sys_installer_callback.cpp",
 ]
+
 if (ability_ability_runtime_enable) {
   ab_update_src += [ "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install.cpp" ]
 } else {
