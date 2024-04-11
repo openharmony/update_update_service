@@ -29,6 +29,7 @@ namespace OHOS::UpdateEngine {
 SessionManager::SessionManager(napi_env env, napi_ref thisReference) : env_(env), thisReference_(thisReference)
 {
     ENGINE_LOGI("SessionManager constructor");
+    handler_ = std::make_shared<AppExecFwk::EventHandler>(AppExecFwk::EventRunner::GetMainEventRunner());
 }
 
 SessionManager::~SessionManager()
@@ -228,29 +229,11 @@ void SessionManager::PublishToJS(const EventClassifyInfo &eventClassifyInfo, con
 void SessionManager::Emit(const EventClassifyInfo &eventClassifyInfo, const EventInfo &eventInfo)
 {
     ENGINE_LOGI("SessionManager::Emit 0x%{public}x", CAST_INT(eventClassifyInfo.eventClassify));
-    uv_loop_s *loop = nullptr;
-    napi_get_uv_event_loop(env_, &loop);
-    PARAM_CHECK(loop != nullptr, return, "get event loop failed.");
-
-    using UvWorkData = std::tuple<SessionManager*, EventClassifyInfo, EventInfo>;
-    UvWorkData *data = new (std::nothrow) std::tuple(this, eventClassifyInfo, eventInfo);
-    PARAM_CHECK(data != nullptr, return, "alloc data failed.");
-
-    uv_work_t *work = new (std::nothrow) uv_work_t;
-    PARAM_CHECK(work != nullptr, delete data; return, "alloc work failed.");
-
-    work->data = static_cast<void *>(data);
-    uv_queue_work_with_qos(
-        loop,
-        work,
-        [](uv_work_t *work) {},
-        [](uv_work_t *work, int status) {
-            UvWorkData *data = static_cast<UvWorkData*>(work->data);
-            auto &[mgr, eventClassifyInfo, eventInfo] = *data;
-            mgr->PublishToJS(eventClassifyInfo, eventInfo);
-            delete data;
-            delete work;
-        },
-        uv_qos_default);
+    auto task = [eventClassifyInfo, eventInfo, this]() { PublishToJS(eventClassifyInfo, eventInfo); };
+    if (handler_ == nullptr) {
+        ENGINE_LOGI("handler_ is nullptr");
+        return;
+    }
+    handler_->PostTask(task);
 }
 } // namespace OHOS::UpdateEngine
