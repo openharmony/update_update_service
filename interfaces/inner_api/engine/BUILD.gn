@@ -24,10 +24,7 @@ ohos_prebuilt_etc("updater_sa.rc") {
 }
 
 config("updateengine_inner_library_native_config") {
-  include_dirs = [
-    "$updateengine_root_path/interfaces/inner_api/include",
-    "//third_party/json/include",
-  ]
+  include_dirs = [ "$updateengine_root_path/interfaces/inner_api/include" ]
   include_dirs += feature_include
   include_dirs += foundations_include
 }
@@ -57,9 +54,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
   include_dirs = [
     "$updateengine_root_path/interfaces/inner_api/engine/include",
     "$updateengine_root_path/interfaces/inner_api/include",
-
-    "//third_party/json/include",
-    "//third_party/bounds_checking_function/include",  # secure method
   ]
 
   public_configs = [ ":updateengine_inner_library_native_config" ]
@@ -67,10 +61,10 @@ ohos_shared_library("$updateengine_inner_library_name") {
   deps = [
     "$updateengine_root_path/foundations:update_foundations",
     "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
-    "//third_party/bounds_checking_function:libsec_static",
   ]
 
   external_deps = [
+    "bounds_checking_function:libsec_static",
     "c_utils:utils",  # sptr
     "hilog:libhilog",
     "ipc:ipc_core",
