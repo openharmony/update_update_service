@@ -165,10 +165,7 @@ if (preference_native_preferences_enable) {
   sa_external_deps += [ "preferences:native_preferences" ]
 }
 
-if (ability_ability_runtime_enable) {
-  sa_external_deps += firmware_external_deps
-}
-
+sa_external_deps += firmware_external_deps
 sa_external_deps += sqlite_external_deps
 sa_external_deps += startup_external_deps
 
