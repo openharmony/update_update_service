@@ -31,7 +31,7 @@ struct SessionParams {
     SessionParams(uint32_t typeValue = UINT32_MAX, size_t callbackPosition = CALLBACK_POSITION_ONE,
         bool isNeedBusinessErrorValue = false, bool isAsyncCompleteWorkValue = false)
         : type(typeValue),
-        callbackStartIndex(INDEX(callbackPosition)),
+        callbackStartIndex(callbackPosition - 1U),
         isNeedBusinessError(isNeedBusinessErrorValue),
         isAsyncCompleteWork(isAsyncCompleteWorkValue) {}
 };
