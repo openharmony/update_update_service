@@ -74,7 +74,7 @@ public:
             jsonArray.Append("[");
             for (size_t i = 0; i < valueList.size(); i++) {
                 jsonArray.Append(valueList[i].ToJson());
-                if (i != valueList.size() - 1) {
+                if (i != valueList.size() - 1U) {
                     jsonArray.Append(",");
                 }
             }
