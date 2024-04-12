@@ -25,6 +25,7 @@
 
 #include "base_session.h"
 #include "event_classify_info.h"
+#include "event_handler.h"
 #include "event_info.h"
 
 namespace OHOS::UpdateEngine {
@@ -54,6 +55,7 @@ private:
     napi_ref thisReference_ {};
     std::map<uint32_t, std::shared_ptr<BaseSession>> sessions_;
     std::recursive_mutex sessionMutex_;
+    std::shared_ptr<AppExecFwk::EventHandler> handler_;
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SESSION_MGR_H
