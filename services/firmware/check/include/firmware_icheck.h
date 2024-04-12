@@ -42,8 +42,6 @@
 
 constexpr int32_t PORT_NUMBER = 5022;
 constexpr int32_t JSON_MAX_SIZE = 4096;
-const std::string DEFAULT_SERVER_IP = "127.0.0.1";
-const std::string PARAM_NAME_FOR_SEARCH = "update.serverip.search";
 #ifndef UPDATER_UT
 constexpr int32_t TIMEOUT_FOR_CONNECT = 10;
 #else
@@ -52,6 +50,8 @@ constexpr int32_t TIMEOUT_FOR_CONNECT = 1;
 
 namespace OHOS {
 namespace UpdateEngine {
+const std::string DEFAULT_SERVER_IP = "127.0.0.1";
+const std::string PARAM_NAME_FOR_SEARCH = "update.serverip.search";
 using CheckCallback = std::function<void(CheckStatus status, const Duration &duration,
     const std::vector<FirmwareComponent> &firmwareCheckResultList, const CheckAndAuthInfo &checkAndAuthInfo)>;
 
