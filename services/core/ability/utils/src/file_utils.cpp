@@ -143,7 +143,7 @@ std::string FileUtils::GetParentDir(const std::string &fileDir)
 std::string FileUtils::GetCurrentDir(const std::string &fileDir)
 {
     // 兼容传递的文件夹路径，末尾带0-N个'/'均ok
-    if (fileDir[fileDir.length() - 1] == '/') {
+    if (fileDir.length() > 0 && fileDir[fileDir.length() - 1] == '/') {
         return GetParentDir(fileDir);
     }
     return fileDir;
