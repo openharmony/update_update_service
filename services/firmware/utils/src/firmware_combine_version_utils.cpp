@@ -99,13 +99,13 @@ std::string CombinePackageVersionUtils::HandlePreloadVersion(std::string &preloa
 {
     std::string::size_type start = preloadVersion.find_last_of("R");
     std::string::size_type end = preloadVersion.find_last_of(")");
-    if ((start == std::string::npos) || (end == std::string::npos)) {
+    if ((start == std::string::npos) || (end == std::string::npos) || (end <= start)) {
         return "";
     }
     std::string preload = preloadVersion.substr(start, end - start);
     start = preloadVersion.find_last_of(".");
     end = preloadVersion.find_last_of("(");
-    if ((start == std::string::npos) || (end == std::string::npos)) {
+    if ((start == std::string::npos) || (end == std::string::npos) || (end <= start + 1)) {
         return "";
     }
     std::string getPnum = preloadVersion.substr(start + 1, end - start - 1);
