@@ -33,7 +33,7 @@ struct SessionParams {
         {
             type = typeValue;
             isNeedBusinessError = isNeedBusinessErrorValue;
-            isAsyncCompleteWork = isNeedBusinessErrorValue;
+            isAsyncCompleteWork = isAsyncCompleteWorkValue;
             callbackStartIndex = (callbackPosition < 1) ? CALLBACK_POSITION_ONE : INDEX(callbackPosition);
         }
 };
