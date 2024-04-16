@@ -89,7 +89,7 @@ std::string CombinePackageVersionUtils::HandleCustVersion(std::string &custVersi
     std::string::size_type end = custVersion.find_last_of(")");
     std::string::size_type start = custVersion.find_last_of(".");
     if ((start == std::string::npos) || (mid == std::string::npos) || (end == std::string::npos) ||
-        end <= mid + 1) || (mid <= start + 1) || (end >= INT_MAX) || (mid >= INT_MAX)) {
+        (end <= mid + 1) || (mid <= start + 1) || (end >= INT_MAX) || (mid >= INT_MAX)) {
         return "";
     }
     std::string cust = custVersion.substr(mid + 1, end - mid - 1);
