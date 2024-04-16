@@ -69,12 +69,13 @@ public:
 
     JsonBuilder &Append(const std::string &key, const std::vector<JsonBuilder> &valueList)
     {
+        std::vector<JsonBuilder>::size_type valueListSize = valueList.size();
         if (!valueList.empty()) {
             JsonBuilder jsonArray;
             jsonArray.Append("[");
-            for (size_t i = 0; i < valueList.size(); i++) {
+            for (size_t i = 0; i < valueListSize; i++) {
                 jsonArray.Append(valueList[i].ToJson());
-                if (i != valueList.size() - 1) {
+                if (i != valueListSize - 1) {
                     jsonArray.Append(",");
                 }
             }
