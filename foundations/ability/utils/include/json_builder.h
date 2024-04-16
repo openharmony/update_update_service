@@ -73,7 +73,7 @@ public:
         if (!valueList.empty()) {
             JsonBuilder jsonArray;
             jsonArray.Append("[");
-            for (size_t i = 0; i < valueListSize); i++) {
+            for (size_t i = 0; i < valueListSize; i++) {
                 jsonArray.Append(valueList[i].ToJson());
                 if (i != valueListSize - 1) {
                     jsonArray.Append(",");
