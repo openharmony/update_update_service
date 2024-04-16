@@ -116,7 +116,7 @@ protected:
                       "function " + funcName + " can not work correctly due to limited device capabilities.";
                 break;
             case INT_PARAM_ERR:
-                msg = "BusinessError " + std::to_string(workResult_) + ": Parameter is possible null.";
+                msg = "BusinessError " + std::to_string(workResult_) + ": Parameter is possibly null.";
                 break;
             case INT_CALL_FAIL:
                 msg = "BusinessError " + std::to_string(COMPONENT_ERR + workResult_) + ": Execute fail.";
