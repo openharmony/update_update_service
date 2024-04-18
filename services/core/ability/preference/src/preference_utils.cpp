@@ -15,6 +15,7 @@
 
 #include "preferences_utils.h"
 
+#include "dupdate_errno.h"
 #include "preferences_helper.h"
 #include "update_log.h"
 
@@ -26,7 +27,7 @@ std::shared_ptr<NativePreferences::Preferences> PreferencesUtil::GetPreference()
     if (path.empty()) {
         return nullptr;
     }
-    int errCode = -1;
+    int errCode = OHOS_FAILURE;
     std::shared_ptr<NativePreferences::Preferences> ptr =
         NativePreferences::PreferencesHelper::GetPreferences(path, errCode);
     if (ptr == nullptr) {
