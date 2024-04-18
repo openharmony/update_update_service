@@ -20,4 +20,4 @@ type:*OHOS::UpdateEngine::UpdateAsyncession*
 type:*OHOS::UpdateEngine::BaseAsyncSession*
 type:*OHOS::UpdateEngine::NapiSession*
 type:*OHOS::UpdateEngine::BasePromiseSession*
-type:*OHOS::UpdateEngine::UpdateListener *
+type:*OHOS::UpdateEngine::UpdateListener*
