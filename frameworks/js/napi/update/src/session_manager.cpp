@@ -85,6 +85,7 @@ bool SessionManager::GetNextSessionId(uint32_t &sessionId)
 }
 
 int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t argc, napi_value arg)
+    __attribute__((no_sanitize("cfi")))
 {
     napi_handle_scope scope;
     napi_status status = napi_open_handle_scope(env_, &scope);
@@ -120,6 +121,7 @@ int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t 
 }
 
 void SessionManager::Unsubscribe(const EventClassifyInfo &eventClassifyInfo, napi_value handle)
+    __attribute__((no_sanitize("cfi")))
 {
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
     for (auto iter = sessions_.begin(); iter != sessions_.end();) {
@@ -153,6 +155,7 @@ void SessionManager::Unsubscribe(const EventClassifyInfo &eventClassifyInfo, nap
 }
 
 BaseSession *SessionManager::FindSessionByHandle(napi_env env, const std::string &eventType, napi_value arg)
+    __attribute__((no_sanitize("cfi")))
 {
     uint32_t nextSessId = 0;
     bool hasNext = GetFirstSessionId(nextSessId);
@@ -176,7 +179,7 @@ BaseSession *SessionManager::FindSessionByHandle(napi_env env, const std::string
 }
 
 BaseSession *SessionManager::FindSessionByHandle(napi_env env, const EventClassifyInfo &eventClassifyInfo,
-    napi_value arg)
+    napi_value arg) __attribute__((no_sanitize("cfi")))
 {
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
     for (auto &iter : sessions_) {
@@ -197,6 +200,7 @@ BaseSession *SessionManager::FindSessionByHandle(napi_env env, const EventClassi
 }
 
 void SessionManager::PublishToJS(const EventClassifyInfo &eventClassifyInfo, const EventInfo &eventInfo)
+    __attribute__((no_sanitize("cfi")))
 {
     napi_handle_scope scope;
     napi_status status = napi_open_handle_scope(env_, &scope);
