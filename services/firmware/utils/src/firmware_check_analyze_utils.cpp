@@ -19,7 +19,6 @@
 #include <iostream>
 #include <memory>
 #include <map>
-#include <ohos_types.h>
 #include <string>
 
 #include "constant.h"

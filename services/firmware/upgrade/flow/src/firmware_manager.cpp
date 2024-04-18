@@ -16,7 +16,6 @@
 #include "firmware_manager.h"
 
 #include <cstdlib>
-#include <ohos_types.h>
 #include <thread>
 
 #include "config_parse.h"

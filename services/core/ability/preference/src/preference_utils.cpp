@@ -15,8 +15,7 @@
 
 #include "preferences_utils.h"
 
-#include <ohos_types.h>
-
+#include "dupdate_errno.h"
 #include "preferences_helper.h"
 #include "update_log.h"
 
@@ -163,10 +162,9 @@ float PreferencesUtil::ObtainFloat(const std::string &key, float defValue)
 template <typename T>
 T PreferencesUtil::Obtain(const std::string &key, const T &defValue)
 {
-    int errCode = OHOS_FAILURE;
     std::shared_ptr<NativePreferences::Preferences> ptr = GetPreference();
     if (ptr == nullptr) {
-        ENGINE_LOGI("GetPreferences error code is %{public}d", errCode);
+        ENGINE_LOGI("GetPreferences error");
         return defValue;
     }
     return ObtainInner(ptr, key, defValue);

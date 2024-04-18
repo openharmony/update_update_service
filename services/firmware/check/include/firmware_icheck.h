@@ -17,7 +17,6 @@
 #define FIRMWARE_ICHECK_H
 
 #include <arpa/inet.h>
-#include <ohos_types.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <vector>

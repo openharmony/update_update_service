@@ -20,7 +20,6 @@
 #include <updater_sa_ipc_interface_code.h>
 
 #include "iservice_registry.h"
-#include "ohos_types.h"
 #include "system_ability_definition.h"
 
 #include "access_manager.h"
