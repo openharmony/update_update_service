@@ -16,7 +16,6 @@
 #ifndef FIRMWARE_INSTALL_H
 #define FIRMWARE_INSTALL_H
 
-#include <ohos_types.h>
 #include <string>
 #include <vector>
 

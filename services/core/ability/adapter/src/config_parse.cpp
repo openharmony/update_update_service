@@ -15,7 +15,6 @@
 
 #include "config_parse.h"
 
-#include <ohos_types.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
