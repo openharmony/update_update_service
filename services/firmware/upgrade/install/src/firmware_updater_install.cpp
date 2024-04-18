@@ -18,7 +18,6 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
-#include <ohos_types.h>
 #include <string>
 #include <unistd.h>
 

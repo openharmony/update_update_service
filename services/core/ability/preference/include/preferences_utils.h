@@ -16,7 +16,6 @@
 #ifndef PREFERENCES_UTILS_H
 #define PREFERENCES_UTILS_H
 
-#include <ohos_types.h>
 #include <string>
 #include <vector>
 

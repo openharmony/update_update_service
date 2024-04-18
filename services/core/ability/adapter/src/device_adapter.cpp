@@ -19,7 +19,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
-#include <ohos_types.h>
 #include <securec.h>
 #include <sstream>
 

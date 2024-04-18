@@ -15,8 +15,6 @@
 
 #include "preferences_utils.h"
 
-#include <ohos_types.h>
-
 #include "preferences_helper.h"
 #include "update_log.h"
 
@@ -28,7 +26,7 @@ std::shared_ptr<NativePreferences::Preferences> PreferencesUtil::GetPreference()
     if (path.empty()) {
         return nullptr;
     }
-    int errCode = OHOS_FAILURE;
+    int errCode = -1;
     std::shared_ptr<NativePreferences::Preferences> ptr =
         NativePreferences::PreferencesHelper::GetPreferences(path, errCode);
     if (ptr == nullptr) {
@@ -163,10 +161,9 @@ float PreferencesUtil::ObtainFloat(const std::string &key, float defValue)
 template <typename T>
 T PreferencesUtil::Obtain(const std::string &key, const T &defValue)
 {
-    int errCode = OHOS_FAILURE;
     std::shared_ptr<NativePreferences::Preferences> ptr = GetPreference();
     if (ptr == nullptr) {
-        ENGINE_LOGI("GetPreferences error code is %{public}d", errCode);
+        ENGINE_LOGI("GetPreferences error");
         return defValue;
     }
     return ObtainInner(ptr, key, defValue);

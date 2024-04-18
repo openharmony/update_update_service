@@ -15,6 +15,7 @@
 
 #include "firmware_sys_installer_install.h"
 
+#include "dupdate_errno.h"
 #include "firmware_log.h"
 #include "firmware_update_helper.h"
 

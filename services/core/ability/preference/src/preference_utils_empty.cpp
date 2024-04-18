@@ -15,7 +15,6 @@
 
 #include "preferences_utils.h"
 
-#include <ohos_types.h>
 #include "update_log.h"
 
 namespace OHOS {
