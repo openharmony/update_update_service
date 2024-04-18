@@ -26,6 +26,11 @@ extern "C" {
 #endif
 #endif
 
+enum {
+    OHOS_FAILURE = -1,
+    OHOS_SUCCESS = 0,
+};
+
 /**
  * @brief Enumerates dupdate error number.
  */
