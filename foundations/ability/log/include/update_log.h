@@ -23,27 +23,21 @@
 
 namespace OHOS {
 namespace UpdateEngine {
-#ifdef UPDATE_SERVICE
-static constexpr OHOS::HiviewDFX::HiLogLabel UPDATE_LABEL = {LOG_CORE, 0xD002E00, "UPDATE_SA"};
-#else
-static constexpr OHOS::HiviewDFX::HiLogLabel UPDATE_LABEL = {LOG_CORE, 0xD002E00, "UPDATE_KITS"};
-#endif
-
 const std::string DEFAULT_LABEL = "%";
 const std::string DEFAULT_FMT_LABEL = "%s";
 const std::string PRIVATE_FMT_LABEL = "%{private}s";
 const std::string PUBLIC_FMT_LABEL = "%{public}s";
 
 static constexpr uint32_t  UPDATER_SA_DOMAIN_ID = 0xD002E00;
-enum UpdaterSaSubModule {
-    UPDATE_ENGINE_TAG = 0,
+enum UpdaterModuleTags {
+    UPDATE_SA_TAG = 0,
     UPDATE_KITS_TAG,
     UPDATE_FIRMWARE_TAG,
     UPDATE_MODULEMGR_TAG,
     UPDATE_MODULE_MAX
 };
 
-static constexpr OHOS::HiviewDFX::HiLogLabel UPDATE_MODULE_LABEL[UPDATE_MODULE_MAX] = {
+static constexpr OHOS::HiviewDFX::HiLogLabel UPDATE_LABEL[UPDATE_MODULE_MAX] = {
     { LOG_CORE, UPDATER_SA_DOMAIN_ID, "UPDATE_SA" },
     { LOG_CORE, UPDATER_SA_DOMAIN_ID, "UPDATE_KITS" },
     { LOG_CORE, UPDATER_SA_DOMAIN_ID, "UPDATE_FIRMWARE" },
@@ -77,6 +71,12 @@ struct UpdateLogContent {
     };
 };
 
+#ifdef UPDATE_SERVICE
+constexpr int32_t UPDATE_LOG_TAG_ID = UPDATE_SA_TAG;
+#else
+constexpr int32_t UPDATE_LOG_TAG_ID = UPDATE_KITS_TAG;
+#endif
+
 class UpdateLog {
 public:
     static bool JudgeLevel(const UpdateLogLevel &level);
@@ -86,8 +86,8 @@ public:
     static void PrintLongLog(const uint32_t subModuleTag, const UpdateLogContent &logContent);
 
 private:
-    static void PrintLog(const uint32_t module, const UpdateLogContent &logContent);
-    static void PrintSingleLine(const uint32_t module, const UpdateLogContent &logContent);
+    static void PrintLog(const uint32_t subModuleTag, const UpdateLogContent &logContent);
+    static void PrintSingleLine(const uint32_t subModuleTag, const UpdateLogContent &logContent);
     static std::pair<std::string, std::string> SplitLogByFmtLabel(const std::string &log, const std::string &fmtLabel);
     static std::string GetFmtLabel(const std::string &log);
     static int32_t FindSubStrCount(const std::string &str, const std::string &subStr);
@@ -97,68 +97,38 @@ private:
 };
 
 #define R_FILENAME    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
-#define R_FORMATED(fmt, ...) "[%{public}s] %{public}s#]" fmt, R_FILENAME, __FUNCTION__, ##__VA_ARGS__
 
-#define EXEC_PRINT_HILOG(module, fmtlabel, level, fmt)    \
-    if ((level) == UpdateLogLevel::UPDATE_ERROR) {    \
-        EXEC_PRINT_HILOGE(module, fmtlabel, fmt);    \
-    } else if ((level) == UpdateLogLevel::UPDATE_DEBUG) {    \
-       EXEC_PRINT_HILOGD(module, fmtlabel, fmt);    \
-    } else {    \
-       EXEC_PRINT_HILOGI(module, fmtlabel, fmt);    \
+#define LONG_PRINT_HILOG(level, subtag, fmtlabel, fileName, line, fmt, ...) \
+    if (fmtlabel == PUBLIC_FMT_LABEL) { \
+        BASE_PRINT_LOG(level, subtag, fileName, line, "%{public}s", fmt, ##__VA_ARGS__); \
+    } else if (fmtlabel == PRIVATE_FMT_LABEL) { \
+        BASE_PRINT_LOG(level, subtag, fileName, line, "%{private}s", fmt, ##__VA_ARGS__); \
+    } else { \
+        BASE_PRINT_LOG(level, subtag, fileName, line, "%s", fmt, ##__VA_ARGS__); \
     }
 
-#define EXEC_PRINT_HILOGE(module, fmtlabel, fmt, ...)    \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {    \
-        PRINT_HILOGE(module, "%{public}s", fmt);    \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {    \
-       PRINT_HILOGE(module, "%{private}s", fmt);    \
-    } else {    \
-       PRINT_HILOGE(module, "%s", fmt);    \
-    }
+#define BASE_PRINT_LOG(level, subtag, fileName, line, fmt, ...) \
+    (void)HILOG_IMPL(LOG_CORE, level, UPDATE_LABEL[subtag].domain, UPDATE_LABEL[subtag].tag, \
+    "[%{public}s(%{public}d)]" fmt, fileName, line, ##__VA_ARGS__)
 
-#define EXEC_PRINT_HILOGD(module, fmtlabel, fmt, ...)    \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {    \
-        PRINT_HILOGD(module, "%{public}s", fmt);    \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {    \
-       PRINT_HILOGD(module, "%{private}s", fmt);    \
-    } else {    \
-       PRINT_HILOGD(module, "%s", fmt);    \
-    }
+#define PRINT_LOGE(subtag, fmt, ...) BASE_PRINT_LOG(LOG_ERROR, subtag, R_FILENAME, __LINE__, fmt, ##__VA_ARGS__)
+#define PRINT_LOGI(subtag, fmt, ...) BASE_PRINT_LOG(LOG_INFO, subtag, R_FILENAME, __LINE__, fmt, ##__VA_ARGS__)
+#define PRINT_LOGD(subtag, fmt, ...) BASE_PRINT_LOG(LOG_DEBUG, subtag, R_FILENAME, __LINE__, fmt, ##__VA_ARGS__)
 
-#define EXEC_PRINT_HILOGI(module, fmtlabel, fmt, ...)    \
-    if (fmtlabel == PUBLIC_FMT_LABEL) {    \
-        PRINT_HILOGI(module, "%{public}s", fmt);    \
-    } else if (fmtlabel == PRIVATE_FMT_LABEL) {    \
-       PRINT_HILOGI(module, "%{private}s", fmt);    \
-    } else {    \
-       PRINT_HILOGI(module, "%s", fmt);    \
-    }
+#define ENGINE_LOGE(fmt, ...) PRINT_LOGE(UPDATE_LOG_TAG_ID, fmt, ##__VA_ARGS__)
+#define ENGINE_LOGI(fmt, ...) PRINT_LOGI(UPDATE_LOG_TAG_ID, fmt, ##__VA_ARGS__)
+#define ENGINE_LOGD(fmt, ...) PRINT_LOGD(UPDATE_LOG_TAG_ID, fmt, ##__VA_ARGS__)
 
-#define PRINT_HILOGE(module, fmt, ...) (void)HILOG_IMPL(LOG_CORE, LOG_ERROR,    \
-    OHOS::UpdateEngine::UPDATE_MODULE_LABEL[module].domain, OHOS::UpdateEngine::UPDATE_MODULE_LABEL[module].tag,    \
-    "[%{public}s] %{public}s#]" fmt, R_FILENAME, __FUNCTION__, ##__VA_ARGS__)
-#define PRINT_HILOGI(module, fmt, ...) (void)HILOG_IMPL(LOG_CORE, LOG_INFO,    \
-    OHOS::UpdateEngine::UPDATE_MODULE_LABEL[module].domain, OHOS::UpdateEngine::UPDATE_MODULE_LABEL[module].tag,    \
-    "[%{public}s] %{public}s#]" fmt, R_FILENAME, __FUNCTION__, ##__VA_ARGS__)
-#define PRINT_HILOGD(module, fmt, ...) (void)HILOG_IMPL(LOG_CORE, LOG_DEBUG,    \
-    OHOS::UpdateEngine::UPDATE_MODULE_LABEL[module].domain, OHOS::UpdateEngine::UPDATE_MODULE_LABEL[module].tag,    \
-    "[%{public}s] %{public}s#]" fmt, R_FILENAME, __FUNCTION__, ##__VA_ARGS__)
-
-#define ENGINE_LOGE(fmt, ...) PRINT_HILOGE(UPDATE_ENGINE_TAG, fmt, ##__VA_ARGS__)
-#define ENGINE_LOGI(fmt, ...) PRINT_HILOGI(UPDATE_ENGINE_TAG, fmt, ##__VA_ARGS__)
-#define ENGINE_LOGD(fmt, ...) PRINT_HILOGD(UPDATE_ENGINE_TAG, fmt, ##__VA_ARGS__)
-
-#define PRINT_LONG_LOGD(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,    \
+#define PRINT_LONG_LOGD(subtag, label, fmt, args) UpdateLog::PrintLongLog(subtag, {label,    \
     UpdateLogLevel::UPDATE_DEBUG, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
-#define PRINT_LONG_LOGI(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,    \
+#define PRINT_LONG_LOGI(subtag, label, fmt, args) UpdateLog::PrintLongLog(subtag, {label,    \
     UpdateLogLevel::UPDATE_INFO, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
-#define PRINT_LONG_LOGE(module, label, fmt, args) UpdateLog::PrintLongLog(module, {label,    \
+#define PRINT_LONG_LOGE(subtag, label, fmt, args) UpdateLog::PrintLongLog(subtag, {label,    \
     UpdateLogLevel::UPDATE_ERROR, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
 
-#define ENGINE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(UPDATE_ENGINE_TAG, UPDATE_LABEL, fmt, args)
-#define ENGINE_LONG_LOGI(fmt, args) PRINT_LONG_LOGI(UPDATE_ENGINE_TAG, UPDATE_LABEL, fmt, args)
-#define ENGINE_LONG_LOGE(fmt, args) PRINT_LONG_LOGE(UPDATE_ENGINE_TAG, UPDATE_LABEL, fmt, args)
+#define ENGINE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
+#define ENGINE_LONG_LOGI(fmt, args) PRINT_LONG_LOGI(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
+#define ENGINE_LONG_LOGE(fmt, args) PRINT_LONG_LOGE(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
 } // namespace UpdateEngine
 } // namespace OHOS
 #endif // UPDATE_LOG_H
