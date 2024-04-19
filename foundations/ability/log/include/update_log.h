@@ -83,7 +83,7 @@ public:
     static void SetLogLevel(const UpdateLogLevel &level);
     static const UpdateLogLevel &GetLogLevel();
     static std::string GetBriefFileName(const std::string &file);
-    static void PrintLongLog(const uint32_t module, const UpdateLogContent &logContent);
+    static void PrintLongLog(const uint32_t subModuleTag, const UpdateLogContent &logContent);
 
 private:
     static void PrintLog(const uint32_t module, const UpdateLogContent &logContent);
