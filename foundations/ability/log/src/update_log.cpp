@@ -53,36 +53,41 @@ std::string UpdateLog::GetBriefFileName(const std::string &file)
     return file;
 }
 
-void UpdateLog::PrintLongLog(const uint32_t module, const UpdateLogContent &logContent)
+void UpdateLog::PrintLongLog(const uint32_t subModuleTag, const UpdateLogContent &logContent)
 {
     std::string fmtLabel = GetFmtLabel(logContent.log);
     std::pair<std::string, std::string> splitLogPair = SplitLogByFmtLabel(logContent.log, fmtLabel);
 
-    PrintLog(module, logContent.BuildWithFmtAndArgs(PUBLIC_FMT_LABEL, splitLogPair.first));     // log前缀不做打印控制
-    PrintLog(module, logContent.BuildWithFmtAndArgs(fmtLabel, logContent.args));                // args采用fmt进行控制
-    PrintLog(module, logContent.BuildWithFmtAndArgs(PUBLIC_FMT_LABEL, splitLogPair.second));    // log后缀不做打印控制
+    PrintLog(subModuleTag, logContent.BuildWithFmtAndArgs(PUBLIC_FMT_LABEL, splitLogPair.first));     // log前缀不做打印控制
+    PrintLog(subModuleTag, logContent.BuildWithFmtAndArgs(fmtLabel, logContent.args));                // args采用fmt进行控制
+    PrintLog(subModuleTag, logContent.BuildWithFmtAndArgs(PUBLIC_FMT_LABEL, splitLogPair.second));    // log后缀不做打印控制
 }
 
-void UpdateLog::PrintLog(const uint32_t module, const UpdateLogContent &logContent)
+void UpdateLog::PrintLog(const uint32_t subModuleTag, const UpdateLogContent &logContent)
 {
     int32_t printPos = 0;
     int32_t len = static_cast<int32_t>(logContent.args.length());
     while (printPos < len) {
         int32_t printLen = std::min(len - printPos, LONG_LOG_LEN);
-        PrintSingleLine(module, logContent.BuildWithArgs(logContent.args.substr(printPos, printLen)));
+        PrintSingleLine(subModuleTag, logContent.BuildWithArgs(logContent.args.substr(printPos, printLen)));
         printPos += printLen;
     }
 }
 
-void UpdateLog::PrintSingleLine(const uint32_t module, const UpdateLogContent &logContent)
+void UpdateLog::PrintSingleLine(const uint32_t subModuleTag, const UpdateLogContent &logContent)
 {
     // BASE_PRINT_LOG的第三个参数是hilog方法名，即hilogMethod
     std::string fmtLabel = GetFmtLabel(logContent.log);
     switch (logContent.level) {
         case UpdateLogLevel::UPDATE_DEBUG:
+            LONG_PRINT_HILOG(LOG_DEBUG, subModuleTag, logContent.log,
+                UpdateLog::GetBriefFileName(logContent.fileName).c_str(), logContent.line, logContent.args.c_str());
         case UpdateLogLevel::UPDATE_INFO:
+            LONG_PRINT_HILOG(LOG_INFO, subModuleTag, logContent.log,
+                UpdateLog::GetBriefFileName(logContent.fileName).c_str(), logContent.line, logContent.args.c_str());
         case UpdateLogLevel::UPDATE_ERROR:
-            EXEC_PRINT_HILOG(module, fmtLabel, logContent.level, logContent.args.c_str());
+            LONG_PRINT_HILOG(LOG_ERROR, subModuleTag, logContent.log,
+                UpdateLog::GetBriefFileName(logContent.fileName).c_str(), logContent.line, logContent.args.c_str());
             break;
         default:
             break;
