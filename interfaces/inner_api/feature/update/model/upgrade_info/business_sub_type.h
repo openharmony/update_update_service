@@ -22,7 +22,8 @@ enum class BusinessSubType {
     FIRMWARE = 1,
     PARAM = 2,
     ROLLBACK = 3,
-    ACCESSORY = 4
+    ACCESSORY = 4,
+    ASSIST = 5
 };
 } // namespace OHOS::UpdateEngine:
 #endif // UPDATE_SERVICE_BUSINESS_SUB_TYPE_H
