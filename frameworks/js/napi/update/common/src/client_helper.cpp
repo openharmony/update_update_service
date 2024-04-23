@@ -383,6 +383,10 @@ void ParseBusinessType(napi_env env, const napi_value arg, UpgradeInfo &upgradeI
         ENGINE_LOGI("ParseBusinessType: subType is rollback");
         return;
     }
+    if (upgradeInfo.businessType.subType == BusinessSubType::ASSIST) {
+        ENGINE_LOGI("ParseBusinessType: subType is assist");
+        return;
+    }
     if (upgradeInfo.businessType.subType == BusinessSubType::ACCESSORY) {
         ENGINE_LOGI("ParseBusinessType: subType is accessory");
         return;
