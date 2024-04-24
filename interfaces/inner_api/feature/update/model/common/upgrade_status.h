@@ -18,6 +18,7 @@
 
 namespace OHOS::UpdateEngine {
 enum class UpgradeStatus {
+    ERROR = -1,
     INIT = 0,
     CHECKING_VERSION = 10,
     CHECK_VERSION_FAIL,
@@ -30,9 +31,11 @@ enum class UpgradeStatus {
     VERIFYING = 30,
     VERIFY_FAIL,
     VERIFY_SUCCESS,
-    AUTHING,
+    AUTHING = 60,
     AUTH_FAIL,
     AUTH_SUCCESS,
+    WAIT_TRANSFER = 68,
+    TRANSFER_START = 69,
     PACKAGE_TRANSING = 70,
     PACKAGE_TRANS_FAIL,
     PACKAGE_TRANS_SUCCESS,
@@ -41,7 +44,10 @@ enum class UpgradeStatus {
     INSTALL_SUCCESS,
     UPDATING = 90,
     UPDATE_FAIL,
-    UPDATE_SUCCESS
+    UPDATE_SUCCESS,
+    UPGRADE_REBOOT,
+    UPGRADE_COUNT_DOWN = 100,
+    UPGRADE_CANCEL
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_UPGRADE_STATUS_H
