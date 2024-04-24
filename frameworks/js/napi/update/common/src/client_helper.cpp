@@ -480,8 +480,9 @@ ClientStatus ClientHelper::GetOrder(napi_env env, const napi_value arg, Order &o
 {
     int tmpOrder = 0;
     NapiCommonUtils::GetInt32(env, arg, "order", tmpOrder);
-    static const std::list<Order> orderList = {Order::DOWNLOAD, Order::INSTALL,
-        Order::APPLY, Order::DOWNLOAD_AND_INSTALL, Order::INSTALL_AND_APPLY};
+    static const std::list<Order> orderList = { Order::DOWNLOAD, Order::INSTALL, Order::APPLY,
+                                                Order::DOWNLOAD_AND_INSTALL, Order::INSTALL_AND_APPLY
+                                                Order::TRANSFER, Order::TRANSFER_AND_INSTALL };
     PARAM_CHECK(IsValidEnum(orderList, tmpOrder), return ClientStatus::CLIENT_INVALID_TYPE,
         "GetOrder error, invalid order:%{public}d", tmpOrder);
     order = static_cast<Order>(tmpOrder);
@@ -550,7 +551,9 @@ ClientStatus ClientHelper::GetOptionsFromArg(napi_env env, const napi_value arg,
         UpgradeStatus::PACKAGE_TRANS_SUCCESS, UpgradeStatus::INSTALLING,
         UpgradeStatus::INSTALL_FAIL,          UpgradeStatus::INSTALL_SUCCESS,
         UpgradeStatus::UPDATING,              UpgradeStatus::UPDATE_FAIL,
-        UpgradeStatus::UPDATE_SUCCESS };
+        UpgradeStatus::UPDATE_SUCCESS,        UpgradeStatus::UPGRADE_AND_REBOOT,
+        UpgradeStatus::UPDATE_COUNT_DOWN,     UpgradeStatus::UPGRADE_CANCEL,
+        UpgradeStatus::ERROR };
     PARAM_CHECK(IsValidEnum(statusList, status), return ClientStatus::CLIENT_INVALID_TYPE,
         "GetClearOptionsFromArg error, invalid status:%{public}d", status);
     clearOptions.status = static_cast<UpgradeStatus>(status);
