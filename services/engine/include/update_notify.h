@@ -30,7 +30,7 @@ namespace OHOS {
 namespace UpdateEngine {
 class UpdateNotify : public NoConstructor {
 public:
-    static void NotifyToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
+    static bool NotifyToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
 
 private:
     static ErrCode ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::IAbilityConnection> &connect,
@@ -40,7 +40,6 @@ private:
     static ErrCode StartAbility(const AAFwk::Want &want);
     static AAFwk::Want MakeWant(const std::string &deviceId, const std::string &abilityName,
         const std::string &bundleName, const std::string &subscribeInfo, const std::string &params = {});
-    static bool InitAbilityManagerService();
 };
 
 class NotifyConnection : public AAFwk::AbilityConnectionStub {
