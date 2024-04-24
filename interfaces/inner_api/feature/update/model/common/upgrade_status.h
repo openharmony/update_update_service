@@ -18,6 +18,7 @@
 
 namespace OHOS::UpdateEngine {
 enum class UpgradeStatus {
+    ERROR = -1,
     INIT = 0,
     CHECKING_VERSION = 10,
     CHECK_VERSION_FAIL,

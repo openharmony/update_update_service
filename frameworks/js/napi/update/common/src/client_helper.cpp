@@ -553,7 +553,7 @@ ClientStatus ClientHelper::GetOptionsFromArg(napi_env env, const napi_value arg,
         UpgradeStatus::INSTALL_FAIL,          UpgradeStatus::INSTALL_SUCCESS,
         UpgradeStatus::UPDATING,              UpgradeStatus::UPDATE_FAIL,
         UpgradeStatus::UPDATE_SUCCESS,        UpgradeStatus::UPGRADE_REBOOT,
-        UpgradeStatus::UPDATE_COUNT_DOWN,     UpgradeStatus::UPGRADE_CANCEL,
+        UpgradeStatus::UPGRADE_COUNT_DOWN,     UpgradeStatus::UPGRADE_CANCEL,
         UpgradeStatus::ERROR };
     PARAM_CHECK(IsValidEnum(statusList, status), return ClientStatus::CLIENT_INVALID_TYPE,
         "GetClearOptionsFromArg error, invalid status:%{public}d", status);
