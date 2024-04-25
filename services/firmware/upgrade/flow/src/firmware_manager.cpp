@@ -354,9 +354,11 @@ void FirmwareManager::HandleBootUpdateOnStatusProcess(const FirmwareTask &task)
     FirmwareComponentOperator().QueryAll(components);
     switch (resultProcess.GetUpdaterResult(components, resultMap)) {
         case UpdateResultCode::SUCCESS:
+            FIRMWARE_LOGI("GetUpdaterResult SUCCESS");
             HandleBootUpdateSuccess(task, resultMap);
             break;
         case UpdateResultCode::FAILURE:
+            FIRMWARE_LOGI("GetUpdaterResult FAILURE");
             HandleBootUpdateFail(task, resultMap);
             break;
         default:
