@@ -19,6 +19,7 @@
 #include <iostream>
 #include <map>
 #include <ohos_types.h>
+#include <sstream>
 #include <string>
 #include <unistd.h>
 
@@ -37,6 +38,18 @@ static const std::string UPDATER_RESULT_FILE = "/data/updater/updater_result";
 constexpr int32_t SYMBOL_LENGTH = 1;
 constexpr uint32_t UPDATE_SUCCESSED = 1;
 constexpr uint32_t UPDATE_FAILED = 2;
+constexpr size_t  PKG_PATH_INDEX = 0;
+constexpr size_t  RESULT_INDEX = 1;
+constexpr size_t  REASON_INDEX = 2;
+
+void FirmwareResultProcess::ParseResult(const std::vector<std::string> &results, std::string &value, size_t index)
+{
+    if (index >= results.size()) {
+        return;
+    }
+    value = results[index];
+    StringUtils::Trim(value);
+}
 
 UpdateResultCode FirmwareResultProcess::GetUpdaterResult(const std::vector<FirmwareComponent> &components,
     std::map<std::string, UpdateResult> &resultMap)
@@ -93,31 +106,32 @@ UpdateResult FirmwareResultProcess::CompareVersion(const FirmwareComponent &comp
 void FirmwareResultProcess::ParseUpdaterResultRecord(const std::string &resultLine,
     std::map<std::string, UpdateResult> &resultMap)
 {
+    FIRMWARE_LOGE("ParseUpdaterResultRecord");
     if (resultLine.empty()) {
         FIRMWARE_LOGE("resultLine is null");
         return;
     }
-    UpdateResult updaterReason;
-    std::string::size_type verticalPlace = resultLine.find_first_of("|");
-    std::string resultAndReason;
-    if (verticalPlace == std::string::npos) {
-        updaterReason.spath = resultLine;
-    } else {
-        updaterReason.spath = resultLine.substr(0, verticalPlace);
-        resultAndReason = resultLine.substr(verticalPlace + SYMBOL_LENGTH);
+    UpdateResult updateResult;
+    std::vector<std::string> results;
+    std::stringstream stringStream(resultLine);
+    std::string token;
+    while (std::getline(stringStream, token, '|')) {
+        results.push_back(token);
     }
 
-    std::string::size_type colonPlace = resultAndReason.find_first_of(":");
-    if (colonPlace == std::string::npos) {
-        updaterReason.result = resultAndReason;
-    } else {
-        updaterReason.result = resultAndReason.substr(0, colonPlace);
-        updaterReason.reason = resultAndReason.substr(colonPlace + SYMBOL_LENGTH);
+    ParseResult(results, updateResult.spath, PKG_PATH_INDEX);
+    ParseResult(results, updateResult.result, RESULT_INDEX);
+    ParseResult(results, updateResult.reason, REASON_INDEX);
+
+    auto colonPlace = updateResult.result.find_first_of(":");
+    if (colonPlace != std::string::npos) {
+        updateResult.result = updateResult.result.substr(0, colonPlace);
+        updateResult.reason = results[RESULT_INDEX].substr(colonPlace + SYMBOL_LENGTH);
     }
-    StringUtils::Trim(updaterReason.spath);
-    StringUtils::Trim(updaterReason.result);
-    StringUtils::Trim(updaterReason.reason);
-    resultMap.emplace(std::make_pair(updaterReason.spath, updaterReason));
+    StringUtils::Trim(updateResult.spath);
+    StringUtils::Trim(updateResult.result);
+    StringUtils::Trim(updateResult.reason);
+    resultMap.emplace(std::make_pair(updateResult.spath, updateResult));
 }
 
 void FirmwareResultProcess::HandleFileError(std::map<std::string, UpdateResult> &resultMap,
@@ -150,6 +164,7 @@ UpdateResultCode FirmwareResultProcess::HandleFileResults(std::map<std::string, 
             updateResultStatus = updateResult.result;
         } else {
             updateResultStatus = result->second.result;
+            FIRMWARE_LOGE("HandleFileResults %{public}s", updateResultStatus.c_str());
         }
         hotaUpdateResult |= updateResultStatus == UPDATER_RESULT_SUCCESS ? UPDATE_SUCCESSED : UPDATE_FAILED;
     }
