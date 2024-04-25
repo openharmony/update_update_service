@@ -16,17 +16,6 @@ import("../../../../updateengine.gni")
 import("../session/update_session.gni")
 
 ohos_shared_library("$updateengine_client_library_name") {
-  sanitize = {
-    integer_overflow = true
-    ubsan = true
-    boundary_sanitize = true
-    cfi = true
-    cfi_cross_dso = true
-    debug = false
-    blocklist = "./cfi_blocklist.txt"
-  }
-  branch_protector_ret = "pac_ret"
-
   sources = []
   if (ability_ability_runtime_enable) {
     sources += [
