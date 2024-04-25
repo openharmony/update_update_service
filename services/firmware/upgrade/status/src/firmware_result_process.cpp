@@ -164,7 +164,7 @@ UpdateResultCode FirmwareResultProcess::HandleFileResults(std::map<std::string, 
             updateResultStatus = updateResult.result;
         } else {
             updateResultStatus = result->second.result;
-            FIRMWARE_LOGE("XXXYYYZZZ:HandleFileResults %{public}s", updateResultStatus.c_str());
+            FIRMWARE_LOGE("HandleFileResults %{public}s", updateResultStatus.c_str());
         }
         hotaUpdateResult |= updateResultStatus == UPDATER_RESULT_SUCCESS ? UPDATE_SUCCESSED : UPDATE_FAILED;
     }
