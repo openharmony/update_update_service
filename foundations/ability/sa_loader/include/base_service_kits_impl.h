@@ -76,7 +76,6 @@ template <typename SERVICE> BaseServiceKitsImpl<SERVICE>::~BaseServiceKitsImpl()
 
 template <typename SERVICE> sptr<SERVICE> BaseServiceKitsImpl<SERVICE>::GetService()
 {
-    ENGINE_LOGI("GetService entry");
     std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     if (remoteServer_ != nullptr) {
         return remoteServer_;
