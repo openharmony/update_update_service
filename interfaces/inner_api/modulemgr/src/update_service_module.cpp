@@ -24,7 +24,6 @@ namespace OHOS {
 namespace UpdateEngine {
 void RegisterFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
-    UTILS_LOGI("enter RegisterFunc");
     OHOS::UpdateEngine::ModuleManager::GetInstance().HookFunc(codes, handleRemoteRequest);
 }
 
