@@ -40,7 +40,6 @@ std::string BaseUpdateSession::GetFunctionName()
 
 void UpdatePromiseSession::CompleteWork(napi_env env, napi_status status)
 {
-    ENGINE_LOGI("UpdatePromiseSession::CompleteWork status: %d", static_cast<int32_t>(status));
     UpdateResult result;
     GetUpdateResult(result);
     NotifyJS(env, NULL, result);
