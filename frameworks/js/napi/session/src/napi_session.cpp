@@ -56,7 +56,9 @@ void NapiSession::ExecuteWork(napi_env env)
         } else {
             workResult_ = doWorker_(context_);
         }
-        ENGINE_LOGI("UpdateSession::ExecuteWork workResult : %{public}d", workResult_);
+        if (workResult_ != 0) {
+            ENGINE_LOGI("UpdateSession::ExecuteWork workResult : %{public}d", workResult_);
+        }
         if (sessionParams_.isAsyncCompleteWork && IsWorkExecuteSuccess()) {
             // 异步搜包完成，需要把businessError设置进来或者超时，才能结束等待
             std::unique_lock<std::mutex> lock(conditionVariableMutex_);

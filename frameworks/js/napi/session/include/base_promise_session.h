@@ -31,7 +31,6 @@ public:
 
     napi_value StartWork(napi_env env, size_t startIndex, const napi_value *args) override
     {
-        ENGINE_LOGI("BasePromiseSession::StartWork");
         PARAM_CHECK_NAPI_CALL(env, args != nullptr, return nullptr, "Invalid para");
         napi_value workName = CreateWorkerName(env);
         PARAM_CHECK_NAPI_CALL(env, workName != nullptr, return nullptr, "Failed to worker name");
@@ -53,7 +52,9 @@ public:
     void NotifyJS(napi_env env, napi_value thisVar, const RESULT &result)
     {
         int32_t errorNum = static_cast<int32_t>(result.businessError.errorNum);
-        ENGINE_LOGI("BasePromiseSession NotifyJS errorNum:%{public}d", errorNum);
+        if (errorNum != 0) {
+            ENGINE_LOGI("BasePromiseSession NotifyJS errorNum:%{public}d", errorNum);
+        }
 
         // Get the return result.
         napi_value processResult = nullptr;

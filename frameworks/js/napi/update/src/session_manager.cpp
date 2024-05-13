@@ -50,7 +50,6 @@ void SessionManager::AddSession(std::shared_ptr<BaseSession> session)
 
 void SessionManager::RemoveSession(uint32_t sessionId)
 {
-    ENGINE_LOGI("RemoveSession sess");
     std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
     sessions_.erase(sessionId);
 }
