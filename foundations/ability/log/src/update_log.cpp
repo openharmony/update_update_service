@@ -82,9 +82,11 @@ void UpdateLog::PrintSingleLine(const uint32_t subModuleTag, const UpdateLogCont
         case UpdateLogLevel::UPDATE_DEBUG:
             LONG_PRINT_HILOG(LOG_DEBUG, subModuleTag, logContent.log,
                 UpdateLog::GetBriefFileName(logContent.fileName).c_str(), logContent.line, logContent.args.c_str());
+            break;
         case UpdateLogLevel::UPDATE_INFO:
             LONG_PRINT_HILOG(LOG_INFO, subModuleTag, logContent.log,
                 UpdateLog::GetBriefFileName(logContent.fileName).c_str(), logContent.line, logContent.args.c_str());
+            break;
         case UpdateLogLevel::UPDATE_ERROR:
             LONG_PRINT_HILOG(LOG_ERROR, subModuleTag, logContent.log,
                 UpdateLog::GetBriefFileName(logContent.fileName).c_str(), logContent.line, logContent.args.c_str());
