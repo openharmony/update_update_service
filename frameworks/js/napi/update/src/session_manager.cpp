@@ -242,7 +242,7 @@ void SessionManager::Emit(const EventClassifyInfo &eventClassifyInfo, const Even
     uv_queue_work_with_qos(
         loop,
         work,
-        [](uv_work_t *work) {},
+        [](uv_work_t *work) { ENGINE_LOGI("print job info"); },
         [](uv_work_t *work, int status) {
             UvWorkData *data = static_cast<UvWorkData*>(work->data);
             auto &[mgr, eventClassifyInfo, eventInfo] = *data;
