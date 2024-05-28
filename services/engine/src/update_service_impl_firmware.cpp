@@ -231,12 +231,6 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
         return INT_CALL_SUCCESS;
     }
-    size_t dataSize = dataXml.size() - (startIndex + 1);
-    if (dataSize > std::string::max_size()) {
-        FIRMWARE_LOGE("dataXml size out of range");
-        businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
-        return INT_CALL_SUCCESS;
-    }
     std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
     GetChangelogContent(dataXmlFinal, descriptionOptions.language);
     descriptionContent.descriptionInfo.content = dataXmlFinal;
