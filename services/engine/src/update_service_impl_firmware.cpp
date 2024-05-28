@@ -225,7 +225,19 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         return INT_CALL_SUCCESS;
     }
     std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
-    std::string dataXmlFinal = dataXml.substr(dataXml.find_first_of("|") + 1, dataXml.size());
+    size_t startIndex = dataXml.find_first_of("|");
+    if (startIndex == std::string::npos) {
+        FIRMWARE_LOGE("dataXml not found |");
+        businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
+        return INT_CALL_SUCCESS;
+    }
+    size_t dataSize = dataXml.size() - (startIndex + 1);
+    if (dataSize > std::string::max_size()) {
+        FIRMWARE_LOGE("dataXml size out of range");
+        businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
+        return INT_CALL_SUCCESS;
+    }
+    std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
     GetChangelogContent(dataXmlFinal, descriptionOptions.language);
     descriptionContent.descriptionInfo.content = dataXmlFinal;
     descriptionContent.descriptionInfo.descriptionType =
