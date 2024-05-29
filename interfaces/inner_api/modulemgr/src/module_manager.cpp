@@ -81,10 +81,10 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
     std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
         if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {
-            UTILS_LOGE("code not exist %{public}d onRemoteRequestFuncMap_", code);
+            UTILS_LOGE("code not exist %{public}d, insert", code);
             onRemoteRequestFuncMap_.insert(std::make_pair(code, handleRemoteRequest));
         } else {
-            UTILS_LOGD("add code %{public}d to onRemoteRequestFuncMap_", code);
+            UTILS_LOGD("update code %{public}d", code);
             onRemoteRequestFuncMap_[code] = handleRemoteRequest;
         }
     }
@@ -112,10 +112,10 @@ void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType h
 {
     std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
-        UTILS_LOGE("phase exist already %{public}s onStartOnStopFuncMap_", phase.c_str());
+        UTILS_LOGE("phase not exist %{public}s, insert", phase.c_str());
         onStartOnStopFuncMap_.insert(std::make_pair(phase, handleSAOnStartOnStop));
     } else {
-        UTILS_LOGD("add phase %{public}s to onStartOnStopFuncMap_", phase.c_str());
+        UTILS_LOGD("update phase %{public}s", phase.c_str());
         onStartOnStopFuncMap_[phase] = handleSAOnStartOnStop;
     }
 }
@@ -134,10 +134,10 @@ void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType ha
 {
     std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
-        UTILS_LOGE("phase exist already %{public}s onIdleFuncMap_", phase.c_str());
+        UTILS_LOGE("phase not exist %{public}s, insert", phase.c_str());
         onIdleFuncMap_.insert(std::make_pair(phase, handleSAOnIdle));
     } else {
-        UTILS_LOGD("add phase %{public}s to onIdleFuncMap_", phase.c_str());
+        UTILS_LOGD("update phase %{public}s", phase.c_str());
         onIdleFuncMap_[phase] = handleSAOnIdle;
     }
 }
