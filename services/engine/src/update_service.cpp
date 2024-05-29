@@ -430,38 +430,37 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
         ENGINE_LOGE("updateService_ null");
     }
 
-    std::vector<uint32_t> codes = {
-        CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::RESUME_DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::UPGRADE),
-        CAST_UINT(UpdaterSaInterfaceCode::CLEAR_ERROR),
-        CAST_UINT(UpdaterSaInterfaceCode::TERMINATE_UPGRADE),
-        CAST_UINT(UpdaterSaInterfaceCode::SET_POLICY),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_POLICY),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION_DESCRIPTION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION_DESCRIPTION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_TASK_INFO),
-        CAST_UINT(UpdaterSaInterfaceCode::REGISTER_CALLBACK),
-        CAST_UINT(UpdaterSaInterfaceCode::UNREGISTER_CALLBACK),
-        CAST_UINT(UpdaterSaInterfaceCode::CANCEL),
-        CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET),
-        CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
-    };
-    ENGINE_LOGI("RegisterFunc HandleOhRemoteRequest");
-    RegisterFunc(codes, HandleOhRemoteRequest);
-
     DelayedSingleton<ConfigParse>::GetInstance()->LoadConfigInfo(); // 启动读取配置信息
     std::string libPath = DelayedSingleton<ConfigParse>::GetInstance()->GetModuleLibPath();
     ENGINE_LOGI("GetModuleLibPath %{public}s ", libPath.c_str());
     ModuleManager::GetInstance().LoadModule(libPath);
 
     if (!ModuleManager::GetInstance().IsModuleLoaded()) {
-        ENGINE_LOGI("IsModuleLoaded false, init blue");
+        ENGINE_LOGI("IsModuleLoaded false, init updateservice_sa");
+        std::vector<uint32_t> codes = {
+            CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
+            CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
+            CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),
+            CAST_UINT(UpdaterSaInterfaceCode::RESUME_DOWNLOAD),
+            CAST_UINT(UpdaterSaInterfaceCode::UPGRADE),
+            CAST_UINT(UpdaterSaInterfaceCode::CLEAR_ERROR),
+            CAST_UINT(UpdaterSaInterfaceCode::TERMINATE_UPGRADE),
+            CAST_UINT(UpdaterSaInterfaceCode::SET_POLICY),
+            CAST_UINT(UpdaterSaInterfaceCode::GET_POLICY),
+            CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION),
+            CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION_DESCRIPTION),
+            CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION),
+            CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION_DESCRIPTION),
+            CAST_UINT(UpdaterSaInterfaceCode::GET_TASK_INFO),
+            CAST_UINT(UpdaterSaInterfaceCode::REGISTER_CALLBACK),
+            CAST_UINT(UpdaterSaInterfaceCode::UNREGISTER_CALLBACK),
+            CAST_UINT(UpdaterSaInterfaceCode::CANCEL),
+            CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET),
+            CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
+            CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
+        };
+        ENGINE_LOGI("RegisterFunc HandleOhRemoteRequest");
+        RegisterFunc(codes, HandleOhRemoteRequest);
         DelayedSingleton<NetManager>::GetInstance()->Init();
 
         // 动态启停流程启动
