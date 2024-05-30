@@ -80,19 +80,18 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
 {
     std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
-        if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {
+        if (!IsMapFuncExist(code)) {
             UTILS_LOGE("code not exist %{public}d, insert", code);
             onRemoteRequestFuncMap_.insert(std::make_pair(code, handleRemoteRequest));
         } else {
-            UTILS_LOGD("update code %{public}d", code);
-            onRemoteRequestFuncMap_[code] = handleRemoteRequest;
+            UTILS_LOGD("code exist %{public}d, don't update", code);
         }
     }
 }
 
 int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    if (onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end()) {
+    if (!IsMapFuncExist(code)) {
         UTILS_LOGE("HandleFunc code %{public}d not exist", code);
     } else {
         UTILS_LOGD("HandleFunc code %{public}d exist", code);
@@ -151,6 +150,11 @@ int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbi
         return ((LifeCycleFuncReturnType)onIdleFuncMap_[phase])(reason);
     }
     return 0;
+}
+
+bool ModuleManager::IsMapFuncExist(uint32_t code)
+{
+    return onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end() ? false : true;
 }
 } // namespace UpdateEngine
 } // namespace OHOS
