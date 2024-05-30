@@ -435,6 +435,9 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
     ENGINE_LOGI("GetModuleLibPath %{public}s ", libPath.c_str());
     ModuleManager::GetInstance().LoadModule(libPath);
 
+    ENGINE_LOGI("RegisterOhFunc HandleOhRemoteRequest");
+    RegisterOhFunc();
+
     if (!ModuleManager::GetInstance().IsModuleLoaded()) {
         ENGINE_LOGI("IsModuleLoaded false, init updateservice_sa");
         DelayedSingleton<NetManager>::GetInstance()->Init();
@@ -442,9 +445,6 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
         // 动态启停流程启动
         DelayedSingleton<StartupManager>::GetInstance()->Start();
     }
-
-    ENGINE_LOGI("RegisterOhFunc HandleOhRemoteRequest");
-    RegisterOhFunc();
 
     if (Publish(this)) {
         ENGINE_LOGI("UpdaterService OnStart publish success");
