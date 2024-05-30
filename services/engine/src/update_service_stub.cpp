@@ -417,8 +417,7 @@ int32_t UpdateServiceStub::OnRemoteRequest(uint32_t code,
     MessageParcel& data, MessageParcel& reply, MessageOption &option)
 {
     ENGINE_LOGI("UpdateServiceStub func code %{public}u", code);
-    auto iter = ModuleManager::onRemoteRequestFuncMap_.find(code);
-    if (iter == ModuleManager::onRemoteRequestFuncMap_.end()) {
+    if (!ModuleManager::GetInstance().IsMapFuncExist(code)) {
         ENGINE_LOGE("UpdateServiceStub OnRemoteRequest code %{public}u not found", code);
         return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
