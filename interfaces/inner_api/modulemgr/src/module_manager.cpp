@@ -152,5 +152,10 @@ int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbi
     }
     return 0;
 }
+
+std::map<uint32_t, RequestFuncType> GetRequestFuncMap()
+{
+    return onRemoteRequestFuncMap_;
+}
 } // namespace UpdateEngine
 } // namespace OHOS
