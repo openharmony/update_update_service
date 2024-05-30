@@ -188,7 +188,6 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
             businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
             return INT_CALL_SUCCESS;
         }
-
         std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
         GetChangelogContent(dataXmlFinal, descriptionOptions.language);
         componentDescription.descriptionInfo.content = dataXmlFinal;
