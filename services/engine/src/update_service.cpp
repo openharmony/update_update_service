@@ -502,7 +502,9 @@ void UpdateService::RegisterFuncSpecial(std::vector<uint32_t> &codes)
             codeAppends.push_back(code);
         }
     }
-    RegisterFunc(codeAppends, HandleOhRemoteRequest);
+    if (!codeAppends.empty()) {
+        RegisterFunc(codeAppends, HandleOhRemoteRequest);
+    }
 }
 
 int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
