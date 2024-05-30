@@ -494,7 +494,6 @@ void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
 void UpdateService::RegisterFuncSpecial(std::vector<uint32_t> &codes)
 {
     ENGINE_LOGI("RegisterFuncSpecial HandleOhRemoteRequest");
-    std::map<uint32_t, RequestFuncType> funcMapLists = ModuleManager::GetInstance().GetRequestFuncMap();
     std::vector<uint32_t> codeAppends;
     for (const auto &code : codes) {
         auto iter = ModuleManager::onRemoteRequestFuncMap_.find(code);
