@@ -90,7 +90,8 @@ public:
         BusinessError &businessError) override;
 
     int Dump(int fd, const std::vector<std::u16string> &args) override;
-    void RegisterFuncSpecial(std::vector<uint32_t> &codes);
+
+    void RegisterOhFunc();
 
     static sptr<UpdateService> GetInstance();
 

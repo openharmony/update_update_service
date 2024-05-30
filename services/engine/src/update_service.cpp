@@ -430,29 +430,6 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
         ENGINE_LOGE("updateService_ null");
     }
 
-    std::vector<uint32_t> codes = {
-        CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::RESUME_DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::UPGRADE),
-        CAST_UINT(UpdaterSaInterfaceCode::CLEAR_ERROR),
-        CAST_UINT(UpdaterSaInterfaceCode::TERMINATE_UPGRADE),
-        CAST_UINT(UpdaterSaInterfaceCode::SET_POLICY),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_POLICY),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION_DESCRIPTION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION_DESCRIPTION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_TASK_INFO),
-        CAST_UINT(UpdaterSaInterfaceCode::REGISTER_CALLBACK),
-        CAST_UINT(UpdaterSaInterfaceCode::UNREGISTER_CALLBACK),
-        CAST_UINT(UpdaterSaInterfaceCode::CANCEL),
-        CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET),
-        CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
-    };
-
     DelayedSingleton<ConfigParse>::GetInstance()->LoadConfigInfo(); // 启动读取配置信息
     std::string libPath = DelayedSingleton<ConfigParse>::GetInstance()->GetModuleLibPath();
     ENGINE_LOGI("GetModuleLibPath %{public}s ", libPath.c_str());
@@ -466,7 +443,9 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
         DelayedSingleton<StartupManager>::GetInstance()->Start();
     }
 
-    RegisterFuncSpecial(codes);
+    ENGINE_LOGI("RegisterOhFunc HandleOhRemoteRequest");
+    RegisterOhFunc();
+
     if (Publish(this)) {
         ENGINE_LOGI("UpdaterService OnStart publish success");
     } else {
@@ -491,24 +470,36 @@ void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
     ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStop", stopReason);
 }
 
-void UpdateService::RegisterFuncSpecial(std::vector<uint32_t> &codes)
-{
-    ENGINE_LOGI("RegisterFuncSpecial HandleOhRemoteRequest");
-    std::vector<uint32_t> codeAppends;
-    for (const auto &code : codes) {
-        auto iter = ModuleManager::onRemoteRequestFuncMap_.find(code);
-        if (iter == ModuleManager::onRemoteRequestFuncMap_.end()) {
-            codeAppends.push_back(code);
-        }
-    }
-    if (!codeAppends.empty()) {
-        RegisterFunc(codeAppends, HandleOhRemoteRequest);
-    }
-}
-
 int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     return UpdateService::GetInstance()-> HandleRemoteRequest(code, data, reply, option);
+}
+
+void UpdateService::RegisterOhFunc()
+{
+    std::vector<uint32_t> codes = {
+        CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
+        CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),
+        CAST_UINT(UpdaterSaInterfaceCode::RESUME_DOWNLOAD),
+        CAST_UINT(UpdaterSaInterfaceCode::UPGRADE),
+        CAST_UINT(UpdaterSaInterfaceCode::CLEAR_ERROR),
+        CAST_UINT(UpdaterSaInterfaceCode::TERMINATE_UPGRADE),
+        CAST_UINT(UpdaterSaInterfaceCode::SET_POLICY),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_POLICY),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION_DESCRIPTION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION_DESCRIPTION),
+        CAST_UINT(UpdaterSaInterfaceCode::GET_TASK_INFO),
+        CAST_UINT(UpdaterSaInterfaceCode::REGISTER_CALLBACK),
+        CAST_UINT(UpdaterSaInterfaceCode::UNREGISTER_CALLBACK),
+        CAST_UINT(UpdaterSaInterfaceCode::CANCEL),
+        CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET),
+        CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
+        CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
+    };
+    RegisterFunc(codes, HandleOhRemoteRequest);
 }
 } // namespace UpdateEngine
 } // namespace OHOS
