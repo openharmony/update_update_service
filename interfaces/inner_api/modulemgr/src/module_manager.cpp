@@ -81,10 +81,10 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
     std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
         if (!IsMapFuncExist(code)) {
-            UTILS_LOGE("code not exist %{public}d, insert", code);
+            UTILS_LOGI("add code %{public}d", code);
             onRemoteRequestFuncMap_.insert(std::make_pair(code, handleRemoteRequest));
         } else {
-            UTILS_LOGD("code exist %{public}d, don't update", code);
+            UTILS_LOGI("code %{public}d already exist", code);
         }
     }
 }
@@ -92,9 +92,9 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
 int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     if (!IsMapFuncExist(code)) {
-        UTILS_LOGE("HandleFunc code %{public}d not exist", code);
+        UTILS_LOGI("code %{public}d not exist", code);
     } else {
-        UTILS_LOGD("HandleFunc code %{public}d exist", code);
+        UTILS_LOGI("code %{public}d already exist", code);
         return ((RequestFuncType)onRemoteRequestFuncMap_[code])(code, data, reply, option);
     }
     return 0;
@@ -111,10 +111,10 @@ void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType h
 {
     std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
-        UTILS_LOGE("phase not exist %{public}s, insert", phase.c_str());
+        UTILS_LOGI("add phase %{public}s", phase.c_str());
         onStartOnStopFuncMap_.insert(std::make_pair(phase, handleSAOnStartOnStop));
     } else {
-        UTILS_LOGD("update phase %{public}s", phase.c_str());
+        UTILS_LOGI("phase %{public}s exist", phase.c_str());
         onStartOnStopFuncMap_[phase] = handleSAOnStartOnStop;
     }
 }
@@ -122,10 +122,10 @@ void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType h
 void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
-        UTILS_LOGE("HandleOnStartOnStopFunc phase %{public}s not exist", phase.c_str());
+        UTILS_LOGI("phase %{public}s not exist", phase.c_str());
         return;
     }
-    UTILS_LOGD("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
+    UTILS_LOGI("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
     ((LifeCycleFuncType)onStartOnStopFuncMap_[phase])(reason);
 }
 
@@ -133,10 +133,10 @@ void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType ha
 {
     std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
-        UTILS_LOGE("phase not exist %{public}s, insert", phase.c_str());
+        UTILS_LOGI("add phase %{public}s", phase.c_str());
         onIdleFuncMap_.insert(std::make_pair(phase, handleSAOnIdle));
     } else {
-        UTILS_LOGD("update phase %{public}s", phase.c_str());
+        UTILS_LOGI("phase %{public}s already exist", phase.c_str());
         onIdleFuncMap_[phase] = handleSAOnIdle;
     }
 }
@@ -144,9 +144,9 @@ void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType ha
 int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
-        UTILS_LOGE("HandleOnIdleFunc phase %{public}s not exist", phase.c_str());
+        UTILS_LOGI("phase %{public}s not exist", phase.c_str());
     } else {
-        UTILS_LOGI("HandleOnIdleFunc phase %{public}s exist", phase.c_str());
+        UTILS_LOGI("phase %{public}s already exist", phase.c_str());
         return ((LifeCycleFuncReturnType)onIdleFuncMap_[phase])(reason);
     }
     return 0;
@@ -154,7 +154,7 @@ int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbi
 
 bool ModuleManager::IsMapFuncExist(uint32_t code)
 {
-    return onRemoteRequestFuncMap_.find(code) == onRemoteRequestFuncMap_.end() ? false : true;
+    return onRemoteRequestFuncMap_.count(code);
 }
 } // namespace UpdateEngine
 } // namespace OHOS
