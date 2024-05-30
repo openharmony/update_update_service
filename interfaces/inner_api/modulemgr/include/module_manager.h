@@ -45,14 +45,14 @@ public:
     void HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
     void HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle);
     int32_t HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
-
-    static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
+    bool IsMapFuncExist(uint32_t code);
 
 private:
     int32_t retryInterval_ = 0;
     void *dueModuleHandler = nullptr;
     static std::map<std::string, LifeCycleFuncType> onStartOnStopFuncMap_;
     static std::map<std::string, LifeCycleFuncReturnType> onIdleFuncMap_;
+    static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
     static bool isLoaded;
     static std::mutex onRemoteRequestFuncMapMutex_;
     static std::mutex onStartOnStopFuncMapMutex_;

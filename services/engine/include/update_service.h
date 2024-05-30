@@ -91,6 +91,8 @@ public:
 
     int Dump(int fd, const std::vector<std::u16string> &args) override;
 
+    void RegisterOhFunc();
+
     static sptr<UpdateService> GetInstance();
 
     sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &info);
