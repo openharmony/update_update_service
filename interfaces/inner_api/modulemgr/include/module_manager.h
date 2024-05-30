@@ -47,7 +47,6 @@ public:
     int32_t HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
 
     static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
-    std::map<uint32_t, RequestFuncType> GetRequestFuncMap();
 
 private:
     int32_t retryInterval_ = 0;

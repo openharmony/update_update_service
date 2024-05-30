@@ -497,8 +497,8 @@ void UpdateService::RegisterFuncSpecial(std::vector<uint32_t> &codes)
     std::map<uint32_t, RequestFuncType> funcMapLists = ModuleManager::GetInstance().GetRequestFuncMap();
     std::vector<uint32_t> codeAppends;
     for (const auto &code : codes) {
-        auto iter = funcMapLists.find(code);
-        if (iter == funcMapLists.end()) {
+        auto iter = ModuleManager::onRemoteRequestFuncMap_.find(code);
+        if (iter == ModuleManager::onRemoteRequestFuncMap_.end()) {
             codeAppends.push_back(code);
         }
     }
