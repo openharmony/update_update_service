@@ -46,7 +46,7 @@ bool UpdateNotify::ConnectToAppService(const std::string &eventInfo, const std::
         return false;
     }
     std::string message = JsonBuilder().Append("{").Append("EventInfo", eventInfo)
-        .Append("SubscribeInfo",subscribeInfo).Append("}").ToJson();
+        .Append("SubscribeInfo", subscribeInfo).Append("}").ToJson();
     return HandleMessage(message);
 }
 
