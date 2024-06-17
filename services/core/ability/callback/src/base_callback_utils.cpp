@@ -99,7 +99,7 @@ void BaseCallbackUtils::NotifyToHap(EventInfo &info)
     ENGINE_LOGI("Notify eventInfoStr %{public}s", eventInfoStr.c_str());
     if (!eventInfoStr.empty()) {
         SubscribeInfo subscribeInfo{GetBusinessSubType()};
-        OHOS::UpdateEngine::UpdateNotify::NotifyToAppService(eventInfoStr, subscribeInfo.ToJson());
+        OHOS::UpdateEngine::UpdateNotify::ConnectToAppService(eventInfoStr, subscribeInfo.ToJson());
     }
 }
 } // namespace UpdateEngine

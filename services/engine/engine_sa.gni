@@ -153,7 +153,7 @@ if (ability_ability_base_enable) {
   ]
 }
 if (ability_ability_runtime_enable) {
-  sa_external_deps += [ "ability_runtime:ability_manager" ]
+  sa_external_deps += [ "ability_runtime:extension_manager" ]
 }
 
 if (communication_netmanager_base_enable) {
