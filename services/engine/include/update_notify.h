@@ -30,16 +30,18 @@ namespace OHOS {
 namespace UpdateEngine {
 class UpdateNotify : public NoConstructor {
 public:
-    static bool NotifyToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
+    static bool ConnectToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
 
 private:
-    static ErrCode ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::IAbilityConnection> &connect,
-        const sptr<IRemoteObject> &callerToken);
-    static ErrCode DisconnectAbility(const sptr<AAFwk::IAbilityConnection> &connect);
-    static ErrCode StopServiceAbility(const AAFwk::Want &want);
-    static ErrCode StartAbility(const AAFwk::Want &want);
-    static AAFwk::Want MakeWant(const std::string &deviceId, const std::string &abilityName,
-        const std::string &bundleName, const std::string &subscribeInfo, const std::string &params = {});
+    static bool HandleMessage(const std::string &message);
+    static ErrCode ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::AbilityConnectionStub> &connect);
+    static ErrCode DisconnectAbility(const sptr<AAFwk::AbilityConnectionStub> &connect);
+
+private:
+    enum class OucCode {
+        UNKNOWN = 0,
+        OUC = 5
+    };
 };
 
 class NotifyConnection : public AAFwk::AbilityConnectionStub {
@@ -50,6 +52,10 @@ public:
     void OnAbilityConnectDone(const AppExecFwk::ElementName &element, const sptr<IRemoteObject> &remoteObject,
         int32_t resultCode) override;
     void OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int resultCode) override;
+    int32_t SendMessage(int32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option);
+
+private:
+    sptr<IRemoteObject> remoteObject_ = nullptr;
 };
 } // namespace UpdateEngine
 } // namespace OHOS
