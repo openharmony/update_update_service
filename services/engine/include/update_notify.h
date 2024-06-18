@@ -16,6 +16,8 @@
 #ifndef UPDATE_NOTIFY_H
 #define UPDATE_NOTIFY_H
 
+#include <condition_variable>
+#include <mutex>
 #include <string>
 #include "ability_connect_callback_stub.h"
 #include "ability_connect_callback_interface.h"
@@ -56,6 +58,8 @@ public:
 
 private:
     sptr<IRemoteObject> remoteObject_ = nullptr;
+    std::mutex connectedMutex_;
+    std::condition_variable  conditionVal_;
 };
 } // namespace UpdateEngine
 } // namespace OHOS
