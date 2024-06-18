@@ -141,7 +141,7 @@ void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &eleme
     intance_->HandleAbilityConnect(remoteObject);
 }
 
-void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int32_t resultCode)
+void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int resultCode)
 {
     ENGINE_LOGI("OnAbilityDisconnectDone successfully. result %{public}d", resultCode);
 }
