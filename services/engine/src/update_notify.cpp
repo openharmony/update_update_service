@@ -119,7 +119,7 @@ void UpdateNotify::HandleAbilityConnect(const sptr<IRemoteObject> &remoteObject)
 NotifyConnection::NotifyConnection(const sptr<UpdateNotify> &instance)
 {
     ENGINE_LOGD("NotifyConnection constructor");
-    intance_ = instance;
+    instance_ = instance;
 }
 
 void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &element,
@@ -138,7 +138,7 @@ void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &eleme
     if (instance_ == nullptr) {
         return;
     }
-    intance_->HandleAbilityConnect(remoteObject);
+    instance_->HandleAbilityConnect(remoteObject);
 }
 
 void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int resultCode)
