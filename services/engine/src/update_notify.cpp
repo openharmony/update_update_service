@@ -47,9 +47,6 @@ sptr<UpdateNotify> UpdateNotify::GetInstance()
     return instance_;
 }
 
-
-
-
 ErrCode UpdateNotify::ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::AbilityConnectionStub> &connect)
 {
     ErrCode result =
