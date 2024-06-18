@@ -24,22 +24,37 @@
 #include "ability_manager_interface.h"
 #include "ability_manager_client.h"
 #include "if_system_ability_manager.h"
+#include "i_update_notify.h"
 #include "system_ability_definition.h"
 #include "update_no_constructor.h"
 #include "want.h"
 
 namespace OHOS {
 namespace UpdateEngine {
-class UpdateNotify : public NoConstructor {
+class UpdateNotify : public IRemoteStub<IUpdateNotify> {
 public:
-    static bool ConnectToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
+    DISALLOW_COPY_AND_MOVE(UpdateNotify);
+
+    UpdateNotify();
+    ~UpdateNotify();
+    static sptr<UpdateNotify> GetInstance();
+    bool ConnectToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
+
+    void HandleAbilityConnect(const sptr<IRemoteObject> &remoteObject);
 
 private:
-    static bool HandleMessage(const std::string &message);
-    static ErrCode ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::AbilityConnectionStub> &connect);
-    static ErrCode DisconnectAbility(const sptr<AAFwk::AbilityConnectionStub> &connect);
+    bool HandleMessage(const std::string &message);
+    ErrCode ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::AbilityConnectionStub> &connect);
+    ErrCode DisconnectAbility(const sptr<AAFwk::AbilityConnectionStub> &connect);
 
 private:
+    static std::mutex instanceLock_;
+    static sptr<UpdateNotify> instance_;
+    sptr<IRemoteObject> remoteObject_ = nullptr;
+
+    std::mutex connectMutex_;
+    std::condition_variable  conditionVal_;
+
     enum class OucCode {
         UNKNOWN = 0,
         OUC = 5
@@ -48,18 +63,16 @@ private:
 
 class NotifyConnection : public AAFwk::AbilityConnectionStub {
 public:
-    explicit NotifyConnection() = default;
+    explicit NotifyConnection(const sptr<UpdateNotify> &instance);
     ~NotifyConnection() = default;
 
     void OnAbilityConnectDone(const AppExecFwk::ElementName &element, const sptr<IRemoteObject> &remoteObject,
         int32_t resultCode) override;
     void OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int resultCode) override;
-    int32_t SendMessage(int32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option);
 
 private:
-    sptr<IRemoteObject> remoteObject_ = nullptr;
-    std::mutex connectedMutex_;
-    std::condition_variable  conditionVal_;
+    sptr<UpdateNotify> instance_ = nullptr;
+
 };
 } // namespace UpdateEngine
 } // namespace OHOS

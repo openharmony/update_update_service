@@ -23,6 +23,33 @@
 
 namespace OHOS {
 namespace UpdateEngine {
+std::mutex UpdateNotify::instanceLock_;
+sptr<UpdateNotify> UpdateNotify::instance_ = nullptr;
+
+UpdateNotify::UpdateNotify()
+{
+    ENGINE_LOGD("UpdateNotify");
+}
+
+UpdateNotify::~UpdateNotify()
+{
+    ENGINE_LOGD("~UpdateNotify");
+}
+
+sptr<UpdateNotify> UpdateNotify::GetInstance()
+{
+    if (instance_ == nullptr) {
+        std::lock_guard<std::mutex> autoLock(instanceLock_);
+        if (instance_ == nullptr) {
+            instance_ = new UpdateNotify();
+        }
+    }
+    return instance_;
+}
+
+
+
+
 ErrCode UpdateNotify::ConnectAbility(const AAFwk::Want &want, const sptr<AAFwk::AbilityConnectionStub> &connect)
 {
     ErrCode result =
@@ -57,26 +84,42 @@ bool UpdateNotify::HandleMessage(const std::string &message)
     AAFwk::Want want;
     want.SetElementName(bundleName, abilityName);
     want.SetParam("Timeout", OUC_TIMEOUT);
-    auto connect = sptr<NotifyConnection>::MakeSptr();
-    if (ConnectAbility(want, connect) != OHOS::ERR_OK) {
-        ENGINE_LOGE("SendMessage, can not connect to ouc");
+    auto connect = sptr<NotifyConnection>::MakeSptr(instance_);
+    int ret = ConnectAbility(want, connect);
+    std::unique_lock<std::mutex> uniqueLock(connectMutex_);
+    conditionVal_.wait_for(uniqueLock, std::chrono::seconds(OUC_CONNECT_TIMEOUT));
+    if (ret != OHOS::ERR_OK || remoteObject_ == nullptr) {
+        ENGINE_LOGE("HandleMessage, can not connect to ouc");
         return false;
     }
 
     MessageParcel data;
     if (!data.WriteString16(Str8ToStr16(message))) {
-        ENGINE_LOGE("SendMessage, write subscribeInfo failed");
+        ENGINE_LOGE("HandleMessage, write subscribeInfo failed");
         return false;
     }
+
     MessageParcel reply;
     MessageOption option(MessageOption::TF_SYNC);
-    int32_t result = connect->SendMessage(CAST_INT(OucCode::OUC), data, reply, option);
+    int32_t result = remoteObject_->SendRequest(CAST_INT(OucCode::OUC), data, reply, option);
     if (result != 0) {
-        ENGINE_LOGE("SendMessage SendRequest, error result %{public}d", result);
+        ENGINE_LOGE("HandleMessage SendRequest, error result %{public}d", result);
         DisconnectAbility(connect);
         return false;
     }
     return true;
+}
+
+void UpdateNotify::HandleAbilityConnect(const sptr<IRemoteObject> &remoteObject)
+{
+    remoteObject_ = remoteObject;
+    conditionVal_.notify_one();
+}
+
+NotifyConnection::NotifyConnection(const sptr<UpdateNotify> &instance)
+{
+    ENGINE_LOGD("NotifyConnection constructor");
+    intance_ = instance;
 }
 
 void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &element,
@@ -92,23 +135,15 @@ void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &eleme
         ENGINE_LOGE("get remoteObject failed");
         return;
     }
-    remoteObject_ = remoteObject;
-    conditionVal_.notify_all();
+    if (instance_ == nullptr) {
+        return;
+    }
+    intance_->HandleAbilityConnect(remoteObject);
 }
 
 void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int32_t resultCode)
 {
     ENGINE_LOGI("OnAbilityDisconnectDone successfully. result %{public}d", resultCode);
-}
-
-int32_t NotifyConnection::SendMessage(int32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
-{
-    std::unique_lock<std::mutex> uniqueLock(connectedMutex_);
-    conditionVal_.wait_for(uniqueLock, std::chrono::seconds(OUC_CONNECT_TIMEOUT));
-    if (remoteObject_ != nullptr) {
-        return remoteObject_->SendRequest(code, data, reply, option);
-    }
-    return -1;
 }
 } // namespace UpdateEngine
 } // namespace OHOS
