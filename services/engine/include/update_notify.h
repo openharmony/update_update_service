@@ -39,7 +39,6 @@ public:
     ~UpdateNotify();
     static sptr<UpdateNotify> GetInstance();
     bool ConnectToAppService(const std::string &eventInfo, const std::string &subscribeInfo);
-
     void HandleAbilityConnect(const sptr<IRemoteObject> &remoteObject);
 
 private:
@@ -51,7 +50,6 @@ private:
     static std::mutex instanceLock_;
     static sptr<UpdateNotify> instance_;
     sptr<IRemoteObject> remoteObject_ = nullptr;
-
     std::mutex connectMutex_;
     std::condition_variable  conditionVal_;
 
@@ -65,14 +63,12 @@ class NotifyConnection : public AAFwk::AbilityConnectionStub {
 public:
     explicit NotifyConnection(const sptr<UpdateNotify> &instance);
     ~NotifyConnection() = default;
-
     void OnAbilityConnectDone(const AppExecFwk::ElementName &element, const sptr<IRemoteObject> &remoteObject,
         int32_t resultCode) override;
     void OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int resultCode) override;
 
 private:
     sptr<UpdateNotify> instance_ = nullptr;
-
 };
 } // namespace UpdateEngine
 } // namespace OHOS
