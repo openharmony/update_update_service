@@ -26,6 +26,7 @@ namespace OHOS::UpdateEngine {
 const std::string OUC_PACKAGE_NAME = "com.ohos.updateapp";
 const std::string OUC_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
 constexpr int32_t OUC_TIMEOUT = 15;
+constexpr int32_t OUC_CONNECT_TIMEOUT = 5;
 
 struct SubscribeInfo : public BaseJsonStruct {
     std::string upgradeApp = OUC_PACKAGE_NAME;

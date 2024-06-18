@@ -93,6 +93,7 @@ void NotifyConnection::OnAbilityConnectDone(const AppExecFwk::ElementName &eleme
         return;
     }
     remoteObject_ = remoteObject;
+    conditionVal_.notify_all();
 }
 
 void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &element, int32_t resultCode)
@@ -102,6 +103,8 @@ void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &el
 
 int32_t NotifyConnection::SendMessage(int32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
+    std::unique_lock<std::mutex> uniqueLock(connectedMutex_);
+    conditionVal_.wait_for(uniqueLock, std::chrono::seconds(OUC_CONNECT_TIMEOUT);
     if (remoteObject_ != nullptr) {
         return remoteObject_->SendRequest(code, data, reply, option);
     }
