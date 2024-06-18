@@ -23,7 +23,7 @@
 namespace OHOS::UpdateEngine {
 class IUpdateNotify : public OHOS::IRemoteBroker {
 public:
-    DECLARE_INTERFACE_DESCRIPOR(u"OHOS.Updater.IUpdateNotify");
+    DECLARE_INTERFACE_DESCRIPTOR(u"OHOS.Updater.IUpdateNotify");
 };
 } // namespace OHOS::UpdateEngine
 #endif // I_UPDATE_NOTIFY_H
