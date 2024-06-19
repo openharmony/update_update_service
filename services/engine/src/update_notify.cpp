@@ -15,6 +15,7 @@
 
 #include "update_notify.h"
 
+#include "cJSON.h"
 #include "extension_manager_client.h"
 #include "iservice_registry.h"
 
@@ -69,8 +70,18 @@ bool UpdateNotify::ConnectToAppService(const std::string &eventInfo, const std::
         ENGINE_LOGE("ConnectToAppService eventInfo error.");
         return false;
     }
-    std::string message = JsonBuilder().Append("{").Append("EventInfo", eventInfo)
-        .Append("SubscribeInfo", subscribeInfo).Append("}").ToJson();
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddItemToObject(root, "EventInfo", cJSON_Parse(eventInfo.c_str()));
+    cJSON_AddItemToObject(root, "SubscribeInfo", cJSON_Parse(subscribeInfo.c_str()));
+    
+    char *data = cJSON_PrintUnformatted(root);
+    if (data == nullptr) {
+        cJSON_Delete(root);
+        return false;
+    }
+    std::string message = std::string(data);
+    cJSON_free(data);
+    cJSON_Delete(root);
     return HandleMessage(message);
 }
 
