@@ -53,7 +53,7 @@ private:
     std::mutex connectMutex_;
     std::condition_variable  conditionVal_;
 
-    enum class OucCode {
+    enum class UpdateAppCode {
         UNKNOWN = 0,
         UPDATE_APP = 5
     };
