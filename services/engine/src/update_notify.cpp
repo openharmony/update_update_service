@@ -73,7 +73,7 @@ bool UpdateNotify::ConnectToAppService(const std::string &eventInfo, const std::
     cJSON *root = cJSON_CreateObject();
     cJSON_AddItemToObject(root, "EventInfo", cJSON_Parse(eventInfo.c_str()));
     cJSON_AddItemToObject(root, "SubscribeInfo", cJSON_Parse(subscribeInfo.c_str()));
-    
+
     char *data = cJSON_PrintUnformatted(root);
     if (data == nullptr) {
         cJSON_Delete(root);
@@ -87,15 +87,15 @@ bool UpdateNotify::ConnectToAppService(const std::string &eventInfo, const std::
 
 bool UpdateNotify::HandleMessage(const std::string &message)
 {
-    std::string bundleName = OUC_PACKAGE_NAME;
-    std::string abilityName = OUC_SERVICE_EXT_ABILITY_NAME;
+    std::string bundleName = UPDATE_APP_PACKAGE_NAME;
+    std::string abilityName = UPDATE_APP_SERVICE_EXT_ABILITY_NAME;
     AAFwk::Want want;
     want.SetElementName(bundleName, abilityName);
-    want.SetParam("Timeout", OUC_TIMEOUT);
+    want.SetParam("Timeout", UPDATE_APP_TIMEOUT);
     auto connect = sptr<NotifyConnection>::MakeSptr(instance_);
     int ret = ConnectAbility(want, connect);
     std::unique_lock<std::mutex> uniqueLock(connectMutex_);
-    conditionVal_.wait_for(uniqueLock, std::chrono::seconds(OUC_CONNECT_TIMEOUT));
+    conditionVal_.wait_for(uniqueLock, std::chrono::seconds(UPDATE_APP_CONNECT_TIMEOUT));
     if (ret != OHOS::ERR_OK || remoteObject_ == nullptr) {
         ENGINE_LOGE("HandleMessage, can not connect to ouc");
         return false;
@@ -103,13 +103,13 @@ bool UpdateNotify::HandleMessage(const std::string &message)
 
     MessageParcel data;
     if (!data.WriteString16(Str8ToStr16(message))) {
-        ENGINE_LOGE("HandleMessage, write subscribeInfo failed");
+        ENGINE_LOGE("HandleMessage, write message failed");
         return false;
     }
 
     MessageParcel reply;
     MessageOption option(MessageOption::TF_SYNC);
-    int32_t result = remoteObject_->SendRequest(CAST_INT(OucCode::OUC), data, reply, option);
+    int32_t result = remoteObject_->SendRequest(CAST_INT(UpdateAppCode::UPDATE_APP), data, reply, option);
     if (result != 0) {
         ENGINE_LOGE("HandleMessage SendRequest, error result %{public}d", result);
         DisconnectAbility(connect);

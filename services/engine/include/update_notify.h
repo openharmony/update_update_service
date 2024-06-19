@@ -55,7 +55,7 @@ private:
 
     enum class OucCode {
         UNKNOWN = 0,
-        OUC = 5
+        UPDATE_APP = 5
     };
 };
 
