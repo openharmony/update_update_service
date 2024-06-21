@@ -37,7 +37,7 @@ const mode_t MKDIR_MODE = 0777;
 void FirmwareDownloadExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareDownloadExecutor::Execute");
-    std::thread downloadThread(&FirmwareDownloadExecutor::DoDownload, this);
+    std::thread downloadThread([this] { this->DoDownload(); });
     downloadThread.detach();
 }
 

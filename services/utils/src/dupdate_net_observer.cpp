@@ -37,7 +37,7 @@ void NetObserver::SetCallback(const std::weak_ptr<INetObserverCallback> &callbac
 void NetObserver::StartObserver()
 {
     ENGINE_LOGI("StartObserver");
-    std::thread th = std::thread([this]() {
+    auto ObserverExecFunc = [this]() {
         NetSpecifier netSpecifier;
         NetAllCapabilities netAllCapabilities;
         netAllCapabilities.netCaps_.insert(NetManagerStandard::NetCap::NET_CAPABILITY_INTERNET);
@@ -58,7 +58,8 @@ void NetObserver::StartObserver()
             sleep(1);
         } while (retryCount < RETRY_MAX_TIMES);
         ENGINE_LOGE("StartObserver failed");
-    });
+    };
+    std::thread th = std::thread(ObserverExecFunc);
     th.detach();
 }
 

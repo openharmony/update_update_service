@@ -32,7 +32,7 @@ namespace UpdateEngine {
 void FirmwareApplyExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareApplyExecutor::Execute");
-    std::thread installThread(&FirmwareApplyExecutor::DoInstall, this);
+    std::thread installThread([this] { this->DoInstall(); });
     installThread.detach();
 }
 
