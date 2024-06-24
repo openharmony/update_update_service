@@ -32,7 +32,7 @@ void FirmwareCheckExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareCheckExecutor::Execute");
     DelayedSingleton<FirmwareStatusCache>::GetInstance()->SetIsChecking(true);
-    std::thread checkThread(&FirmwareCheckExecutor::DoCheck, this);
+    std::thread checkThread([this] { this->DoCheck(); });
     checkThread.detach();
 }
 

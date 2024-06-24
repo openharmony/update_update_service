@@ -75,7 +75,7 @@ void FirmwareManager::Init(StartupReason startupReason)
     }
     FileUtils::InitAndCreateBaseDirs(FIRMWARE_DIR_INFOS);
 
-    std::thread initThread(&FirmwareManager::DelayInit, this, startupReason);
+    std::thread initThread([this, startupReason] { this->DelayInit(startupReason); });
     initThread.detach();
 }
 
@@ -177,10 +177,11 @@ void FirmwareManager::DoTerminateUpgrade(BusinessError &businessError)
     }
 
     // 主线程拉起子线程之后向OUC返回回调结果，子线程sleep 1秒之后，DUE进程退出
-    std::thread th = std::thread([this]() {
+    auto execFunc = []() {
         sleep(PROCESS_EXIT_DELAY_TIME);
         _Exit(0);
-    });
+    };
+    std::thread th = std::thread(execFunc);
     th.detach();
 }
 
