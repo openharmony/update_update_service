@@ -31,7 +31,7 @@ public:
     DISALLOW_COPY_AND_MOVE(UpdateServiceLocalUpdater);
 
     int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-        const std::vector<std::string> &packageName, BusinessError &businessError) final;
+        const std::vector<std::string> &packageNames, BusinessError &businessError) final;
 
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) final;

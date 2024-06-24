@@ -471,7 +471,7 @@ int32_t UpdateServiceProxy::FactoryReset(BusinessError &businessError)
 }
 
 int32_t UpdateServiceProxy::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::vector<std::string> &packageName, BusinessError &businessError)
+    const std::vector<std::string> &packageNames, BusinessError &businessError)
 {
     ENGINE_LOGI("UpdateServiceProxy::ApplyNewVersion");
     auto remote = Remote();
@@ -481,9 +481,9 @@ int32_t UpdateServiceProxy::ApplyNewVersion(const UpgradeInfo &info, const std::
     RETURN_WHEN_TOKEN_WRITE_FAIL(data);
     MessageParcelHelper::WriteUpgradeInfo(data, info);
     data.WriteString16(Str8ToStr16(miscFile));
-    data.WriteInt32(static_cast<int32_t>(packageName.size()));
-    for (size_t i = 0; i < packageName.size(); i++) {
-        data.WriteString16(Str8ToStr16(packageName[i]));
+    data.WriteInt32(static_cast<int32_t>(packageNames.size()));
+    for (size_t i = 0; i < packageNames.size(); i++) {
+        data.WriteString16(Str8ToStr16(packageNames[i]));
     }
 
     MessageParcel reply;
