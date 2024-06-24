@@ -80,8 +80,8 @@ public:
 
     int32_t FactoryReset(BusinessError &businessError) final;
 
-    int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile, const std::string &packageName,
-        BusinessError &businessError) final;
+    int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
+        const std::vector<std::string> &packageName, BusinessError &businessError) final;
 
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) final;

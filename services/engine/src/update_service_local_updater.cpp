@@ -25,14 +25,12 @@
 namespace OHOS {
 namespace UpdateEngine {
 int32_t UpdateServiceLocalUpdater::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::string &packageName, BusinessError &businessError)
+    const std::vectpr<std::string> &packageName, BusinessError &businessError)
 {
 #ifndef UPDATER_UT
     SYS_EVENT_SYSTEM_UPGRADE(0, UpdateSystemEvent::UPGRADE_START);
     businessError.errorNum = CallResult::SUCCESS;
-    std::vector<std::string> packageNames;
-    packageNames.push_back(packageName);
-    int32_t ret = RebootAndInstallSdcardPackage(miscFile, packageNames) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
+    int32_t ret = RebootAndInstallSdcardPackage(miscFile, packageName) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
     ENGINE_LOGI("ApplyNewVersion result : %{public}d", ret);
     SYS_EVENT_SYSTEM_UPGRADE(
         0, ret == INT_CALL_SUCCESS ? UpdateSystemEvent::EVENT_SUCCESS_RESULT : UpdateSystemEvent::EVENT_FAILED_RESULT);

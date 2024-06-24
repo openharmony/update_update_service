@@ -323,7 +323,7 @@ int32_t UpdateService::FactoryReset(BusinessError &businessError)
 }
 
 int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::string &packageName, BusinessError &businessError)
+    const std::vector<std::string> &packageName, BusinessError &businessError)
 {
     sptr<UpdateServiceLocalUpdater> localUpdater = new UpdateServiceLocalUpdater();
     if (localUpdater == nullptr) {
