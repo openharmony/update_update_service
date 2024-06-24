@@ -134,7 +134,7 @@ napi_value LocalUpdater::ApplyNewVersion(napi_env env, napi_callback_info info)
 
     SessionParams sessionParams(SessionType::SESSION_APPLY_NEW_VERSION, CALLBACK_POSITION_TWO, true);
     napi_value retValue = StartSession(env, info, sessionParams,
-        [packageNames](void  *context) -> int {
+        [packageNames](void *context) -> int {
             for (const std::string &packageName : packageNames) {
                 ENGINE_LOGI("ApplyNewVersion %{public}s", packageName.c_str());
             }
