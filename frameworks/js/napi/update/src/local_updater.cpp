@@ -128,8 +128,8 @@ napi_value LocalUpdater::ApplyNewVersion(napi_env env, napi_callback_info info)
     }
 
     std::vector<std::string> packageNames;
-    for(const UpgradeFile &upgradeFile : upgradeFiles) {
-        packageNames.push_back(upgradeFile.filePath);
+    for (const UpgradeFile &upgradeFile : upgradeFiles) {
+        packageNames.emplace_back(upgradeFile.filePath);
     }
 
     SessionParams sessionParams(SessionType::SESSION_APPLY_NEW_VERSION, CALLBACK_POSITION_TWO, true);

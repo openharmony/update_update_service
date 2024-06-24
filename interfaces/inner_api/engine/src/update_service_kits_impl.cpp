@@ -242,12 +242,12 @@ int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
 }
 
 int32_t UpdateServiceKitsImpl::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::vector<std::string> &packageName, BusinessError &businessError)
+    const std::vector<std::string> &packageNames, BusinessError &businessError)
 {
     ENGINE_LOGI("UpdateServiceKitsImpl::ApplyNewVersion");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    int32_t ret = updateService->ApplyNewVersion(info, miscFile, packageName, businessError);
+    int32_t ret = updateService->ApplyNewVersion(info, miscFile, packageNames, businessError);
     ENGINE_CHECK((ret) == INT_CALL_SUCCESS, ResetRemoteService(), "ApplyNewVersion ipc error");
     return ret;
 }
