@@ -51,7 +51,7 @@ int32_t ProgressThread::StartProgress()
 {
     std::unique_lock<std::mutex> lock(mutex_);
     if (pDealThread_ == nullptr) {
-        pDealThread_ = new (std::nothrow)std::thread(&ProgressThread::ExecuteThreadFunc, this);
+        pDealThread_ = new (std::nothrow)std::thread([this] { this->ExecuteThreadFunc(); });
         ENGINE_CHECK(pDealThread_ != nullptr, return -1, "Failed to create thread");
     }
     ENGINE_LOGI("StartProgress");
