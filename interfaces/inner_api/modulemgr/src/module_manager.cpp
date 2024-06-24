@@ -94,7 +94,7 @@ int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessagePar
     if (!IsMapFuncExist(code)) {
         UTILS_LOGI("code %{public}d not exist", code);
     } else {
-        UTILS_LOGI("code %{public}d already exist", code);
+        UTILS_LOGI("code %{public}d called", code);
         return ((RequestFuncType)onRemoteRequestFuncMap_[code])(code, data, reply, option);
     }
     return 0;

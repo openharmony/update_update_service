@@ -323,14 +323,14 @@ int32_t UpdateService::FactoryReset(BusinessError &businessError)
 }
 
 int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::string &packageName, BusinessError &businessError)
+    const std::vector<std::string> &packageNames, BusinessError &businessError)
 {
     sptr<UpdateServiceLocalUpdater> localUpdater = new UpdateServiceLocalUpdater();
     if (localUpdater == nullptr) {
         ENGINE_LOGI("FactoryReset localUpdater null");
         return INT_CALL_FAIL;
     }
-    return localUpdater->ApplyNewVersion(info, miscFile, packageName, businessError);
+    return localUpdater->ApplyNewVersion(info, miscFile, packageNames, businessError);
 }
 
 int32_t UpdateService::VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,

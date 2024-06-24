@@ -72,8 +72,8 @@ public:
 
     int32_t FactoryReset(BusinessError &businessError) override;
 
-    int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile, const std::string &packageName,
-        BusinessError &businessError) override;
+    int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
+        const std::vector<std::string> &packageNames, BusinessError &businessError) override;
 
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) override;

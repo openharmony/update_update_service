@@ -27,7 +27,7 @@ public:
     virtual ~IServiceLocalUpdater() = default;
 
     virtual int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-        const std::string &packageName, BusinessError &businessError) = 0;
+        const std::vector<std::string> &packageNames, BusinessError &businessError) = 0;
 
     virtual int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) = 0;
