@@ -242,7 +242,7 @@ int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
 }
 
 int32_t UpdateServiceKitsImpl::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::string &packageName, BusinessError &businessError)
+    const std::vector<std::string> &packageName, BusinessError &businessError)
 {
     ENGINE_LOGI("UpdateServiceKitsImpl::ApplyNewVersion");
     auto updateService = GetService();

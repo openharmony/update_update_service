@@ -127,14 +127,21 @@ napi_value LocalUpdater::ApplyNewVersion(napi_env env, napi_callback_info info)
         return StartParamErrorSession(env, info, CALLBACK_POSITION_TWO);
     }
 
+    std::vector<std::string> packageNames;
+    for(const UpgradeFile &upgradeFile : upgradeFiles) {
+        packageNames.push_back(upgradeFile.filePath);
+    }
+
     SessionParams sessionParams(SessionType::SESSION_APPLY_NEW_VERSION, CALLBACK_POSITION_TWO, true);
     napi_value retValue = StartSession(env, info, sessionParams,
-        [upgradeFiles](void *context) -> int {
-            ENGINE_LOGI("ApplyNewVersion %s", upgradeFiles[0].filePath.c_str());
+        [packageNames](void  *context) -> int {
+            for (const std::string &packageName : packageNames) {
+                ENGINE_LOGI("ApplyNewVersion %{public}s", packageName.c_str());
+            }
             BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
             UpgradeInfo upgradeInfo;
             upgradeInfo.upgradeApp = LOCAL_UPGRADE_INFO;
-            return UpdateServiceKits::GetInstance().ApplyNewVersion(upgradeInfo, MISC_FILE, upgradeFiles[0].filePath,
+            return UpdateServiceKits::GetInstance().ApplyNewVersion(upgradeInfo, MISC_FILE, packageNames,
                 *businessError);
         });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to ApplyNewVersion");

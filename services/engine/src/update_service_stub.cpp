@@ -356,7 +356,16 @@ int32_t UpdateServiceStub::ApplyNewVersionStub(UpdateServiceStubPtr service,
     UpgradeInfo upgradeInfo;
     MessageParcelHelper::ReadUpgradeInfo(data, upgradeInfo);
     string miscFile = Str16ToStr8(data.ReadString16());
-    string packageName = Str16ToStr8(data.ReadString16());
+
+    vector<string> packageName;
+    int32_t size = data.ReadInt32();
+    if (size > MAX_VECTOR_SIZE) {
+        ENGINE_LOGE("ReadComponentDescriptions size is over MAX_VECTOR_SIZE, size=%{public}d", size);
+        return INT_CALL_SUCCESS;
+    }
+    for (size_t i = 0; i < static_cast<size_t>(size); i++) {
+        packageName.push_back(Str16ToStr8(data.ReadString16()));
+    }
     BusinessError businessError;
     int32_t ret = service->ApplyNewVersion(upgradeInfo, miscFile, packageName, businessError);
     ENGINE_CHECK(ret == INT_CALL_SUCCESS, return ret, "Failed to ApplyNewVersion");
