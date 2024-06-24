@@ -34,6 +34,7 @@ namespace OHOS {
 namespace UpdateEngine {
 constexpr const pid_t ROOT_UID = 0;
 constexpr const pid_t EDM_UID = 3057;
+static constexpr int32_t MAX_VECTOR_SIZE = 128;
 
 #define CALL_RESULT_TO_IPC_RESULT(callResult) ((callResult) + CALL_RESULT_OFFSET)
 
