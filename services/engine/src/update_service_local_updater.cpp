@@ -25,7 +25,7 @@
 namespace OHOS {
 namespace UpdateEngine {
 int32_t UpdateServiceLocalUpdater::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::vectpr<std::string> &packageName, BusinessError &businessError)
+    const std::vector<std::string> &packageName, BusinessError &businessError)
 {
 #ifndef UPDATER_UT
     SYS_EVENT_SYSTEM_UPGRADE(0, UpdateSystemEvent::UPGRADE_START);
