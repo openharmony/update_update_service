@@ -37,7 +37,7 @@ void NetObserver::SetCallback(const std::weak_ptr<INetObserverCallback> &callbac
 void NetObserver::StartObserver()
 {
     ENGINE_LOGI("StartObserver");
-    auto ObserverExecFunc = [this]() {
+    auto observerExecFunc = [this]() {
         NetSpecifier netSpecifier;
         NetAllCapabilities netAllCapabilities;
         netAllCapabilities.netCaps_.insert(NetManagerStandard::NetCap::NET_CAPABILITY_INTERNET);
