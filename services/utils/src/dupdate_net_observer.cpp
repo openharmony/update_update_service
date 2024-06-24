@@ -59,7 +59,7 @@ void NetObserver::StartObserver()
         } while (retryCount < RETRY_MAX_TIMES);
         ENGINE_LOGE("StartObserver failed");
     };
-    std::thread th = std::thread(ObserverExecFunc);
+    std::thread th = std::thread(observerExecFunc);
     th.detach();
 }
 
