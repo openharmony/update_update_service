@@ -34,6 +34,7 @@ namespace OHOS {
 namespace UpdateEngine {
 constexpr const pid_t ROOT_UID = 0;
 constexpr const pid_t EDM_UID = 3057;
+static constexpr int32_t MAX_VECTOR_SIZE = 128;
 
 #define CALL_RESULT_TO_IPC_RESULT(callResult) ((callResult) + CALL_RESULT_OFFSET)
 
@@ -356,9 +357,18 @@ int32_t UpdateServiceStub::ApplyNewVersionStub(UpdateServiceStubPtr service,
     UpgradeInfo upgradeInfo;
     MessageParcelHelper::ReadUpgradeInfo(data, upgradeInfo);
     string miscFile = Str16ToStr8(data.ReadString16());
-    string packageName = Str16ToStr8(data.ReadString16());
+
+    vector<string> packageNames;
+    int32_t size = data.ReadInt32();
+    if (size > MAX_VECTOR_SIZE) {
+        ENGINE_LOGE("ReadComponentDescriptions size is over, size=%{public}d", size);
+        return INT_CALL_FAIL;
+    }
+    for (size_t i = 0; i < static_cast<size_t>(size); i++) {
+        packageNames.emplace_back(Str16ToStr8(data.ReadString16()));
+    }
     BusinessError businessError;
-    int32_t ret = service->ApplyNewVersion(upgradeInfo, miscFile, packageName, businessError);
+    int32_t ret = service->ApplyNewVersion(upgradeInfo, miscFile, packageNames, businessError);
     ENGINE_CHECK(ret == INT_CALL_SUCCESS, return ret, "Failed to ApplyNewVersion");
     MessageParcelHelper::WriteBusinessError(reply, businessError);
     return INT_CALL_SUCCESS;
