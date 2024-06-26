@@ -22,8 +22,10 @@ namespace OHOS::UpdateEngine {
 enum class EventClassify {
     TASK = 0x01000000,
     SYSTEM = 0x02000000,
+    COMMAND = 0x04000000,
 };
 
-const std::list<EventClassify> g_eventClassifyList = { EventClassify::TASK, EventClassify::SYSTEM };
+const std::list<EventClassify> g_eventClassifyList = { EventClassify::TASK, EventClassify::SYSTEM,
+    EventClassify::COMMAND };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_EVENT_CLASSIFY_H
