@@ -142,6 +142,8 @@ sa_external_deps = [
   "updater:libfsmanager",  # "fs_manager/mount.h"
   "updater:libpackage_shared",  # "package/package.h"
   "updater:libupdater_shared",  # "updaterkits/updaterkits.h"
+  "bundle_framework:appexecfwk_core",
+  "ability_base:session_info",
 ]
 
 if (ability_ability_base_enable) {
