@@ -15,13 +15,20 @@
 
 #include "napi_common_utils.h"
 
+#include "accesstoken_kit.h"
+#include "access_token.h"
+#include "ipc_skeleton.h"
+
 #include "napi/native_common.h"
 #include "node_api.h"
 
+#include "tokenid_kit.h"
 #include "update_define.h"
 
 namespace OHOS::UpdateEngine {
 constexpr int32_t STRING_MAX_LENGTH = 81920;
+constexpr const pid_t ROOT_UID = 0;
+constexpr const pid_t EDM_UID = 3057;
 
 int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, const std::string &attrName, int32_t &intValue)
 {
@@ -214,6 +221,38 @@ void NapiCommonUtils::NapiThrowParamError(
     napi_value msg = BuildThrowError(env, businessError);
     napi_status status = napi_throw(env, msg);
     PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %d", CAST_INT(status));
+}
+
+void NapiCommonUtils::NapiThrowNotSystemAppError(napi_env env)
+{
+    BusinessError businessError;
+    CallResult errCode = CallResult::NOT_SYSTEM_APP;
+    std::string errMsg = "BusinessError " + std::to_string(CAST_INT(errCode)).append(": Caller not system app.");
+    businessError.Build(errCode, errMsg);
+    napi_value msg = BuildThrowError(env, businessError);
+    napi_status status = napi_throw(env, msg);
+    PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %d", CAST_INT(status));
+}
+
+bool NapiCommonUtils::IsCallerSystemApp()
+{
+    OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
+    switch (callerTokenType) {
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_HAP: {
+            uint64_t callerFullTokenID = IPCSkeleton::GetCallingFullTokenID();
+            // hap进程只允许系统应用调用
+            return OHOS::Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(callerFullTokenID);
+        }
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE: {
+            pid_t callerUid = IPCSkeleton::GetCallingUid();
+            // native进程只允许root权限和edm调用
+            return callerUid == ROOT_UID || callerUid == EDM_UID;
+        }
+        default:
+            // 其他情况调用予以禁止
+            return false;
+    }
 }
 
 std::string NapiCommonUtils::GetParamNames(std::vector<std::pair<std::string, std::string>> &strVector)
