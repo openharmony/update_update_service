@@ -112,7 +112,7 @@ napi_value JsConstructorLocalUpdater(napi_env env, napi_callback_info info)
 
 napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
 {
-    bool ret = NapiCommonUtils::IsCallerSystemApp();
+    bool ret = NapiCommonUtils::IsCallerValid();
     PARAM_CHECK_NAPI_CALL(env, ret == true, NapiCommonUtils::NapiThrowNotSystemAppError(env);
         return nullptr, "Failed to GetOnlineUpdater");
 
@@ -129,7 +129,7 @@ napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
 
 napi_value GetRestorer(napi_env env, napi_callback_info info)
 {
-    bool ret = NapiCommonUtils::IsCallerSystemApp();
+    bool ret = NapiCommonUtils::IsCallerValid();
     PARAM_CHECK_NAPI_CALL(env, ret == true, NapiCommonUtils::NapiThrowNotSystemAppError(env);
         return nullptr, "Failed to GetRestorer");
 
@@ -143,7 +143,7 @@ napi_value GetRestorer(napi_env env, napi_callback_info info)
 
 napi_value GetLocalUpdater(napi_env env, napi_callback_info info)
 {
-    bool ret = NapiCommonUtils::IsCallerSystemApp();
+    bool ret = NapiCommonUtils::IsCallerValid();
     PARAM_CHECK_NAPI_CALL(env, ret == true, NapiCommonUtils::NapiThrowNotSystemAppError(env);
         return nullptr, "Failed to GetLocalUpdater");
 

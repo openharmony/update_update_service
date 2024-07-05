@@ -234,7 +234,7 @@ void NapiCommonUtils::NapiThrowNotSystemAppError(napi_env env)
     PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %d", CAST_INT(status));
 }
 
-bool NapiCommonUtils::IsCallerSystemApp()
+bool NapiCommonUtils::IsCallerValid()
 {
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
     auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
