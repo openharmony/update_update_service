@@ -26,8 +26,8 @@ napi_value IUpdater::On(napi_env env, napi_callback_info info)
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok && argc >= ARG_NUM_TWO, return nullptr, "Error get cb info");
 
-    bool isAppOk = NapiCommonUtils::IsCallerValid();
-    PARAM_CHECK_NAPI_CALL(env, isAppOk == true, NapiCommonUtils::NapiThrowNotSystemAppError(env);
+    bool isCallerValid = NapiCommonUtils::IsCallerValid();
+    PARAM_CHECK_NAPI_CALL(env, isCallerValid, NapiCommonUtils::NapiThrowNotSystemAppError(env);
         return nullptr, "Caller not system app.");
 
     EventClassifyInfo eventClassifyInfo;
@@ -64,8 +64,8 @@ napi_value IUpdater::Off(napi_env env, napi_callback_info info)
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "Error get cb info");
 
-    bool isAppOk = NapiCommonUtils::IsCallerValid();
-    PARAM_CHECK_NAPI_CALL(env, isAppOk == true, NapiCommonUtils::NapiThrowNotSystemAppError(env);
+    bool isCallerValid = NapiCommonUtils::IsCallerValid();
+    PARAM_CHECK_NAPI_CALL(env, isCallerValid, NapiCommonUtils::NapiThrowNotSystemAppError(env);
         return nullptr, "Caller not system app.");
 
     EventClassifyInfo eventClassifyInfo;
