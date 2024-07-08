@@ -27,8 +27,6 @@
 
 namespace OHOS::UpdateEngine {
 constexpr int32_t STRING_MAX_LENGTH = 81920;
-constexpr const pid_t ROOT_UID = 0;
-constexpr const pid_t EDM_UID = 3057;
 
 int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, const std::string &attrName, int32_t &intValue)
 {
@@ -243,11 +241,6 @@ bool NapiCommonUtils::IsCallerValid()
             uint64_t callerFullTokenID = IPCSkeleton::GetCallingFullTokenID();
             // hap进程只允许系统应用调用
             return OHOS::Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(callerFullTokenID);
-        }
-        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE: {
-            pid_t callerUid = IPCSkeleton::GetCallingUid();
-            // native进程只允许root权限和edm调用
-            return callerUid == ROOT_UID || callerUid == EDM_UID;
         }
         default:
             // 其他情况调用予以禁止
