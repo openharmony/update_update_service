@@ -124,7 +124,9 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(cons
     }
     remoteServer_ = nullptr;
     deathRecipient_ = nullptr;
-    RegisterCallback(); //重新注册回调
+    auto updateService = GetService(); //重新连接注册回调
+    ENGINE_LOGI("Remote is dead, do ResetService, reconnect service %{public}s",
+        (updateService != nullptr) ? "success" : "fail");
 }
 }
 #endif // BASE_SERVICE_KITS_IMPL_H
