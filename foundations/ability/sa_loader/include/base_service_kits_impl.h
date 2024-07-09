@@ -124,6 +124,7 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(cons
     }
     remoteServer_ = nullptr;
     deathRecipient_ = nullptr;
+    RegisterCallback(); //重新注册回调
 }
 }
 #endif // BASE_SERVICE_KITS_IMPL_H

@@ -266,8 +266,9 @@ int32_t UpdateServiceKitsImpl::VerifyUpgradePackage(const std::string &packagePa
 void UpdateServiceKitsImpl::RegisterCallback()
 {
     ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.size());
+    auto updateService = GetService();
     for (auto &iter : remoteUpdateCallbackMap_) {
-        remoteServer_->RegisterUpdateCallback(iter.first, iter.second);
+        updateService->RegisterUpdateCallback(iter.first, iter.second);
     }
 }
 } // namespace OHOS::UpdateEngine
