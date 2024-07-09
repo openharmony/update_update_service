@@ -15,9 +15,14 @@
 
 #include "napi_common_utils.h"
 
+#include "accesstoken_kit.h"
+#include "access_token.h"
+#include "ipc_skeleton.h"
+
 #include "napi/native_common.h"
 #include "node_api.h"
 
+#include "tokenid_kit.h"
 #include "update_define.h"
 
 namespace OHOS::UpdateEngine {
@@ -213,7 +218,34 @@ void NapiCommonUtils::NapiThrowParamError(
     businessError.Build(errCode, errMsg);
     napi_value msg = BuildThrowError(env, businessError);
     napi_status status = napi_throw(env, msg);
-    PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %d", CAST_INT(status));
+    PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %{public}d", CAST_INT(status));
+}
+
+void NapiCommonUtils::NapiThrowNotSystemAppError(napi_env env)
+{
+    BusinessError businessError;
+    CallResult errCode = CallResult::NOT_SYSTEM_APP;
+    std::string errMsg = "BusinessError " + std::to_string(CAST_INT(errCode)).append(": Caller not system app.");
+    businessError.Build(errCode, errMsg);
+    napi_value msg = BuildThrowError(env, businessError);
+    napi_status status = napi_throw(env, msg);
+    PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %{public}d", CAST_INT(status));
+}
+
+bool NapiCommonUtils::IsCallerValid()
+{
+    OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
+    switch (callerTokenType) {
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_HAP: {
+            uint64_t callerFullTokenID = IPCSkeleton::GetCallingFullTokenID();
+            // hap进程只允许系统应用调用
+            return OHOS::Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(callerFullTokenID);
+        }
+        default:
+            // 其他情况调用予以禁止
+            return false;
+    }
 }
 
 std::string NapiCommonUtils::GetParamNames(std::vector<std::pair<std::string, std::string>> &strVector)
@@ -249,7 +281,7 @@ napi_value NapiCommonUtils::BuildThrowError(napi_env env, const BusinessError &b
     napi_create_string_utf8(env, businessError.message.c_str(), NAPI_AUTO_LENGTH, &message);
     napi_value error = nullptr;
     napi_status status = napi_create_error(env, nullptr, message, &error);
-    PARAM_CHECK(status == napi_ok, return nullptr, "Failed to create napi_create_object %d",
+    PARAM_CHECK(status == napi_ok, return nullptr, "Failed to create napi_create_object %{public}d",
         CAST_INT(status));
 
     SetInt32(env, error, "code", ConvertToErrorCode(businessError.errorNum));
@@ -266,7 +298,7 @@ int32_t NapiCommonUtils::BuildBusinessError(napi_env env, napi_value &obj, const
     }
     napi_status status = napi_create_object(env, &obj);
     PARAM_CHECK(status == napi_ok, return CAST_INT(ClientStatus::CLIENT_INVALID_TYPE),
-        "Failed to create napi_create_object %d", CAST_INT(status));
+        "Failed to create napi_create_object %{public}d", CAST_INT(status));
 
     SetString(env, obj, "message", businessError.message);
     SetInt32(env, obj, "code", ConvertToErrorCode(businessError.errorNum));
@@ -337,9 +369,9 @@ ClientStatus NapiCommonUtils::CheckNapiObjectType(napi_env env, const napi_value
 {
     napi_valuetype type = napi_undefined;
     napi_status status = napi_typeof(env, arg, &type);
-    PARAM_CHECK(status == napi_ok, return ClientStatus::CLIENT_INVALID_TYPE, "Invalid argc %d",
+    PARAM_CHECK(status == napi_ok, return ClientStatus::CLIENT_INVALID_TYPE, "Invalid argc %{public}d",
         static_cast<int32_t>(status));
-    PARAM_CHECK(type == napi_object, return ClientStatus::CLIENT_INVALID_TYPE, "Invalid argc %d",
+    PARAM_CHECK(type == napi_object, return ClientStatus::CLIENT_INVALID_TYPE, "Invalid argc %{public}d",
         static_cast<int32_t>(type))
     return ClientStatus::CLIENT_SUCCESS;
 }

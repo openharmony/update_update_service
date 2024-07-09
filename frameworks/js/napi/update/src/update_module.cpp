@@ -112,6 +112,10 @@ napi_value JsConstructorLocalUpdater(napi_env env, napi_callback_info info)
 
 napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
 {
+    bool isCallerValid = NapiCommonUtils::IsCallerValid();
+    PARAM_CHECK_NAPI_CALL(env, isCallerValid, NapiCommonUtils::NapiThrowNotSystemAppError(env);
+        return nullptr, "Failed to GetOnlineUpdater");
+
     napi_value jsObject = nullptr;
     UpdateClient *client = CreateJsObject<UpdateClient>(env, info, g_updateClientConstructorRef, jsObject);
     if (client != nullptr) {
@@ -125,6 +129,10 @@ napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
 
 napi_value GetRestorer(napi_env env, napi_callback_info info)
 {
+    bool isCallerValid = NapiCommonUtils::IsCallerValid();
+    PARAM_CHECK_NAPI_CALL(env, isCallerValid, NapiCommonUtils::NapiThrowNotSystemAppError(env);
+        return nullptr, "Failed to GetRestorer");
+
     napi_value jsObject = nullptr;
     Restorer* restorer = CreateJsObject<Restorer>(env, info, g_restorerConstructorRef, jsObject);
     if (restorer == nullptr) {
@@ -135,6 +143,10 @@ napi_value GetRestorer(napi_env env, napi_callback_info info)
 
 napi_value GetLocalUpdater(napi_env env, napi_callback_info info)
 {
+    bool isCallerValid = NapiCommonUtils::IsCallerValid();
+    PARAM_CHECK_NAPI_CALL(env, isCallerValid, NapiCommonUtils::NapiThrowNotSystemAppError(env);
+        return nullptr, "Failed to GetLocalUpdater");
+
     napi_value jsObject = nullptr;
     LocalUpdater* localUpdater = CreateJsObject<LocalUpdater>(env, info, g_localUpdaterConstructorRef, jsObject);
     if (localUpdater == nullptr) {
