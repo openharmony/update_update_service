@@ -98,7 +98,11 @@ int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t 
         }
         hasNext = GetNextSessionId(nextSessId);
 
-        UpdateListener *listener = static_cast<UpdateListener *>(iter->second.get());
+        auto listener = (std::shared_ptr<UpdateListener> &)(iter->second);
+        if (listener == nullptr) {
+            iter = sessions_.erase(iter);
+            continue;
+        }
         if (listener->GetType() != SessionType::SESSION_SUBSCRIBE ||
             eventType.compare(listener->GetEventType()) != 0) {
             continue;
@@ -131,18 +135,18 @@ void SessionManager::Unsubscribe(const EventClassifyInfo &eventClassifyInfo, nap
             continue;
         }
 
-        auto listener = static_cast<UpdateListener *>(iter->second.get());
+        auto listener = (std::shared_ptr<UpdateListener> &)(iter->second);
         if (handle == nullptr && listener->IsSubscribeEvent(eventClassifyInfo)) {
             ENGINE_LOGI("Unsubscribe, remove session %{public}d without handle", listener->GetSessionId());
-            iter = sessions_.erase(iter);
             listener->RemoveHandlerRef(env_);
+            iter = sessions_.erase(iter);
             continue;
         }
 
         if (listener->IsSameListener(env_, eventClassifyInfo, handle)) {
             ENGINE_LOGI("Unsubscribe, remove session %{public}d", listener->GetSessionId());
-            iter = sessions_.erase(iter);
             listener->RemoveHandlerRef(env_);
+            iter = sessions_.erase(iter);
             continue;
         }
 
@@ -162,12 +166,16 @@ BaseSession *SessionManager::FindSessionByHandle(napi_env env, const std::string
         }
         hasNext = GetNextSessionId(nextSessId);
 
-        UpdateListener *listener = static_cast<UpdateListener *>(iter->second.get());
+        auto listener = (std::shared_ptr<UpdateListener> &)(iter->second);
+        if (listener == nullptr) {
+            iter = sessions_.erase(iter);
+            continue;
+        }
         if (listener->GetType() != SessionType::SESSION_SUBSCRIBE) {
             continue;
         }
         if ((eventType.compare(listener->GetEventType()) == 0) && listener->CheckEqual(env_, arg, eventType)) {
-            return listener;
+            return listener.get();
         }
     }
     return nullptr;
@@ -186,9 +194,9 @@ BaseSession *SessionManager::FindSessionByHandle(napi_env env, const EventClassi
             continue;
         }
 
-        auto listener = static_cast<UpdateListener *>(iter.second.get());
+        auto listener = (std::shared_ptr<UpdateListener> &)(iter.second);
         if (listener->IsSameListener(env, eventClassifyInfo, arg)) {
-            return listener;
+            return listener.get();
         }
     }
     return nullptr;
@@ -214,7 +222,7 @@ void SessionManager::PublishToJS(const EventClassifyInfo &eventClassifyInfo, con
             continue;
         }
 
-        UpdateListener *listener = static_cast<UpdateListener *>(iter.second.get());
+        auto listener = (std::shared_ptr<UpdateListener> &)(iter.second);
         if (!listener->IsSubscribeEvent(eventClassifyInfo)) {
             continue;
         }
