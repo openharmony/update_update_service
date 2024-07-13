@@ -53,6 +53,8 @@ public:
     static void NapiThrowParamError(napi_env env, std::vector<std::pair<std::string, std::string>> &paramInfos);
     static void NapiThrowNotSystemAppError(napi_env env);
     static bool IsCallerValid();
+    static bool IsPermissionGranted(const std::string &permission);
+    static void NapiThrowPermissionError(napi_env env);
     static napi_value BuildThrowError(napi_env env, const BusinessError &businessError);
     static int32_t BuildBusinessError(napi_env env, napi_value &obj, const BusinessError &businessError);
     static int32_t ConvertToErrorCode(CallResult callResult);
