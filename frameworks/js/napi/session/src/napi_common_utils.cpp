@@ -237,7 +237,7 @@ void NapiCommonUtils::NapiThrowPermissionError(napi_env env)
     BusinessError businessError;
     CallResult errCode = CallResult::APP_NOT_GRANTED;
     std::string errMsg = "BusinessError " + std::to_string(CAST_INT(errCode))
-        .append(": Permission not grandted.");
+        .append(": Permission not granted.");
     businessError.Build(errCode, errMsg);
     napi_value msg = BuildThrowError(env, businessError);
     napi_status status = napi_throw(env, msg);
