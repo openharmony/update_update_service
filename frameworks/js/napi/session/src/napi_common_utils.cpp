@@ -232,6 +232,29 @@ void NapiCommonUtils::NapiThrowNotSystemAppError(napi_env env)
     PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %{public}d", CAST_INT(status));
 }
 
+void NapiCommonUtils::NapiThrowPermissionError(napi_env env)
+{
+    BusinessError businessError;
+    CallResult errCode = CallResult::APP_NOT_GRANTED;
+    std::string errMsg = "BusinessError " + std::to_string(CAST_INT(errCode))
+        .append(": Permission not granted.");
+    businessError.Build(errCode, errMsg);
+    napi_value msg = BuildThrowError(env, businessError);
+    napi_status status = napi_throw(env, msg);
+    PARAM_CHECK(status == napi_ok, return, "Failed to napi_throw %{public}d", CAST_INT(status));
+}
+
+bool NapiCommonUtils::IsPermissionGranted(const std::string &permission)
+{
+    OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    int verifyResult = Security::AccessToken::AccessTokenKit::VerifyAccessToken(callerToken, permission);
+    bool isPermissionGranted = verifyResult == Security::AccessToken::PERMISSION_GRANTED;
+    if (!isPermissionGranted) {
+        ENGINE_LOGE("permission %{public}s not granted", permission.c_str());
+    }
+    return isPermissionGranted;
+}
+
 bool NapiCommonUtils::IsCallerValid()
 {
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
