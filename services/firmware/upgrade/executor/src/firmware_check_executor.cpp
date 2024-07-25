@@ -40,6 +40,10 @@ void FirmwareCheckExecutor::Complete()
 {
     FIRMWARE_LOGI("FirmwareCheckExecutor::complete");
     DelayedSingleton<FirmwareStatusCache>::GetInstance()->SetIsChecking(false);
+    if (checkComponentCallback_.firmwareComponentCallback == nullptr) {
+        FIRMWARE_LOGE("FirmwareCheckExecutor firmwareComponentCallback is null");
+        return;
+    }
     checkComponentCallback_.firmwareComponentCallback(status_, duration_, componentList_, checkAndAuthInfo_);
 }
 

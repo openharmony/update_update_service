@@ -43,6 +43,10 @@ void FirmwareApplyExecutor::DoInstall()
     firmwareComponentOperator.QueryAll(components_);
     FIRMWARE_LOGI("Execute size %{public}d", CAST_INT(components_.size()));
     if (components_.size() == 0) {
+        if (firmwareApplyCallback_.applyCallback == nullptr) {
+            FIRMWARE_LOGE("FirmwareApplyExecutor applyCallback is null");
+            return;
+        }
         firmwareApplyCallback_.applyCallback(false);
         return;
     }
