@@ -45,6 +45,10 @@ void SysInstallerCallback::OnUpgradeProgress(SysInstaller::UpdateStatus updateSt
 
     installProgress.progress.percent = static_cast<uint32_t>(percent);
     installProgress.errMsg.errorCode = CAST_INT(updateStatus);
+    if (sysInstallCallback_.onSysInstallerCallback == nullptr) {
+        FIRMWARE_LOGE("SysInstallerCallback OnUpgradeProgress onSysInstallerCallback is null");
+        return;
+    }
     sysInstallCallback_.onSysInstallerCallback(installProgress);
 }
 } // namespace UpdateEngine

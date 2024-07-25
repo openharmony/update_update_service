@@ -33,7 +33,7 @@ class SysInstallerInstall final : public FirmwareInstall {
 private:
     bool IsComponentLegal(const std::vector<FirmwareComponent> &componentList) final;
     bool PerformInstall(const std::vector<FirmwareComponent> &componentList) final;
-
+    int32_t StartUpdatePackageZip(std::string &path);
     int32_t DoSysInstall(const FirmwareComponent &firmwareComponent);
     void InitInstallProgress();
     int32_t WaitInstallResult();
