@@ -44,6 +44,10 @@ void FirmwareInstallExecutor::DoInstall()
         progress.status = UpgradeStatus::UPDATE_FAIL;
         progress.endReason = "no task";
         installCallbackInfo_.progress = progress;
+        if (installCallback_.installCallback == nullptr) {
+            FIRMWARE_LOGE("FirmwareInstallExecutor installCallback is null");
+            return;
+        }
         installCallback_.installCallback(installCallbackInfo_);
         return;
     }
@@ -106,6 +110,10 @@ void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &com
     // 整体进度插入到 task 表
     FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
     installCallbackInfo_.progress = taskProgress_;
+    if (installCallback_.installCallback == nullptr) {
+        FIRMWARE_LOGE("FirmwareInstallExecutor installCallback is null");
+        return;
+    }
     installCallback_.installCallback(installCallbackInfo_);
 }
 
@@ -127,6 +135,10 @@ void FirmwareInstallExecutor::HandleInstallResult(const bool result, const Error
     installCallbackInfo_.progress = taskProgress_;
     installCallbackInfo_.errorMessage.errorCode = errMsg.errorCode;
     installCallbackInfo_.errorMessage.errorMessage = errMsg.errorMessage;
+    if (installCallback_.installCallback == nullptr) {
+        FIRMWARE_LOGE("FirmwareInstallExecutor installCallback is null");
+        return;
+    }
     installCallback_.installCallback(installCallbackInfo_);
 }
 } // namespace UpdateEngine
