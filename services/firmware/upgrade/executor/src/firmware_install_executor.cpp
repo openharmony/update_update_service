@@ -45,7 +45,7 @@ void FirmwareInstallExecutor::DoInstall()
         progress.endReason = "no task";
         installCallbackInfo_.progress = progress;
         if (installCallback_.installCallback == nullptr) {
-            FIRMWARE_LOGE("FirmwareInstallExecutor installCallback is null");
+            FIRMWARE_LOGE("FirmwareInstallExecutor DoInstall installCallback is null");
             return;
         }
         installCallback_.installCallback(installCallbackInfo_);
@@ -111,7 +111,7 @@ void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &com
     FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
     installCallbackInfo_.progress = taskProgress_;
     if (installCallback_.installCallback == nullptr) {
-        FIRMWARE_LOGE("FirmwareInstallExecutor installCallback is null");
+        FIRMWARE_LOGE("FirmwareInstallExecutor HandleInstallProgress installCallback is null");
         return;
     }
     installCallback_.installCallback(installCallbackInfo_);
@@ -136,7 +136,7 @@ void FirmwareInstallExecutor::HandleInstallResult(const bool result, const Error
     installCallbackInfo_.errorMessage.errorCode = errMsg.errorCode;
     installCallbackInfo_.errorMessage.errorMessage = errMsg.errorMessage;
     if (installCallback_.installCallback == nullptr) {
-        FIRMWARE_LOGE("FirmwareInstallExecutor installCallback is null");
+        FIRMWARE_LOGE("FirmwareInstallExecutor HandleInstallResult installCallback is null");
         return;
     }
     installCallback_.installCallback(installCallbackInfo_);
