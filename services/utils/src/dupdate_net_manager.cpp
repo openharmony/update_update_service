@@ -98,6 +98,10 @@ bool NetManager::OnNetChange(NetType netType)
     for (auto iter = netChangeCallbackMap_.begin(); iter != netChangeCallbackMap_.end();) {
         NetChangeCallback netChangeCallback = iter->second;
         if (netChangeCallback.netTypes.count(netType) != 0) {
+            if (netChangeCallback.function == nullptr) {
+                ENGINE_LOGE("OnNetChange netChangeCallback function is null");
+                continue;
+            }
             netChangeCallback.function(netType);
         }
         iter++;

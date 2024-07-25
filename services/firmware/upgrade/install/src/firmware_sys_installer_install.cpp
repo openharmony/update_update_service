@@ -45,6 +45,10 @@ bool SysInstallerInstall::PerformInstall(const std::vector<FirmwareComponent> &c
     }
     uint32_t successCount = 0;
     for (const auto &component : componentList) {
+        if (onInstallCallback_.onFirmwareStatus == nullptr) {
+            FIRMWARE_LOGE("SysInstallerInstall PerformInstall onFirmwareStatus is null");
+            continue;
+        }
         onInstallCallback_.onFirmwareStatus(UpgradeStatus::INSTALLING);
         if (DoSysInstall(component) == OHOS_SUCCESS) {
             successCount ++;
@@ -81,6 +85,10 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
         sysComponent.progress = installProgress.progress.percent;
         FIRMWARE_LOGI("SysInstallerExecutorCallback status=%{public}d , progress=%{public}d",
             sysComponent.status, sysComponent.progress);
+        if (onInstallCallback_.onFirmwareProgress == nullptr) {
+            FIRMWARE_LOGE("SysInstallerExecutorCallback onFirmwareProgress is null");
+            return;
+        }
         onInstallCallback_.onFirmwareProgress(sysComponent);
     } };
     sptr<SysInstaller::ISysInstallerCallbackFunc> cb = new SysInstallerCallback(callback);
@@ -99,14 +107,22 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
         return OHOS_FAILURE;
     }
 
-    ret = SysInstaller::SysInstallerKitsImpl::GetInstance().StartUpdatePackageZip(sysComponent.spath);
+    if (StartUpdatePackageZip(sysComponent.spath) != OHOS_SUCCESS) {
+        return OHOS_FAILURE;
+    }
+    return WaitInstallResult();
+}
+
+int32_t SysInstallerInstall::StartUpdatePackageZip(std::string &path)
+{
+    auto ret = SysInstaller::SysInstallerKitsImpl::GetInstance().StartUpdatePackageZip(path);
     if (ret != OHOS_SUCCESS) {
         errMsg_.errorMessage = "sys installer StartUpdatePackageZip failed";
         errMsg_.errorCode = ret;
         FIRMWARE_LOGE("sys installer StartUpdatePackageZip failed ret = %{public}d", ret);
         return OHOS_FAILURE;
     }
-    return WaitInstallResult();
+    return ret;
 }
 
 void SysInstallerInstall::InitInstallProgress()

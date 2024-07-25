@@ -96,8 +96,16 @@ public:
 
     static void Complete(napi_env env, napi_status status, void *data)
     {
+        if (data == nullptr) {
+            ENGINE_LOGE("Complete, data is null");
+            return;
+        }
         constexpr size_t resultLen = 2;
         T *clientContext = static_cast<T *>(data);
+        if (clientContext == nullptr) {
+            ENGINE_LOGE("Complete clientContext is null");
+            return;
+        }
 
         napi_value finalResult = nullptr;
         if (clientContext->createValueFunc_ != nullptr) {

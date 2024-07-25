@@ -70,6 +70,10 @@ public:
     void DoAction(FirmwareCheckCallback checkCallback)
     {
         FIRMWARE_LOGI("FirmwareCheck::DoAction");
+        if (checkCallback.callback == nullptr) {
+            FIRMWARE_LOGE("FirmwareICheck DoAction callback is null");
+            return;
+        }
         int32_t engineSocket = socket(AF_INET, SOCK_STREAM, 0);
         ENGINE_CHECK(engineSocket >= 0,
             checkCallback.callback(CheckStatus::CHECK_FAIL, duration_, checkResultList_, checkAndAuthInfo_);
