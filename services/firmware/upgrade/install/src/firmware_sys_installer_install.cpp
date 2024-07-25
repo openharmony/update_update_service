@@ -115,7 +115,7 @@ int32_t SysInstallerInstall::DoSysInstall(const FirmwareComponent &firmwareCompo
 
 int32_t SysInstallerInstall::StartUpdatePackageZip(std::string &path)
 {
-    auto ret = SysInstaller::SysInstallerKitsImpl::GetInstance().StartUpdatePackageZip(sysComponent.spath);
+    auto ret = SysInstaller::SysInstallerKitsImpl::GetInstance().StartUpdatePackageZip(path);
     if (ret != OHOS_SUCCESS) {
         errMsg_.errorMessage = "sys installer StartUpdatePackageZip failed";
         errMsg_.errorCode = ret;
