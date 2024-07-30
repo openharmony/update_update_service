@@ -100,7 +100,8 @@ protected:
         std::string permissionName;
         switch (workResult_) {
             case INT_NOT_SYSTEM_APP:
-                msg = "BusinessError " + std::to_string(workResult_) + ": Caller not system app.";
+                msg = "BusinessError " + std::to_string(workResult_) +
+                    ": Permission verification failed. A non-system application calls a system API.";
                 break;
             case INT_APP_NOT_GRANTED:
                 GetSessionFuncParameter(funcName, permissionName);
