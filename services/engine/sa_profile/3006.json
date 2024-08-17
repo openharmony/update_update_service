@@ -5,6 +5,10 @@
       "name": 3006,
       "libpath": "libupdateservice.z.so",
       "run-on-create": true,
+      "depend": [
+                3203
+            ],
+      "depend_time_out": 60000,
       "distributed": false,
       "bootphase": "BootStartPhase",
       "dump-level": 1,
