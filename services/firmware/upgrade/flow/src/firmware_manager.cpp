@@ -388,6 +388,7 @@ void FirmwareManager::HandleBootUpdateSuccess(const FirmwareTask &task,
     DelayedSingleton<FirmwareChangelogUtils>::GetInstance()->SaveHotaCurrentVersionComponentId();
     if (task.combinationType == CombinationType::HOTA) {
         FIRMWARE_LOGI("notify upgrade success");
+        sleep(INIT_DELAY_TIME);
         DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(task.taskId, EventId::EVENT_UPGRADE_SUCCESS,
             UpgradeStatus::UPDATE_SUCCESS, ErrorMessage{}, versionComponents);
         FirmwareUpdateHelper::ClearFirmwareInfo();
@@ -420,7 +421,7 @@ void FirmwareManager::HandleBootUpdateFail(const FirmwareTask &task,
             break;
         }
     }
-
+    sleep(INIT_DELAY_TIME);
     DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(task.taskId, EventId::EVENT_UPGRADE_FAIL,
         UpgradeStatus::UPDATE_FAIL, errorMessage, versionComponents);
     FIRMWARE_LOGI("upgrade fail");
