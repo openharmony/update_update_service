@@ -14,7 +14,7 @@
         "bindercall": true,
         "commonevent": [
           {
-            "name": "usual.event.BOOT_COMPLETED",
+            "name": "usual.event.BOOT_COMPLETED"
           }
         ],
         "timedevent": [
