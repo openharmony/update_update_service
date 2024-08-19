@@ -39,7 +39,6 @@ static const std::string DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH = UPDATE_ENCRYPTED_R
 static const std::string DATABASES_ROOT_PATH = UPDATE_ENCRYPTED_ROOT_PATH + "update_service" + "/databases";
 static const std::string PREFERENCES_ROOT_PATH = DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH + "/preferences";
 static const std::string FILES_ROOT_PATH = DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH + "/files";
-
 // 存放ota升级包的非加密路径
 static const std::string UPDATE_PACKAGE_ROOT_PATH = "/data/update";
 static const std::string DUPDATE_ENGINE_PACKAGE_ROOT_PATH = UPDATE_PACKAGE_ROOT_PATH + "/ota_package";
