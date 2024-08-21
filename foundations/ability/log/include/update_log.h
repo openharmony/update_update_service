@@ -96,7 +96,14 @@ private:
     static UpdateLogLevel level_;
 };
 
-#define R_FILENAME    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+#ifdef IS_RELEASE_VERSION
+#define LOG_FILE_NAME ""
+#else
+#define LOG_FILE_NAME __FILE_NAME__
+#endif
+
+#define R_FILENAME    (__builtin_strrchr(LOG_FILE_NAME, '/') ? __builtin_strrchr(LOG_FILE_NAME, '/') + 1 :\
+    LOG_FILE_NAME)
 
 #define LONG_PRINT_HILOG(level, subtag, fmtlabel, fileName, line, fmt, ...) \
     if (fmtlabel == PUBLIC_FMT_LABEL) { \
@@ -120,11 +127,11 @@ private:
 #define ENGINE_LOGD(fmt, ...) PRINT_LOGD(UPDATE_LOG_TAG_ID, fmt, ##__VA_ARGS__)
 
 #define PRINT_LONG_LOGD(subtag, label, fmt, args) UpdateLog::PrintLongLog(subtag, {label,    \
-    UpdateLogLevel::UPDATE_DEBUG, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
+    UpdateLogLevel::UPDATE_DEBUG, std::string(fmt), std::string(args), std::string(LOG_FILE_NAME), __LINE__})
 #define PRINT_LONG_LOGI(subtag, label, fmt, args) UpdateLog::PrintLongLog(subtag, {label,    \
-    UpdateLogLevel::UPDATE_INFO, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
+    UpdateLogLevel::UPDATE_INFO, std::string(fmt), std::string(args), std::string(LOG_FILE_NAME), __LINE__})
 #define PRINT_LONG_LOGE(subtag, label, fmt, args) UpdateLog::PrintLongLog(subtag, {label,    \
-    UpdateLogLevel::UPDATE_ERROR, std::string(fmt), std::string(args), std::string(__FILE__), __LINE__})
+    UpdateLogLevel::UPDATE_ERROR, std::string(fmt), std::string(args), std::string(LOG_FILE_NAME), __LINE__})
 
 #define ENGINE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
 #define ENGINE_LONG_LOGI(fmt, args) PRINT_LONG_LOGI(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
