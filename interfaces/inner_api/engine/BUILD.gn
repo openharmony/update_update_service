@@ -82,8 +82,14 @@ ohos_shared_library("$updateengine_inner_library_name") {
     external_deps += [ "ability_runtime:extension_manager" ]
   }
 
+  cflags = [
+    "-fPIC",
+    "-Os",
+    "-Werror",
+  ]
+
   if (build_variant == "user") {
-    cflags = [ "-DIS_RELEASE_VERSION" ]
+    cflags += [ "-DIS_RELEASE_VERSION" ]
   }
 
   innerapi_tags = [ "platformsdk" ]
