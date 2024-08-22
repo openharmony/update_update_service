@@ -102,7 +102,7 @@ private:
 #define LOG_FILE_NAME __FILE_NAME__
 #endif
 
-#define R_FILENAME    (__builtin_strrchr(LOG_FILE_NAME, '/') ? __builtin_strrchr(LOG_FILE_NAME, '/') + 1 :\
+#define R_FILENAME    (__builtin_strrchr(LOG_FILE_NAME, '/') ? __builtin_strrchr(LOG_FILE_NAME, '/') + 1 : \
     LOG_FILE_NAME)
 
 #define LONG_PRINT_HILOG(level, subtag, fmtlabel, fileName, line, fmt, ...) \
