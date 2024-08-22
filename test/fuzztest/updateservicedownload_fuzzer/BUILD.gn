@@ -36,7 +36,6 @@ ohos_fuzztest("UpdateServiceDownloadFuzzTest") {
     "-Wno-unused-variable",
     "-fno-omit-frame-pointer",
   ]
-
   sources = [
     "$updateengine_root_path/test/fuzztest/common/fuzztest_helper.cpp",
     "$updateengine_root_path/test/fuzztest/updateservicedownload_fuzzer/updateservicedownload_fuzzer.cpp",
