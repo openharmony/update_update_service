@@ -37,10 +37,6 @@ ohos_fuzztest("UpdateServiceGetNewVersionFuzzTest") {
     "-fno-omit-frame-pointer",
   ]
 
-  if (build_variant == "user") {
-    cflags += [ "-DIS_RELEASE_VERSION" ]
-  }
-
   sources = [
     "$updateengine_root_path/test/fuzztest/common/fuzztest_helper.cpp",
     "$updateengine_root_path/test/fuzztest/updateservicegetnewversion_fuzzer/updateservicegetnewversion_fuzzer.cpp",
