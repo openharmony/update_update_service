@@ -278,7 +278,7 @@ void UpdateServiceKitsImpl::ResetService(const wptr<IRemoteObject> &remote)
     ENGINE_LOGI("ResetService, remoteUpdateCallbackMap_: %{public}zu, retryTimes_: %{public}d",
         remoteUpdateCallbackMap_.size(), retryTimes_);
     if (!remoteUpdateCallbackMap_.empty() && retryTimes_ < retryMaxTimes) {
-        ENGINE_LOLGI("ResetService, need resume register callback");
+        ENGINE_LOGI("ResetService, need resume register callback");
         auto updateService = GetService(); // 重新连接注册回调
         retryTimes_++;
         ENGINE_LOGI("ResetService, reconnect service %{public}s", (updateService != nullptr) ? "success" : "fail");
