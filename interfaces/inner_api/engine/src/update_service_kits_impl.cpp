@@ -270,4 +270,18 @@ void UpdateServiceKitsImpl::RegisterCallback()
         remoteServer_->RegisterUpdateCallback(iter.first, iter.second);
     }
 }
+
+void UpdateServiceKitsImpl::ResetService(const wptr<IRemoteObject> &remote)
+{
+    BaseServiceKitsImpl::ResetService(remote);
+    constexpr int32_t retryMaxTimes = 3;
+    ENGINE_LOLGI("ResetService, remoteUpdateCallbackMap_: %{public}zu, retryTimes_: %{public}d",
+        remoteUpdateCallbackMap_.size(), retryTimes_);
+    if (!remoteUpdateCallbackMap_.empty() && retryTimes_ < retryMaxTimes) {
+        ENGINE_LOLGI("ResetService, need resume register callback");
+        auto updateService = GetService(); // 重新连接注册回调
+        retryTimes_++;
+        ENGINE_LOLGI("ResetService, reconnect service %{public}s", (updateService != nullptr) ? "success" : "fail");
+    }
+}
 } // namespace OHOS::UpdateEngine
