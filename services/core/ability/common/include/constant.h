@@ -36,7 +36,7 @@ static const std::string DUPDATE_ENGINE_CONFIG_PATH = "/system/etc/update/dupdat
 // 存放升级引擎数据库、缓存等文件的加密路径
 static const std::string UPDATE_ENCRYPTED_ROOT_PATH = "/data/service/el1/public/update";
 static const std::string DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH = UPDATE_ENCRYPTED_ROOT_PATH + "/dupdate_engine";
-static const std::string DATABASES_ROOT_PATH = DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH + "/databases";
+static const std::string DATABASES_ROOT_PATH = UPDATE_ENCRYPTED_ROOT_PATH + "/update_service" + "/databases";
 static const std::string PREFERENCES_ROOT_PATH = DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH + "/preferences";
 static const std::string FILES_ROOT_PATH = DUPDATE_ENGINE_ENCRYPTED_ROOT_PATH + "/files";
 
