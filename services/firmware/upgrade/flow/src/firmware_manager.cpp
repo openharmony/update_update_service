@@ -51,6 +51,7 @@ namespace UpdateEngine {
 constexpr int32_t INIT_DELAY_TIME = 5; // 进程启动延时时间5秒，为了安装重启之后可以看到版本号及时刷新
 constexpr int32_t PROCESS_EXIT_DELAY_TIME = 1; // 进程退出等待时间，单位：秒
 constexpr uint64_t PULLUP_AFTER_TERMINATE_INTERVAL = 5; // 终止升级后SA拉起间隔
+constexpr int32_t NOTIFY_SERVICE_DELAY_TIME = 15; // ANS进程注册通知栏回调间隔，保证升级重启能弹框
 
 FirmwareManager::FirmwareManager() {}
 
@@ -384,6 +385,7 @@ void FirmwareManager::HandleBootUpdateSuccess(const FirmwareTask &task,
     DelayedSingleton<FirmwareChangelogUtils>::GetInstance()->SaveHotaCurrentVersionComponentId();
     if (task.combinationType == CombinationType::HOTA) {
         FIRMWARE_LOGI("notify upgrade success");
+        sleep(NOTIFY_SERVICE_DELAY_TIME);
         DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(task.taskId, EventId::EVENT_UPGRADE_SUCCESS,
             UpgradeStatus::UPDATE_SUCCESS, ErrorMessage{}, versionComponents);
         FirmwareUpdateHelper::ClearFirmwareInfo();
@@ -417,6 +419,7 @@ void FirmwareManager::HandleBootUpdateFail(const FirmwareTask &task,
         }
     }
 
+    sleep(NOTIFY_SERVICE_DELAY_TIME);
     DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(task.taskId, EventId::EVENT_UPGRADE_FAIL,
         UpgradeStatus::UPDATE_FAIL, errorMessage, versionComponents);
     FIRMWARE_LOGI("upgrade fail");
