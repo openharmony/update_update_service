@@ -24,19 +24,15 @@ modulemgr_external_deps = [
   "safwk:system_ability_fwk",
 ]
 
-modulemgr_deps = []
+modulemgr_deps = [ "$updateengine_root_path/foundations:update_foundations" ]
 
 modulemgr_public_deps = []
 
-modulemgr_include = [
-  "$modulemgr_root_path/include",
-  "$updateengine_root_path/foundations/ability/log/include",
-]
+modulemgr_include = [ "$modulemgr_root_path/include" ]
 
 modulemgr_src = [
   "$modulemgr_root_path/src/update_service_module.cpp",
   "$modulemgr_root_path/src/module_manager.cpp",
-  "$updateengine_root_path/foundations/ability/log/src/update_log.cpp",
 ]
 
 modulemgr_cflags = [
