@@ -420,6 +420,7 @@ void FirmwareManager::HandleBootUpdateFail(const FirmwareTask &task,
             break;
         }
     }
+
     DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(task.taskId, EventId::EVENT_UPGRADE_FAIL,
         UpgradeStatus::UPDATE_FAIL, errorMessage, versionComponents);
     FIRMWARE_LOGI("upgrade fail");
