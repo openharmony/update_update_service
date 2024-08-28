@@ -16,7 +16,6 @@
 #include "firmware_database.h"
 
 #include "constant.h"
-#include "update_log.h"
 
 namespace OHOS {
 namespace UpdateEngine {
