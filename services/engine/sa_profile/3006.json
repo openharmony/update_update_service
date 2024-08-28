@@ -11,7 +11,6 @@
       "auto-restart" : true,
       "start-on-demand": {
         "allow-update": true,
-        "bindercall": true,
         "commonevent": [
           {
             "name": "usual.event.BOOT_COMPLETED",
