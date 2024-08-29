@@ -35,8 +35,10 @@
 #include "update_define.h"
 
 namespace OHOS::UpdateEngine {
-const std::string OUC_PACKAGE_NAME = "com.ohos.updateapp";
-const std::string OUC_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
+const std::string UPDATE_APP_PACKAGE_NAME = "com.ohos.updateapp";
+const std::string UPDATE_APP_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
+constexpr int32_t UPDATE_APP_TIMEOUT = 15;
+constexpr int32_t UPDATE_APP_CONNECT_TIMEOUT = 5;
 
 // 搜索状态
 enum class SearchStatus {
@@ -316,7 +318,7 @@ struct UpgradeInfo {
 };
 
 struct SubscribeInfo : public BaseJsonStruct {
-    std::string upgradeApp = OUC_PACKAGE_NAME;
+    std::string upgradeApp = UPDATE_APP_PACKAGE_NAME;
     BusinessType businessType;
     std::string abilityName;
     std::string subscriberDevId;
