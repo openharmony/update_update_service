@@ -4,13 +4,18 @@
     {
       "name": 3006,
       "libpath": "libupdateservice.z.so",
-      "run-on-create": true,
+      "run-on-create": false,
       "distributed": false,
       "bootphase": "BootStartPhase",
       "dump-level": 1,
       "auto-restart" : true,
       "start-on-demand": {
         "allow-update": true,
+        "commonevent": [
+          {
+            "name": "usual.event.BOOT_COMPLETED"
+          }
+        ],
         "timedevent": [
           {
             "name": "loopevent",
