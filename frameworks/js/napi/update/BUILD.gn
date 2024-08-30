@@ -67,8 +67,4 @@ ohos_shared_library("$updateengine_client_library_name") {
     "-Werror",
     "-DNAPI_VERSION=8",
   ]
-
-  if (build_variant == "user") {
-    cflags += [ "-DIS_RELEASE_VERSION" ]
-  }
 }

@@ -38,10 +38,6 @@ ohos_shared_library("update_module_mgr") {
   subsystem_name = "updater"
   cflags = modulemgr_cflags
 
-  if (build_variant == "user") {
-    cflags += [ "-DIS_RELEASE_VERSION" ]
-  }
-
   innerapi_tags = [ "sasdk" ]
   public_configs = [ ":module_mgr_library_native_config" ]
 }

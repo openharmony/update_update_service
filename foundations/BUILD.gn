@@ -48,10 +48,6 @@ ohos_shared_library("update_foundations") {
     "-Werror",
   ]
 
-  if (build_variant == "user") {
-    cflags += [ "-DIS_RELEASE_VERSION" ]
-  }
-
   innerapi_tags = [ "platformsdk" ]
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
