@@ -378,6 +378,7 @@ void FirmwareManager::HandleBootUpdateSuccess(const FirmwareTask &task,
         versionComponent.upgradeAction = UpgradeAction::UPGRADE;
         versionComponent.displayVersion = component.targetBlDisplayVersionNumber;
         versionComponent.innerVersion = component.targetBlVersionNumber;
+        versionComponent.componentExtra = JsonBuilder().Append("{}").ToJson();
         versionComponents.push_back(versionComponent);
     }
 
