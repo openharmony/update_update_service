@@ -18,6 +18,9 @@
 
 #include <mutex>
 
+#ifndef ABILITY_RUNTIME_INNER_ENABLE
+#include "ability_manager_proxy.h"
+#endif
 #include "iremote_object.h"
 
 #include "common_death_recipient.h"
