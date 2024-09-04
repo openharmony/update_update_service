@@ -88,12 +88,14 @@ public:
 
 protected:
     void RegisterCallback() override;
+    void ResetService(const wptr<IRemoteObject> &remote) override;
 
 #ifndef UPDATER_UT
 private:
 #endif
     std::map<UpgradeInfo, sptr<IUpdateCallback>> remoteUpdateCallbackMap_;
     UpgradeInfo upgradeInfo_{};
+    int32_t retryTimes_ = 0;
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_KITS_IMPL_H
