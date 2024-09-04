@@ -41,6 +41,7 @@ protected:
     sptr<SERVICE> GetService();
     void ResetRemoteService();
     virtual void RegisterCallback(){};
+    virtual void ResetService(const wptr<IRemoteObject> &remote);
 
 protected:
     std::recursive_mutex remoteServerLock_;
@@ -50,7 +51,6 @@ protected:
 
 private:
     void AddDeathRecipient(const sptr<IRemoteObject> &object);
-    void ResetService(const wptr<IRemoteObject> &remote);
 
 private:
     bool isNeedAddDeathRecipient_ = true;
