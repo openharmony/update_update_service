@@ -405,20 +405,8 @@ void UpdateService::DumpUpgradeCallback(const int fd)
 
 int UpdateService::Dump(int fd, const std::vector<std::u16string> &args)
 {
-    if (fd < 0) {
-        ENGINE_LOGI("HiDumper handle invalid");
-        return -1;
-    }
-
-    if (args.size() == 0) {
-        UpgradeInfo upgradeInfo = UpdateServiceCache::GetUpgradeInfo(BusinessSubType::FIRMWARE);
-        BuildUpgradeInfoDump(fd, upgradeInfo);
-        BuildTaskInfoDump(fd);
-        DumpUpgradeCallback(fd);
-    } else {
-        dprintf(fd, "input error, no parameters required\n");
-    }
-    return 0;
+    ENGINE_LOGI("UpdaterService Dump");
+    return ModuleManager::GetInstance().HandleDumpFunc("Dump", fd, args);
 }
 
 void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)

@@ -36,5 +36,10 @@ void RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase)
 {
     OHOS::UpdateEngine::ModuleManager::GetInstance().HookOnIdleFunc(phase, handlePhase);
 }
+
+void RegisterDumpFunc(std::string phase, LifeCycleFuncDumpType handlePhase)
+{
+    OHOS::UpdateEngine::ModuleManager::GetInstance().HookDumpFunc(phase, handlePhase);
+}
 } // namespace UpdateEngine
 } // namespace OHOS
