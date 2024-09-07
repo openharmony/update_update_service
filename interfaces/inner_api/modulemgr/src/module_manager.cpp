@@ -26,9 +26,11 @@ namespace UpdateEngine {
 std::map<uint32_t, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
 std::map<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
 std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
+std::map<std::string, LifeCycleFuncDumpType> ModuleManager::onDumpFuncMap_;
 std::mutex ModuleManager::onRemoteRequestFuncMapMutex_;
 std::mutex ModuleManager::onStartOnStopFuncMapMutex_;
 std::mutex ModuleManager::onIdleFuncMapMutex_;
+std::mutex ModuleManager::onDumpFuncMapMutex_;
 
 bool ModuleManager::isLoaded = false;
 
