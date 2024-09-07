@@ -45,6 +45,9 @@ public:
     void HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
     void HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle);
     int32_t HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason);
+    void HookDumpFunc(std::string phase, LifeCycleFuncDumpType handleSADump);
+    int HandleDumpFunc(std::string phase, int fd, const std::vector<std::u16string> &args);
+
     bool IsMapFuncExist(uint32_t code);
 
 private:
@@ -53,10 +56,13 @@ private:
     static std::map<std::string, LifeCycleFuncType> onStartOnStopFuncMap_;
     static std::map<std::string, LifeCycleFuncReturnType> onIdleFuncMap_;
     static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
+    static std::map<std::string, LifeCycleFuncDumpType> onDumpFuncMap_;
+
     static bool isLoaded;
     static std::mutex onRemoteRequestFuncMapMutex_;
     static std::mutex onStartOnStopFuncMapMutex_;
     static std::mutex onIdleFuncMapMutex_;
+    static std::mutex onDumpFuncMapMutex_;
 };
 } // namespace UpdateEngine
 } // namespace OHOS

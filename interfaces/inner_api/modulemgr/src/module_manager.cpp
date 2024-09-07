@@ -152,6 +152,29 @@ int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbi
     return 0;
 }
 
+void ModuleManager::HookDumpFunc(std::string phase, LifeCycleFuncDumpType handleSADump)
+{
+    std::lock_guard<std::mutex> guard(onDumpFuncMapMutex_);
+    if (onDumpFuncMap_.find(phase) == onDumpFuncMap_.end()) {
+        UTILS_LOGI("add phase %{public}s", phase.c_str());
+        onDumpFuncMap_.insert(std::make_pair(phase, handleSADump));
+    } else {
+        UTILS_LOGI("phase %{public}s already exist", phase.c_str());
+        onDumpFuncMap_[phase] = handleSADump;
+    }
+}
+
+int ModuleManager::HandleDumpFunc(std::string phase, int fd, const std::vector<std::u16string> &args)
+{
+    if (onDumpFuncMap_.find(phase) == onDumpFuncMap_.end()) {
+        UTILS_LOGI("phase %{public}s not exist", phase.c_str());
+    } else {
+        UTILS_LOGI("phase %{public}s already exist", phase.c_str());
+        return ((LifeCycleFuncDumpType)onDumpFuncMap_[phase])(fd, args);
+    }
+    return 0;
+}
+
 bool ModuleManager::IsMapFuncExist(uint32_t code)
 {
     return onRemoteRequestFuncMap_.count(code);
