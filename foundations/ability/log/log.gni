@@ -19,6 +19,5 @@ update_log_external_deps = [
 ]
 update_log_deps = []
 update_log_include =
-    [ "$updateengine_root_path/foundations/ability/log/include" ]
-update_log_src =
-    [ "$updateengine_root_path/foundations/ability/log/src/update_log.cpp" ]
+[ "$updateengine_root_path/foundations/ability/log/include" ]
+update_log_src = [ "$updateengine_root_path/foundations/ability/log/src/update_log.cpp" ]
