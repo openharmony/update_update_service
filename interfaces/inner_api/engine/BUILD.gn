@@ -64,6 +64,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
   ]
 
   external_deps = [
+    "ability_runtime:ability_manager",
     "bounds_checking_function:libsec_static",
     "c_utils:utils",  # sptr
     "hilog:libhilog",
@@ -81,12 +82,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
   if (ability_ability_runtime_enable) {
     external_deps += [ "ability_runtime:extension_manager" ]
   }
-
-  cflags = [
-    "-fPIC",
-    "-Os",
-    "-Werror",
-  ]
 
   innerapi_tags = [ "platformsdk" ]
   part_name = "$updateengine_part_name"
