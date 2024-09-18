@@ -41,9 +41,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
   branch_protector_ret = "pac_ret"
 
   defines = [ "DUAL_ADAPTER" ]
-  if (!ability_ability_runtime_enable) {
-    defines += [ "ABILITY_RUNTIME_INNER_ENABLE" ]
-  }
   sources = [
     "$updateengine_root_path/interfaces/inner_api/engine/src/update_callback.cpp",
     "$updateengine_root_path/interfaces/inner_api/engine/src/update_callback_stub.cpp",
@@ -64,6 +61,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
   ]
 
   external_deps = [
+    "ability_runtime:ability_manager",
     "bounds_checking_function:libsec_static",
     "c_utils:utils",  # sptr
     "hilog:libhilog",
