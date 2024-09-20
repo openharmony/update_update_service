@@ -225,7 +225,8 @@ void NapiCommonUtils::NapiThrowNotSystemAppError(napi_env env)
 {
     BusinessError businessError;
     CallResult errCode = CallResult::NOT_SYSTEM_APP;
-    std::string errMsg = "BusinessError " + std::to_string(CAST_INT(errCode)).append(": Caller not system app.");
+    std::string errMsg = "BusinessError " + std::to_string(CAST_INT(errCode))
+        .append(": Permission verification failed. A non-system application calls a system API.");
     businessError.Build(errCode, errMsg);
     napi_value msg = BuildThrowError(env, businessError);
     napi_status status = napi_throw(env, msg);
