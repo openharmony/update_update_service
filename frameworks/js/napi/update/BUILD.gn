@@ -46,8 +46,8 @@ ohos_shared_library("$updateengine_client_library_name") {
     "c_utils:utils",  # sptr
     "hilog:libhilog",
     "ipc:ipc_core",
-    "napi:ace_napi",
     "json:nlohmann_json_static",
+    "napi:ace_napi",
   ]
 
   install_enable = true
