@@ -41,9 +41,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
   branch_protector_ret = "pac_ret"
 
   defines = [ "DUAL_ADAPTER" ]
-  if (!ability_ability_runtime_enable) {
-    defines += [ "ABILITY_RUNTIME_INNER_ENABLE" ]
-  }
   sources = [
     "$updateengine_root_path/interfaces/inner_api/engine/src/update_callback.cpp",
     "$updateengine_root_path/interfaces/inner_api/engine/src/update_callback_stub.cpp",
@@ -64,6 +61,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
   ]
 
   external_deps = [
+    "ability_runtime:extension_manager",
     "bounds_checking_function:libsec_static",
     "c_utils:utils",  # sptr
     "hilog:libhilog",
@@ -73,14 +71,16 @@ ohos_shared_library("$updateengine_inner_library_name") {
     "samgr:samgr_proxy",
   ]
 
+  cflags = [
+    "-fPIC",
+    "-Os",
+    "-Werror",
+  ]
   include_dirs += feature_include
   sources += feature_sources
   deps += feature_deps
   external_deps += feature_external_deps
 
-  if (ability_ability_runtime_enable) {
-    external_deps += [ "ability_runtime:extension_manager" ]
-  }
   innerapi_tags = [ "platformsdk" ]
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
