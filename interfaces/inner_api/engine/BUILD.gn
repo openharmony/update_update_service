@@ -81,7 +81,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
     "-Os",
     "-Werror",
   ]
-  
+
   innerapi_tags = [ "platformsdk" ]
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
