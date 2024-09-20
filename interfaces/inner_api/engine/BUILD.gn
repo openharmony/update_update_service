@@ -71,16 +71,17 @@ ohos_shared_library("$updateengine_inner_library_name") {
     "samgr:samgr_proxy",
   ]
 
-  cflags = [
-    "-fPIC",
-    "-Os",
-    "-Werror",
-  ]
   include_dirs += feature_include
   sources += feature_sources
   deps += feature_deps
   external_deps += feature_external_deps
 
+  cflags = [
+    "-fPIC",
+    "-Os",
+    "-Werror",
+  ]
+  
   innerapi_tags = [ "platformsdk" ]
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
