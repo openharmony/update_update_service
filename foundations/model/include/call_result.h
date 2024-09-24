@@ -53,5 +53,7 @@ constexpr int32_t INT_TIME_OUT = CAST_INT(CallResult::TIME_OUT);
 constexpr int32_t INT_DB_ERROR = CAST_INT(CallResult::DB_ERROR);
 constexpr int32_t INT_IO_ERROR = CAST_INT(CallResult::IO_ERROR);
 constexpr int32_t INT_NET_ERROR = CAST_INT(CallResult::NET_ERROR);
+constexpr std::string_view NOT_SYSTEM_APP_INFO =
+    ": Permission verification failed. A non-system application calls a system API.";
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_CALL_RESULT_H
