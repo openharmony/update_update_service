@@ -16,21 +16,18 @@ import("../../../../updateengine.gni")
 import("../session/update_session.gni")
 
 ohos_shared_library("$updateengine_client_library_name") {
-  sources = []
-  if (ability_ability_runtime_enable) {
-    sources += [
-      "$updateengine_root_path/frameworks/js/napi/update/common/src/client_helper.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/common/src/iupdater.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/define_property.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/local_updater.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/restorer.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/session_manager.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/update_client.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/update_module.cpp",
-      "$updateengine_root_path/frameworks/js/napi/update/src/update_session.cpp",
-    ]
-    sources += session_sources
-  }
+  sources = [
+    "$updateengine_root_path/frameworks/js/napi/update/common/src/client_helper.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/common/src/iupdater.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/define_property.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/local_updater.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/restorer.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/session_manager.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/update_client.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/update_module.cpp",
+    "$updateengine_root_path/frameworks/js/napi/update/src/update_session.cpp",
+  ]
+  sources += session_sources
 
   include_dirs = [
     "$updateengine_root_path/frameworks/js/napi/update/common/include",
@@ -50,11 +47,8 @@ ohos_shared_library("$updateengine_client_library_name") {
     "hilog:libhilog",
     "ipc:ipc_core",
     "json:nlohmann_json_static",
+    "napi:ace_napi",
   ]
-
-  if (ability_ability_runtime_enable) {
-    external_deps += [ "napi:ace_napi" ]
-  }
 
   install_enable = true
   relative_install_dir = "module"
