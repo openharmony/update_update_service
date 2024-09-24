@@ -79,6 +79,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
   if (ability_ability_runtime_enable) {
     external_deps += [ "ability_runtime:extension_manager" ]
   }
+
   cflags = [
     "-fPIC",
     "-Os",
