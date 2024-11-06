@@ -125,7 +125,7 @@ private:
         cJSONPtr root(cJSON_Parse(buffer.data()), cJSON_Delete);
         ENGINE_CHECK(root != nullptr, return -1, "Error get root");
         cJSON *item = cJSON_GetObjectItem(root.get(), "searchStatus");
-        ENGINE_CHECK(root != nullptr, return -1, "Error get searchStatus");
+        ENGINE_CHECK(item != nullptr, return -1, "Error get searchStatus");
         if (!cJSON_IsNumber(item)) {
             FIRMWARE_LOGE("Error json parse");
             return -1;
