@@ -236,6 +236,7 @@ void FirmwareManager::DoInstall(const UpgradeOptions &upgradeOptions, BusinessEr
     std::shared_ptr<FirmwareIExecuteMode> executeMode =
         std::make_shared<FirmwareInstallApplyMode>(upgradeOptions, businessError, installType, [=]() {
             FIRMWARE_LOGI("FirmwareManager DoInstall finish");
+            delete flowManager;
         });
     flowManager->SetExecuteMode(executeMode);
     flowManager->Start();
