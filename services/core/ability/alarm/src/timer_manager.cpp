@@ -43,7 +43,7 @@ TimerManager::~TimerManager()
 bool TimerManager::RegisterLooperEvent(EventType eventType, int64_t looperInterval,
     const OHOS::Utils::Timer::TimerCallback &callback)
 {
-    ENGINE_LOGI("TimerManager registerLooperEvent EventType %{puiblic}d", CAST_INT(eventType));
+    ENGINE_LOGI("TimerManager registerLooperEvent EventType %{public}d", CAST_INT(eventType));
     UnregisterLooperEvent(eventType);
     auto weakThis = weak_from_this();
     if (timer_ == nullptr) {
@@ -56,7 +56,7 @@ bool TimerManager::RegisterLooperEvent(EventType eventType, int64_t looperInterv
                 ENGINE_LOGE("TimerManager is destroyed");
                 return;
             }
-            ENGINE_LOGD("Looper EventType %{publoc}d triggered", CAST_INT(eventType));
+            ENGINE_LOGD("Looper EventType %{public}d triggered", CAST_INT(eventType));
             callback();
         },
         looperInterval * ONE_SECOND_MILLISECONDS, false);
@@ -68,7 +68,7 @@ bool TimerManager::RegisterLooperEvent(EventType eventType, int64_t looperInterv
 
 void TimerManager::UnregisterLooperEvent(EventType eventType)
 {
-    ENGINE_LOGI("TimerManager UnregisterLooperEvent EventType %{puiblic}d", CAST_INT(eventType));
+    ENGINE_LOGI("TimerManager UnregisterLooperEvent EventType %{public}d", CAST_INT(eventType));
     std::lock_guard<std::mutex> lockGuard(mutex_);
     auto result = registeredTimerIdMap_.find(eventType);
     if (result == registeredTimerIdMap_.end()) {
