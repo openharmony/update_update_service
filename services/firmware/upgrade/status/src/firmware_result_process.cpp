@@ -79,7 +79,7 @@ UpdateResult FirmwareResultProcess::CompareVersion(const FirmwareComponent &comp
 {
     bool isResultSuccess = false;
     isResultSuccess = component.versionNumber == FirmwareUpdateAdapter::GetDisplayVersion();
-    FIRMWARE_LOGI("component.versionNumber=%{pubilc}s, GetDisplayVersion=%{pubilc}s",
+    FIRMWARE_LOGI("component.versionNumber=%{public}s, GetDisplayVersion=%{public}s",
         component.versionNumber.c_str(), FirmwareUpdateAdapter::GetDisplayVersion().c_str());
     UpdateResult updateResult;
     updateResult.spath = component.spath;
