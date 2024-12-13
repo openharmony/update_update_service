@@ -30,6 +30,7 @@ ohos_unittest("UpdateLogTest") {
   external_deps = update_log_external_deps
 
   sources += [ "$updateengine_root_path/foundations/ability/log/src/test/unittest/src/update_log_test.cpp" ]
-  deps = [ "//third_party/googletest:gtest_main" ]
+  external_deps += [ "googletest:gtest_main" ]
+  deps = []
   part_name = updateengine_part_name
 }
