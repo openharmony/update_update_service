@@ -161,7 +161,7 @@ private:
             return StrCnvResult::FAILED;
         }
         number = numTemp;
-        //判断字符串是否含有特殊字符 例如"100a"
+        // 判断字符串是否含有特殊字符 例如"100a"
         if (result.ptr != strTemp.data() + strTemp.size()) {
             return StrCnvResult::INVALID_CHAR;
         }
