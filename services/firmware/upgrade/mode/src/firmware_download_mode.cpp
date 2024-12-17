@@ -26,6 +26,7 @@
 #include "firmware_status_cache.h"
 #include "firmware_task_operator.h"
 #include "firmware_update_helper.h"
+#include "string_utils.h"
 
 namespace OHOS {
 namespace UpdateEngine {
