@@ -102,7 +102,7 @@ FirmwareStep FirmwareDownloadMode::GetStepAfterDownload()
     }
     ErrorMessage errorMessage;
     if (!downloadDataProcessor_.GetDownloadProgress().endReason.empty()) {
-        errorMessage.errorCode = stoi(downloadDataProcessor_.GetDownloadProgress().endReason);
+        StringUtils::DecStringToNumber(downloadDataProcessor_.GetDownloadProgress().endReason, errorMessage.errorCode);
     }
     FirmwareStep nextStep = FirmwareStep::COMPLETE;
     switch (task.status) {

@@ -17,6 +17,7 @@
 #define STRING_UTILS_H
 
 #include <algorithm>
+#include <charconv>
 #include <functional>
 #include <string>
 #include <vector>
@@ -25,6 +26,15 @@
 
 namespace OHOS {
 namespace UpdateEngine {
+
+enum class StrCnvResult {
+    SUCCESS,
+    FAILED,
+    INVALID_CHAR,
+    NUMBER_FORMAT_ERROR,
+    SPILL_OVER,
+};
+
 class StringUtils {
 public:
     // trim from start (in place)
@@ -128,6 +138,38 @@ public:
             }
         }
         return;
+    }
+
+    template <typename T>[[maybe_unused]] static StrCnvResult DecStringToNumber(const std::string &str, T &number)
+    {
+        constexpr int numberBase = 10;
+        return StringToNumberInner(str, number, numberBase);
+    }
+
+private:
+    template <typename T>
+    [[maybe_unused]] static StrCnvResult StringToNumberInner(const std::string &str, T &number, int base)
+    {
+        T numTemp;
+        std::string strTemp = str;
+        Trim(strTemp);
+        auto result = std::from_chars(strTemp.data(), strTemp.data() + strTemp.size(), numTemp, base);
+        if (result.ec == std::errc::result_out_of_range) {
+            return StrCnvResult::SPILL_OVER;
+        }
+        if (result.ec != std::errc()) {
+            return StrCnvResult::FAILED;
+        }
+        number = numTemp;
+        //判断字符串是否含有特殊字符 例如"100a"
+        if (result.ptr != strTemp.data() + strTemp.size()) {
+            return StrCnvResult::INVALID_CHAR;
+        }
+        // 防止字符串前后空格导致解析错误，使得数据可以解析，是否使用由调用者自己判断
+        if (strTemp.size() != str.size()) {
+            return StrCnvResult::NUMBER_FORMAT_ERROR;
+        }
+        return StrCnvResult::SUCCESS;
     }
 };
 } // namespace UpdateEngine
