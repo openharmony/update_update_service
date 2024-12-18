@@ -87,8 +87,6 @@ ohos_shared_library("$updateengine_inner_library_name") {
     "-Os",
     "-Werror",
     "-fstack-protector-strong",
-    "-fPIE",
-    "-Wl,-z,relro,-z,now",
   ]
 
   innerapi_tags = [ "platformsdk" ]

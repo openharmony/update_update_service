@@ -72,7 +72,5 @@ ohos_shared_library("$updateengine_client_library_name") {
     "-Werror",
     "-DNAPI_VERSION=8",
     "-fstack-protector-strong",
-    "-fPIE",
-    "-Wl,-z,relro,-z,now",
   ]
 }
