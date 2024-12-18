@@ -40,6 +40,4 @@ modulemgr_cflags = [
   "-Os",
   "-Werror",
   "-fstack-protector-strong",
-  "-fPIE",
-  "-Wl,-z,relro,-z,now",
 ]
