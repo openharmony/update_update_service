@@ -196,4 +196,7 @@ sa_cflags = [
   "-fPIC",
   "-Os",
   "-Werror",
+  "-fstack-protector-strong",
+  "-fPIE",
+  "-Wl,-z,relro,-z,now",
 ]

@@ -33,6 +33,11 @@ ohos_prebuilt_etc("updater_sa.cfg") {
 }
 
 ohos_shared_library("$updateengine_library_name") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+  }
   shlib_type = "sa"
   include_dirs = sa_include_dirs
   sources = sa_sources
