@@ -46,6 +46,7 @@ ohos_shared_library("update_foundations") {
     "-fPIC",
     "-Os",
     "-Werror",
+    "-fstack-protector-strong",
   ]
 
   innerapi_tags = [ "platformsdk" ]
