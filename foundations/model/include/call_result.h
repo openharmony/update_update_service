@@ -37,7 +37,8 @@ enum class CallResult {
     TIME_OUT = 402,
     DB_ERROR = 501,
     IO_ERROR = 502,
-    NET_ERROR = 503
+    NET_ERROR = 503,
+    CANCEL_ERROR = 504
 };
 
 constexpr int32_t INT_CALL_SUCCESS = CAST_INT(CallResult::SUCCESS);

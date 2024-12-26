@@ -47,7 +47,7 @@ public:
     void DoAutoDownloadSwitchChanged(bool isDownloadSwitchOn);
     void DoClearError(BusinessError &businessError);
     void HandleEvent(CommonEventType event);
-    void DoCancelDownload(BusinessError &businessError);
+    void DoCancel(BusinessError &businessError);
     void DoTerminateUpgrade(BusinessError &businessError);
 
 private:

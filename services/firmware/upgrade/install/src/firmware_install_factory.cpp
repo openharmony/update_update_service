@@ -15,7 +15,9 @@
 
 #include "firmware_install_factory.h"
 #include "firmware_sys_installer_install.h"
+#include "firmware_stream_installer_install.h"
 #include "firmware_updater_install.h"
+#include "firmware_update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -24,6 +26,8 @@ std::shared_ptr<FirmwareInstall> InstallFactory::GetInstance(InstallType type)
     switch (type) {
         case InstallType::SYS_INSTALLER:
             return std::make_shared<SysInstallerInstall>();
+        case InstallType::STREAM_INSTALLLER:
+            return std::make_shared<StreamInstallerInstall>();
         default:
             return std::make_shared<UpdaterInstall>();
     }

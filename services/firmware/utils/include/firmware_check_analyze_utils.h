@@ -36,6 +36,8 @@ public:
 private:
     bool IsLegalStatus(int32_t status);
     int32_t AnalyzeComponents(nlohmann::json &root);
+    int32_t ProcessCheckResults(const nlohmann::json &checkResults);
+    int32_t ProcessDescriptInfo(const nlohmann::json &descriptInfo);
     int32_t AnalyzeBlVersionCheckResults(nlohmann::json &root, BlCheckResponse &response);
 
 private:

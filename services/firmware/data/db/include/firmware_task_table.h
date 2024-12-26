@@ -46,7 +46,7 @@ const std::string COLUMN_TASK_DEVICE_TOKEN = "deviceToken";
 const std::string COLUMN_TASK_TOKEN_H_MAC = "tokenHMac";
 const std::string COLUMN_TASK_CURR_VERSION_LIST = "currentVersionList";
 const std::string COLUMN_TASK_AUTH_TIME = "authTime";
-
+const std::string COLUMN_TASK_IS_STREAM_UPGRADE = "isStreamUpgrade";
 // 预留6个字段
 const std::string COLUMN_TASK_EXTENDS1 = "extends1";
 const std::string COLUMN_TASK_EXTENDS2 = "extends2";

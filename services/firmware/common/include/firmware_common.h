@@ -63,6 +63,7 @@ enum class CheckResultStatus {
 enum class InstallType {
     QUICK_FIX = 1,
     SYS_INSTALLER,
+    STREAM_INSTALLLER,
     UPDATER
 };
 

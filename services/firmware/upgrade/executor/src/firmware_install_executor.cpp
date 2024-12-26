@@ -24,6 +24,7 @@
 #include "firmware_install_factory.h"
 #include "firmware_log.h"
 #include "firmware_task_operator.h"
+#include "firmware_update_helper.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -41,7 +42,12 @@ void FirmwareInstallExecutor::DoInstall()
         CAST_INT(installType_), CAST_INT(components_.size()));
     if (components_.size() == 0) {
         Progress progress;
-        progress.status = UpgradeStatus::UPDATE_FAIL;
+        if (installType_ == InstallType::SYS_INSTALLER || installType_ == InstallType::STREAM_INSTALLLER) {
+            progress.status = UpgradeStatus::INSTALL_FAIL;
+        } else {
+            progress.status = UpgradeStatus::UPDATE_FAIL;
+        }
+        
         progress.endReason = "no task";
         installCallbackInfo_.progress = progress;
         if (installCallback_.installCallback == nullptr) {
@@ -54,7 +60,7 @@ void FirmwareInstallExecutor::DoInstall()
 
     GetTask();
     Progress progress;
-    if (installType_ == InstallType::SYS_INSTALLER) {
+    if (installType_ == InstallType::SYS_INSTALLER || installType_ == InstallType::STREAM_INSTALLLER) {
         progress.status = UpgradeStatus::INSTALLING;
     } else if (installType_ == InstallType::UPDATER) {
         progress.status = UpgradeStatus::UPDATING;
@@ -67,20 +73,24 @@ void FirmwareInstallExecutor::DoInstall()
         FirmwareComponentOperator().UpdateProgressByUrl(component.url, progress.status, progress.percent);
     }
 
-    FirmwareInstallCallback cb {[=](const FirmwareComponent &component) {
-                                    Progress progress;
-                                    progress.status = component.status;
-                                    progress.percent = component.progress;
-                                    HandleInstallProgress(component, progress);
-                                },
-        [=](const bool result, const ErrorMessage &errMsg) {
-            HandleInstallResult(result, errMsg);
+    StartInstall();
+}
+
+void FirmwareInstallExecutor::StartInstall()
+{
+    FirmwareInstallCallback cb{
+        [=](const FirmwareComponent &component) {
+            HandleInstallProgress(component);
         },
-        [=](const UpgradeStatus &status) {
+        [=](bool result, const ErrorMessage &errMsg, UpgradeStatus status) {
+            HandleInstallResult(result, errMsg, status);
+        },
+        [=](UpgradeStatus status) {
             FIRMWARE_LOGI("update start status :%{public}d", CAST_INT(status));
             DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(tasks_.taskId,
                 EventId::EVENT_UPGRADE_START, status);
-        }};
+        }
+    };
 
     std::shared_ptr<FirmwareInstall> executor = InstallFactory::GetInstance(installType_);
     if (executor == nullptr) {
@@ -97,27 +107,31 @@ void FirmwareInstallExecutor::GetTask()
     }
 }
 
-void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &component, const Progress &progress)
+void FirmwareInstallExecutor::HandleInstallProgress(const FirmwareComponent &component)
 {
-    FIRMWARE_LOGI("UpdateCallback versionId %{public}s status %{public}d progress %{public}d",
-        component.versionId.c_str(), progress.status, progress.percent);
-    FirmwareComponentOperator().UpdateProgressByUrl(component.url, progress.status, progress.percent);
-
+    FIRMWARE_LOGI("FirmwareInstallExecutor::HandleInstallProgress status:%{public}d,progress:%{public}d, "
+        "recordPoint:%{public}" PRId64, component.status, component.progress, component.recordPoint);
+    FirmwareComponentOperator().UpdateProgressByUrl(component.url, component.status, component.progress);
     // 避免安装失败重复提交事件, 进度回调状态置为安装中
     taskProgress_.status = UpgradeStatus::INSTALLING;
-    taskProgress_.percent = progress.percent;
-
-    // 整体进度插入到 task 表
-    FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
+    taskProgress_.percent = component.progress;
     installCallbackInfo_.progress = taskProgress_;
     if (installCallback_.installCallback == nullptr) {
         FIRMWARE_LOGE("FirmwareInstallExecutor HandleInstallProgress installCallback is null");
         return;
     }
+    //流式升级只更新recordPoint还原点不实时更新task的status，避免异步安装过程覆盖结果
+    if (installType_ == InstallType::STREAM_INSTALLLER) {
+        FirmwareComponentOperator().UpdateRecordPointByUrl(component.url, component.recordPoint);
+    } else {
+        FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
+    }
+
     installCallback_.installCallback(installCallbackInfo_);
 }
 
-void FirmwareInstallExecutor::HandleInstallResult(const bool result, const ErrorMessage &errMsg)
+void FirmwareInstallExecutor::HandleInstallResult(const bool result, const ErrorMessage &errMsg,
+    const UpgradeStatus &status)
 {
     FIRMWARE_LOGI("FirmwareInstallExecutor::HandleInstallResult, result =%{public}d", result);
     if (result) {
@@ -126,10 +140,15 @@ void FirmwareInstallExecutor::HandleInstallResult(const bool result, const Error
     } else {
         if (installType_ == InstallType::SYS_INSTALLER) {
             taskProgress_.status = UpgradeStatus::INSTALL_FAIL;
-        } else if (installType_ == InstallType::UPDATER) {
+        } else if (installType_ == InstallType::STREAM_INSTALLLER) {
+            taskProgress_.status = status == UpgradeStatus::DOWNLOAD_CANCEL ?
+                UpgradeStatus::INSTALL_PAUSE : UpgradeStatus::INSTALL_FAIL;
+        } else {
             taskProgress_.status = UpgradeStatus::UPDATE_FAIL;
         }
     }
+    FIRMWARE_LOGI("HandleInstallResult status: %{public}d progress: %{public}d",
+        taskProgress_.status, taskProgress_.percent);
     // 整体进度插入到 task 表
     FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, taskProgress_.status, taskProgress_.percent);
     installCallbackInfo_.progress = taskProgress_;
@@ -141,5 +160,6 @@ void FirmwareInstallExecutor::HandleInstallResult(const bool result, const Error
     }
     installCallback_.installCallback(installCallbackInfo_);
 }
+
 } // namespace UpdateEngine
 } // namespace OHOS

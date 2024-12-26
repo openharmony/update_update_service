@@ -104,16 +104,41 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(nlohmann::json &
 
 int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(nlohmann::json &root)
 {
+    // 检查 "checkResults" 是否存在
     if (root.find("checkResults") == root.end()) {
         FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key checkResults");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
     FIRMWARE_LOGI("checkResults size is %{public}" PRIu64 "", static_cast<uint64_t>(root["checkResults"].size()));
+
+    // 初始化返回值
+    int32_t ret = CAST_INT(JsonParseError::ERR_OK);
+
+    // 处理 "checkResults" 部分
+    ret += ProcessCheckResults(root["checkResults"]);
+
+    // 检查 "descriptInfo" 是否存在
+    if (root.find("descriptInfo") == root.end()) {
+        FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
+        return CAST_INT(JsonParseError::MISSING_PROP);
+    }
+
+    // 处理 "descriptInfo" 部分
+    ret += ProcessDescriptInfo(root["descriptInfo"]);
+
+    return ret;
+}
+
+int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(const nlohmann::json &checkResults)
+{
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     std::string componentId;
-    for (auto &result : root["checkResults"]) {
+
+    for (auto &result : checkResults) {
         FirmwareComponent component;
         int32_t componetSize = 0;
+
+        // 获取组件相关属性
         ret += JsonUtils::GetValueAndSetTo(result, "descriptPackageId", component.descriptPackageId);
         ret += JsonUtils::GetValueAndSetTo(result, "url", component.url);
         ret += JsonUtils::GetValueAndSetTo(result, "size", componetSize);
@@ -122,28 +147,45 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(nlohmann::json &root)
         ret += JsonUtils::GetValueAndSetTo(result, "verifyInfo", component.verifyInfo);
         ret += JsonUtils::GetValueAndSetTo(result, "versionCode", component.versionNumber);
         ret += JsonUtils::GetValueAndSetTo(result, "versionName", component.targetBlVersionNumber);
+
+        int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
+        ret += JsonUtils::GetValueAndSetTo(result, "packageType", versionPackageType);
+        component.versionPackageType = static_cast<PackageType>(versionPackageType);
+
+        int32_t otaType = CAST_INT(OtaType::REGULAR);
+        ret += JsonUtils::GetValueAndSetTo(result, "otaType", otaType);
+        component.otaType = static_cast<OtaType>(otaType);
+
         component.targetBlDisplayVersionNumber = component.targetBlVersionNumber;
         component.blVersionType = 1;
         component.componentId = component.descriptPackageId;
-        component.versionPackageType = PackageType::NORMAL;
         componentId = component.descriptPackageId;
+
         components_.push_back(component);
     }
 
-    if (root.find("descriptInfo") == root.end()) {
-        FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
-        return CAST_INT(JsonParseError::MISSING_PROP);
-    }
-    for (auto &descriptInfo : root["descriptInfo"]) {
+    return ret;
+}
+
+int32_t FirmwareCheckAnalyzeUtils::ProcessDescriptInfo(const nlohmann::json &descriptInfo)
+{
+    int32_t ret = CAST_INT(JsonParseError::ERR_OK);
+    std::string componentId = components_.empty() ? "" : components_.back().descriptPackageId;
+
+    for (auto &info : descriptInfo) {
         int32_t descriptInfoType;
         std::string descContent;
         std::string subString = "quota";
         std::string replString = "\"";
-        ret += JsonUtils::GetValueAndSetTo(descriptInfo, "descriptionType", descriptInfoType);
-        ret += JsonUtils::GetValueAndSetTo(descriptInfo, "content", descContent);
+
+        ret += JsonUtils::GetValueAndSetTo(info, "descriptionType", descriptInfoType);
+        ret += JsonUtils::GetValueAndSetTo(info, "content", descContent);
+
         StringUtils::ReplaceStringAll(descContent, subString, replString);
+
         std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + componentId + ".xml";
         FIRMWARE_LOGI("changelog file %{public}s", changelogFilePath.c_str());
+
         std::string data = std::to_string(descriptInfoType) + "|" + descContent;
         if (!FileUtils::SaveDataToFile(changelogFilePath, data)) {
             FIRMWARE_LOGE("write data to description file error, %{public}s", changelogFilePath.c_str());

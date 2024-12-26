@@ -62,5 +62,21 @@ bool StatusCache::IsDownloadTriggered()
     lastDownloadTime_ = TimeUtils::GetTimestampByMilliseconds();
     return false;
 }
+
+bool StatusCache::IsUpgradeTriggered()
+{
+    if (lastUpgradeTime_ == -1) {
+        lastUpgradeTime_ = TimeUtils::GetTimestampByMilliseconds();
+        return false;
+    }
+
+    if (abs(TimeUtils::GetTimestampByMilliseconds() - lastUpgradeTime_) < Constant::MILLESECONDS) {
+        // 当前时间与上次下载时间间隔小于1秒钟，不允许重复触发下载
+        ENGINE_LOGI("interval time within one seconds");
+        return true;
+    }
+    lastUpgradeTime_ = TimeUtils::GetTimestampByMilliseconds();
+    return false;
+}
 } // namespace UpdateEngine
 } // namespace OHOS

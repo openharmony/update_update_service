@@ -30,7 +30,7 @@ public:
     bool IsChecking();
     void SetIsChecking(bool isChecking);
     bool IsDownloadTriggered();
-
+    bool IsUpgradeTriggered();
 private:
     int64_t GetCurrentTime();
 
@@ -39,6 +39,7 @@ private:
     bool isChecking_ = false;
     int64_t lastCheckTime_ = -1;
     int64_t lastDownloadTime_ = -1;
+    int64_t lastUpgradeTime_ = -1;
 };
 } // namespace UpdateEngine
 } // namespace OHOS
