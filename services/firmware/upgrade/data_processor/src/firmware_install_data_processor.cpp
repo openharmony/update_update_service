@@ -46,14 +46,34 @@ bool FirmwareInstallDataProcessor::HasInstallSuccess()
 {
     // 实时取当前状态
     FirmwareTaskOperator().QueryTask(tasks_);
+    if (!tasks_.isExistTask) {
+        FIRMWARE_LOGI("HasInstallSuccess no task");
+        return false;
+    }
     FIRMWARE_LOGI("GetTaskStatus status: %{public}d", tasks_.status);
     return tasks_.status == UpgradeStatus::INSTALL_SUCCESS;
+}
+
+bool FirmwareInstallDataProcessor::HasInstallFail()
+{
+    // 实时取当前状态
+    FirmwareTaskOperator().QueryTask(tasks_);
+    if (!tasks_.isExistTask) {
+        FIRMWARE_LOGI("HasInstallFail no task");
+        return false;
+    }
+    FIRMWARE_LOGI("GetTaskStatus status: %{public}d", tasks_.status);
+    return tasks_.status == UpgradeStatus::INSTALL_FAIL;
 }
 
 bool FirmwareInstallDataProcessor::HasUpdateSuccess()
 {
     // 实时取当前状态
     FirmwareTaskOperator().QueryTask(tasks_);
+    if (!tasks_.isExistTask) {
+        FIRMWARE_LOGI("HasUpdateSuccess no task");
+        return false;
+    }
     FIRMWARE_LOGI("GetTaskStatus status: %{public}d", tasks_.status);
     return tasks_.status == UpgradeStatus::UPDATE_SUCCESS;
 }
@@ -77,6 +97,10 @@ void FirmwareInstallDataProcessor::SetInstallResult(const InstallCallbackInfo &i
         DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(tasks_.taskId, EventId::EVENT_UPGRADE_FAIL,
             progress.status, installCallbackInfo.errorMessage);
         return;
+    }
+    if (progress.status == UpgradeStatus::INSTALL_PAUSE) {
+        DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(tasks_.taskId, EventId::EVENT_UPGRADE_PAUSE,
+            UpgradeStatus::INSTALL_PAUSE, installCallbackInfo.errorMessage);
     }
 
     DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->ProgressCallback(tasks_.taskId, progress);

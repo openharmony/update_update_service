@@ -151,6 +151,7 @@ void ReadVersionComponents(MessageParcel &reply, std::vector<VersionComponent> &
         versionComponent.innerVersion = Str16ToStr8(reply.ReadString16());
         versionComponent.size = static_cast<size_t>(reply.ReadUint64());
         versionComponent.effectiveMode = static_cast<size_t>(reply.ReadUint32());
+        versionComponent.otaMode = static_cast<size_t>(reply.ReadUint32());
 
         versionComponent.descriptionInfo.descriptionType = static_cast<DescriptionType>(reply.ReadUint32());
         versionComponent.descriptionInfo.content = Str16ToStr8(reply.ReadString16());
@@ -171,6 +172,7 @@ void WriteVersionComponents(MessageParcel &data, const std::vector<VersionCompon
         data.WriteString16(Str8ToStr16(versionComponent->innerVersion));
         data.WriteUint64(static_cast<uint64_t>(versionComponent->size));
         data.WriteUint32(static_cast<uint32_t>(versionComponent->effectiveMode));
+        data.WriteUint32(static_cast<uint32_t>(versionComponent->otaMode));
 
         data.WriteUint32(static_cast<uint32_t>(versionComponent->descriptionInfo.descriptionType));
         data.WriteString16(Str8ToStr16(versionComponent->descriptionInfo.content));

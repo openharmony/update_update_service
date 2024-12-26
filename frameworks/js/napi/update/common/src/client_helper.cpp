@@ -161,6 +161,7 @@ void BuildVersionComponents(napi_env env, napi_value &obj, const std::vector<Ver
                 versionComponents[i].innerVersion.c_str());
             NapiCommonUtils::SetInt64(env, napiVersionComponent, "size", versionComponents[i].size);
             NapiCommonUtils::SetInt32(env, napiVersionComponent, "effectiveMode", versionComponents[i].effectiveMode);
+            NapiCommonUtils::SetInt32(env, napiVersionComponent, "otaMode", versionComponents[i].otaMode);
             ComponentDescription componentDescription = { .descriptionInfo = versionComponents[i].descriptionInfo };
             BuildDescInfo(env, napiVersionComponent, componentDescription);
             NapiCommonUtils::SetString(env, napiVersionComponent, "componentExtra",
@@ -551,10 +552,10 @@ ClientStatus ClientHelper::GetOptionsFromArg(napi_env env, const napi_value arg,
         UpgradeStatus::PACKAGE_TRANSING,      UpgradeStatus::PACKAGE_TRANS_FAIL,
         UpgradeStatus::PACKAGE_TRANS_SUCCESS, UpgradeStatus::INSTALLING,
         UpgradeStatus::INSTALL_FAIL,          UpgradeStatus::INSTALL_SUCCESS,
-        UpgradeStatus::UPDATING,              UpgradeStatus::UPDATE_FAIL,
-        UpgradeStatus::UPDATE_SUCCESS,        UpgradeStatus::UPGRADE_REBOOT,
-        UpgradeStatus::UPGRADE_COUNT_DOWN,     UpgradeStatus::UPGRADE_CANCEL,
-        UpgradeStatus::ERROR };
+        UpgradeStatus::INSTALL_PAUSE,         UpgradeStatus::UPDATING,
+        UpgradeStatus::UPDATE_FAIL,           UpgradeStatus::UPDATE_SUCCESS,
+        UpgradeStatus::UPGRADE_REBOOT,        UpgradeStatus::UPGRADE_COUNT_DOWN,
+        UpgradeStatus::UPGRADE_CANCEL,        UpgradeStatus::ERROR };
     PARAM_CHECK(IsValidEnum(statusList, status), return ClientStatus::CLIENT_INVALID_TYPE,
         "GetClearOptionsFromArg error, invalid status:%{public}d", status);
     clearOptions.status = static_cast<UpgradeStatus>(status);

@@ -152,7 +152,16 @@ private:
         SSL_set_fd(ssl, engineSocket);
         int32_t ret = SSL_connect(ssl);
         if (ret != -1) {
+            std::string serverIp = OHOS::system::GetParameter(PARAM_NAME_FOR_SEARCH, DEFAULT_SERVER_IP);
+            std::string request = "GET /config.json HTTP/1.1\r\nHost: " + serverIp + ":" +
+                std::to_string(PORT_NUMBER) + "\r\nConnection: close\r\n\r\n";
+            SSL_write(ssl, request.c_str(), request.size());
             int32_t len = SSL_read(ssl, buffer.data(), JSON_MAX_SIZE);
+            std::string resultStr = buffer.data();
+            int index = resultStr.find('{');
+            if (index != -1) {
+                buffer.erase(buffer.begin(), buffer.begin() + index);
+            }
             if (len > 0 && ParseJsonFile(buffer, response) == 0) {
                 result = SearchStatus::HAS_NEW_VERSION;
                 errMsg = "";

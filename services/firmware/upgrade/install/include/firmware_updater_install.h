@@ -26,7 +26,7 @@ namespace UpdateEngine {
 class UpdaterInstall final : public FirmwareInstall {
 private:
     bool IsComponentLegal(const std::vector<FirmwareComponent> &componentList) final;
-    bool PerformInstall(const std::vector<FirmwareComponent> &componentList) final;
+    bool PerformInstall(const std::vector<FirmwareComponent> &componentList, UpgradeStatus &status) final;
     int32_t DoUpdaterInstall(const std::vector<FirmwareComponent> &componentList);
 };
 } // namespace UpdateEngine

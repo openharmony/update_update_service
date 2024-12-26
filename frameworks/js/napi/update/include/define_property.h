@@ -32,6 +32,7 @@ private:
     static void DefineUpgradeStatus(napi_env env, napi_value exports);
     static void DefineComponentType(napi_env env, napi_value exports);
     static void DefineEffectiveMode(napi_env env, napi_value exports);
+    static void DefineOtaType(napi_env env, napi_value exports);
     static void DefineNetType(napi_env env, napi_value exports);
     static void DefineOrder(napi_env env, napi_value exports);
     static void DefineEventClassify(napi_env env, napi_value exports);

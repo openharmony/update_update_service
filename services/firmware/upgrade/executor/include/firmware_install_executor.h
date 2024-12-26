@@ -35,8 +35,9 @@ public:
 private:
     void DoInstall();
     void GetTask();
-    void HandleInstallProgress(const FirmwareComponent &component, const Progress &progress);
-    void HandleInstallResult(const bool result, const ErrorMessage &errMsg);
+    void HandleInstallProgress(const FirmwareComponent &component);
+    void HandleInstallResult(const bool result, const ErrorMessage &errMsg, const UpgradeStatus &status);
+    void StartInstall();
 
 private:
     InstallType installType_;

@@ -28,6 +28,7 @@ namespace UpdateEngine {
 const std::string FIRMWARE_TABLE_COMPONENT = "component";
 const std::string COLUMN_COMPONENT_VERSION_ID = "versionId";
 const std::string COLUMN_COMPONENT_VERSION_PACKAGE_TYPE = "versionPackageType";
+const std::string COLUMN_COMPONENT_OTA_MODE = "otaType";
 const std::string COLUMN_COMPONENT_PACKAGE_INDEX = "packageIndex";
 const std::string COLUMN_COMPONENT_TARGET_BL_DISPLAY_VERSION_NUMBER  = "targetBlDisplayVersionNumber";
 const std::string COLUMN_COMPONENT_TARGET_BL_VERSION_NUMBER = "targetBlVersionNumber";
@@ -48,7 +49,7 @@ const std::string COLUMN_COMPONENT_FILENAME = "fileName";
 const std::string COLUMN_COMPONENT_SPATH = "spath";
 const std::string COLUMN_COMPONENT_STATUS = "status";
 const std::string COLUMN_COMPONENT_PROGRESS = "progress";
-
+const std::string COLUMN_COMPONENT_RECORD_POINT = "recordPoint";
 // 预留6个字段
 const std::string COLUMN_COMPONENT_EXTENDS1 = "extends1";
 const std::string COLUMN_COMPONENT_EXTENDS2 = "extends2";

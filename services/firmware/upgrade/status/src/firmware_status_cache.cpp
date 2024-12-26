@@ -54,5 +54,13 @@ bool FirmwareStatusCache::IsDownloadTriggered()
     }
     return statusCache_->IsDownloadTriggered();
 }
+
+bool FirmwareStatusCache::IsUpgradeTriggered()
+{
+    if (statusCache_ == nullptr) {
+        return false;
+    }
+    return statusCache_->IsUpgradeTriggered();
+}
 } // namespace UpdateEngine
 } // namespace OHOS

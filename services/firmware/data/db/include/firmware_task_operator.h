@@ -47,6 +47,7 @@ public:
     ~FirmwareTaskOperator() = default;
     void QueryTask(FirmwareTask &task);
     bool UpdateProgressByTaskId(const std::string &taskId, UpgradeStatus status, int32_t progress);
+    bool UpdateStatusByTaskId(const std::string &taskId, UpgradeStatus status);
     bool UpdateErrMsgByTaskId(const std::string &taskId, int errorCode, const std::string &errorMsg);
     bool UpdateDownloadTaskIdByTaskId(const std::string &taskId, const std::string &downloadTaskId);
     bool UpdateCombinationTypeByTaskId(const std::string &taskId,

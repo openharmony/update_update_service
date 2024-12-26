@@ -16,6 +16,7 @@
 #include "firmware_sys_installer_callback.h"
 
 #include "firmware_log.h"
+#include "firmware_constant.h"
 
 namespace OHOS {
 namespace UpdateEngine {
@@ -27,7 +28,8 @@ SysInstallerCallback::SysInstallerCallback(SysInstallerExecutorCallback &install
 void SysInstallerCallback::OnUpgradeProgress(SysInstaller::UpdateStatus updateStatus, int percent,
     const std::string &resultMsg)
 {
-    FIRMWARE_LOGI("sysInstallerCallback OnUpgradeProgress status %{public}d percent %{public}d", updateStatus, percent);
+    FIRMWARE_LOGI("sysInstallerCallback OnUpgradeProgress status %{public}d "
+        "percent %{public}d", updateStatus, percent);
     InstallProgress installProgress = {};
     switch (updateStatus) {
         case SysInstaller::UpdateStatus::UPDATE_STATE_INIT:
@@ -47,6 +49,36 @@ void SysInstallerCallback::OnUpgradeProgress(SysInstaller::UpdateStatus updateSt
     installProgress.errMsg.errorCode = CAST_INT(updateStatus);
     if (sysInstallCallback_.onSysInstallerCallback == nullptr) {
         FIRMWARE_LOGE("SysInstallerCallback OnUpgradeProgress onSysInstallerCallback is null");
+        return;
+    }
+    sysInstallCallback_.onSysInstallerCallback(installProgress);
+}
+
+void SysInstallerCallback::OnUpgradeDealLen(SysInstaller::UpdateStatus updateStatus, int dealLen,
+    const std::string &resultMsg)
+{
+    FIRMWARE_LOGI("sysInstallerCallback OnUpgradeDealLen status %{public}d "
+        "dealLen %{public}d", updateStatus, dealLen);
+    InstallProgress installProgress = {};
+    switch (updateStatus) {
+        case SysInstaller::UpdateStatus::UPDATE_STATE_INIT:
+        case SysInstaller::UpdateStatus::UPDATE_STATE_ONGOING:
+            installProgress.progress.status = UpgradeStatus::INSTALLING;
+            break;
+        case SysInstaller::UpdateStatus::UPDATE_STATE_SUCCESSFUL:
+            installProgress.progress.status = UpgradeStatus::INSTALL_SUCCESS;
+            installProgress.progress.percent = Firmware::ONE_HUNDRED;
+            break;
+        default:
+            installProgress.progress.status = UpgradeStatus::INSTALL_FAIL;
+            installProgress.errMsg.errorMessage = resultMsg;
+            break;
+    }
+
+    installProgress.errMsg.errorCode = CAST_INT(updateStatus);
+    installProgress.dealLen = dealLen;
+    if (sysInstallCallback_.onSysInstallerCallback == nullptr) {
+        FIRMWARE_LOGE("SysInstallerCallback OnUpgradeDealLen onSysInstallerCallback is null");
         return;
     }
     sysInstallCallback_.onSysInstallerCallback(installProgress);
