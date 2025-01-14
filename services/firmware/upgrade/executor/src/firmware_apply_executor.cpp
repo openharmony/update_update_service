@@ -50,8 +50,6 @@ void FirmwareApplyExecutor::DoInstall()
         firmwareApplyCallback_.applyCallback(false);
         return;
     }
-    GetTask();
-    FirmwareTaskOperator().UpdateProgressByTaskId(tasks_.taskId, UpgradeStatus::UPDATING, 0);
     sleep(Firmware::SLEEP_TIME_BEFORE_REBOOT);
     DoReboot(NULL); // ab apply
 }
