@@ -61,7 +61,7 @@ private:
     void HandleBootDownloadOnStatusProcess(FirmwareTask &task);
     void HandleBootDownloadPauseStatusProcess(FirmwareTask &task);
     void HandleBootDownloadedStatusProcess(FirmwareTask &task);
-    void HandleBootUpdateSuccess(const FirmwareTask &task, const std::map<std::string, UpdateResult> &resultMap);
+    void HandleBootUpdateSuccess(const FirmwareTask &task);
     void HandleBootUpdateFail(const FirmwareTask &task, const std::map<std::string, UpdateResult> &resultMap);
     void DoAutoDownload(const FirmwareTask &task);
 
