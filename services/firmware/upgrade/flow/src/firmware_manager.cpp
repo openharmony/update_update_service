@@ -309,6 +309,12 @@ void FirmwareManager::HandleBootComplete()
         HandleBootUpdateOnStatusProcess(task);
         return;
     }
+
+    // ab 升级安装完成
+    if (task.status == UpgradeStatus::INSTALL_SUCCESS) {
+        HandleBootUpdateSuccess(task);
+        return;
+    }
 }
 
 void FirmwareManager::HandleNetChanged()
@@ -354,7 +360,7 @@ void FirmwareManager::HandleBootUpdateOnStatusProcess(const FirmwareTask &task)
     FirmwareComponentOperator().QueryAll(components);
     switch (resultProcess.GetUpdaterResult(components, resultMap)) {
         case UpdateResultCode::SUCCESS:
-            HandleBootUpdateSuccess(task, resultMap);
+            HandleBootUpdateSuccess(task);
             break;
         case UpdateResultCode::FAILURE:
             HandleBootUpdateFail(task, resultMap);
@@ -364,8 +370,7 @@ void FirmwareManager::HandleBootUpdateOnStatusProcess(const FirmwareTask &task)
     }
 }
 
-void FirmwareManager::HandleBootUpdateSuccess(const FirmwareTask &task,
-    const std::map<std::string, UpdateResult> &resultMap)
+void FirmwareManager::HandleBootUpdateSuccess(const FirmwareTask &task)
 {
     preferencesUtil_->SaveString(Firmware::UPDATE_ACTION, "upgrade");
     std::vector<FirmwareComponent> components;
