@@ -53,6 +53,7 @@ ohos_shared_library("$updateengine_client_library_name") {
     "hilog:libhilog",
     "ipc:ipc_core",
     "json:nlohmann_json_static",
+    "napi:ace_napi",
   ]
 
   if (ability_ability_runtime_enable) {
