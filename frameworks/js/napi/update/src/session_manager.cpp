@@ -17,6 +17,7 @@
 
 #include <uv.h>
 
+#include "napi/native_node_api.h"
 #include "node_api.h"
 
 #include "client_helper.h"
@@ -235,29 +236,9 @@ void SessionManager::PublishToJS(const EventClassifyInfo &eventClassifyInfo, con
 void SessionManager::Emit(const EventClassifyInfo &eventClassifyInfo, const EventInfo &eventInfo)
 {
     ENGINE_LOGI("SessionManager::Emit 0x%{public}x", CAST_INT(eventClassifyInfo.eventClassify));
-    uv_loop_s *loop = nullptr;
-    napi_get_uv_event_loop(env_, &loop);
-    PARAM_CHECK(loop != nullptr, return, "get event loop failed.");
-
-    using UvWorkData = std::tuple<SessionManager*, EventClassifyInfo, EventInfo>;
-    UvWorkData *data = new (std::nothrow) std::tuple(this, eventClassifyInfo, eventInfo);
-    PARAM_CHECK(data != nullptr, return, "alloc data failed.");
-
-    uv_work_t *work = new (std::nothrow) uv_work_t;
-    PARAM_CHECK(work != nullptr, delete data; return, "alloc work failed.");
-
-    work->data = static_cast<void *>(data);
-    uv_queue_work_with_qos(
-        loop,
-        work,
-        [](uv_work_t *work) { ENGINE_LOGI("print job info"); },
-        [](uv_work_t *work, int status) {
-            UvWorkData *data = static_cast<UvWorkData*>(work->data);
-            auto &[mgr, eventClassifyInfo, eventInfo] = *data;
-            mgr->PublishToJS(eventClassifyInfo, eventInfo);
-            delete data;
-            delete work;
-        },
-        uv_qos_default);
+    auto task = [eventClassifyInfo, eventInfo, this]() { PublishToJS(eventClassifyInfo, eventInfo); };
+    if (napi_status::napi_ok != napi_send_event(env_, task, napi_eprio_high)) {
+        ENGINE_LOGE("PublishToJS: Failed to SendEvent");
+    }
 }
 } // namespace OHOS::UpdateEngine
