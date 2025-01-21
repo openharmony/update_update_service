@@ -61,6 +61,7 @@ public:
         // 接口调用返回值,非返回内容
         napi_value result = nullptr;
         if (argc >= argNum) {
+            PARAM_CHECK(argNum >= 1, return nullptr, "argNum is less than 1");
             uint32_t callbackPosition = argNum - 1;
             napi_valuetype callbackValueType;
             napi_typeof(env, args[callbackPosition], &callbackValueType);
