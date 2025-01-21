@@ -17,7 +17,7 @@
 
 #include <uv.h>
 
-#include "native_node_api.h"
+#include "napi/native_node_api.h"
 #include "node_api.h"
 
 #include "client_helper.h"
