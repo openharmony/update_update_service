@@ -26,8 +26,6 @@ modulemgr_external_deps = [
 
 modulemgr_deps = [ "$updateengine_root_path/foundations:update_foundations" ]
 
-modulemgr_public_deps = []
-
 modulemgr_include = [ "$modulemgr_root_path/include" ]
 
 modulemgr_src = [
