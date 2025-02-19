@@ -41,7 +41,6 @@ ohos_shared_library("$updateengine_library_name") {
   sources = sa_sources
   deps = sa_deps
   external_deps = sa_external_deps
-  public_deps = sa_public_deps
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
   defines = sa_defines

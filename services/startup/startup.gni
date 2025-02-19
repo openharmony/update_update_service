@@ -18,7 +18,6 @@ startup_root_path = "$updateengine_root_path/services/startup"
 startup_internal_deps = []
 startup_external_deps = []
 startup_deps = []
-startup_public_deps = []
 startup_include = [
   "$startup_root_path/access/include",
   "$startup_root_path/manage/include",
