@@ -170,9 +170,6 @@ sa_external_deps += firmware_external_deps
 sa_external_deps += sqlite_external_deps
 sa_external_deps += startup_external_deps
 
-sa_public_deps = []
-sa_public_deps += startup_public_deps
-
 sa_defines = [
   "DUAL_ADAPTER",
   "UPDATE_SERVICE",
