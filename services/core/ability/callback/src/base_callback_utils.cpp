@@ -51,6 +51,7 @@ void BaseCallbackUtils::ProgressCallback(const std::string &versionDigestInfo, c
         {UpgradeStatus::INSTALLING, EventId::EVENT_UPGRADE_UPDATE},
         {UpgradeStatus::INSTALL_FAIL, EventId::EVENT_UPGRADE_FAIL},
         {UpgradeStatus::INSTALL_SUCCESS, EventId::EVENT_APPLY_WAIT},
+        {UpgradeStatus::INSTALL_PAUSE, EventId::EVENT_UPGRADE_PAUSE},
         {UpgradeStatus::UPDATING, EventId::EVENT_UPGRADE_UPDATE},
         {UpgradeStatus::UPDATE_FAIL, EventId::EVENT_UPGRADE_FAIL},
         {UpgradeStatus::UPDATE_SUCCESS, EventId::EVENT_UPGRADE_SUCCESS},

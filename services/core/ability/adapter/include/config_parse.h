@@ -27,6 +27,7 @@ class ConfigParse : public DelayedSingleton<ConfigParse> {
 
 public:
     uint32_t GetAbInstallerTimeout();
+    uint32_t GetStreamInstallerTimeout();
     std::string GetModuleLibPath();
     void LoadConfigInfo();
 

@@ -50,6 +50,8 @@ public:
     static bool IsUpgradeFailed(UpgradeStatus status);
     static std::string BuildTaskId(const std::vector<FirmwareComponent> &componentList);
     static InstallType GetInstallType();
+    static bool IsStreamUpgrade();
+    static bool IsStreamUpgrade(const std::vector<FirmwareComponent> &componentList);
 
 private:
     static VersionComponent BuildHotaVersionComponent(std::vector<FirmwareComponent> &hotaComponents);

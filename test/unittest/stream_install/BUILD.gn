@@ -1,0 +1,66 @@
+# Copyright (c) 2024 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//base/update/updateservice/services/engine/engine_sa.gni")
+import("//base/update/updateservice/updateengine.gni")
+import("//build/test.gni")
+
+module_output_path = "$updateengine_part_name/$updateengine_unittest_name"
+
+ohos_unittest("firmware_stream_installer_install_test") {
+  module_out_path = module_output_path
+  include_dirs = sa_include_dirs
+  deps = sa_deps
+  external_deps = sa_external_deps
+  defines = [
+    "UPDATER_UT",
+    "RELATIONAL_STORE_NATIVE_RDB_ENABLE",
+  ]
+  sources = [
+    "$firmware_root_path/data/db/src/firmware_component_operator.cpp",
+    "$firmware_root_path/data/db/src/firmware_component_table.cpp",
+    "$firmware_root_path/data/db/src/firmware_database.cpp",
+    "$firmware_root_path/data/db/src/firmware_database_callback.cpp",
+    "$firmware_root_path/data/db/src/firmware_task_operator.cpp",
+    "$firmware_root_path/data/db/src/firmware_task_table.cpp",
+    "$firmware_root_path/upgrade/install/src/firmware_install.cpp",
+    "$firmware_root_path/upgrade/install/src/firmware_stream_installer_install.cpp",
+    "$sqlite_root_path/core/src/sqlite_db.cpp",
+    "$updateengine_root_path/test/unittest/stream_install/firmware_stream_installer_install_test.cpp",
+  ]
+  external_deps += [ "googletest:gtest_main" ]
+  part_name = updateengine_part_name
+}
+
+ohos_unittest("stream_progress_thread_test") {
+  module_out_path = module_output_path
+  include_dirs = sa_include_dirs
+  deps = sa_deps
+  external_deps = sa_external_deps
+  defines = [ "UPDATER_UT" ]
+  sources = [
+    "$updateengine_root_path/services/engine/src/progress_thread.cpp",
+    "$updateengine_root_path/services/engine/src/stream_progress_thread.cpp",
+    "$updateengine_root_path/test/unittest/stream_install/stream_progress_thread_test.cpp",
+  ]
+  external_deps += [ "googletest:gtest_main" ]
+  part_name = updateengine_part_name
+}
+
+group("stream_install_unittest") {
+  testonly = true
+  deps = [
+    ":firmware_stream_installer_install_test",
+    ":stream_progress_thread_test",
+  ]
+}

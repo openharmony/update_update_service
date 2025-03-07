@@ -16,7 +16,7 @@
 #include "update_service_impl_firmware.h"
 
 #include <string>
-
+#include "dupdate_errno.h"
 #include "firmware_check_data_processor.h"
 #include "firmware_constant.h"
 #include "firmware_component_operator.h"
@@ -115,6 +115,13 @@ int32_t UpdateServiceImplFirmware::Upgrade(const UpgradeInfo &info, const Versio
     const UpgradeOptions &upgradeOptions, BusinessError &businessError)
 {
     FIRMWARE_LOGI("Upgrade order = %{public}d", CAST_INT(upgradeOptions.order));
+    //控制1秒内重复点击下载
+    if (DelayedSingleton<FirmwareStatusCache>::GetInstance()->IsUpgradeTriggered()) {
+        FIRMWARE_LOGI("on upgrading, not perrmit repeat submmit");
+        businessError.Build(CallResult::FAIL, "repeat upgrade error");
+        return INT_CALL_SUCCESS;
+    }
+
     FirmwareTask task;
     FirmwareTaskOperator firmwareTaskOperator;
     firmwareTaskOperator.QueryTask(task);
@@ -304,12 +311,24 @@ int32_t UpdateServiceImplFirmware::Cancel(const UpgradeInfo &info, int32_t servi
     businessError.errorNum = CallResult::SUCCESS;
     FirmwareTask task;
     FirmwareTaskOperator().QueryTask(task);
-    if (task.status != UpgradeStatus::DOWNLOADING && task.status != UpgradeStatus::DOWNLOAD_PAUSE) {
-        FIRMWARE_LOGI("Cancel fail current status: %{public}d", CAST_INT(task.status));
-        businessError.Build(CallResult::FAIL, "Cancel download error");
+    if (FirmwareUpdateHelper::IsStreamUpgrade()) {
+        if (task.status != UpgradeStatus::INSTALLING) {
+            FIRMWARE_LOGI("Cancel fail current status: %{public}d", CAST_INT(task.status));
+            businessError.Build(CallResult::FAIL, "Cancel install error");
+            businessError.AddErrorMessage(CAST_INT(DUPDATE_ERR_CANCEL_TASK_ERROR), "no install task to cancel!");
+        } else {
+            DelayedSingleton<FirmwareManager>::GetInstance()->DoCancel(businessError);
+        }
     } else {
-        DelayedSingleton<FirmwareManager>::GetInstance()->DoCancelDownload(businessError);
+        if (task.status != UpgradeStatus::DOWNLOADING && task.status != UpgradeStatus::DOWNLOAD_PAUSE) {
+            FIRMWARE_LOGI("Cancel fail current status: %{public}d", CAST_INT(task.status));
+            businessError.Build(CallResult::FAIL, "Cancel download error");
+            businessError.AddErrorMessage(CAST_INT(DUPDATE_ERR_CANCEL_TASK_ERROR), "no download task to cancel!");
+        } else {
+            DelayedSingleton<FirmwareManager>::GetInstance()->DoCancel(businessError);
+        }
     }
+
     return INT_CALL_SUCCESS;
 }
 

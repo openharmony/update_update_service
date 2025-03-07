@@ -37,7 +37,7 @@ bool SysInstallerInstall::IsComponentLegal(const std::vector<FirmwareComponent> 
     return FirmwareUpdateHelper::IsUpgradePackagesReady(componentList);
 }
 
-bool SysInstallerInstall::PerformInstall(const std::vector<FirmwareComponent> &componentList)
+bool SysInstallerInstall::PerformInstall(const std::vector<FirmwareComponent> &componentList, UpgradeStatus &status)
 {
     FIRMWARE_LOGI("SysInstallerInstall::PerformInstall");
     if (componentList.empty()) {

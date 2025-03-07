@@ -29,6 +29,7 @@ public:
     bool IsChecking();
     void SetIsChecking(bool isChecking);
     bool IsDownloadTriggered();
+    bool IsUpgradeTriggered();
 private:
     std::shared_ptr<StatusCache> statusCache_ = nullptr;
 };

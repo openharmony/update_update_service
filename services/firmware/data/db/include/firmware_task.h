@@ -48,6 +48,7 @@ struct FirmwareTask {
     std::string tokenHMac;
     std::string currentVersionList;
     int64_t authTime = 0;
+    bool isStreamUpgrade = false;
 
     std::string ToString()
     {
@@ -68,7 +69,8 @@ struct FirmwareTask {
         .append("deviceToken=").append(deviceToken).append(",")
         .append("tokenHMac=").append(tokenHMac).append(",")
         .append("currentVersionList=").append(currentVersionList).append(",")
-        .append("authTime=").append(std::to_string(authTime)).append(",");
+        .append("authTime=").append(std::to_string(authTime)).append(",")
+        .append("isStreamUpgrade=").append(std::to_string(isStreamUpgrade));
     }
 };
 } // namespace UpdateEngine

@@ -22,6 +22,7 @@
 #include "description_format.h"
 #include "description_type.h"
 #include "effective_mode.h"
+#include "ota_mode.h"
 #include "event_classify.h"
 #include "event_id.h"
 #include "napi_common_utils.h"
@@ -49,6 +50,7 @@ void DefineProperty::DefineProperties(napi_env env, napi_value exports)
     DefineUpgradeStatus(env, exports);
     DefineComponentType(env, exports);
     DefineEffectiveMode(env, exports);
+    DefineOtaType(env, exports);
     DefineNetType(env, exports);
     DefineOrder(env, exports);
     DefineEventClassify(env, exports);
@@ -100,6 +102,7 @@ void DefineProperty::DefineUpgradeStatus(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(UpgradeStatus::INSTALLING),
         DECLARE_ENUM_PROPERTY(UpgradeStatus::INSTALL_FAIL),
         DECLARE_ENUM_PROPERTY(UpgradeStatus::INSTALL_SUCCESS),
+        DECLARE_ENUM_PROPERTY(UpgradeStatus::INSTALL_PAUSE),
         DECLARE_ENUM_PROPERTY(UpgradeStatus::UPDATING),
         DECLARE_ENUM_PROPERTY(UpgradeStatus::UPDATE_FAIL),
         DECLARE_ENUM_PROPERTY(UpgradeStatus::UPDATE_SUCCESS)
@@ -126,6 +129,17 @@ void DefineProperty::DefineEffectiveMode(napi_env env, napi_value exports)
         DECLARE_ENUM_PROPERTY(EffectiveMode::LIVE_AND_COLD)
     };
     NapiCommonUtils::CreateProperty(env, exports, "EffectiveMode", effectiveModeList);
+}
+
+void DefineProperty::DefineOtaType(napi_env env, napi_value exports)
+{
+    std::vector<std::pair<std::string, napi_value>> otaTypeList = {
+        DECLARE_ENUM_PROPERTY(OtaMode::REGULAR),
+        DECLARE_ENUM_PROPERTY(OtaMode::STREAM),
+        DECLARE_ENUM_PROPERTY(OtaMode::AB),
+        DECLARE_ENUM_PROPERTY(OtaMode::AB_STREAM)
+    };
+    NapiCommonUtils::CreateProperty(env, exports, "OtaMode", otaTypeList);
 }
 
 void DefineProperty::DefineNetType(napi_env env, napi_value exports)

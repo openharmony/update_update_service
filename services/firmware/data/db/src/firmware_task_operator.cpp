@@ -46,6 +46,13 @@ bool FirmwareTaskOperator::UpdateProgressByTaskId(const std::string &taskId, Upg
     return UpdateByTaskId(taskId, values);
 }
 
+bool FirmwareTaskOperator::UpdateStatusByTaskId(const std::string &taskId, UpgradeStatus status)
+{
+    NativeRdb::ValuesBucket values;
+    values.PutInt(COLUMN_TASK_STATUS, CAST_INT(status));
+    return UpdateByTaskId(taskId, values);
+}
+
 bool FirmwareTaskOperator::UpdateErrMsgByTaskId(const std::string &taskId, int errorCode, const std::string &errorMsg)
 {
     NativeRdb::ValuesBucket values;

@@ -19,6 +19,7 @@
 #include <string>
 
 #include "package_type.h"
+#include "ota_type.h"
 #include "update_define.h"
 #include "upgrade_status.h"
 
@@ -30,6 +31,7 @@ struct FirmwareComponent {
     std::string versionId;           // 标识包的唯一性
     int32_t packageIndex = 0;        // 包的安装顺序
     PackageType versionPackageType = PackageType::DYNAMIC;
+    OtaType otaType = OtaType::REGULAR;
 
     std::string targetBlVersionNumber;
     std::string targetBlDisplayVersionNumber;
@@ -55,7 +57,8 @@ struct FirmwareComponent {
 
     UpgradeStatus status = UpgradeStatus::INIT;
     int32_t progress = 0;
-
+    int64_t recordPoint = 0;
+    
     std::string ToString()
     {
         return std::string("FirmwareComponent: ")
@@ -63,6 +66,7 @@ struct FirmwareComponent {
         .append("versionId=").append(versionId).append(",")
         .append("packageIndex=").append(std::to_string(packageIndex)).append(",")
         .append("versionPackageType=").append(std::to_string(CAST_INT(versionPackageType))).append(",")
+        .append("otaType=").append(std::to_string(CAST_INT(otaType))).append(",")
         .append("targetBlVersionNumber=").append(targetBlVersionNumber).append(",")
         .append("targetBlDisplayVersionNumber=").append(targetBlDisplayVersionNumber).append(",")
         .append("versionNumber=").append(versionNumber).append(",")
@@ -81,7 +85,8 @@ struct FirmwareComponent {
         .append("verifyInfo=").append(verifyInfo).append(",")
         .append("spath=").append(spath).append(",")
         .append("status=").append(std::to_string(CAST_INT(status))).append(",")
-        .append("progress=").append(std::to_string(progress));
+        .append("progress=").append(std::to_string(progress)).append(",")
+        .append("recordPoint=").append(std::to_string(recordPoint));
     }
 };
 } // namespace UpdateEngine

@@ -52,8 +52,12 @@ bool FirmwareUpdateHelper::IsBatteryEnough(int32_t batteryLimit)
 
 InstallType FirmwareUpdateHelper::GetInstallType()
 {
-    InstallType installType = (DeviceAdapter::GetBootSlot()) == Firmware::BOOTSLOTS_AB_UPDATE_VALUE ?
-        InstallType::SYS_INSTALLER : InstallType::UPDATER;
+    InstallType installType = InstallType::QUICK_FIX;
+    if (DeviceAdapter::GetBootSlot() == Firmware::BOOTSLOTS_AB_UPDATE_VALUE) {
+        installType = IsStreamUpgrade() ? InstallType::STREAM_INSTALLLER : InstallType::SYS_INSTALLER;
+    } else {
+        installType = InstallType::UPDATER;
+    }
     FIRMWARE_LOGI("get installType(bootsloot) %{public}d", CAST_INT(installType));
     return installType;
 }
@@ -73,8 +77,23 @@ VersionComponent FirmwareUpdateHelper::BuildHotaVersionComponent(std::vector<Fir
     hotaVersionComponent.componentId = hotaComponents[0].componentId;
     hotaVersionComponent.upgradeAction = UpgradeAction::UPGRADE;
     hotaVersionComponent.componentType = CAST_INT(ComponentType::OTA);
-    hotaVersionComponent.effectiveMode = FirmwareUpdateHelper::GetInstallType() == InstallType::SYS_INSTALLER ?
-        static_cast<size_t>(EffectiveMode::LIVE_AND_COLD): static_cast<size_t>(EffectiveMode::COLD);
+    InstallType InstallType = FirmwareUpdateHelper::GetInstallType();
+    size_t effectiveMode;
+    if (InstallType == InstallType::SYS_INSTALLER || InstallType == InstallType::STREAM_INSTALLLER) {
+        effectiveMode = static_cast<size_t>(EffectiveMode::LIVE_AND_COLD);
+    } else {
+        effectiveMode = static_cast<size_t>(EffectiveMode::COLD);
+    }
+    hotaVersionComponent.effectiveMode = effectiveMode;
+    size_t otaMode;
+    if (InstallType == InstallType::SYS_INSTALLER) {
+        otaMode = static_cast<size_t>(OtaMode::AB);
+    } else if (InstallType == InstallType::STREAM_INSTALLLER) {
+        otaMode = static_cast<size_t>(OtaMode::AB_STREAM);
+    } else {
+        otaMode = static_cast<size_t>(OtaMode::REGULAR);
+    }
+    hotaVersionComponent.otaMode = otaMode;
     hotaVersionComponent.innerVersion = hotaComponents[0].targetBlVersionNumber;
     hotaVersionComponent.displayVersion = hotaComponents[0].targetBlDisplayVersionNumber;
     for (const auto &component : hotaComponents) {
@@ -142,5 +161,22 @@ bool FirmwareUpdateHelper::IsUpgradePackagesReady(const std::vector<FirmwareComp
         return true;
     });
 }
+
+bool FirmwareUpdateHelper::IsStreamUpgrade()
+{
+    std::vector<FirmwareComponent> components;
+    FirmwareComponentOperator().QueryAll(components);
+    return IsStreamUpgrade(components);
+}
+
+bool FirmwareUpdateHelper::IsStreamUpgrade(const std::vector<FirmwareComponent> &componentList)
+{
+    if (componentList.empty()) {
+        FIRMWARE_LOGI("FirmwareUpdateHelper::IsStreamUpgrade componentList is empty");
+        return false;
+    }
+    return (componentList[0].otaType == OtaType::AB_STREAM);
+}
+
 } // namespace UpdateEngine
 } // namespace OHOS

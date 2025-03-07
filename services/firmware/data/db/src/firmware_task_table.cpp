@@ -47,6 +47,7 @@ std::string FirmwareTaskTable::GetTableCreateSql()
         .append(COLUMN_TASK_TOKEN_H_MAC + " varchar(256),")
         .append(COLUMN_TASK_CURR_VERSION_LIST + " varchar(1024),")
         .append(COLUMN_TASK_AUTH_TIME + " bigint,")
+        .append(COLUMN_TASK_IS_STREAM_UPGRADE + " integer,")
         .append(COLUMN_TASK_EXTENDS1 + " varchar(256),")
         .append(COLUMN_TASK_EXTENDS2 + " varchar(256),")
         .append(COLUMN_TASK_EXTENDS3 + " varchar(256),")
@@ -90,6 +91,7 @@ void FirmwareTaskTable::ParseDbValue(ResultSet *resultSet, FirmwareTask &value)
     GetColumnValue(resultSet, COLUMN_TASK_TOKEN_H_MAC, value.tokenHMac);
     GetColumnValue(resultSet, COLUMN_TASK_CURR_VERSION_LIST, value.currentVersionList);
     GetColumnValue(resultSet, COLUMN_TASK_AUTH_TIME, value.authTime);
+    GetColumnValue(resultSet, COLUMN_TASK_IS_STREAM_UPGRADE, value.isStreamUpgrade);
 }
 
 void FirmwareTaskTable::BuildDbValue(const FirmwareTask &value, NativeRdb::ValuesBucket &dbValue)
@@ -112,6 +114,7 @@ void FirmwareTaskTable::BuildDbValue(const FirmwareTask &value, NativeRdb::Value
     PutColumnValue(dbValue, COLUMN_TASK_TOKEN_H_MAC, value.tokenHMac);
     PutColumnValue(dbValue, COLUMN_TASK_CURR_VERSION_LIST, value.currentVersionList);
     PutColumnValue(dbValue, COLUMN_TASK_AUTH_TIME, value.authTime);
+    PutColumnValue(dbValue, COLUMN_TASK_IS_STREAM_UPGRADE, value.isStreamUpgrade);
 }
 } // namespace UpdateEngine
 } // namespace OHOS

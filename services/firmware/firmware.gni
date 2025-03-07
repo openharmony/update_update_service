@@ -48,6 +48,7 @@ ab_update_src = [
 
 if (ability_ability_runtime_enable) {
   ab_update_src += [ "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install.cpp" ]
+  ab_update_src += [ "$firmware_root_path/upgrade/install/src/firmware_stream_installer_install.cpp" ]
 } else {
   ab_update_src += [ "$firmware_root_path/upgrade/install/src/firmware_sys_installer_install_empty.cpp" ]
 }
@@ -81,6 +82,7 @@ if (communication_netmanager_base_enable) {
     "$firmware_root_path/upgrade/mode/src/firmware_download_mode.cpp",
     "$firmware_root_path/upgrade/mode/src/firmware_manual_check_mode.cpp",
     "$firmware_root_path/upgrade/mode/src/firmware_install_apply_mode.cpp",
+    "$firmware_root_path/upgrade/mode/src/firmware_stream_install_apply_mode.cpp",
   ]
 } else {
   firmware_src += [

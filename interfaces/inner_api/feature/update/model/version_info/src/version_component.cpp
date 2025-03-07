@@ -27,6 +27,7 @@ JsonBuilder VersionComponent::GetJsonBuilder()
         .Append("innerVersion", innerVersion)
         .Append("size", static_cast<int64_t>(size))
         .Append("effectiveMode", static_cast<int32_t>(effectiveMode))
+        .Append("otaMode", static_cast<int32_t>(otaMode))
         .Append("descriptionInfo", descriptionInfo.GetJsonBuilder())
         .Append("componentExtra", componentExtra, true)
         .Append("}");

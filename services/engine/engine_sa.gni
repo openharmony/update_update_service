@@ -39,6 +39,7 @@ sa_sources = [
   "$updateengine_root_path/services/core/ability/utils/src/sha256_utils.cpp",
   "$updateengine_root_path/services/core/ability/utils/src/time_utils_proxy.cpp",
   "$updateengine_root_path/services/engine/src/progress_thread.cpp",
+  "$updateengine_root_path/services/engine/src/stream_progress_thread.cpp",
   "$updateengine_root_path/services/engine/src/update_service.cpp",
   "$updateengine_root_path/services/engine/src/update_service_cache.cpp",
   "$updateengine_root_path/services/engine/src/update_service_impl_firmware.cpp",

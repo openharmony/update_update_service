@@ -45,9 +45,10 @@ void FirmwareInstall::StartInstall(const std::vector<FirmwareComponent> &compone
 
     SetIsInstalling(true);
     onInstallCallback_ = cb;
-    bool result = PerformInstall(componentList);
+    UpgradeStatus status;
+    bool result = PerformInstall(componentList, status);
     SetIsInstalling(false);
-    CallbackResult(cb, result);
+    CallbackResult(cb, result, status);
 }
 
 bool FirmwareInstall::IsInstalling()
@@ -65,12 +66,12 @@ void FirmwareInstall::SetIsInstalling(bool isInstalling)
 void FirmwareInstall::CallbackFailedResult(FirmwareInstallCallback &cb, const std::string &errorMsg, int32_t errCode)
 {
     ErrorMessage errMsg = { errCode, errorMsg };
-    cb.onFirmwareEvent(false, errMsg);
+    cb.onFirmwareEvent(false, errMsg, UpgradeStatus::INSTALL_FAIL);
 }
 
-void FirmwareInstall::CallbackResult(FirmwareInstallCallback &cb, const bool result)
+void FirmwareInstall::CallbackResult(FirmwareInstallCallback &cb, bool result, UpgradeStatus status)
 {
-    cb.onFirmwareEvent(result, errMsg_);
+    cb.onFirmwareEvent(result, errMsg_, status);
 }
 } // namespace UpdateEngine
 } // namespace OHOS
