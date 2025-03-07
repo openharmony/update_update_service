@@ -30,12 +30,13 @@ constexpr int32_t SLEEP_INSTALL = 1;
 
 struct InstallProgress {
     Progress progress;
+    uint32_t dealLen = 0;
     ErrorMessage errMsg;
 };
 
 using OnFirmwareProgress = std::function<void(const FirmwareComponent &component)>;
-using OnFirmwareEvent = std::function<void(const bool result, const ErrorMessage &errMsg)>;
-using OnFirmwareStatus = std::function<void(const UpgradeStatus &status)>;
+using OnFirmwareEvent = std::function<void(bool result, const ErrorMessage &errMsg, UpgradeStatus status)>;
+using OnFirmwareStatus = std::function<void(UpgradeStatus status)>;
 struct FirmwareInstallCallback {
     OnFirmwareProgress onFirmwareProgress;
     OnFirmwareEvent onFirmwareEvent;
@@ -49,11 +50,11 @@ public:
 
 private:
     virtual bool IsComponentLegal(const std::vector<FirmwareComponent> &componentList) = 0;
-    virtual bool PerformInstall(const std::vector<FirmwareComponent> &componentList) = 0;
+    virtual bool PerformInstall(const std::vector<FirmwareComponent> &componentList, UpgradeStatus &status) = 0;
 
     void SetIsInstalling(bool isInstalling);
     bool IsInstalling();
-    void CallbackResult(FirmwareInstallCallback &cb, const bool result);
+    void CallbackResult(FirmwareInstallCallback &cb, bool result, UpgradeStatus status);
     void CallbackFailedResult(FirmwareInstallCallback &cb, const std::string &errorMsg, int32_t errCode);
 
 protected:

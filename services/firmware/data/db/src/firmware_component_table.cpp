@@ -29,6 +29,7 @@ std::string FirmwareComponentTable::GetTableCreateSql()
         .append(COLUMN_ID + " integer PRIMARY KEY autoincrement not null,")
         .append(COLUMN_COMPONENT_VERSION_ID + " varchar(256),")
         .append(COLUMN_COMPONENT_VERSION_PACKAGE_TYPE + " integer,")
+        .append(COLUMN_COMPONENT_OTA_MODE + " integer,")
         .append(COLUMN_COMPONENT_PACKAGE_INDEX + " integer,")
         .append(COLUMN_COMPONENT_TARGET_BL_DISPLAY_VERSION_NUMBER  + " varchar(256),")
         .append(COLUMN_COMPONENT_TARGET_BL_VERSION_NUMBER + " varchar(256),")
@@ -49,6 +50,7 @@ std::string FirmwareComponentTable::GetTableCreateSql()
         .append(COLUMN_COMPONENT_SPATH + " varchar(256),")
         .append(COLUMN_COMPONENT_STATUS + " integer,")
         .append(COLUMN_COMPONENT_PROGRESS + " integer,")
+        .append(COLUMN_COMPONENT_RECORD_POINT + " bigint,")
         .append(COLUMN_COMPONENT_EXTENDS1 + " varchar(256),")
         .append(COLUMN_COMPONENT_EXTENDS2 + " varchar(256),")
         .append(COLUMN_COMPONENT_EXTENDS3 + " varchar(256),")
@@ -65,6 +67,9 @@ void FirmwareComponentTable::ParseDbValue(ResultSet *resultSet, FirmwareComponen
     int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
     GetColumnValue(resultSet, COLUMN_COMPONENT_VERSION_PACKAGE_TYPE, versionPackageType);
     value.versionPackageType = static_cast<PackageType>(versionPackageType);
+    int32_t otaType = CAST_INT(OtaType::REGULAR);
+    GetColumnValue(resultSet, COLUMN_COMPONENT_OTA_MODE, otaType);
+    value.otaType = static_cast<OtaType>(otaType);
     GetColumnValue(resultSet, COLUMN_COMPONENT_PACKAGE_INDEX, value.packageIndex);
     GetColumnValue(resultSet, COLUMN_COMPONENT_TARGET_BL_DISPLAY_VERSION_NUMBER, value.targetBlDisplayVersionNumber);
     GetColumnValue(resultSet, COLUMN_COMPONENT_TARGET_BL_VERSION_NUMBER, value.targetBlVersionNumber);
@@ -87,12 +92,14 @@ void FirmwareComponentTable::ParseDbValue(ResultSet *resultSet, FirmwareComponen
     GetColumnValue(resultSet, COLUMN_COMPONENT_STATUS, status);
     value.status = static_cast<UpgradeStatus>(status);
     GetColumnValue(resultSet, COLUMN_COMPONENT_PROGRESS, value.progress);
+    GetColumnValue(resultSet, COLUMN_COMPONENT_RECORD_POINT, value.recordPoint);
 }
 
 void FirmwareComponentTable::BuildDbValue(const FirmwareComponent &value, NativeRdb::ValuesBucket &dbValue)
 {
     PutColumnValue(dbValue, COLUMN_COMPONENT_VERSION_ID, value.versionId);
     PutColumnValue(dbValue, COLUMN_COMPONENT_VERSION_PACKAGE_TYPE, CAST_INT(value.versionPackageType));
+    PutColumnValue(dbValue, COLUMN_COMPONENT_OTA_MODE, CAST_INT(value.otaType));
     PutColumnValue(dbValue, COLUMN_COMPONENT_PACKAGE_INDEX, value.packageIndex);
     PutColumnValue(dbValue, COLUMN_COMPONENT_TARGET_BL_DISPLAY_VERSION_NUMBER, value.targetBlDisplayVersionNumber);
     PutColumnValue(dbValue, COLUMN_COMPONENT_TARGET_BL_VERSION_NUMBER, value.targetBlVersionNumber);
@@ -113,6 +120,7 @@ void FirmwareComponentTable::BuildDbValue(const FirmwareComponent &value, Native
     PutColumnValue(dbValue, COLUMN_COMPONENT_SPATH, value.spath);
     PutColumnValue(dbValue, COLUMN_COMPONENT_STATUS, CAST_INT(value.status));
     PutColumnValue(dbValue, COLUMN_COMPONENT_PROGRESS, value.progress);
+    PutColumnValue(dbValue, COLUMN_COMPONENT_RECORD_POINT, value.recordPoint);
 }
 } // namespace UpdateEngine
 } // namespace OHOS

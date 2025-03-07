@@ -30,6 +30,16 @@ bool FirmwareComponentOperator::UpdateProgressByUrl(const std::string &url, Upgr
     return TableBaseOperator::Update(values, predicates);
 }
 
+bool FirmwareComponentOperator::UpdateStatusByUrl(const std::string &url, UpgradeStatus status)
+{
+    NativeRdb::ValuesBucket values;
+    values.PutInt(COLUMN_COMPONENT_STATUS, CAST_INT(status));
+
+    OHOS::NativeRdb::RdbPredicates predicates(GetTableName());
+    predicates.EqualTo(COLUMN_COMPONENT_DOWNLOAD_URL, url);
+    return TableBaseOperator::Update(values, predicates);
+}
+
 bool FirmwareComponentOperator::UpdateUrlByVersionId(const std::string &versionId, const std::string &url)
 {
     NativeRdb::ValuesBucket values;
@@ -37,6 +47,16 @@ bool FirmwareComponentOperator::UpdateUrlByVersionId(const std::string &versionI
 
     OHOS::NativeRdb::RdbPredicates predicates(GetTableName());
     predicates.EqualTo(COLUMN_COMPONENT_VERSION_ID, versionId);
+    return TableBaseOperator::Update(values, predicates);
+}
+
+bool FirmwareComponentOperator::UpdateRecordPointByUrl(const std::string &url, int64_t recordPoint)
+{
+    NativeRdb::ValuesBucket values;
+    values.PutInt(COLUMN_COMPONENT_RECORD_POINT, recordPoint);
+
+    OHOS::NativeRdb::RdbPredicates predicates(GetTableName());
+    predicates.EqualTo(COLUMN_COMPONENT_DOWNLOAD_URL, url);
     return TableBaseOperator::Update(values, predicates);
 }
 

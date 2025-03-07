@@ -25,6 +25,12 @@
 
 namespace OHOS {
 namespace UpdateEngine {
+
+enum {
+    VERSION_INITIAL_VERSION = 1,
+    VERSION_ADD_STREAM_CAPACITY,
+};
+
 int FirmwareDatabaseCallback::OnCreate(NativeRdb::RdbStore &rdbStore)
 {
     std::vector<std::string> dbCreateSqlVector = GenerateDbCreateSqlVector();
@@ -43,6 +49,12 @@ int FirmwareDatabaseCallback::OnUpgrade(NativeRdb::RdbStore &rdbStore, int oldVe
 {
     ENGINE_LOGI("FirmwareDatabaseCallback OnUpgrade oldVersion=%{public}d newVersion=%{public}d", oldVersion,
         newVersion);
+    if (oldVersion < VERSION_ADD_STREAM_CAPACITY && newVersion >= VERSION_ADD_STREAM_CAPACITY) {
+        rdbStore.ExecuteSql("ALTER TABLE " + FIRMWARE_TABLE_COMPONENT + " ADD COLUMN " +
+            COLUMN_COMPONENT_RECORD_POINT + " bigint;");
+        rdbStore.ExecuteSql("ALTER TABLE " + FIRMWARE_TABLE_TASK + " ADD COLUMN " +
+            COLUMN_TASK_IS_STREAM_UPGRADE + " integer;");
+    }
     return NativeRdb::E_OK;
 }
 

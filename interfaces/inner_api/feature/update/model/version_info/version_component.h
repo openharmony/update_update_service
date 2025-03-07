@@ -25,6 +25,7 @@
 #include "effective_mode.h"
 #include "update_define.h"
 #include "upgrade_action.h"
+#include "ota_mode.h"
 
 namespace OHOS::UpdateEngine {
 struct VersionComponent : public BaseJsonStruct {
@@ -35,6 +36,7 @@ struct VersionComponent : public BaseJsonStruct {
     std::string innerVersion;
     size_t size = 0;
     size_t effectiveMode = static_cast<size_t>(EffectiveMode::COLD);
+    size_t otaMode = static_cast<size_t>(OtaMode::REGULAR);
     DescriptionInfo descriptionInfo;
     std::string componentExtra;
 

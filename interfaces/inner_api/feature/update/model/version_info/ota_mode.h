@@ -13,18 +13,15 @@
  * limitations under the License.
  */
 
-#ifndef UPDATE_SERVICE_CONFIG_INFO_H
-#define UPDATE_SERVICE_CONFIG_INFO_H
-
-#include <cstdint>
-#include <string>
+#ifndef UPDATE_SERVICE_OTA_TYPE_H
+#define UPDATE_SERVICE_OTA_TYPE_H
 
 namespace OHOS::UpdateEngine {
-struct ConfigInfo {
-    std::string businessDomain;
-    uint32_t abInstallTimeout = 1800; // 1800s
-    uint32_t streamInstallTimeout = 3600; // 3600s
-    std::string moduleLibPath;
+enum class OtaMode {
+    REGULAR = 0,
+    STREAM = 1, // 1 << 0
+    AB = 2, // 1 << 1
+    AB_STREAM = 3 // STREAM | AB
 };
-} // OHOS::UpdateEngine
-#endif //UPDATE_SERVICE_CONFIG_INFO_H
+} // namespace OHOS::UpdateEngine
+#endif // UPDATE_SERVICE_OTA_TYPE_H

@@ -37,6 +37,7 @@
 #include "firmware_manual_check_mode.h"
 #include "firmware_download_mode.h"
 #include "firmware_install_apply_mode.h"
+#include "firmware_stream_install_apply_mode.h"
 #include "firmware_status_cache.h"
 #include "firmware_task_operator.h"
 #include "firmware_update_helper.h"
@@ -151,12 +152,12 @@ bool FirmwareManager::Exit()
     return true;
 }
 
-void FirmwareManager::DoCancelDownload(BusinessError &businessError)
+void FirmwareManager::DoCancel(BusinessError &businessError)
 {
     FirmwareTask task;
     FirmwareTaskOperator().QueryTask(task);
     if (!task.isExistTask) {
-        FIRMWARE_LOGI("DoCancelDownload no task");
+        FIRMWARE_LOGI("DoCancel no task");
         businessError.Build(CallResult::FAIL, "no download task to cancel!");
         businessError.AddErrorMessage(CAST_INT(DUPDATE_ERR_DOWNLOAD_COMMON_ERROR), "no download task to cancel!");
         return;
@@ -216,8 +217,11 @@ bool FirmwareManager::CanInstall(void)
     FirmwareTaskOperator firmwareTaskOperator;
     firmwareTaskOperator.QueryTask(task);
     FIRMWARE_LOGI("check can install task.status:%{public}d", CAST_INT(task.status));
-    if (FirmwareUpdateHelper::GetInstallType() == InstallType::SYS_INSTALLER) {
+    InstallType InstallType = FirmwareUpdateHelper::GetInstallType();
+    if (InstallType == InstallType::SYS_INSTALLER) {
         return task.status == UpgradeStatus::DOWNLOAD_SUCCESS || task.status == UpgradeStatus::INSTALL_SUCCESS;
+    } else if (InstallType == InstallType::STREAM_INSTALLLER) {
+        return task.status != UpgradeStatus::INSTALLING;
     } else {
         return task.status == UpgradeStatus::DOWNLOAD_SUCCESS;
     }
@@ -233,11 +237,21 @@ void FirmwareManager::DoInstall(const UpgradeOptions &upgradeOptions, BusinessEr
         return;
     }
     FirmwareFlowManager *flowManager = new FirmwareFlowManager();
-    std::shared_ptr<FirmwareIExecuteMode> executeMode =
-        std::make_shared<FirmwareInstallApplyMode>(upgradeOptions, businessError, installType, [=]() {
-            FIRMWARE_LOGI("FirmwareManager DoInstall finish");
-            delete flowManager;
-        });
+    std::shared_ptr<FirmwareIExecuteMode> executeMode;
+    if (FirmwareUpdateHelper::IsStreamUpgrade()) {
+        executeMode =
+            std::make_shared<FirmwareStreamInstallApplyMode>(upgradeOptions, businessError, installType, [=]() {
+                FIRMWARE_LOGI("FirmwareManager DoInstall finish");
+                delete flowManager;
+            });
+    } else {
+        executeMode =
+            std::make_shared<FirmwareInstallApplyMode>(upgradeOptions, businessError, installType, [=]() {
+                FIRMWARE_LOGI("FirmwareManager DoInstall finish");
+                delete flowManager;
+            });
+    }
+
     flowManager->SetExecuteMode(executeMode);
     flowManager->Start();
 }
@@ -438,21 +452,31 @@ void FirmwareManager::HandleBootUpdateFail(const FirmwareTask &task,
 void FirmwareManager::HandleBootInstallOnStatusProcess(FirmwareTask &task)
 {
     FIRMWARE_LOGI("HandleBootInstallOnStatusProcess");
-    FirmwareTaskOperator().UpdateProgressByTaskId(
-        task.taskId, UpgradeStatus::DOWNLOAD_SUCCESS, Firmware::ONE_HUNDRED);
+    if (FirmwareUpdateHelper::IsStreamUpgrade()) {
+        FirmwareTaskOperator().UpdateStatusByTaskId(task.taskId, UpgradeStatus::INSTALL_PAUSE);
+    } else {
+        FirmwareTaskOperator().UpdateProgressByTaskId(
+            task.taskId, UpgradeStatus::DOWNLOAD_SUCCESS, Firmware::ONE_HUNDRED);
+    }
+
     std::vector<FirmwareComponent> firmwareComponentList;
     FirmwareComponentOperator firmwareComponentOperator;
     firmwareComponentOperator.QueryAll(firmwareComponentList);
     for (const FirmwareComponent &component : firmwareComponentList) {
         if (component.status == UpgradeStatus::INSTALLING) {
-            firmwareComponentOperator.UpdateProgressByUrl(
-                component.url, UpgradeStatus::DOWNLOAD_SUCCESS, Firmware::ONE_HUNDRED);
+            if (FirmwareUpdateHelper::IsStreamUpgrade()) {
+                firmwareComponentOperator.UpdateStatusByUrl(
+                    component.url, UpgradeStatus::INSTALL_PAUSE);
+            } else {
+                firmwareComponentOperator.UpdateProgressByUrl(
+                    component.url, UpgradeStatus::DOWNLOAD_SUCCESS, Firmware::ONE_HUNDRED);
+            }
         }
     }
     BusinessError businessError;
     UpgradeOptions upgradeOptions;
     upgradeOptions.order = Order::INSTALL_AND_APPLY;
-    DoInstall(upgradeOptions, businessError, InstallType::SYS_INSTALLER);
+    DoInstall(upgradeOptions, businessError, FirmwareUpdateHelper::GetInstallType());
 }
 
 void FirmwareManager::HandleBootDownloadOnStatusProcess(FirmwareTask &task)

@@ -28,6 +28,7 @@ public:
 
     void SetInstallResult(const InstallCallbackInfo &installCallbackInfo);
     bool HasInstallSuccess();
+    bool HasInstallFail();
     bool HasUpdateSuccess();
     bool IsSpaceEnough(int64_t &requireTotalSize);
     bool IsUpgradeFileCheckSuccess();

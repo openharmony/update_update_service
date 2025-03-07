@@ -40,6 +40,11 @@ uint32_t ConfigParse::GetAbInstallerTimeout()
     return configInfo_.abInstallTimeout;
 }
 
+uint32_t ConfigParse::GetStreamInstallerTimeout()
+{
+    return configInfo_.streamInstallTimeout;
+}
+
 std::string ConfigParse::GetModuleLibPath()
 {
     return configInfo_.moduleLibPath;
@@ -65,6 +70,7 @@ void ConfigParse::LoadConfigInfo()
     }
 
     JsonUtils::GetValueAndSetTo(root, "abInstallTimeout", configInfo_.abInstallTimeout);
+    JsonUtils::GetValueAndSetTo(root, "streamInstallTimeout", configInfo_.streamInstallTimeout);
     JsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
 }
 } // namespace UpdateEngine

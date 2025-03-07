@@ -1,5 +1,6 @@
 {
     "pullupInterval": 14400,
     "idleCheckInterval": 180,
-    "abInstallTimeout":1800
+    "abInstallTimeout":1800,
+    "streamInstallTimeout":3600
 }

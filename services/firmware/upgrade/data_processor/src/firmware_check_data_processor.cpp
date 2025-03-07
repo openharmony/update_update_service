@@ -146,6 +146,7 @@ void FirmwareCheckDataProcessor::HandleNewVersion()
     FirmwareTask task;
     task.taskId = FirmwareUpdateHelper::BuildTaskId(componentList_);
     task.status = UpgradeStatus::CHECK_VERSION_SUCCESS;
+    task.isStreamUpgrade = FirmwareUpdateHelper::IsStreamUpgrade(componentList_);
     task.combinationType = GetCombinationType();
     FirmwareTaskOperator().Insert(task);
 }
@@ -173,10 +174,12 @@ bool FirmwareCheckDataProcessor::IsVersionSameWithDb()
         std::string versionId = serverResult.versionId;
         FirmwareComponent dbResult;
         bool hasResult = FirmwareComponentOperator().QueryByVersionId(versionId, dbResult);
-        if (!hasResult || dbResult.size != serverResult.size || dbResult.verifyInfo != serverResult.verifyInfo) {
+        if (!hasResult || dbResult.size != serverResult.size || dbResult.verifyInfo != serverResult.verifyInfo ||
+            dbResult.url != serverResult.url || dbResult.otaType != serverResult.otaType) {
             FIRMWARE_LOGI("FirmwareCheckDataProcessor::IsVersionSameWithDb versionId %{public}s not in db or data "
-                "is updated size %{public}s verifyInfo %{public}s",
-                versionId.c_str(), std::to_string(dbResult.size).c_str(), dbResult.verifyInfo.c_str());
+                "is updated size %{public}" PRId64 "verifyInfo %{public}s url %{public}s otaType %{public}d",
+                versionId.c_str(), dbResult.size, dbResult.verifyInfo.c_str(),
+                dbResult.url.c_str(), static_cast<uint32_t>(dbResult.otaType));
             return false;
         }
     }

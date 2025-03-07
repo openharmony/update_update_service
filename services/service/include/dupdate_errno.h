@@ -64,6 +64,7 @@ typedef enum {
     DUPDATE_ERR_IPC_ERROR = -410,
     DUPDATE_ERR_UPDATE_NO_EXECUTED = -411,
     DUPDATE_ERR_UPDATE_FILE_ERROR = -412,
+    DUPDATE_ERR_CANCEL_TASK_ERROR = -413,
 
     /* -499 ~ -420 reserved for private update error numbers */
     DUPDATE_ERR_UPDATE_PRECHECK_FAIL = -420,

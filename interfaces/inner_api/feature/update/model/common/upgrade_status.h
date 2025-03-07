@@ -42,6 +42,7 @@ enum class UpgradeStatus {
     INSTALLING = 80,
     INSTALL_FAIL,
     INSTALL_SUCCESS,
+    INSTALL_PAUSE,
     UPDATING = 90,
     UPDATE_FAIL,
     UPDATE_SUCCESS,
