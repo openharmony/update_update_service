@@ -461,6 +461,9 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
     SetThreadPrio(OPEN_SO_PRIO);
 #endif
     ModuleManager::GetInstance().LoadModule(libPath);
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+    SetThreadPrio(NORMAL_PRIO);
+#endif
 
     ENGINE_LOGI("RegisterOhFunc HandleOhRemoteRequest");
     RegisterOhFunc();
