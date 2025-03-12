@@ -27,6 +27,11 @@ declare_args() {
   if (!defined(global_parts_info.distributeddatamgr_preferences)) {
     preference_native_preferences_enable = false
   }
+
+  update_service_enable_run_on_demand_qos = true
+  if (!defined(global_parts_info.update_service_enable_run_on_demand_qos)) {
+    update_service_enable_run_on_demand_qos = false
+  }
 }
 
 sa_sources = [
@@ -187,6 +192,9 @@ if (communication_netmanager_base_enable) {
 }
 if (preference_native_preferences_enable) {
   sa_defines += [ "NATIVE_PREFERENCES_ENABLE" ]
+}
+if (update_service_enable_run_on_demand_qos) {
+  sa_defines += [ "UPDATE_SERVICE_ENABLE_RUN_ON_DEMMAND_QOS" ]
 }
 sa_defines += sqlite_defines
 
