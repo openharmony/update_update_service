@@ -194,7 +194,7 @@ if (preference_native_preferences_enable) {
   sa_defines += [ "NATIVE_PREFERENCES_ENABLE" ]
 }
 if (update_service_enable_run_on_demand_qos) {
-  sa_defines += [ "UPDATE_SERVICE_ENABLE_RUN_ON_DEMMAND_QOS" ]
+  sa_defines += [ "UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS" ]
 }
 sa_defines += sqlite_defines
 
