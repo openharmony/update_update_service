@@ -440,7 +440,7 @@ void UpdateService::SetThreadPrio(int priority)
     int tid = syscall(SYS_gettid);
     ENGINE_LOGI("set tid: %{public}d priority:%{public}d.", tid, priority);
     if (setpriority(PRIO_PROCESS, tid, priority) != 0) {
-        ENGINE_LOGI("set tid: %{public}d priority:%{public}d failed.", tid, priority);
+        ENGINE_LOGE("set tid: %{public}d priority:%{public}d failed.", tid, priority);
     }
 }
 #endif
