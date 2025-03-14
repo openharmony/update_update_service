@@ -36,12 +36,21 @@
 
 #include "update_service_module.h"
 #include "module_manager.h"
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+#include <sys/syscall.h>
+#include <sys/resource.h>
+#endif
 
 namespace OHOS {
 namespace UpdateEngine {
 REGISTER_SYSTEM_ABILITY_BY_ID(UpdateService, UPDATE_DISTRIBUTED_SERVICE_ID, true)
 
 OHOS::sptr<UpdateService> UpdateService::updateService_ { nullptr };
+
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+constexpr int OPEN_SO_PRIO = -20;
+constexpr int NORMAL_PRIO = 0;
+#endif
 
 void UpdateService::ClientDeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
 {
@@ -425,6 +434,17 @@ int UpdateService::Dump(int fd, const std::vector<std::u16string> &args)
     }
 }
 
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+void UpdateService::SetThreadPrio(int priority)
+{
+    int tid = syscall(SYS_gettid);
+    ENGINE_LOGI("set tid: %{public}d priority:%{public}d.", tid, priority);
+    if (setpriority(PRIO_PROCESS, tid, priority) != 0) {
+        ENGINE_LOGE("set tid: %{public}d priority:%{public}d failed.", tid, priority);
+    }
+}
+#endif
+
 void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
 {
     ENGINE_LOGI("UpdaterService oh OnStart, startReason name %{public}s, id %{public}d, value %{public}s",
@@ -437,7 +457,13 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
     DelayedSingleton<ConfigParse>::GetInstance()->LoadConfigInfo(); // 启动读取配置信息
     std::string libPath = DelayedSingleton<ConfigParse>::GetInstance()->GetModuleLibPath();
     ENGINE_LOGI("GetModuleLibPath %{public}s ", libPath.c_str());
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+    SetThreadPrio(OPEN_SO_PRIO);
+#endif
     ModuleManager::GetInstance().LoadModule(libPath);
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+    SetThreadPrio(NORMAL_PRIO);
+#endif
 
     ENGINE_LOGI("RegisterOhFunc HandleOhRemoteRequest");
     RegisterOhFunc();

@@ -97,6 +97,11 @@ public:
 
     sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &info);
 
+#ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
+private:
+    void SetThreadPrio(int priority);
+#endif
+
 #ifndef UPDATER_UT
 protected:
 #endif
