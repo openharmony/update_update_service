@@ -122,15 +122,22 @@ private:
     {
         response.content.assign(buffer.begin(), buffer.end());
         response.status = static_cast<int64_t>(HttpConstant::SUCCESS);
-        cJSONPtr root(cJSON_Parse(buffer.data()), cJSON_Delete);
-        ENGINE_CHECK(root != nullptr, return -1, "Error get root");
-        cJSON *item = cJSON_GetObjectItem(root.get(), "searchStatus");
-        ENGINE_CHECK(item != nullptr, return -1, "Error get searchStatus");
+        cJSON *root = cJSON_Parse(buffer.data());
+        ENGINE_CHECK(root != nullptr,
+            cJSON_Delete(root);
+            return -1, "Error get root");
+        cJSON *item = cJSON_GetObjectItem(root, "searchStatus");
+        ENGINE_CHECK(item != nullptr,
+            cJSON_Delete(root);
+            return -1, "Error get searchStatus");
         if (!cJSON_IsNumber(item)) {
             FIRMWARE_LOGE("Error json parse");
+            cJSON_Delete(root);
             return -1;
         }
-        return CAST_INT(static_cast<SearchStatus>(item->valueint));
+        int32_t ret = item->valueint;
+        cJSON_Delete(root);
+        return ret;
     }
 
     int32_t ReadDataFromSSL(int32_t engineSocket, NetworkResponse &response)
