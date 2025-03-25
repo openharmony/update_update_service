@@ -41,5 +41,6 @@ ohos_shared_library("update_session") {
   part_name = "$updateengine_part_name"
   subsystem_name = "updater"
   cflags = session_cflags
+  version_script = "update_session.versionscript"
   public_configs = [ ":update_session_library_native_config" ]
 }
