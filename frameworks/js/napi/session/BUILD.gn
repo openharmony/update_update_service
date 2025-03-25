@@ -28,7 +28,7 @@ ohos_shared_library("update_session") {
   branch_protector_ret = "pac_ret"
 
   sources = session_sources
- 
+
   include_dirs = session_include_dirs
   include_dirs += [
     "$root_path/foundations/ability/define/include",
