@@ -19,10 +19,6 @@ config("update_session_library_native_config") {
 }
 
 ohos_shared_library("update_session") {
-  sanitize = {
-    boundary_sanitize = true
-  }
-
   sources = session_sources
   include_dirs = session_include_dirs
   include_dirs += [
