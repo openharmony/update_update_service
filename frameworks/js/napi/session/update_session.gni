@@ -10,6 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import("//base/update/updateservice/updateengine.gni")
 
 root_path = "//base/update/updateservice"
 session_sources = [
@@ -18,3 +19,20 @@ session_sources = [
 ]
 
 session_include_dirs = [ "$root_path/frameworks/js/napi/session/include" ]
+
+session_external_deps = [
+  "access_token:libaccesstoken_sdk",
+  "access_token:libtokenid_sdk",
+  "hilog:libhilog",
+  "ipc:ipc_core",
+  "json:nlohmann_json_static",
+  "napi:ace_napi",
+]
+
+session_cflags = [
+  "-fPIC",
+  "-Os",
+  "-Werror",
+  "-DNAPI_VERSION=8",
+  "-fstack-protector-strong",
+]
