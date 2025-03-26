@@ -19,7 +19,7 @@ config("update_session_library_native_config") {
 }
 
 ohos_shared_library("update_session") {
-    sanitize = {
+  sanitize = {
     boundary_sanitize = true
     cfi = true
     cfi_cross_dso = true
