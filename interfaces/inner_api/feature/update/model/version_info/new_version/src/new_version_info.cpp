@@ -29,12 +29,11 @@ bool NewVersionInfo::ReadFromParcel(Parcel &parcel)
     }
 
     for (size_t i = 0; i < static_cast<size_t>(size); i++) {
-        sptr<VersionComponent> unmarshingVersionComponent = VersionComponent().Unmarshalling(parcel);
-        if (unmarshingVersionComponent != nullptr) {
-            VersionComponent versionComponent = *unmarshingVersionComponent;
-            versionComponents.push_back(versionComponent);
+        sptr<VersionComponent> unmarshallingVersionComponent = VersionComponent().Unmarshalling(parcel);
+        if (unmarshallingVersionComponent != nullptr) {
+            versionComponents.emplace_back(*unmarshallingVersionComponent);
         } else {
-            ENGINE_LOGE("unmarshingVersionComponent is null");
+            ENGINE_LOGE("unmarshallingVersionComponent is null");
             return false;
         }
     }
@@ -49,8 +48,7 @@ bool NewVersionInfo::Marshalling(Parcel &parcel) const
 
     parcel.WriteInt32(static_cast<int32_t>(versionComponents.size()));
     for (size_t i = 0; i < versionComponents.size(); i++) {
-        const VersionComponent *versionComponent = &versionComponents[i];
-        versionComponent->Marshalling(parcel);
+        versionComponents[i].Marshalling(parcel);
     }
     return true;
 }

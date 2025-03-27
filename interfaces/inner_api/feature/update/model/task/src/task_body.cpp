@@ -89,12 +89,11 @@ bool TaskBody::ReadFromParcel(Parcel &parcel)
     }
 
     for (size_t i = 0; i < static_cast<size_t>(errorMessageSize); i++) {
-        sptr<ErrorMessage> unmarshingErrorMsg = ErrorMessage().Unmarshalling(parcel);
-        if (unmarshingErrorMsg != nullptr) {
-            ErrorMessage errorMsg = *unmarshingErrorMsg;
-            errorMessages.push_back(errorMsg);
+        sptr<ErrorMessage> unmarshallingErrorMsg = ErrorMessage().Unmarshalling(parcel);
+        if (unmarshallingErrorMsg != nullptr) {
+            errorMessages.emplace_back(*unmarshallingErrorMsg);
         } else {
-            ENGINE_LOGE("unmarshingErrorMsg is null");
+            ENGINE_LOGE("unmarshallingErrorMsg is null");
             return false;
         }
     }
@@ -106,12 +105,11 @@ bool TaskBody::ReadFromParcel(Parcel &parcel)
     }
 
     for (size_t i = 0; i < static_cast<size_t>(componentSize); i++) {
-        sptr<VersionComponent> unmarshingVersionComponent = VersionComponent().Unmarshalling(parcel);
-        if (unmarshingVersionComponent != nullptr) {
-            VersionComponent VersionComponent = *unmarshingVersionComponent;
-            versionComponents.push_back(VersionComponent);
+        sptr<VersionComponent> unmarshallingVersionComponent = VersionComponent().Unmarshalling(parcel);
+        if (unmarshallingVersionComponent != nullptr) {
+            versionComponents.emplace_back(*unmarshallingVersionComponent);
         } else {
-            ENGINE_LOGE("unmarshingVersionComponent is null");
+            ENGINE_LOGE("unmarshallingVersionComponent is null");
             return false;
         }
     }
