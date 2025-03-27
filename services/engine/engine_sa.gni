@@ -35,7 +35,6 @@ declare_args() {
 }
 
 sa_sources = [
-  "$updateengine_root_path/services/callback/src/update_callback_proxy.cpp",
   "$updateengine_root_path/services/core/ability/adapter/src/config_parse.cpp",
   "$updateengine_root_path/services/core/ability/adapter/src/device_adapter.cpp",
   "$updateengine_root_path/services/core/ability/alarm/src/timer_manager.cpp",
@@ -51,7 +50,6 @@ sa_sources = [
   "$updateengine_root_path/services/engine/src/update_service_impl_manager.cpp",
   "$updateengine_root_path/services/engine/src/update_service_local_updater.cpp",
   "$updateengine_root_path/services/engine/src/update_service_restorer.cpp",
-  "$updateengine_root_path/services/engine/src/update_service_stub.cpp",
   "$updateengine_root_path/services/engine/src/update_service_util_hmos.cpp",
 ]
 

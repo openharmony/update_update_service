@@ -13,8 +13,24 @@
 
 import("//base/update/updateservice/foundations/foundations.gni")
 import("//base/update/updateservice/updateengine.gni")
+import("//build/config/components/idl_tool/idl.gni")
 import("//build/ohos.gni")
 import("../feature/feature.gni")
+
+idl_interface_sources = [ "${target_gen_dir}/update_service_proxy.cpp" ]
+
+idl_include = [
+  "${target_gen_dir}",
+  "${target_gen_dir}/callback",
+]
+
+idl_gen_interface("update_service_interface") {
+  src_idl = rebase_path("IUpdateService.idl")
+  sources_callback = [ "callback/IUpdateCallback.idl" ]
+  dst_file = string_join(",", idl_interface_sources)
+  log_domainid = "0xD002E00"
+  log_tag = "UPDATE_SERVICE_KITS"
+}
 
 ohos_prebuilt_etc("updater_sa.rc") {
   source = "etc/updater_sa.rc"
@@ -27,6 +43,7 @@ config("updateengine_inner_library_native_config") {
   include_dirs = [ "$updateengine_root_path/interfaces/inner_api/include" ]
   include_dirs += feature_include
   include_dirs += foundations_include
+  include_dirs += idl_include
 }
 
 ohos_shared_library("$updateengine_inner_library_name") {
@@ -40,18 +57,20 @@ ohos_shared_library("$updateengine_inner_library_name") {
   }
   branch_protector_ret = "pac_ret"
 
+  output_values = get_target_outputs(":update_service_interface")
+
   defines = [ "DUAL_ADAPTER" ]
   if (!ability_ability_runtime_enable) {
     defines += [ "ABILITY_RUNTIME_INNER_ENABLE" ]
   }
   sources = [
     "$updateengine_root_path/interfaces/inner_api/engine/src/update_callback.cpp",
-    "$updateengine_root_path/interfaces/inner_api/engine/src/update_callback_stub.cpp",
     "$updateengine_root_path/interfaces/inner_api/engine/src/update_service_kits_impl.cpp",
-    "$updateengine_root_path/interfaces/inner_api/engine/src/update_service_proxy.cpp",
   ]
 
+  sources += filter_include(output_values, [ "*.cpp" ])
   include_dirs = [
+    "$updateengine_root_path/interfaces/inner_api/feature/update_model",
     "$updateengine_root_path/interfaces/inner_api/engine/include",
     "$updateengine_root_path/interfaces/inner_api/include",
   ]
@@ -59,6 +78,7 @@ ohos_shared_library("$updateengine_inner_library_name") {
   public_configs = [ ":updateengine_inner_library_native_config" ]
 
   deps = [
+    ":update_service_interface",
     "$updateengine_root_path/foundations:update_foundations",
     "$updateengine_root_path/interfaces/inner_api/modulemgr:update_module_mgr",
   ]

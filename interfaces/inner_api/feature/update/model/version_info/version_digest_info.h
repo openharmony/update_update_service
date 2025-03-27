@@ -17,14 +17,21 @@
 #define UPDATE_SERVICE_VERSION_DIGEST_INFO_H
 
 #include <string>
+#include <string_ex.h>
 
 #include "base_json_struct.h"
+#include "parcel.h"
+#include "update_log.h"
 
 namespace OHOS::UpdateEngine {
-struct VersionDigestInfo : public BaseJsonStruct {
+struct VersionDigestInfo : public BaseJsonStruct, public Parcelable {
     std::string versionDigest;
 
     JsonBuilder GetJsonBuilder() final;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static VersionDigestInfo *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_VERSION_DIGEST_INFO_H
