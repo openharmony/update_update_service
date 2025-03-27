@@ -19,13 +19,14 @@
 #include "event_id.h"
 #include "error_message.h"
 #include "install_mode.h"
+#include "parcel.h"
 #include "update_define.h"
 #include "upgrade_status.h"
 #include "version_digest_info.h"
 #include "version_component.h"
 
 namespace OHOS::UpdateEngine {
-struct TaskBody {
+struct TaskBody : public Parcelable {
     VersionDigestInfo versionDigestInfo;
     UpgradeStatus status = UpgradeStatus::INIT;
     int32_t subStatus = CAST_INT(UpgradeStatus::INIT);
@@ -35,6 +36,10 @@ struct TaskBody {
     std::vector<VersionComponent> versionComponents;
 
     JsonBuilder GetJsonBuilder(EventId eventId);
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static TaskBody *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_TASK_BODY_H

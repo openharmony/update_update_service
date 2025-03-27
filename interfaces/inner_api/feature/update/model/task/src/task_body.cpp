@@ -14,6 +14,8 @@
  */
 
 #include "task_body.h"
+
+#include "parcel_common.h"
 #include "task_body_member_mask.h"
 #include "update_log.h"
 
@@ -70,5 +72,88 @@ JsonBuilder TaskBody::GetJsonBuilder(EventId eventId)
         jsonBuilder.Append("versionComponents", GetArrayJsonBuilderList(versionComponents));
     }
     return jsonBuilder.Append("}");
+}
+
+bool TaskBody::ReadFromParcel(Parcel &parcel)
+{
+    versionDigestInfo.versionDigest = Str16ToStr8(parcel.ReadString16());
+    status = static_cast<UpgradeStatus>(parcel.ReadInt32());
+    subStatus = parcel.ReadInt32();
+    progress = parcel.ReadInt32();
+    installMode = parcel.ReadInt32();
+
+    int32_t errorMessageSize = parcel.ReadInt32();
+    if (errorMessageSize > MAX_VECTOR_SIZE) {
+        ENGINE_LOGE("ReadErrorMessages size is over MAX_VECTOR_SIZE, size=%{public}d", errorMessageSize);
+        return false;
+    }
+
+    for (size_t i = 0; i < static_cast<size_t>(errorMessageSize); i++) {
+        sptr<ErrorMessage> unmarshingErrorMsg = ErrorMessage().Unmarshalling(parcel);
+        if (unmarshingErrorMsg != nullptr) {
+            ErrorMessage errorMsg = *unmarshingErrorMsg;
+            errorMessages.push_back(errorMsg);
+        } else {
+            ENGINE_LOGE("unmarshingErrorMsg is null");
+            return false;
+        }
+    }
+
+    int32_t componentSize = parcel.ReadInt32();
+    if (componentSize > MAX_VECTOR_SIZE) {
+        ENGINE_LOGE("ReadVersionComponents size is over MAX_VECTOR_SIZE, size=%{public}d", componentSize);
+        return false;
+    }
+
+    for (size_t i = 0; i < static_cast<size_t>(componentSize); i++) {
+        sptr<VersionComponent> unmarshingVersionComponent = VersionComponent().Unmarshalling(parcel);
+        if (unmarshingVersionComponent != nullptr) {
+            VersionComponent VersionComponent = *unmarshingVersionComponent;
+            versionComponents.push_back(VersionComponent);
+        } else {
+            ENGINE_LOGE("unmarshingVersionComponent is null");
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool TaskBody::Marshalling(Parcel &parcel) const
+{
+    parcel.WriteString16(Str8ToStr16(versionDigestInfo.versionDigest));
+    parcel.WriteInt32(static_cast<int32_t>(status));
+    parcel.WriteInt32(subStatus);
+    parcel.WriteInt32(progress);
+    parcel.WriteInt32(installMode);
+
+    parcel.WriteInt32(static_cast<int32_t>(errorMessages.size()));
+    for (size_t i = 0; i < errorMessages.size(); i++) {
+        const ErrorMessage *errorMessage = &errorMessages[i];
+        errorMessage->Marshalling(parcel);
+    }
+
+    parcel.WriteInt32(static_cast<int32_t>(versionComponents.size()));
+    for (size_t i = 0; i < versionComponents.size(); i++) {
+        const VersionComponent *versionComponent = &versionComponents[i];
+        versionComponent->Marshalling(parcel);
+    }
+    return true;
+}
+
+TaskBody *TaskBody::Unmarshalling(Parcel &parcel)
+{
+    TaskBody *taskBody = new (std::nothrow) TaskBody();
+    if (taskBody == nullptr) {
+        ENGINE_LOGE("Create currentVersionInfo failed");
+        return nullptr;
+    }
+
+    if (!taskBody->ReadFromParcel(parcel)) {
+        ENGINE_LOGE("Read from parcel failed");
+        delete taskBody;
+        return nullptr;
+    }
+    return taskBody;
 }
 } // namespace OHOS::UpdateEngine

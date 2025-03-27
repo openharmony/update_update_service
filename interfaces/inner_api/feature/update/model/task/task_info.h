@@ -16,12 +16,18 @@
 #ifndef UPDATE_SERVICE_TASK_INFO_H
 #define UPDATE_SERVICE_TASK_INFO_H
 
+#include <string_ex.h>
 #include "task_body.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct TaskInfo {
+struct TaskInfo : public Parcelable {
     bool existTask = false;
     TaskBody taskBody;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static TaskInfo *Unmarshalling(Parcel &parcel);
 };
 } // OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_TASK_INFO_H

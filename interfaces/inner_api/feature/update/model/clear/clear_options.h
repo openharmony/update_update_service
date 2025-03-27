@@ -17,10 +17,15 @@
 #define UPDATE_SERVICE_CLEAR_OPTIONS_H
 
 #include "upgrade_status.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct ClearOptions {
+struct ClearOptions : public Parcelable {
     UpgradeStatus status = UpgradeStatus::INIT;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static ClearOptions *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_CLEAR_OPTIONS_H

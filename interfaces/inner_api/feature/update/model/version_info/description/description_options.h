@@ -17,13 +17,19 @@
 #define UPDATE_SERVICE_DESCRIPTION_OPTIONS_H
 
 #include <string>
+#include <string_ex.h>
 
 #include "description_format.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct DescriptionOptions {
+struct DescriptionOptions : public Parcelable {
     DescriptionFormat format = DescriptionFormat::STANDARD;
     std::string language;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static DescriptionOptions *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_DESCRIPTION_OPTIONS_H

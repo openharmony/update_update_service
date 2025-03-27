@@ -17,15 +17,22 @@
 #define UPDATE_SERVICE_CURRENT_VERSION_INFO_H
 
 #include <string>
+#include <string_ex.h>
 #include <vector>
 
+#include "error_message.h"
+#include "parcel.h"
 #include "version_component.h"
 
 namespace OHOS::UpdateEngine {
-struct CurrentVersionInfo {
+struct CurrentVersionInfo : public Parcelable {
     std::string osVersion;
     std::string deviceName;
     std::vector<VersionComponent> versionComponents;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static CurrentVersionInfo *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_CURRENT_VERSION_INFO_H

@@ -26,6 +26,19 @@ ohos_shared_library("update_session") {
     "$root_path/foundations/ability/log/include",
     "$root_path/foundations/ability/utils/include",
     "$root_path/foundations/model/include",
+    "$root_path/interfaces/inner_api/feature/update/model/common",
+    "$root_path/interfaces/inner_api/feature/update/model/event",
+    "$root_path/interfaces/inner_api/feature/update/model/install",
+    "$root_path/interfaces/inner_api/feature/update/model/task",
+    "$root_path/interfaces/inner_api/feature/update/model/version_info",
+    "$root_path/interfaces/inner_api/feature/update/model/version_info/description",
+  ]
+
+ sources += [
+    "$root_path/interfaces/inner_api/feature/update/model/check/src/error_message.cpp",
+    "$root_path/interfaces/inner_api/feature/update/model/upgrade_info/src/business_error.cpp",
+    "$root_path/interfaces/inner_api/feature/update/model/version_info/description/src/description_info.cpp",
+    "$root_path/interfaces/inner_api/feature/update/model/version_info/src/version_component.cpp",
   ]
 
   external_deps = session_external_deps
