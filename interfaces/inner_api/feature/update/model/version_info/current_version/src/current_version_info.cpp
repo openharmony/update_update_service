@@ -57,8 +57,7 @@ bool CurrentVersionInfo::Marshalling(Parcel &parcel) const
 
     parcel.WriteInt32(static_cast<int32_t>(versionComponents.size()));
     for (size_t i = 0; i < versionComponents.size(); i++) {
-        const VersionComponent *versionComponent = &versionComponents[i];
-        versionComponent->Marshalling(parcel);
+        versionComponents[i].Marshalling(parcel);
     }
     return true;
 }

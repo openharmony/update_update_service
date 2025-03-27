@@ -56,8 +56,7 @@ bool BusinessError::Marshalling(Parcel &parcel) const
 
     parcel.WriteInt32(static_cast<int32_t>(data.size()));
     for (size_t i = 0; i < data.size(); i++) {
-        const ErrorMessage *errorMessage = &data[i];
-        errorMessage->Marshalling(parcel);
+        data[i].Marshalling(parcel);
     }
 
     return true;
