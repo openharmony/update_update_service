@@ -29,12 +29,11 @@ bool CheckResult::ReadFromParcel(Parcel &parcel)
     }
 
     for (size_t i = 0; i < static_cast<size_t>(size); i++) {
-        sptr<VersionComponent> unmarshingVersionComponent = VersionComponent().Unmarshalling(parcel);
-        if (unmarshingVersionComponent != nullptr) {
-            VersionComponent versionComponent = *unmarshingVersionComponent;
-            newVersionInfo.versionComponents.push_back(versionComponent);
+        sptr<VersionComponent> unmarshallingVersionComponent = VersionComponent().Unmarshalling(parcel);
+        if (unmarshallingVersionComponent != nullptr) {
+            newVersionInfo.versionComponents.emplace_back(*unmarshallingVersionComponent);
         } else {
-            ENGINE_LOGE("unmarshingVersionComponent is null");
+            ENGINE_LOGE("unmarshallingVersionComponent is null");
             return false;
         }
     }

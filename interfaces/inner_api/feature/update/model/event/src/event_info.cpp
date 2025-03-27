@@ -30,11 +30,11 @@ JsonBuilder EventInfo::GetJsonBuilder()
 bool EventInfo::ReadFromParcel(Parcel &parcel)
 {
     eventId = static_cast<EventId>(parcel.ReadUint32());
-    sptr<TaskBody> unmarshingTaskBody = TaskBody().Unmarshalling(parcel);
-    if (unmarshingTaskBody != nullptr) {
-        taskBody = *unmarshingTaskBody;
+    sptr<TaskBody> unmarshallingTaskBody = TaskBody().Unmarshalling(parcel);
+    if (unmarshallingTaskBody != nullptr) {
+        taskBody = *unmarshallingTaskBody;
     } else {
-        ENGINE_LOGE("unmarshingTaskBody fail");
+        ENGINE_LOGE("unmarshallingTaskBody fail");
         return false;
     }
     return true;

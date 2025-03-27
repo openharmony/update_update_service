@@ -20,11 +20,11 @@ namespace OHOS::UpdateEngine {
 bool TaskInfo::ReadFromParcel(Parcel &parcel)
 {
     existTask = parcel.ReadBool();
-    sptr<TaskBody> unmarshingTaskBody = TaskBody().Unmarshalling(parcel);
-    if (unmarshingTaskBody != nullptr) {
-        taskBody = *unmarshingTaskBody;
+    sptr<TaskBody> unmarshallingTaskBody = TaskBody().Unmarshalling(parcel);
+    if (unmarshallingTaskBody != nullptr) {
+        taskBody = *unmarshallingTaskBody;
     } else {
-        ENGINE_LOGE("unmarshingTaskBody fail");
+        ENGINE_LOGE("unmarshallingTaskBody fail");
         return false;
     }
     return true;

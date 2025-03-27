@@ -29,12 +29,11 @@ bool BusinessError::ReadFromParcel(Parcel &parcel)
     }
 
     for (size_t i = 0; i < static_cast<size_t>(errorMessageSize); i++) {
-        sptr<ErrorMessage> unmarshingErrorMsg = ErrorMessage().Unmarshalling(parcel);
-        if (unmarshingErrorMsg != nullptr) {
-            ErrorMessage errorMsg = *unmarshingErrorMsg;
-            data.push_back(errorMsg);
+        sptr<ErrorMessage> unmarshallingErrorMsg = ErrorMessage().Unmarshalling(parcel);
+        if (unmarshallingErrorMsg != nullptr) {
+            data.emplace_back(*unmarshallingErrorMsg);
         } else {
-            ENGINE_LOGE("unmarshingErrorMsg is null");
+            ENGINE_LOGE("unmarshallingErrorMsg is null");
             return false;
         }
     }
