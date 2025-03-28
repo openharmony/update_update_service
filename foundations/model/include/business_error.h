@@ -17,6 +17,7 @@
 #define UPDATE_SERVICE_BUSINESS_ERROR_H
 
 #include <string>
+#include <string_ex.h>
 #include <vector>
 
 #include "nlohmann/json.hpp"
@@ -25,9 +26,10 @@
 #include "dupdate_json_utils.h"
 #include "error_message.h"
 #include "json_builder.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct BusinessError {
+struct BusinessError : public Parcelable {
     std::string message;
     CallResult errorNum = CallResult::SUCCESS;
     std::vector<ErrorMessage> data;
@@ -63,6 +65,10 @@ struct BusinessError {
         JsonUtils::GetValueAndSetTo(jsonObj, "errorNum", errorNumber);
         businessError.errorNum = static_cast<CallResult>(errorNumber);
     }
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static BusinessError *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_BUSINESS_ERROR_H

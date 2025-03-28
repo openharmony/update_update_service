@@ -17,13 +17,15 @@
 #define UPDATE_SERVICE_UPGRADE_INFO_H
 
 #include <string>
+#include <string_ex.h>
 
 #include "business_type.h"
+#include "parcel.h"
 #include "update_device_type.h"
 
 namespace OHOS::UpdateEngine {
 const std::string LOCAL_UPGRADE_INFO = "LocalUpgradeInfo";
-struct UpgradeInfo {
+struct UpgradeInfo : public Parcelable {
     std::string upgradeApp;
     BusinessType businessType = {};
     std::string upgradeDevId;
@@ -36,7 +38,7 @@ struct UpgradeInfo {
         if (upgradeApp != other.upgradeApp) {
             return upgradeApp < other.upgradeApp;
         }
-        
+
         if (businessType != other.businessType) {
             return businessType < other.businessType;
         }
@@ -66,6 +68,10 @@ struct UpgradeInfo {
     {
         return upgradeApp == LOCAL_UPGRADE_INFO;
     }
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static UpgradeInfo *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_UPGRADE_INFO_H

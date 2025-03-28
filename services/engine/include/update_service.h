@@ -22,6 +22,9 @@
 #include "if_system_ability_manager.h"
 #include "ipc_skeleton.h"
 #include "iremote_stub.h"
+#include "iservice_local_updater.h"
+#include "iservice_online_updater.h"
+#include "iservice_restorer.h"
 #include "system_ability.h"
 
 #include "update_service_impl_manager.h"
@@ -36,67 +39,77 @@ public:
     explicit UpdateService(int32_t systemAbilityId, bool runOnCreate = true);
     ~UpdateService() override;
 
-    int32_t RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback> &updateCallback) override;
+    int32_t RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback> &updateCallback,
+        int32_t &funcResutl) override;
 
-    int32_t UnregisterUpdateCallback(const UpgradeInfo &info) override;
+    int32_t UnregisterUpdateCallback(const UpgradeInfo &info, int32_t &funcResutl) override;
 
-    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult) override;
+    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult,
+        int32_t &funcResult) override;
 
     int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-        const DownloadOptions &downloadOptions, BusinessError &businessError) override;
+        const DownloadOptions &downloadOptions, BusinessError &businessError, int32_t &funcResutl) override;
 
     int32_t PauseDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-        const PauseDownloadOptions &pauseDownloadOptions, BusinessError &businessError) override;
+        const PauseDownloadOptions &pauseDownloadOptions, BusinessError &businessError, int32_t &funcResutl) override;
 
     int32_t ResumeDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-        const ResumeDownloadOptions &resumeDownloadOptions, BusinessError &businessError) override;
+        const ResumeDownloadOptions &resumeDownloadOptions, BusinessError &businessError, int32_t &funcResutl) override;
 
     int32_t Upgrade(const UpgradeInfo &info, const VersionDigestInfo &versionDigest,
-        const UpgradeOptions &upgradeOptions, BusinessError &businessError) override;
+        const UpgradeOptions &upgradeOptions, BusinessError &businessError, int32_t &funcResutl) override;
 
     int32_t ClearError(const UpgradeInfo &info, const VersionDigestInfo &versionDigest,
-        const ClearOptions &clearOptions, BusinessError &businessError) override;
+        const ClearOptions &clearOptions, BusinessError &businessError, int32_t &funcResutl) override;
 
-    int32_t TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError) override;
+    int32_t TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError, int32_t &funcResutl) override;
 
     int32_t GetNewVersionInfo(
-        const UpgradeInfo &info, NewVersionInfo &newVersionInfo, BusinessError &businessError) override;
+        const UpgradeInfo &info, NewVersionInfo &newVersionInfo, BusinessError &businessError,
+        int32_t &funcResutl) override;
 
     int32_t GetNewVersionDescription(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DescriptionOptions &descriptionOptions, VersionDescriptionInfo &newVersionDescriptionInfo,
-        BusinessError &businessError) override;
+        BusinessError &businessError, int32_t &funcResult) override;
 
     int32_t GetCurrentVersionInfo(const UpgradeInfo &info, CurrentVersionInfo &currentVersionInfo,
-        BusinessError &businessError) override;
+        BusinessError &businessError, int32_t &funcResult) override;
 
     int32_t GetCurrentVersionDescription(const UpgradeInfo &info, const DescriptionOptions &descriptionOptions,
-        VersionDescriptionInfo &currentVersionDescriptionInfo, BusinessError &businessError) override;
+        VersionDescriptionInfo &currentVersionDescriptionInfo, BusinessError &businessError,
+        int32_t &funcResult) override;
 
-    int32_t GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError) override;
+    int32_t GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError,
+        int32_t &funcResutl) override;
 
     int32_t SetUpgradePolicy(const UpgradeInfo &info, const UpgradePolicy &policy,
-        BusinessError &businessError) override;
+        BusinessError &businessError, int32_t &funcResult) override;
 
-    int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError) override;
+    int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError,
+        int32_t &funcResult) override;
 
-    int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError) override;
+    int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError,
+        int32_t &funcResult) override;
 
-    int32_t FactoryReset(BusinessError &businessError) override;
+    int32_t FactoryReset(BusinessError &businessError, int32_t &funcResult) override;
 
     int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-        const std::vector<std::string> &packageNames, BusinessError &businessError) override;
+        const std::vector<std::string> &packageNames, BusinessError &businessError, int32_t &funcResult) override;
 
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
-        BusinessError &businessError) override;
+        BusinessError &businessError, int32_t &funcResult) override;
 
     int Dump(int fd, const std::vector<std::u16string> &args) override;
 
-    void RegisterOhFunc();
+    int32_t CallbackEnter(uint32_t code) override;
+
+    int32_t CallbackExit(uint32_t code, int32_t result) override;
+
+    int32_t CallbackParcel(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 
     static sptr<UpdateService> GetInstance();
 
-    sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &info);
-
+    sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &info, int32_t &funcResutl);
 #ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
 private:
     void SetThreadPrio(int priority);
@@ -111,6 +124,9 @@ protected:
 
 private:
     void DumpUpgradeCallback(const int fd);
+    bool IsCallerValid();
+    bool IsPermissionGranted(uint32_t code);
+    int32_t PermissionCheck(uint32_t code);
 
 #ifndef UPDATER_UT
 private:
@@ -145,7 +161,6 @@ private:
     std::shared_ptr<UpdateServiceImplManager> updateImplMgr_ = nullptr;
 };
 
-int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option);
 } // namespace UpdateEngine
 } // namespace OHOS
 #endif // UPDATE_SERVICE_H

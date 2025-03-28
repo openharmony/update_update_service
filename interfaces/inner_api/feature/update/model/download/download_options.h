@@ -18,11 +18,17 @@
 
 #include "network_type.h"
 #include "order.h"
+#include "parcel.h"
+#include "update_log.h"
 
 namespace OHOS::UpdateEngine {
-struct DownloadOptions {
+struct DownloadOptions : public Parcelable {
     NetType allowNetwork = NetType::WIFI;
     Order order = Order::DOWNLOAD;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static DownloadOptions *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_DOWNLOAD_OPTIONS_H

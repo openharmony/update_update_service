@@ -17,10 +17,15 @@
 #define UPDATE_SERVICE_RESUME_DOWNLOAD_OPTIONS_H
 
 #include "network_type.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct ResumeDownloadOptions {
+struct ResumeDownloadOptions : public Parcelable {
     NetType allowNetwork = NetType::WIFI;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static ResumeDownloadOptions *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_RESUME_DOWNLOAD_OPTIONS_H

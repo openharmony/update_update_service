@@ -23,4 +23,35 @@ JsonBuilder VersionDigestInfo::GetJsonBuilder()
         .Append("versionDigest", versionDigest)
         .Append("}");
 }
+
+bool VersionDigestInfo::ReadFromParcel(Parcel &parcel)
+{
+    versionDigest = Str16ToStr8(parcel.ReadString16());
+    return true;
+}
+
+bool VersionDigestInfo::Marshalling(Parcel &parcel) const
+{
+    if (!parcel.WriteString16(Str8ToStr16(versionDigest))) {
+        ENGINE_LOGE("write versionDigest failed");
+        return false;
+    }
+    return true;
+}
+
+VersionDigestInfo *VersionDigestInfo::Unmarshalling(Parcel &parcel)
+{
+    VersionDigestInfo *versionDigestInfo = new (std::nothrow) VersionDigestInfo();
+    if (versionDigestInfo == nullptr) {
+        ENGINE_LOGE("Create versionDigestInfo failed");
+        return nullptr;
+    }
+
+    if (!versionDigestInfo->ReadFromParcel(parcel)) {
+        ENGINE_LOGE("Read from parcel failed");
+        delete versionDigestInfo;
+        return nullptr;
+    }
+    return versionDigestInfo;
+}
 } // namespace OHOS::UpdateEngine

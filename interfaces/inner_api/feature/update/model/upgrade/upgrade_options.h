@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,10 +17,15 @@
 #define UPDATE_SERVICE_UPGRADE_OPTIONS_H
 
 #include "order.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct UpgradeOptions {
+struct UpgradeOptions : public Parcelable {
     Order order = Order::INSTALL;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static UpgradeOptions *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_UPGRADE_OPTIONS_H

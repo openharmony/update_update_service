@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,25 +13,10 @@
  * limitations under the License.
  */
 
-#ifndef IUPDATE_CALLBACK_H
-#define IUPDATE_CALLBACK_H
-
-#include <iostream>
-#include "event_info.h"
-#include "iremote_broker.h"
-#include "iremote_proxy.h"
+#ifndef UPDATE_SERVICE_PARCEL_COMMON_H
+#define UPDATE_SERVICE_PARCEL_COMMON_H
 
 namespace OHOS::UpdateEngine {
-class IUpdateCallback : public OHOS::IRemoteBroker {
-public:
-    virtual ~IUpdateCallback() = default;
-    enum {
-        ON_EVENT = 1
-    };
-
-    DECLARE_INTERFACE_DESCRIPTOR(u"OHOS.Update.IUpdateCallback");
-public:
-    virtual void OnEvent(const EventInfo &eventInfo) = 0;
-};
-} // namespace OHOS::UpdateEngine
-#endif // IUPDATE_CALLBACK_H
+static constexpr int32_t MAX_VECTOR_SIZE = 128;
+} // OHOS::UpdateEngine
+#endif // UPDATE_SERVICE_PARCEL_COMMON_H

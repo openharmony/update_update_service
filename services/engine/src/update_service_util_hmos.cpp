@@ -48,7 +48,8 @@ sptr<IUpdateCallback> UpdateServiceUtil::GetUpgradeCallback(const UpgradeInfo &u
         ENGINE_LOGI("GetUpgradeCallback no instance");
         return nullptr;
     }
-    return service->GetUpgradeCallback(upgradeInfo);
+    int32_t funcResult = 0;
+    return service->GetUpgradeCallback(upgradeInfo, funcResult);
 }
 } // namespace UpdateEngine
 } // namespace OHOS

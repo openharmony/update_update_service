@@ -24,8 +24,10 @@
 #include "dupdate_json_utils.h"
 #include "json_builder.h"
 
+#include "parcel.h"
+
 namespace OHOS::UpdateEngine {
-struct ErrorMessage {
+struct ErrorMessage : public Parcelable {
     int32_t errorCode = 0;
     std::string errorMessage;
 
@@ -49,6 +51,10 @@ struct ErrorMessage {
             .Append("errorMessage", errorMessage)
             .Append("}");
     }
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static ErrorMessage *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_ERROR_MESSAGE_H

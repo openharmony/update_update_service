@@ -27,8 +27,10 @@
 #include "upgrade_action.h"
 #include "ota_mode.h"
 
+#include "parcel.h"
+
 namespace OHOS::UpdateEngine {
-struct VersionComponent : public BaseJsonStruct {
+struct VersionComponent : public BaseJsonStruct, public Parcelable {
     std::string componentId;
     int32_t componentType = CAST_INT(ComponentType::INVALID);
     std::string upgradeAction;
@@ -41,6 +43,10 @@ struct VersionComponent : public BaseJsonStruct {
     std::string componentExtra;
 
     JsonBuilder GetJsonBuilder() final;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static VersionComponent *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_VERSION_COMPONENT_H

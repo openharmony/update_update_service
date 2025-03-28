@@ -17,12 +17,17 @@
 #define UPDATE_SERVICE_UPGRADE_POLICY_H
 
 #include "upgrade_period.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct UpgradePolicy {
+struct UpgradePolicy : public Parcelable {
     bool downloadStrategy = false;
     bool autoUpgradeStrategy = false;
     UpgradePeriod autoUpgradePeriods[2];
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static UpgradePolicy *Unmarshalling(Parcel &parcel);
 };
 } // OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_UPGRADE_POLICY_H
