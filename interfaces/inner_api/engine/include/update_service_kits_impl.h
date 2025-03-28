@@ -34,57 +34,61 @@ class UpdateServiceKitsImpl final : public UpdateServiceKits,
 public:
     DISALLOW_COPY_AND_MOVE(UpdateServiceKitsImpl);
 
-    int32_t RegisterUpdateCallback(const UpgradeInfo &info, const UpdateCallbackInfo &cb) final;
+    int32_t RegisterUpdateCallback(const UpgradeInfo &info, const UpdateCallbackInfo &cb, int32_t &funcResult) final;
 
-    int32_t UnregisterUpdateCallback(const UpgradeInfo &info) final;
+    int32_t UnregisterUpdateCallback(const UpgradeInfo &info, int32_t &funcResult) final;
 
-    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult) final;
+    int32_t CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult,
+        int32_t &funcResult) final;
 
     int32_t Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-        const DownloadOptions &downloadOptions, BusinessError &businessError) final;
+        const DownloadOptions &downloadOptions, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t PauseDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-        const PauseDownloadOptions &pauseDownloadOptions, BusinessError &businessError) final;
+        const PauseDownloadOptions &pauseDownloadOptions, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t ResumeDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-        const ResumeDownloadOptions &resumeDownloadOptions, BusinessError &businessError) final;
+        const ResumeDownloadOptions &resumeDownloadOptions, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t Upgrade(const UpgradeInfo &info, const VersionDigestInfo &versionDigest,
-        const UpgradeOptions &upgradeOptions, BusinessError &businessError) final;
+        const UpgradeOptions &upgradeOptions, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t ClearError(const UpgradeInfo &info, const VersionDigestInfo &versionDigest,
-        const ClearOptions &clearOptions, BusinessError &businessError) final;
+        const ClearOptions &clearOptions, BusinessError &businessError, int32_t &funcResult) final;
 
-    int32_t TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError) final;
+    int32_t TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t GetNewVersionInfo(const UpgradeInfo &info, NewVersionInfo &newVersionInfo,
-        BusinessError &businessError) final;
+        BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t GetNewVersionDescription(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
         const DescriptionOptions &descriptionOptions, VersionDescriptionInfo &newVersionDescriptionInfo,
-        BusinessError &businessError) final;
+        BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t GetCurrentVersionInfo(const UpgradeInfo &info, CurrentVersionInfo &currentVersionInfo,
-        BusinessError &businessError) final;
+        BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t GetCurrentVersionDescription(const UpgradeInfo &info, const DescriptionOptions &descriptionOptions,
-        VersionDescriptionInfo &currentVersionDescriptionInfo, BusinessError &businessError) final;
+        VersionDescriptionInfo &currentVersionDescriptionInfo, BusinessError &businessError, int32_t &funcResult) final;
 
-    int32_t GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError) final;
+    int32_t GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError,
+        int32_t &funcResult) final;
 
-    int32_t SetUpgradePolicy(const UpgradeInfo &info, const UpgradePolicy &policy, BusinessError &businessError) final;
+    int32_t SetUpgradePolicy(const UpgradeInfo &info, const UpgradePolicy &policy, BusinessError &businessError,
+        int32_t &funcResult) final;
 
-    int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError) final;
+    int32_t GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError,
+        int32_t &funcResult) final;
 
-    int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError) final;
+    int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t FactoryReset(BusinessError &businessError) final;
 
     int32_t ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-        const std::vector<std::string> &packageNames, BusinessError &businessError) final;
+        const std::vector<std::string> &packageNames, BusinessError &businessError, int32_t &funcResult) final;
 
     int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
-        BusinessError &businessError) final;
+        BusinessError &businessError, int32_t &funcResult) final;
 
 protected:
     void RegisterCallback() override;

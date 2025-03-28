@@ -75,7 +75,8 @@ void LocalUpdater::Init()
     ENGINE_LOGI("LocalUpdater::Init");
     UpgradeInfo upgradeInfo;
     upgradeInfo.upgradeApp = LOCAL_UPGRADE_INFO;
-    UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo, callback);
+    int32_t funcResult = 0;
+    UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo, callback, funcResult);
     isInit_ = true;
 }
 
@@ -106,8 +107,9 @@ napi_value LocalUpdater::VerifyUpgradePackage(napi_env env, napi_callback_info i
         [upgradeFile, certsFile](void *context) -> int {
             ENGINE_LOGI("VerifyUpdatePackage StartWork %s, %s", upgradeFile.filePath.c_str(), certsFile.c_str());
             BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+            int32_t funcResult = 0;
             return UpdateServiceKits::GetInstance().VerifyUpgradePackage(upgradeFile.filePath, certsFile,
-                *businessError);
+                *businessError, funcResult);
         });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to VerifyUpgradePackage.");
     return retValue;
@@ -141,8 +143,9 @@ napi_value LocalUpdater::ApplyNewVersion(napi_env env, napi_callback_info info)
             BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
             UpgradeInfo upgradeInfo;
             upgradeInfo.upgradeApp = LOCAL_UPGRADE_INFO;
+            int32_t funcResult = 0;
             return UpdateServiceKits::GetInstance().ApplyNewVersion(upgradeInfo, MISC_FILE, packageNames,
-                *businessError);
+                *businessError, funcResult);
         });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to ApplyNewVersion");
     return retValue;

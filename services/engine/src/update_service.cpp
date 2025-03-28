@@ -22,27 +22,37 @@
 #include "iservice_registry.h"
 #include "system_ability_definition.h"
 
+#include "accesstoken_kit.h"
 #include "access_manager.h"
-#include "dupdate_net_manager.h"
+#include "access_token.h"
 #include "config_parse.h"
+#include "dupdate_net_manager.h"
 #include "firmware_common.h"
 #include "firmware_manager.h"
+#include "ipc_skeleton.h"
+#include "module_manager.h"
+#include "securec.h"
 #include "startup_manager.h"
+#include "tokenid_kit.h"
 #include "update_log.h"
 #include "update_service_cache.h"
 #include "update_service_local_updater.h"
+#include "update_service_module.h"
 #include "update_service_restorer.h"
 #include "update_service_util.h"
+#include "update_system_event.h"
 
-#include "update_service_module.h"
-#include "module_manager.h"
 #ifdef UPDATE_SERVICE_ENABLE_RUN_ON_DEMAND_QOS
 #include <sys/syscall.h>
 #include <sys/resource.h>
 #endif
 
+using namespace std;
+
 namespace OHOS {
 namespace UpdateEngine {
+constexpr const pid_t ROOT_UID = 0;
+constexpr const pid_t EDM_UID = 3057;
 REGISTER_SYSTEM_ABILITY_BY_ID(UpdateService, UPDATE_DISTRIBUTED_SERVICE_ID, true)
 
 OHOS::sptr<UpdateService> UpdateService::updateService_ { nullptr };
@@ -52,12 +62,18 @@ constexpr int OPEN_SO_PRIO = -20;
 constexpr int NORMAL_PRIO = 0;
 #endif
 
+int32_t CallResultToIpcResult(int32_t callResult)
+{
+    return callResult + CALL_RESULT_OFFSET;
+}
+
 void UpdateService::ClientDeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
 {
     ENGINE_LOGI("client DeathRecipient OnRemoteDied: %{public}s", upgradeInfo_.ToString().c_str());
     sptr<UpdateService> service = UpdateService::GetInstance();
+    int32_t funcResult = 0;
     if (service != nullptr) {
-        service->UnregisterUpdateCallback(upgradeInfo_);
+        service->UnregisterUpdateCallback(upgradeInfo_, funcResult);
     }
 }
 
@@ -121,10 +137,11 @@ sptr<UpdateService> UpdateService::GetInstance()
     return updateService_;
 }
 
-int32_t UpdateService::RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback> &updateCallback)
+int32_t UpdateService::RegisterUpdateCallback(const UpgradeInfo &info, const sptr<IUpdateCallback> &updateCallback,
+    int32_t &funcResult)
 {
     ENGINE_LOGI("RegisterUpdateCallback");
-    UnregisterUpdateCallback(info);
+    UnregisterUpdateCallback(info, funcResult);
     {
         std::lock_guard<std::mutex> lock(clientProxyMapLock_);
         ClientProxy clientProxy(info, updateCallback);
@@ -138,7 +155,7 @@ int32_t UpdateService::RegisterUpdateCallback(const UpgradeInfo &info, const spt
     return INT_CALL_SUCCESS;
 }
 
-int32_t UpdateService::UnregisterUpdateCallback(const UpgradeInfo &info)
+int32_t UpdateService::UnregisterUpdateCallback(const UpgradeInfo &info, int32_t &funcResult)
 {
     ENGINE_LOGI("UnregisterUpdateCallback");
     std::lock_guard<std::mutex> lock(clientProxyMapLock_);
@@ -152,7 +169,7 @@ int32_t UpdateService::UnregisterUpdateCallback(const UpgradeInfo &info)
     return INT_CALL_SUCCESS;
 }
 
-sptr<IUpdateCallback> UpdateService::GetUpgradeCallback(const UpgradeInfo &info)
+sptr<IUpdateCallback> UpdateService::GetUpgradeCallback(const UpgradeInfo &info, int32_t &funcResult)
 {
     std::lock_guard<std::mutex> lock(clientProxyMapLock_);
     auto iter = clientProxyMap_.find(info);
@@ -163,7 +180,7 @@ sptr<IUpdateCallback> UpdateService::GetUpgradeCallback(const UpgradeInfo &info)
 }
 
 int32_t UpdateService::GetNewVersionInfo(const UpgradeInfo &info, NewVersionInfo &newVersionInfo,
-    BusinessError &businessError)
+    BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -175,7 +192,7 @@ int32_t UpdateService::GetNewVersionInfo(const UpgradeInfo &info, NewVersionInfo
 
 int32_t UpdateService::GetNewVersionDescription(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
     const DescriptionOptions &descriptionOptions, VersionDescriptionInfo &newVersionDescriptionInfo,
-    BusinessError &businessError)
+    BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -187,7 +204,7 @@ int32_t UpdateService::GetNewVersionDescription(const UpgradeInfo &info, const V
 }
 
 int32_t UpdateService::GetCurrentVersionInfo(const UpgradeInfo &info, CurrentVersionInfo &currentVersionInfo,
-    BusinessError &businessError)
+    BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -199,7 +216,7 @@ int32_t UpdateService::GetCurrentVersionInfo(const UpgradeInfo &info, CurrentVer
 
 int32_t UpdateService::GetCurrentVersionDescription(const UpgradeInfo &info,
     const DescriptionOptions &descriptionOptions, VersionDescriptionInfo &currentVersionDescriptionInfo,
-    BusinessError &businessError)
+    BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -210,7 +227,8 @@ int32_t UpdateService::GetCurrentVersionDescription(const UpgradeInfo &info,
         businessError);
 }
 
-int32_t UpdateService::GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError)
+int32_t UpdateService::GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, BusinessError &businessError,
+    int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -221,7 +239,7 @@ int32_t UpdateService::GetTaskInfo(const UpgradeInfo &info, TaskInfo &taskInfo, 
 }
 
 int32_t UpdateService::SetUpgradePolicy(const UpgradeInfo &info, const UpgradePolicy &policy,
-    BusinessError &businessError)
+    BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -231,7 +249,8 @@ int32_t UpdateService::SetUpgradePolicy(const UpgradeInfo &info, const UpgradePo
     return onlineUpdater->SetUpgradePolicy(info, policy, businessError);
 }
 
-int32_t UpdateService::GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError)
+int32_t UpdateService::GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &policy, BusinessError &businessError,
+    int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -241,7 +260,8 @@ int32_t UpdateService::GetUpgradePolicy(const UpgradeInfo &info, UpgradePolicy &
     return onlineUpdater->GetUpgradePolicy(info, policy, businessError);
 }
 
-int32_t UpdateService::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult)
+int32_t UpdateService::CheckNewVersion(const UpgradeInfo &info, BusinessError &businessError, CheckResult &checkResult,
+    int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -252,7 +272,7 @@ int32_t UpdateService::CheckNewVersion(const UpgradeInfo &info, BusinessError &b
 }
 
 int32_t UpdateService::Download(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-    const DownloadOptions &downloadOptions, BusinessError &businessError)
+    const DownloadOptions &downloadOptions, BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -263,7 +283,7 @@ int32_t UpdateService::Download(const UpgradeInfo &info, const VersionDigestInfo
 }
 
 int32_t UpdateService::PauseDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-    const PauseDownloadOptions &pauseDownloadOptions, BusinessError &businessError)
+    const PauseDownloadOptions &pauseDownloadOptions, BusinessError &businessError, int32_t &funcResult)
 {
     ENGINE_LOGI("PauseDownload");
     businessError.errorNum = CallResult::SUCCESS;
@@ -272,7 +292,7 @@ int32_t UpdateService::PauseDownload(const UpgradeInfo &info, const VersionDiges
 }
 
 int32_t UpdateService::ResumeDownload(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-    const ResumeDownloadOptions &resumeDownloadOptions, BusinessError &businessError)
+    const ResumeDownloadOptions &resumeDownloadOptions, BusinessError &businessError, int32_t &funcResult)
 {
     ENGINE_LOGI("ResumeDownload allowNetwork:%{public}d", CAST_INT(resumeDownloadOptions.allowNetwork));
     businessError.Build(CallResult::UN_SUPPORT, "ResumeDownload unsupport");
@@ -280,7 +300,7 @@ int32_t UpdateService::ResumeDownload(const UpgradeInfo &info, const VersionDige
 }
 
 int32_t UpdateService::Upgrade(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-    const UpgradeOptions &upgradeOptions, BusinessError &businessError)
+    const UpgradeOptions &upgradeOptions, BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -291,7 +311,7 @@ int32_t UpdateService::Upgrade(const UpgradeInfo &info, const VersionDigestInfo 
 }
 
 int32_t UpdateService::ClearError(const UpgradeInfo &info, const VersionDigestInfo &versionDigestInfo,
-    const ClearOptions &clearOptions, BusinessError &businessError)
+    const ClearOptions &clearOptions, BusinessError &businessError, int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -301,7 +321,8 @@ int32_t UpdateService::ClearError(const UpgradeInfo &info, const VersionDigestIn
     return onlineUpdater->ClearError(info, versionDigestInfo, clearOptions, businessError);
 }
 
-int32_t UpdateService::TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError)
+int32_t UpdateService::TerminateUpgrade(const UpgradeInfo &info, BusinessError &businessError,
+    int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -311,7 +332,8 @@ int32_t UpdateService::TerminateUpgrade(const UpgradeInfo &info, BusinessError &
     return onlineUpdater->TerminateUpgrade(info, businessError);
 }
 
-int32_t UpdateService::Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError)
+int32_t UpdateService::Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError,
+    int32_t &funcResult)
 {
     sptr<IServiceOnlineUpdater> onlineUpdater = updateImplMgr_->GetOnlineUpdater(info);
     if (onlineUpdater == nullptr) {
@@ -321,7 +343,7 @@ int32_t UpdateService::Cancel(const UpgradeInfo &info, int32_t service, Business
     return onlineUpdater->Cancel(info, service, businessError);
 }
 
-int32_t UpdateService::FactoryReset(BusinessError &businessError)
+int32_t UpdateService::FactoryReset(BusinessError &businessError, int32_t &funcResult)
 {
     sptr<UpdateServiceRestorer> restorer = new UpdateServiceRestorer();
     if (restorer == nullptr) {
@@ -332,7 +354,7 @@ int32_t UpdateService::FactoryReset(BusinessError &businessError)
 }
 
 int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
-    const std::vector<std::string> &packageNames, BusinessError &businessError)
+    const std::vector<std::string> &packageNames, BusinessError &businessError, int32_t &funcResult)
 {
     sptr<UpdateServiceLocalUpdater> localUpdater = new UpdateServiceLocalUpdater();
     if (localUpdater == nullptr) {
@@ -343,7 +365,7 @@ int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::strin
 }
 
 int32_t UpdateService::VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
-    BusinessError &businessError)
+    BusinessError &businessError, int32_t &funcResult)
 {
     sptr<UpdateServiceLocalUpdater> localUpdater = new UpdateServiceLocalUpdater();
     if (localUpdater == nullptr) {
@@ -387,7 +409,8 @@ void BuildTaskInfoDump(const int fd)
     TaskInfo taskInfo;
     BusinessError businessError;
     UpgradeInfo upgradeInfo;
-    service->GetTaskInfo(upgradeInfo, taskInfo, businessError);
+    int32_t funcResult = 0;
+    service->GetTaskInfo(upgradeInfo, taskInfo, businessError, funcResult);
     if (!taskInfo.existTask) {
         dprintf(fd, "TaskInfo is empty\n");
         return;
@@ -465,9 +488,6 @@ void UpdateService::OnStart(const SystemAbilityOnDemandReason &startReason)
     SetThreadPrio(NORMAL_PRIO);
 #endif
 
-    ENGINE_LOGI("RegisterOhFunc HandleOhRemoteRequest");
-    RegisterOhFunc();
-
     if (!ModuleManager::GetInstance().IsModuleLoaded()) {
         ENGINE_LOGI("IsModuleLoaded false, init updateservice_sa");
         DelayedSingleton<NetManager>::GetInstance()->Init();
@@ -500,36 +520,95 @@ void UpdateService::OnStop(const SystemAbilityOnDemandReason &stopReason)
     ModuleManager::GetInstance().HandleOnStartOnStopFunc("OnStop", stopReason);
 }
 
-int32_t HandleOhRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+int32_t UpdateService::CallbackEnter(uint32_t code)
 {
-    return UpdateService::GetInstance()-> HandleRemoteRequest(code, data, reply, option);
+    ENGINE_LOGI("CallbackEnter, code: %{public}u", code);
+    if (!ModuleManager::GetInstance().IsModuleLoaded()) {
+        return PermissionCheck(code);
+    } else {
+        ENGINE_LOGI("IsModuleLoaded true");
+        return INT_CALL_SUCCESS;
+    }
 }
 
-void UpdateService::RegisterOhFunc()
+int32_t UpdateService::PermissionCheck(uint32_t code)
 {
-    std::vector<uint32_t> codes = {
-        CAST_UINT(UpdaterSaInterfaceCode::CHECK_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::PAUSE_DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::RESUME_DOWNLOAD),
-        CAST_UINT(UpdaterSaInterfaceCode::UPGRADE),
-        CAST_UINT(UpdaterSaInterfaceCode::CLEAR_ERROR),
-        CAST_UINT(UpdaterSaInterfaceCode::TERMINATE_UPGRADE),
-        CAST_UINT(UpdaterSaInterfaceCode::SET_POLICY),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_POLICY),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_NEW_VERSION_DESCRIPTION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_CURRENT_VERSION_DESCRIPTION),
-        CAST_UINT(UpdaterSaInterfaceCode::GET_TASK_INFO),
-        CAST_UINT(UpdaterSaInterfaceCode::REGISTER_CALLBACK),
-        CAST_UINT(UpdaterSaInterfaceCode::UNREGISTER_CALLBACK),
-        CAST_UINT(UpdaterSaInterfaceCode::CANCEL),
-        CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET),
-        CAST_UINT(UpdaterSaInterfaceCode::APPLY_NEW_VERSION),
-        CAST_UINT(UpdaterSaInterfaceCode::VERIFY_UPGRADE_PACKAGE)
-    };
-    RegisterFunc(codes, HandleOhRemoteRequest);
+    ENGINE_LOGI("UpdateService Oh PermissionCheck, code: %{public}u", code);
+    if (!IsCallerValid()) {
+        ENGINE_LOGE("UpdateService IsCallerValid false");
+        return CallResultToIpcResult(INT_NOT_SYSTEM_APP);
+    }
+
+    if (!IsPermissionGranted(code)) {
+        ENGINE_LOGE("UpdateService code %{public}u IsPermissionGranted false", code);
+        return CallResultToIpcResult(INT_APP_NOT_GRANTED);
+    }
+
+    if (code == CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET)) {
+        SYS_EVENT_SYSTEM_RESET(0, UpdateSystemEvent::RESET_START);
+    }
+    return INT_CALL_SUCCESS;
+}
+
+int32_t UpdateService::CallbackExit(uint32_t code, int32_t result)
+{
+    return INT_CALL_SUCCESS;
+}
+
+int32_t UpdateService::CallbackParcel(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    int32_t ret;
+    if (!ModuleManager::GetInstance().IsModuleLoaded()) {
+        ENGINE_LOGI("IsModuleLoaded false");
+        return INT_CALL_SUCCESS;
+    } else {
+        ENGINE_LOGI("IsModuleLoaded true, code: %{public}u", code);
+        if (!ModuleManager::GetInstance().IsMapFuncExist(code)) {
+            ENGINE_LOGE("UpdateService OnRemoteRequest code %{public}u not found", code);
+            ret = IPCObjectStub::OnRemoteRequest(code, data, reply, option);
+            ENGINE_LOGE("UpdateService OnRemoteRequest ret %{public}d", ret);
+            return INT_CALL_FAIL;
+        }
+        ret = ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
+        ENGINE_LOGE("CallbackParcel deal result code %{public}d", ret);
+        return INT_CALL_FAIL;
+    }
+}
+
+bool UpdateService::IsCallerValid()
+{
+    OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
+    switch (callerTokenType) {
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_HAP: {
+            uint64_t callerFullTokenID = IPCSkeleton::GetCallingFullTokenID();
+            // hap进程只允许系统应用调用
+            return OHOS::Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(callerFullTokenID);
+        }
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE: {
+            pid_t callerUid = IPCSkeleton::GetCallingUid();
+            // native进程只允许root权限和edm调用
+            return callerUid == ROOT_UID || callerUid == EDM_UID;
+        }
+        default:
+            // 其他情况调用予以禁止
+            return false;
+    }
+}
+
+bool UpdateService::IsPermissionGranted(uint32_t code)
+{
+    Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    string permission = "ohos.permission.UPDATE_SYSTEM";
+    if (code == CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET)) {
+        permission = "ohos.permission.FACTORY_RESET";
+    }
+    int verifyResult = Security::AccessToken::AccessTokenKit::VerifyAccessToken(callerToken, permission);
+    bool isPermissionGranted = verifyResult == Security::AccessToken::PERMISSION_GRANTED;
+    if (!isPermissionGranted) {
+        ENGINE_LOGE("%{public}s not granted, code:%{public}u", permission.c_str(), code);
+    }
+    return isPermissionGranted;
 }
 } // namespace UpdateEngine
 } // namespace OHOS

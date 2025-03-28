@@ -86,7 +86,8 @@ void UpdateClient::RegisterCallback()
     constexpr int32_t maxRetryTimes = 5;  // 回调注册失败最大尝试次数
     int32_t retryTimes = 0;
     do {
-        int32_t ret = UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo_, callback);
+        int32_t funcResult = 0;
+        int32_t ret = UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo_, callback, funcResult);
         if (ret == INT_CALL_SUCCESS) {
             break;
         }
@@ -103,7 +104,8 @@ void UpdateClient::RegisterCallback()
 
 void UpdateClient::UnRegisterCallback()
 {
-    UpdateServiceKits::GetInstance().UnregisterUpdateCallback(upgradeInfo_);
+    int32_t funcResult = 0;
+    UpdateServiceKits::GetInstance().UnregisterUpdateCallback(upgradeInfo_, funcResult);
 }
 
 napi_value UpdateClient::CheckNewVersion(napi_env env, napi_callback_info info)
@@ -111,7 +113,9 @@ napi_value UpdateClient::CheckNewVersion(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_CHECK_VERSION, CALLBACK_POSITION_ONE, true);
     napi_value ret = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-        return UpdateServiceKits::GetInstance().CheckNewVersion(upgradeInfo_, *businessError, checkResult_);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().CheckNewVersion(upgradeInfo_, *businessError, checkResult_,
+            funcResult);
     });
     PARAM_CHECK(ret != nullptr, return nullptr, "Failed to start worker.");
     return ret;
@@ -123,8 +127,9 @@ napi_value UpdateClient::CancelUpgrade(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_CANCEL_UPGRADE, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-            return UpdateServiceKits::GetInstance().Cancel(upgradeInfo_, CAST_INT(UpdaterSaInterfaceCode::DOWNLOAD),
-                *businessError);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().Cancel(upgradeInfo_, CAST_INT(UpdaterSaInterfaceCode::DOWNLOAD),
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -180,8 +185,9 @@ napi_value UpdateClient::Download(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_DOWNLOAD, CALLBACK_POSITION_THREE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().Download(upgradeInfo_, versionDigestInfo_, downloadOptions_,
-            *businessError);
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -204,8 +210,9 @@ napi_value UpdateClient::PauseDownload(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_PAUSE_DOWNLOAD, CALLBACK_POSITION_THREE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().PauseDownload(upgradeInfo_, versionDigestInfo_, pauseDownloadOptions_,
-            *businessError);
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -228,8 +235,9 @@ napi_value UpdateClient::ResumeDownload(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_RESUME_DOWNLOAD, CALLBACK_POSITION_THREE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().ResumeDownload(upgradeInfo_, versionDigestInfo_, resumeDownloadOptions_,
-            *businessError);
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -252,8 +260,9 @@ napi_value UpdateClient::Upgrade(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_UPGRADE, CALLBACK_POSITION_THREE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().Upgrade(upgradeInfo_, versionDigestInfo_, upgradeOptions_,
-            *businessError);
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -276,8 +285,9 @@ napi_value UpdateClient::ClearError(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_CLEAR_ERROR, CALLBACK_POSITION_THREE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().ClearError(upgradeInfo_, versionDigestInfo_, clearOptions_,
-            *businessError);
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -293,7 +303,9 @@ napi_value UpdateClient::TerminateUpgrade(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_TERMINATE_UPGRADE, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-        return UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, *businessError);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, *businessError,
+            funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -315,7 +327,9 @@ napi_value UpdateClient::SetUpgradePolicy(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_SET_POLICY, CALLBACK_POSITION_TWO, true);
     napi_value retValue = StartSession(env, info, sessionParams, [&](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-        return UpdateServiceKits::GetInstance().SetUpgradePolicy(upgradeInfo_, upgradePolicy_, *businessError);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().SetUpgradePolicy(upgradeInfo_, upgradePolicy_, *businessError,
+            funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to SetUpgradePolicy.");
     return retValue;
@@ -326,7 +340,9 @@ napi_value UpdateClient::GetUpgradePolicy(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_GET_POLICY, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-        return UpdateServiceKits::GetInstance().GetUpgradePolicy(upgradeInfo_, upgradePolicy_, *businessError);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().GetUpgradePolicy(upgradeInfo_, upgradePolicy_, *businessError,
+            funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to UpgradeVersion.");
     return retValue;
@@ -337,7 +353,9 @@ napi_value UpdateClient::GetNewVersionInfo(napi_env env, napi_callback_info info
     SessionParams sessionParams(SessionType::SESSION_GET_NEW_VERSION, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-        return UpdateServiceKits::GetInstance().GetNewVersionInfo(upgradeInfo_, newVersionInfo_, *businessError);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().GetNewVersionInfo(upgradeInfo_, newVersionInfo_, *businessError,
+            funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to GetNewVersionInfo.");
     return retValue;
@@ -361,8 +379,9 @@ napi_value UpdateClient::GetNewVersionDescription(napi_env env, napi_callback_in
     SessionParams sessionParams(SessionType::SESSION_GET_NEW_VERSION_DESCRIPTION, CALLBACK_POSITION_THREE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().GetNewVersionDescription(upgradeInfo_, versionDigestInfo_,
-            descriptionOptions_, newVersionDescriptionInfo_, *businessError);
+            descriptionOptions_, newVersionDescriptionInfo_, *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -373,8 +392,9 @@ napi_value UpdateClient::GetCurrentVersionInfo(napi_env env, napi_callback_info 
     SessionParams sessionParams(SessionType::SESSION_GET_CUR_VERSION, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().GetCurrentVersionInfo(upgradeInfo_, currentVersionInfo_,
-            *businessError);
+            *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to GetCurrentVersionInfo.");
     return retValue;
@@ -397,8 +417,9 @@ napi_value UpdateClient::GetCurrentVersionDescription(napi_env env, napi_callbac
     SessionParams sessionParams(SessionType::SESSION_GET_CUR_VERSION_DESCRIPTION, CALLBACK_POSITION_TWO, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+        int32_t funcResult = 0;
         return UpdateServiceKits::GetInstance().GetCurrentVersionDescription(upgradeInfo_, descriptionOptions_,
-            currentVersionDescriptionInfo_, *businessError);
+            currentVersionDescriptionInfo_, *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to start worker.");
     return retValue;
@@ -409,7 +430,8 @@ napi_value UpdateClient::GetTaskInfo(napi_env env, napi_callback_info info)
     SessionParams sessionParams(SessionType::SESSION_GET_TASK_INFO, CALLBACK_POSITION_ONE, true);
     napi_value retValue = StartSession(env, info, sessionParams, [=](void *context) -> int {
         BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
-        return UpdateServiceKits::GetInstance().GetTaskInfo(upgradeInfo_, taskInfo_, *businessError);
+        int32_t funcResult = 0;
+        return UpdateServiceKits::GetInstance().GetTaskInfo(upgradeInfo_, taskInfo_, *businessError, funcResult);
     });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to GetTaskInfo.");
     return retValue;

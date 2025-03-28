@@ -17,11 +17,16 @@
 #define UPDATE_SERVICE_CHECK_RESULT_H
 
 #include "new_version_info.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct CheckResult {
+struct CheckResult : public Parcelable {
     bool isExistNewVersion = false;
     NewVersionInfo newVersionInfo;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static CheckResult *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_CHECK_RESULT_H

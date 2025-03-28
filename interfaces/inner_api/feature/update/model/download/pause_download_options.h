@@ -16,9 +16,15 @@
 #ifndef UPDATE_SERVICE_PAUSE_DOWNLOAD_OPTIONS_H
 #define UPDATE_SERVICE_PAUSE_DOWNLOAD_OPTIONS_H
 
+#include "parcel.h"
+
 namespace OHOS::UpdateEngine {
-struct PauseDownloadOptions {
+struct PauseDownloadOptions : public Parcelable {
     bool isAllowAutoResume = false;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static PauseDownloadOptions *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_PAUSE_DOWNLOAD_OPTIONS_H

@@ -162,7 +162,8 @@ void BuildVersionComponents(napi_env env, napi_value &obj, const std::vector<Ver
             NapiCommonUtils::SetInt64(env, napiVersionComponent, "size", versionComponents[i].size);
             NapiCommonUtils::SetInt32(env, napiVersionComponent, "effectiveMode", versionComponents[i].effectiveMode);
             NapiCommonUtils::SetInt32(env, napiVersionComponent, "otaMode", versionComponents[i].otaMode);
-            ComponentDescription componentDescription = { .descriptionInfo = versionComponents[i].descriptionInfo };
+            ComponentDescription componentDescription;
+            componentDescription.descriptionInfo = versionComponents[i].descriptionInfo;
             BuildDescInfo(env, napiVersionComponent, componentDescription);
             NapiCommonUtils::SetString(env, napiVersionComponent, "componentExtra",
                 versionComponents[i].componentExtra.c_str());

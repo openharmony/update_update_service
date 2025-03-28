@@ -28,7 +28,7 @@ public:
 
     ~UpdateCallback() override = default;
 
-    void OnEvent(const EventInfo &eventInfo) override;
+    ErrCode OnEvent(const EventInfo &eventInfo) override;
 
 private:
     UpdateCallbackInfo updateCallback_{};

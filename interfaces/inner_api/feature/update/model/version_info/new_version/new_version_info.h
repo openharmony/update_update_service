@@ -16,15 +16,21 @@
 #ifndef UPDATE_SERVICE_NEW_VERSION_INFO_H
 #define UPDATE_SERVICE_NEW_VERSION_INFO_H
 
+#include <string_ex.h>
 #include <vector>
 
 #include "version_component.h"
 #include "version_digest_info.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct NewVersionInfo {
+struct NewVersionInfo : public Parcelable {
     VersionDigestInfo versionDigestInfo;
     std::vector<VersionComponent> versionComponents;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static NewVersionInfo *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
 #endif // UPDATE_SERVICE_NEW_VERSION_INFO_H

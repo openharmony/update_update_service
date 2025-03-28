@@ -20,11 +20,12 @@
 namespace OHOS::UpdateEngine {
 UpdateCallback::UpdateCallback(const UpdateCallbackInfo &updateCallback) : updateCallback_(updateCallback) {}
 
-void UpdateCallback::OnEvent(const EventInfo &eventInfo)
+ErrCode UpdateCallback::OnEvent(const EventInfo &eventInfo)
 {
     ENGINE_LOGI("OnEvent eventId 0x%{public}08x", eventInfo.eventId);
     if (updateCallback_.onEvent != nullptr) {
         updateCallback_.onEvent(eventInfo);
     }
+    return 0;
 }
 } // namespace OHOS::UpdateEngine

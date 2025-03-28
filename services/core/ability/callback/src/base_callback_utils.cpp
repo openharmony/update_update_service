@@ -91,7 +91,8 @@ sptr<IUpdateCallback> BaseCallbackUtils::GetUpgradeCallback(const UpgradeInfo &u
         ENGINE_LOGI("GetUpgradeCallback no instance");
         return nullptr;
     }
-    return service->GetUpgradeCallback(upgradeInfo);
+    int32_t funcResult = 0;
+    return service->GetUpgradeCallback(upgradeInfo, funcResult);
 }
 
 void BaseCallbackUtils::NotifyToHap(EventInfo &info)

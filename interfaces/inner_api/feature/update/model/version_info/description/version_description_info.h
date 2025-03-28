@@ -13,16 +13,22 @@
  * limitations under the License.
  */
 
-#ifndef UPDATE_SERVICE_VERSION_DESCRIPTION_INFO_H
-#define UPDATE_SERVICE_VERSION_DESCRIPTION_INFO_H
+#ifndef VERSION_DESCRIPTION_INFO_H
+#define VERSION_DESCRIPTION_INFO_H
 
+#include <string_ex.h>
 #include <vector>
 
 #include "component_description.h"
+#include "parcel.h"
 
 namespace OHOS::UpdateEngine {
-struct VersionDescriptionInfo {
+struct VersionDescriptionInfo : public Parcelable {
     std::vector<ComponentDescription> componentDescriptions;
+
+    bool ReadFromParcel(Parcel &parcel);
+    bool Marshalling(Parcel &parcel) const override;
+    static VersionDescriptionInfo *Unmarshalling(Parcel &parcel);
 };
 } // namespace OHOS::UpdateEngine
-#endif // UPDATE_SERVICE_VERSION_DESCRIPTION_INFO_H
+#endif // VERSION_DESCRIPTION_INFO_H

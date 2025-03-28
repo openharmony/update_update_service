@@ -1,0 +1,72 @@
+/*
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package OHOS.UpdateEngine;
+
+import callback/IUpdateCallback;
+
+sequenceable OHOS.UpdateEngine.BusinessError;
+sequenceable OHOS.UpdateEngine.CheckResult;
+sequenceable OHOS.UpdateEngine.ClearOptions;
+sequenceable OHOS.UpdateEngine.CurrentVersionInfo;
+sequenceable OHOS.UpdateEngine.DescriptionOptions;
+sequenceable OHOS.UpdateEngine.DownloadOptions;
+sequenceable OHOS.UpdateEngine.NewVersionInfo;
+sequenceable OHOS.UpdateEngine.PauseDownloadOptions;
+sequenceable OHOS.UpdateEngine.ResumeDownloadOptions;
+sequenceable OHOS.UpdateEngine.TaskInfo;
+sequenceable OHOS.UpdateEngine.UpgradeInfo;
+sequenceable OHOS.UpdateEngine.UpgradeOptions;
+sequenceable OHOS.UpdateEngine.UpgradePolicy;
+sequenceable OHOS.UpdateEngine.VersionDescriptionInfo;
+sequenceable OHOS.UpdateEngine.VersionDigestInfo;
+
+option_stub_hooks on;
+option_parcel_hooks on;
+
+interface OHOS.UpdateEngine.IUpdateService {
+    int RegisterUpdateCallback([in] UpgradeInfo info, [in] IUpdateCallback updateCallback);
+    int UnregisterUpdateCallback([in] UpgradeInfo info);
+
+    int CheckNewVersion([in] UpgradeInfo info, [out] BusinessError businessError, [out] CheckResult checkResult);
+    int Download([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+        [in] DownloadOptions downloadOptions, [out] BusinessError businessError);
+    int PauseDownload([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+        [in] PauseDownloadOptions pauseDownloadOptions, [out] BusinessError businessError);
+    int ResumeDownload([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+        [in] ResumeDownloadOptions resumeDownloadOptions, [out] BusinessError businessError);
+    int Upgrade([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
+        [in] UpgradeOptions upgradeOptions, [out] BusinessError businessError);
+    int ClearError([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
+        [in] ClearOptions clearOptions, [out] BusinessError businessError);
+    int TerminateUpgrade([in] UpgradeInfo info, [out] BusinessError businessError);
+    int GetNewVersionInfo([in] UpgradeInfo info, [out] NewVersionInfo newVersionInfo,
+        [out] BusinessError businessError);
+    int GetNewVersionDescription([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+        [in] DescriptionOptions descriptionOptions, [out] VersionDescriptionInfo newVersionDescriptionInfo,
+        [out] BusinessError businessError);
+    int GetCurrentVersionInfo([in] UpgradeInfo info, [out] CurrentVersionInfo currentVersionInfo,
+        [out] BusinessError businessError);
+    int GetCurrentVersionDescription([in] UpgradeInfo info, [in] DescriptionOptions descriptionOptions,
+        [out] VersionDescriptionInfo currentVersionDescriptionInfo, [out] BusinessError businessError);
+    int GetTaskInfo([in] UpgradeInfo info, [out] TaskInfo taskInfo, [out] BusinessError businessError);
+    int SetUpgradePolicy([in] UpgradeInfo info, [in] UpgradePolicy policy, [out] BusinessError businessError);
+    int GetUpgradePolicy([in] UpgradeInfo info, [out] UpgradePolicy policy, [out] BusinessError businessError);
+    int Cancel([in] UpgradeInfo info, [in] int service, [out] BusinessError businessError);
+    int FactoryReset([out] BusinessError businessError);
+    int ApplyNewVersion([in] UpgradeInfo info, [in] String miscFile,
+        [in] String[] packageNames, [out] BusinessError businessError);
+    int VerifyUpgradePackage([in] String packagePath, [in] String keyPath, [out] BusinessError businessError);
+}
