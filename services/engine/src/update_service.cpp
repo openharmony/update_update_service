@@ -62,11 +62,6 @@ constexpr int OPEN_SO_PRIO = -20;
 constexpr int NORMAL_PRIO = 0;
 #endif
 
-int32_t CallResultToIpcResult(int32_t callResult)
-{
-    return callResult + CALL_RESULT_OFFSET;
-}
-
 void UpdateService::ClientDeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
 {
     ENGINE_LOGI("client DeathRecipient OnRemoteDied: %{public}s", upgradeInfo_.ToString().c_str());
@@ -536,12 +531,12 @@ int32_t UpdateService::PermissionCheck(uint32_t code)
     ENGINE_LOGI("UpdateService Oh PermissionCheck, code: %{public}u", code);
     if (!IsCallerValid()) {
         ENGINE_LOGE("UpdateService IsCallerValid false");
-        return CallResultToIpcResult(INT_NOT_SYSTEM_APP);
+        return INT_NOT_SYSTEM_APP;
     }
 
     if (!IsPermissionGranted(code)) {
         ENGINE_LOGE("UpdateService code %{public}u IsPermissionGranted false", code);
-        return CallResultToIpcResult(INT_APP_NOT_GRANTED);
+        return INT_APP_NOT_GRANTED;
     }
 
     if (code == CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET)) {
@@ -571,6 +566,10 @@ int32_t UpdateService::CallbackParcel(uint32_t code, MessageParcel &data, Messag
         }
         ret = ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
         ENGINE_LOGE("CallbackParcel deal result code %{public}d", ret);
+        // 处理xts因错误码导致用例失败
+        if (ret != INT_CALL_SUCCESS) {
+            return ret > CALL_RESULT_OFFSET ? (ret - CALL_RESULT_OFFSET) : ret;
+        }
         return INT_CALL_FAIL;
     }
 }
