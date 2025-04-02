@@ -566,7 +566,6 @@ int32_t UpdateService::CallbackParcel(uint32_t code, MessageParcel &data, Messag
         }
         ret = ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
         ENGINE_LOGE("CallbackParcel deal result code %{public}d", ret);
-        // 处理xts因错误码导致用例失败
         if (ret != INT_CALL_SUCCESS) {
             return ret > CALL_RESULT_OFFSET ? (ret - CALL_RESULT_OFFSET) : ret;
         }
