@@ -37,36 +37,35 @@ option_stub_hooks on;
 option_parcel_hooks on;
 
 interface OHOS.UpdateEngine.IUpdateService {
-    int RegisterUpdateCallback([in] UpgradeInfo info, [in] IUpdateCallback updateCallback);
-    int UnregisterUpdateCallback([in] UpgradeInfo info);
-
-    int CheckNewVersion([in] UpgradeInfo info, [out] BusinessError businessError, [out] CheckResult checkResult);
-    int Download([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+    [ipccode 1] int CheckNewVersion([in] UpgradeInfo info, [out] BusinessError businessError, [out] CheckResult checkResult);
+    [ipccode 2] int Download([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
         [in] DownloadOptions downloadOptions, [out] BusinessError businessError);
-    int PauseDownload([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+    [ipccode 3] int PauseDownload([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
         [in] PauseDownloadOptions pauseDownloadOptions, [out] BusinessError businessError);
-    int ResumeDownload([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+    [ipccode 4] int ResumeDownload([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
         [in] ResumeDownloadOptions resumeDownloadOptions, [out] BusinessError businessError);
-    int Upgrade([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
+    [ipccode 5] int Upgrade([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
         [in] UpgradeOptions upgradeOptions, [out] BusinessError businessError);
-    int ClearError([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
+    [ipccode 6] int ClearError([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
         [in] ClearOptions clearOptions, [out] BusinessError businessError);
-    int TerminateUpgrade([in] UpgradeInfo info, [out] BusinessError businessError);
-    int GetNewVersionInfo([in] UpgradeInfo info, [out] NewVersionInfo newVersionInfo,
+    [ipccode 7] int TerminateUpgrade([in] UpgradeInfo info, [out] BusinessError businessError);
+    [ipccode 8] int SetUpgradePolicy([in] UpgradeInfo info, [in] UpgradePolicy policy, [out] BusinessError businessError);
+    [ipccode 9] int GetUpgradePolicy([in] UpgradeInfo info, [out] UpgradePolicy policy, [out] BusinessError businessError);
+    [ipccode 10] int GetNewVersionInfo([in] UpgradeInfo info, [out] NewVersionInfo newVersionInfo,
         [out] BusinessError businessError);
-    int GetNewVersionDescription([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
+    [ipccode 11] int GetNewVersionDescription([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
         [in] DescriptionOptions descriptionOptions, [out] VersionDescriptionInfo newVersionDescriptionInfo,
         [out] BusinessError businessError);
-    int GetCurrentVersionInfo([in] UpgradeInfo info, [out] CurrentVersionInfo currentVersionInfo,
+    [ipccode 12] int GetCurrentVersionInfo([in] UpgradeInfo info, [out] CurrentVersionInfo currentVersionInfo,
         [out] BusinessError businessError);
-    int GetCurrentVersionDescription([in] UpgradeInfo info, [in] DescriptionOptions descriptionOptions,
+    [ipccode 13] int GetCurrentVersionDescription([in] UpgradeInfo info, [in] DescriptionOptions descriptionOptions,
         [out] VersionDescriptionInfo currentVersionDescriptionInfo, [out] BusinessError businessError);
-    int GetTaskInfo([in] UpgradeInfo info, [out] TaskInfo taskInfo, [out] BusinessError businessError);
-    int SetUpgradePolicy([in] UpgradeInfo info, [in] UpgradePolicy policy, [out] BusinessError businessError);
-    int GetUpgradePolicy([in] UpgradeInfo info, [out] UpgradePolicy policy, [out] BusinessError businessError);
-    int Cancel([in] UpgradeInfo info, [in] int service, [out] BusinessError businessError);
-    int FactoryReset([out] BusinessError businessError);
-    int ApplyNewVersion([in] UpgradeInfo info, [in] String miscFile,
+    [ipccode 14] int GetTaskInfo([in] UpgradeInfo info, [out] TaskInfo taskInfo, [out] BusinessError businessError);
+    [ipccode 15] int RegisterUpdateCallback([in] UpgradeInfo info, [in] IUpdateCallback updateCallback);
+    [ipccode 16] int UnregisterUpdateCallback([in] UpgradeInfo info);
+    [ipccode 17] int Cancel([in] UpgradeInfo info, [in] int service, [out] BusinessError businessError);
+    [ipccode 18] int FactoryReset([out] BusinessError businessError);
+    [ipccode 19] int ApplyNewVersion([in] UpgradeInfo info, [in] String miscFile,
         [in] String[] packageNames, [out] BusinessError businessError);
-    int VerifyUpgradePackage([in] String packagePath, [in] String keyPath, [out] BusinessError businessError);
+    [ipccode 20] int VerifyUpgradePackage([in] String packagePath, [in] String keyPath, [out] BusinessError businessError);
 }
