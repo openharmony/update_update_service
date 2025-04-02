@@ -37,9 +37,6 @@ option_stub_hooks on;
 option_parcel_hooks on;
 
 interface OHOS.UpdateEngine.IUpdateService {
-    int RegisterUpdateCallback([in] UpgradeInfo info, [in] IUpdateCallback updateCallback);
-    int UnregisterUpdateCallback([in] UpgradeInfo info);
-
     int CheckNewVersion([in] UpgradeInfo info, [out] BusinessError businessError, [out] CheckResult checkResult);
     int Download([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
         [in] DownloadOptions downloadOptions, [out] BusinessError businessError);
@@ -52,6 +49,8 @@ interface OHOS.UpdateEngine.IUpdateService {
     int ClearError([in] UpgradeInfo info, [in] VersionDigestInfo versionDigest,
         [in] ClearOptions clearOptions, [out] BusinessError businessError);
     int TerminateUpgrade([in] UpgradeInfo info, [out] BusinessError businessError);
+    int SetUpgradePolicy([in] UpgradeInfo info, [in] UpgradePolicy policy, [out] BusinessError businessError);
+    int GetUpgradePolicy([in] UpgradeInfo info, [out] UpgradePolicy policy, [out] BusinessError businessError);
     int GetNewVersionInfo([in] UpgradeInfo info, [out] NewVersionInfo newVersionInfo,
         [out] BusinessError businessError);
     int GetNewVersionDescription([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
@@ -62,8 +61,8 @@ interface OHOS.UpdateEngine.IUpdateService {
     int GetCurrentVersionDescription([in] UpgradeInfo info, [in] DescriptionOptions descriptionOptions,
         [out] VersionDescriptionInfo currentVersionDescriptionInfo, [out] BusinessError businessError);
     int GetTaskInfo([in] UpgradeInfo info, [out] TaskInfo taskInfo, [out] BusinessError businessError);
-    int SetUpgradePolicy([in] UpgradeInfo info, [in] UpgradePolicy policy, [out] BusinessError businessError);
-    int GetUpgradePolicy([in] UpgradeInfo info, [out] UpgradePolicy policy, [out] BusinessError businessError);
+    int RegisterUpdateCallback([in] UpgradeInfo info, [in] IUpdateCallback updateCallback);
+    int UnregisterUpdateCallback([in] UpgradeInfo info);
     int Cancel([in] UpgradeInfo info, [in] int service, [out] BusinessError businessError);
     int FactoryReset([out] BusinessError businessError);
     int ApplyNewVersion([in] UpgradeInfo info, [in] String miscFile,
