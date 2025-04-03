@@ -142,11 +142,11 @@ int32_t UpdateService::RegisterUpdateCallback(const UpgradeInfo &info, const spt
         ClientProxy clientProxy(info, updateCallback);
         clientProxy.AddDeathRecipient();
         clientProxyMap_.insert({info, clientProxy});
+        DelayedSingleton<AccessManager>::GetInstance()->SetRemoteIdle(clientProxyMap_.empty());
     }
     if (!info.IsLocal()) {
         UpdateServiceCache::SetUpgradeInfo(info);
     }
-    DelayedSingleton<AccessManager>::GetInstance()->SetRemoteIdle(clientProxyMap_.empty());
     return INT_CALL_SUCCESS;
 }
 
@@ -424,6 +424,7 @@ void BuildTaskInfoDump(const int fd)
 void UpdateService::DumpUpgradeCallback(const int fd)
 {
     dprintf(fd, "---------------------callback info--------------------\n");
+    std::lock_guard<std::mutex> lock(clientProxyMapLock_);
     for (const auto &iter : clientProxyMap_) {
         const UpgradeInfo& info = iter.first;
         dprintf(fd, "%s\n", info.ToString().c_str());
