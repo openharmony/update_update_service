@@ -19,7 +19,7 @@
 #include "time_utils_proxy.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareStatusCache::FirmwareStatusCache()
 {
     FIRMWARE_LOGD("FirmwareStatusCache::FirmwareStatusCache");
@@ -62,5 +62,5 @@ bool FirmwareStatusCache::IsUpgradeTriggered()
     }
     return statusCache_->IsUpgradeTriggered();
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

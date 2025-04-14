@@ -21,7 +21,7 @@
 #include "firmware_preferences_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareChangelogUtils::FirmwareChangelogUtils() {}
 
 FirmwareChangelogUtils::~FirmwareChangelogUtils() {}
@@ -77,5 +77,5 @@ void FirmwareChangelogUtils::GetAllComponentIds(std::vector<std::string> &compon
     componentIds.insert(componentIds.end(), curComponentIds.begin(), curComponentIds.end());
     componentIds.insert(componentIds.end(), newComponentIds.begin(), newComponentIds.end());
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

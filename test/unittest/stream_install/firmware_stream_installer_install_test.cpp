@@ -19,7 +19,7 @@
 using namespace testing::ext;
 using namespace testing;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 
 UpgradeStatus g_status;
 bool g_result;
@@ -87,4 +87,4 @@ HWTEST_F(StreamInstallerInstallTest, StartInstallFailure, TestSize.Level1)
     ASSERT_EQ(g_result, false);
 }
 
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

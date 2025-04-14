@@ -16,11 +16,11 @@
 #ifndef UPDATE_SERVICE_INSTALL_MODE_H
 #define UPDATE_SERVICE_INSTALL_MODE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class InstallMode {
     NORMAL = 0,
     NIGHT,
     AUTO
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_INSTALL_MODE_H

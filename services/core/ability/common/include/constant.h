@@ -23,7 +23,7 @@
 #include "file_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 namespace Constant {
 constexpr int32_t ONE_DAY_HOUR = 24;
 constexpr int32_t ONE_HOUR_MINUTES = 60;
@@ -69,6 +69,6 @@ static const std::vector<DirInfo> BASE_DIR_INFOS {
     {Constant::UPDATE_PACKAGE_ROOT_PATH, 0770, false},
     {Constant::DUPDATE_ENGINE_PACKAGE_ROOT_PATH, 0770, true}
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // CONSTANT_H

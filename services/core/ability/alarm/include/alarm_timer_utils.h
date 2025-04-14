@@ -22,7 +22,7 @@
 #include "itimer_info.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 using AlarmTimerCallback = std::function<void()>;
 
 class AlarmTimerUtils {
@@ -51,6 +51,6 @@ private:
         AlarmTimerCallback callBack_ = nullptr;
     };
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // ALARM_TIMER_UTILS_H

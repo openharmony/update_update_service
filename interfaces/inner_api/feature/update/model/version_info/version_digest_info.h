@@ -23,7 +23,7 @@
 #include "parcel.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct VersionDigestInfo : public BaseJsonStruct, public Parcelable {
     std::string versionDigest;
 
@@ -33,5 +33,5 @@ struct VersionDigestInfo : public BaseJsonStruct, public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static VersionDigestInfo *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_VERSION_DIGEST_INFO_H

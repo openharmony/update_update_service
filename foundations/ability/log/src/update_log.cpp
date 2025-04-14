@@ -16,7 +16,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 UpdateLogLevel UpdateLog::level_ = UpdateLogLevel::UPDATE_INFO;
 constexpr int32_t COUNT_ONE = 1;
 constexpr int32_t LONG_LOG_LEN = 900;
@@ -132,5 +132,5 @@ int32_t UpdateLog::FindSubStrCount(const std::string &str, const std::string &su
     }
     return count;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

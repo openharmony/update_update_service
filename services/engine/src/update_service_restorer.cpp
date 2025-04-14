@@ -25,7 +25,7 @@
 #include "update_system_event.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string MISC_PATH = "/misc";
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 const std::string CMD_WIPE_DATA = "--user_wipe_data";
@@ -46,5 +46,5 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
     return INT_CALL_SUCCESS;
 #endif
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

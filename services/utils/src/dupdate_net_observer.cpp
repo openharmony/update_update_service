@@ -28,7 +28,7 @@
 using namespace OHOS::NetManagerStandard;
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void NetObserver::SetCallback(const std::weak_ptr<INetObserverCallback> &callback)
 {
     callback_ = callback;
@@ -106,5 +106,5 @@ void NetObserver::OnNetChange(NetType netType)
     bool result = callback_.lock()->OnNetChange(netType);
     ENGINE_LOGD("OnNetChange callback result %{public}s", StringUtils::GetBoolStr(result).c_str());
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

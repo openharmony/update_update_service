@@ -25,7 +25,7 @@
 #include "progress.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr int32_t SLEEP_INSTALL = 1;
 
 struct InstallProgress {
@@ -65,6 +65,6 @@ private:
     std::mutex mutex_;
     bool isInstalling_ = false;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_INSTALL_H

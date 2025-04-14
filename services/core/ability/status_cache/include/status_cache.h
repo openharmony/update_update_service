@@ -21,7 +21,7 @@
 #include "time_utils_proxy.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class StatusCache {
 public:
     StatusCache(std::shared_ptr<TimeUtilsProxy> timeUtilsProxy) : timeUtilsProxy_(timeUtilsProxy) {}
@@ -41,6 +41,6 @@ private:
     int64_t lastDownloadTime_ = -1;
     int64_t lastUpgradeTime_ = -1;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // STATUS_CACHE_H

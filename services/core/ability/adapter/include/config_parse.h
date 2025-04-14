@@ -21,7 +21,7 @@
 #include "config_info.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class ConfigParse : public DelayedSingleton<ConfigParse> {
     DECLARE_DELAYED_SINGLETON(ConfigParse);
 
@@ -34,6 +34,6 @@ public:
 private:
     ConfigInfo configInfo_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // CONFIG_PRASE_H

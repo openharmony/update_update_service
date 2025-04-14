@@ -23,7 +23,7 @@
 #include "progress_thread.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareDownloadExecutor : public FirmwareIExecutor {
 public:
     FirmwareDownloadExecutor(const DownloadOptions &downloadOptions, FirmwareProgressCallback progressCallback)
@@ -46,6 +46,6 @@ private:
     UpgradeStatus upgradeStatus_ = UpgradeStatus::INIT;
     std::shared_ptr<DownloadThread> downloadThread_ = nullptr;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_DOWNLOAD_EXECUTOR_H

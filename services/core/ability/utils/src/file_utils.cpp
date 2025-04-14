@@ -31,7 +31,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::map<std::string, int32_t> FileUtils::baseDirMap_;
 
 int64_t FileUtils::GetFileSize(const std::string &fileName)
@@ -221,5 +221,5 @@ std::string FileUtils::ReadDataFromFile(const std::string &filePath)
     readFile.close();
     return fileRaw;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

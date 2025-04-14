@@ -16,12 +16,12 @@
 #ifndef UPDATE_SERVICE_OTA_MODE_H
 #define UPDATE_SERVICE_OTA_MODE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class OtaType {
     REGULAR = 0,
     STREAM = 1, // 1 << 0
     AB = 2, // 1 << 1
     AB_STREAM = 3 // STREAM | AB
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_OTA_MODE_H

@@ -33,7 +33,7 @@
 #include "time_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareCheckDataProcessor::FirmwareCheckDataProcessor()
 {
     FIRMWARE_LOGD("FirmwareCheckDataProcessor::FirmwareCheckDataProcessor");
@@ -258,5 +258,5 @@ void FirmwareCheckDataProcessor::BuildVersionDigest(
 {
     newVersionInfo.versionDigestInfo.versionDigest = FirmwareUpdateHelper::BuildTaskId(componentList);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

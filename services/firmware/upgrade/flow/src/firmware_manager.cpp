@@ -48,7 +48,7 @@
 #include "time_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr int32_t INIT_DELAY_TIME = 5; // 进程启动延时时间5秒，为了安装重启之后可以看到版本号及时刷新
 constexpr int32_t PROCESS_EXIT_DELAY_TIME = 1; // 进程退出等待时间，单位：秒
 constexpr uint64_t PULLUP_AFTER_TERMINATE_INTERVAL = 5; // 终止升级后SA拉起间隔
@@ -516,5 +516,5 @@ void FirmwareManager::NotifyInitEvent()
             UpgradeStatus::INIT);
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

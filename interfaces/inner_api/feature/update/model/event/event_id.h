@@ -19,7 +19,7 @@
 #include "event_classify.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class EventId {
     EVENT_TASK_BASE = CAST_UINT(EventClassify::TASK),
     EVENT_TASK_RECEIVE,
@@ -56,5 +56,5 @@ enum class EventId {
     COMMAND_BASE = CAST_UINT(EventClassify::COMMAND),
     EVENT_INITIALIZE,
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_EVENT_ID_H

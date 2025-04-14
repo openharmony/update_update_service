@@ -18,10 +18,10 @@
 
 #include <cstdint>
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct UpgradePeriod {
     uint32_t start = 0;
     uint32_t end = 0;
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_PERIOD_H

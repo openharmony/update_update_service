@@ -27,7 +27,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 template <typename Table, typename T>
 class TableBaseOperator : public ITableOperator<T> {
 public:
@@ -162,6 +162,6 @@ std::string TableBaseOperator<Table, T>::GetTableName()
     }
     return table_->GetTableName();
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // TABLE_BASE_OPERATOR_H

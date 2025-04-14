@@ -18,12 +18,12 @@
 
 #include "event_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 using OnEvent = std::function<void(const EventInfo &eventInfo)>;
 
 // 回调函数
 struct UpdateCallbackInfo {
     OnEvent onEvent;
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPDATE_CALLBACK_INFO_H

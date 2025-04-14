@@ -21,7 +21,7 @@
 #include "status_cache.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareStatusCache : public DelayedSingleton<FirmwareStatusCache> {
     DECLARE_DELAYED_SINGLETON(FirmwareStatusCache);
 
@@ -33,6 +33,6 @@ public:
 private:
     std::shared_ptr<StatusCache> statusCache_ = nullptr;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_STATUS_CACHE_H

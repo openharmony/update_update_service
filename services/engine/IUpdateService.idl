@@ -13,30 +13,30 @@
  * limitations under the License.
  */
 
-package OHOS.UpdateEngine;
+package OHOS.UpdateService;
 
 import callback/IUpdateCallback;
 
-sequenceable OHOS.UpdateEngine.BusinessError;
-sequenceable OHOS.UpdateEngine.CheckResult;
-sequenceable OHOS.UpdateEngine.ClearOptions;
-sequenceable OHOS.UpdateEngine.CurrentVersionInfo;
-sequenceable OHOS.UpdateEngine.DescriptionOptions;
-sequenceable OHOS.UpdateEngine.DownloadOptions;
-sequenceable OHOS.UpdateEngine.NewVersionInfo;
-sequenceable OHOS.UpdateEngine.PauseDownloadOptions;
-sequenceable OHOS.UpdateEngine.ResumeDownloadOptions;
-sequenceable OHOS.UpdateEngine.TaskInfo;
-sequenceable OHOS.UpdateEngine.UpgradeInfo;
-sequenceable OHOS.UpdateEngine.UpgradeOptions;
-sequenceable OHOS.UpdateEngine.UpgradePolicy;
-sequenceable OHOS.UpdateEngine.VersionDescriptionInfo;
-sequenceable OHOS.UpdateEngine.VersionDigestInfo;
+sequenceable OHOS.UpdateService.BusinessError;
+sequenceable OHOS.UpdateService.CheckResult;
+sequenceable OHOS.UpdateService.ClearOptions;
+sequenceable OHOS.UpdateService.CurrentVersionInfo;
+sequenceable OHOS.UpdateService.DescriptionOptions;
+sequenceable OHOS.UpdateService.DownloadOptions;
+sequenceable OHOS.UpdateService.NewVersionInfo;
+sequenceable OHOS.UpdateService.PauseDownloadOptions;
+sequenceable OHOS.UpdateService.ResumeDownloadOptions;
+sequenceable OHOS.UpdateService.TaskInfo;
+sequenceable OHOS.UpdateService.UpgradeInfo;
+sequenceable OHOS.UpdateService.UpgradeOptions;
+sequenceable OHOS.UpdateService.UpgradePolicy;
+sequenceable OHOS.UpdateService.VersionDescriptionInfo;
+sequenceable OHOS.UpdateService.VersionDigestInfo;
 
 option_stub_hooks on;
 option_parcel_hooks on;
 
-interface OHOS.UpdateEngine.IUpdateService {
+interface OHOS.UpdateService.IUpdateService {
     [ipccode 1] int CheckNewVersion([in] UpgradeInfo info, [out] BusinessError businessError, [out] CheckResult checkResult);
     [ipccode 2] int Download([in] UpgradeInfo info, [in] VersionDigestInfo versionDigestInfo,
         [in] DownloadOptions downloadOptions, [out] BusinessError businessError);

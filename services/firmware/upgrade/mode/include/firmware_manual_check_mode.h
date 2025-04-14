@@ -23,7 +23,7 @@
 #include "firmware_iexecute_mode.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareManualCheckMode final : public FirmwareIExecuteMode {
 public:
     FirmwareManualCheckMode(OnCheckComplete onCheckComplete) : onCheckComplete_(onCheckComplete) {}
@@ -42,6 +42,6 @@ private:
     FirmwareCheckDataProcessor checkDataProcessor_;
     BusinessError businessError_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_MANUAL_CHECK_MODE_H

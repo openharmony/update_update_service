@@ -15,7 +15,7 @@
 
 #include "subscribe_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder SubscribeInfo::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -29,4 +29,4 @@ JsonBuilder SubscribeInfo::GetJsonBuilder()
         .Append("deviceName", deviceName)
         .Append("}");
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

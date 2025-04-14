@@ -20,7 +20,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareAccess::FirmwareAccess()
 {
     ENGINE_LOGD("FirmwareAccess constructor");
@@ -53,5 +53,5 @@ bool FirmwareAccess::Exit()
 {
     return DelayedSingleton<FirmwareManager>::GetInstance()->Exit();
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

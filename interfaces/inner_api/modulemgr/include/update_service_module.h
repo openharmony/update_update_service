@@ -31,7 +31,7 @@ extern "C" {
 #endif
 #endif
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 using RequestFuncType = int32_t (*)(uint32_t code,
     OHOS::MessageParcel &data, OHOS::MessageParcel &reply, OHOS::MessageOption &option);
 
@@ -50,5 +50,5 @@ void RegisterDumpFunc(std::string phase, LifeCycleFuncDumpType handlePhase);
 }
 #endif
 #endif
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_MODULE_H

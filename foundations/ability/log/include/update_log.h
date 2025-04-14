@@ -22,7 +22,7 @@
 #include "hilog/log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string DEFAULT_LABEL = "%";
 const std::string DEFAULT_FMT_LABEL = "%s";
 const std::string PRIVATE_FMT_LABEL = "%{private}s";
@@ -129,6 +129,6 @@ private:
 #define ENGINE_LONG_LOGD(fmt, args) PRINT_LONG_LOGD(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
 #define ENGINE_LONG_LOGI(fmt, args) PRINT_LONG_LOGI(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
 #define ENGINE_LONG_LOGE(fmt, args) PRINT_LONG_LOGE(UPDATE_LOG_TAG_ID, UPDATE_LABEL[UPDATE_LOG_TAG_ID], fmt, args)
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_LOG_H

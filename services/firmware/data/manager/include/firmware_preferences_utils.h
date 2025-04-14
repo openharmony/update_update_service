@@ -21,13 +21,13 @@
 #include "preferences_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwarePreferencesUtil : public PreferencesUtil, public DelayedSingleton<FirmwarePreferencesUtil> {
     DECLARE_DELAYED_SINGLETON(FirmwarePreferencesUtil);
 
 protected:
     std::string GetPath() final;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_PREFERENCES_UTILS_H

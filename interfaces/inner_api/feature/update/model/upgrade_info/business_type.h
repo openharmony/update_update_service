@@ -23,7 +23,7 @@
 #include "business_vendor.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct BusinessType : public BaseJsonStruct {
     std::string vendor; // BusinessVendor
     BusinessSubType subType = BusinessSubType::FIRMWARE;
@@ -48,5 +48,5 @@ struct BusinessType : public BaseJsonStruct {
 
     JsonBuilder GetJsonBuilder() final;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_BUSINESS_TYPE_H

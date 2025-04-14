@@ -22,7 +22,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 NetManager::NetManager()
 {
     observer_ = new NetObserver();
@@ -114,5 +114,5 @@ bool NetManager::IsBaseNetType(NetType netType)
     return netType == NetType::NO_NET || netType == NetType::CELLULAR || netType == NetType::METERED_WIFI ||
            netType == NetType::NOT_METERED_WIFI;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

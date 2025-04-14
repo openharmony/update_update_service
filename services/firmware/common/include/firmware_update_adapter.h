@@ -23,12 +23,12 @@
 #include "firmware_common.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareUpdateAdapter final : public DeviceAdapter {
 public:
     static std::string GetUpdateAction();
     static std::string GetBusinessDomain();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_UPDATE_ADAPTER_H

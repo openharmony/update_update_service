@@ -21,7 +21,7 @@
 #include "schedule_task.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 using ScheduleLooper = std::function<void()>;
 
 class IStartupSchedule {
@@ -45,6 +45,6 @@ public:
 private:
     uint64_t looperTimerId_ = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // STARTUP_SCHEDULE_H

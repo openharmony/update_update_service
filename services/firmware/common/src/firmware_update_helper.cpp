@@ -16,7 +16,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::string FirmwareUpdateHelper::BuildTaskId(const std::vector<FirmwareComponent> &componentList)
 {
     if (componentList.empty()) {
@@ -178,5 +178,5 @@ bool FirmwareUpdateHelper::IsStreamUpgrade(const std::vector<FirmwareComponent> 
     return (componentList[0].otaType == OtaType::AB_STREAM);
 }
 
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -19,7 +19,7 @@
 
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 LoadSaService::LoadSaService() = default;
 
 LoadSaService::~LoadSaService() = default;
@@ -99,4 +99,4 @@ bool LoadSaService::LoadSa(int systemAbilityId)
     ENGINE_LOGI("systemAbilityId: %{public}d, load succeed", systemAbilityId);
     return true;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

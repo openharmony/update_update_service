@@ -26,7 +26,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool ProgressThread::isNoNet_ = false;
 bool ProgressThread::isCancel_ = false;
 
@@ -283,5 +283,5 @@ FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &m
     FILE* fp = fopen(fileName.c_str(), mode.c_str());
     return fp;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

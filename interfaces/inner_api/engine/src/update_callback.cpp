@@ -17,7 +17,7 @@
 
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 UpdateCallback::UpdateCallback(const UpdateCallbackInfo &updateCallback) : updateCallback_(updateCallback) {}
 
 ErrCode UpdateCallback::OnEvent(const EventInfo &eventInfo)
@@ -28,4 +28,4 @@ ErrCode UpdateCallback::OnEvent(const EventInfo &eventInfo)
     }
     return 0;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

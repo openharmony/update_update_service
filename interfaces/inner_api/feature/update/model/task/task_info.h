@@ -20,7 +20,7 @@
 #include "task_body.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct TaskInfo : public Parcelable {
     bool existTask = false;
     TaskBody taskBody;
@@ -29,5 +29,5 @@ struct TaskInfo : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static TaskInfo *Unmarshalling(Parcel &parcel);
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_TASK_INFO_H

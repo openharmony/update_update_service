@@ -27,7 +27,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void FirmwareCheckExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareCheckExecutor::Execute");
@@ -82,5 +82,5 @@ void FirmwareCheckExecutor::SetComponentCheckStatus()
         component.status = UpgradeStatus::CHECK_VERSION_SUCCESS;
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

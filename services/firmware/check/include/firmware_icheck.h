@@ -48,7 +48,7 @@ constexpr int32_t TIMEOUT_FOR_CONNECT = 1;
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string DEFAULT_SERVER_IP = "127.0.0.1";
 const std::string PARAM_NAME_FOR_SEARCH = "update.serverip.search";
 using CheckCallback = std::function<void(CheckStatus status, const Duration &duration,
@@ -192,6 +192,6 @@ private:
     CheckAndAuthInfo checkAndAuthInfo_;
     std::vector<FirmwareComponent> checkResultList_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_ICHECK_H

@@ -23,7 +23,7 @@
 #include "anonymous_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 struct DeviceInfo {
 public:
     std::string udid;
@@ -37,6 +37,6 @@ public:
         return json;
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DEVICE_INFO_H

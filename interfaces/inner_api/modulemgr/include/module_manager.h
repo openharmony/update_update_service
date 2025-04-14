@@ -29,7 +29,7 @@
 #include "update_service_module.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class ModuleManager {
 public:
     ModuleManager();
@@ -64,6 +64,6 @@ private:
     static std::mutex onIdleFuncMapMutex_;
     static std::mutex onDumpFuncMapMutex_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_MODULE_MANAGER_H

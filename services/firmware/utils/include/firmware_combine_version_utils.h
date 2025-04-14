@@ -20,7 +20,7 @@
 #include <string>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class CombinePackageVersionUtils {
 public:
     static std::string GetPackageVersion(std::string &baseVersion, std::string &custVersion,
@@ -32,6 +32,6 @@ private:
     static std::string HandlePreloadVersion(std::string &preloadVersion);
     static void HandleBaseVersionLog(std::string &baseVersion, std::string &base, std::string &log);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_COMBINE_VERSION_H

@@ -26,7 +26,7 @@
 #include "progress_thread.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 
 constexpr int16_t MAX_RETRY_COUNT = 3; // 重试次数
 constexpr int32_t RETRY_INTERVAL_TIME = 100 * 1000; // 重试间隔时间50ms
@@ -50,6 +50,6 @@ private:
     std::mutex installMutex_;
     std::condition_variable installCond_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_STREAM_INSTALLER_INSTALL_H

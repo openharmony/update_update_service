@@ -18,7 +18,7 @@
 #include "parcel_common.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool UpgradePolicy::ReadFromParcel(Parcel &parcel)
 {
     downloadStrategy = static_cast<bool>(parcel.ReadBool());
@@ -76,4 +76,4 @@ UpgradePolicy *UpgradePolicy::Unmarshalling(Parcel &parcel)
     }
     return upgradePolicy;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

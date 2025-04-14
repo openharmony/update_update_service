@@ -31,7 +31,7 @@
 #include "string_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void FirmwareCheckAnalyzeUtils::DoAnalyze(const std::string &rawJson, std::vector<FirmwareComponent> &components,
     Duration &duration, CheckAndAuthInfo &checkAndAuthInfo)
 {
@@ -200,5 +200,5 @@ bool FirmwareCheckAnalyzeUtils::IsLegalStatus(int32_t status)
     return status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE) ||
            status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_NOT_AVAILABLE);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

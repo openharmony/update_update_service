@@ -28,7 +28,7 @@
 #include "json_builder.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct BusinessError : public Parcelable {
     std::string message;
     CallResult errorNum = CallResult::SUCCESS;
@@ -70,5 +70,5 @@ struct BusinessError : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static BusinessError *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_BUSINESS_ERROR_H

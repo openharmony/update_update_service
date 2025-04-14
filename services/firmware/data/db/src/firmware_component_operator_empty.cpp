@@ -18,7 +18,7 @@
 #include <memory>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool FirmwareComponentOperator::QueryAll(const std::vector<FirmwareComponent> &results)
 {
     return true;
@@ -53,5 +53,5 @@ bool FirmwareComponentOperator::QueryByUrl(const std::string &url, FirmwareCompo
 {
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

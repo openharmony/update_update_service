@@ -23,7 +23,7 @@
 #include "startup_schedule.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class ScheduleManager final {
 public:
     ScheduleManager(
@@ -41,6 +41,6 @@ private:
     std::shared_ptr<IStartupSchedule> startupSchedule_ = nullptr;
     ScheduleTask scheduleTask_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // SCHEDULE_MANAGER_H

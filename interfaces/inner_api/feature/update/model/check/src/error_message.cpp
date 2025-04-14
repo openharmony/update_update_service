@@ -17,7 +17,7 @@
 
 #include <string_ex.h>
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool ErrorMessage::ReadFromParcel(Parcel &parcel)
 {
     errorCode = parcel.ReadInt32();
@@ -47,4 +47,4 @@ ErrorMessage *ErrorMessage::Unmarshalling(Parcel &parcel)
     }
     return errorMessage;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

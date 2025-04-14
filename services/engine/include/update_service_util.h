@@ -22,12 +22,12 @@
 #include "upgrade_info.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateServiceUtil {
 public:
     static void BuildTaskBody(const Progress &progress, TaskBody &taskBody);
     static sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &upgradeInfo);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_UTIL_H

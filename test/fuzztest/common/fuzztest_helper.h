@@ -24,7 +24,7 @@
 #include "update_service_kits_impl.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr const int32_t FUZZ_DATA_LEN = 500;
 
 class FuzztestHelper : public DelayedSingleton<FuzztestHelper> {
@@ -46,7 +46,7 @@ private:
     uint32_t index_ = 0;
     uint8_t data_[FUZZ_DATA_LEN] = {0};
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 
 #endif // UPDATE_SERVICE_COMMON_FUZZER_H

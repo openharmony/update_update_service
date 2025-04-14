@@ -32,7 +32,7 @@
 #include "string_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const mode_t MKDIR_MODE = 0777;
 void FirmwareDownloadExecutor::Execute()
 {
@@ -175,5 +175,5 @@ bool FirmwareDownloadExecutor::VerifyDownloadPkg(const std::string &pkgName, Pro
     }
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

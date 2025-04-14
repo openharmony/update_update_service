@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_SEARCH_STATUS_H
 #define UPDATE_SERVICE_SEARCH_STATUS_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 // 搜索状态
 enum class SearchStatus {
     NET_ERROR = -2,
@@ -26,5 +26,5 @@ enum class SearchStatus {
     SERVER_BUSY,
     CHECK_EXECUTE_ERR
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_SEARCH_STATUS_H

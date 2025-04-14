@@ -50,7 +50,7 @@
 using namespace std;
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr const pid_t ROOT_UID = 0;
 constexpr const pid_t EDM_UID = 3057;
 REGISTER_SYSTEM_ABILITY_BY_ID(UpdateService, UPDATE_DISTRIBUTED_SERVICE_ID, true)
@@ -609,5 +609,5 @@ bool UpdateService::IsPermissionGranted(uint32_t code)
     }
     return isPermissionGranted;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

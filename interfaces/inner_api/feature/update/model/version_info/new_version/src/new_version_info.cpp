@@ -18,7 +18,7 @@
 #include "parcel_common.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool NewVersionInfo::ReadFromParcel(Parcel &parcel)
 {
     versionDigestInfo.versionDigest = Str16ToStr8(parcel.ReadString16());
@@ -68,4 +68,4 @@ NewVersionInfo *NewVersionInfo::Unmarshalling(Parcel &parcel)
     }
     return newVersionInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

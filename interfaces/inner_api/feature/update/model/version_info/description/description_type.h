@@ -16,11 +16,11 @@
 #ifndef UPDATE_SERVICE_DESCRIPTION_TYPE_H
 #define UPDATE_SERVICE_DESCRIPTION_TYPE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class DescriptionType {
     CONTENT = 0,
     URI = 1,
     ID = 2
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_DESCRIPTION_TYPE_H

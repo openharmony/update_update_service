@@ -16,11 +16,11 @@
 #ifndef UPDATE_SERVICE_EFFECTIVE_MODE_H
 #define UPDATE_SERVICE_EFFECTIVE_MODE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class EffectiveMode {
     COLD = 1,
     LIVE = 2,
     LIVE_AND_COLD = 3
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_EFFECTIVE_MODE_H

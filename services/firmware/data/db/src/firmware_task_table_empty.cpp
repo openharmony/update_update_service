@@ -16,7 +16,7 @@
 #include "firmware_task_table.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::string FirmwareTaskTable::GetTableName()
 {
     return "";
@@ -26,5 +26,5 @@ std::string FirmwareTaskTable::GetTableCreateSql()
 {
     return "";
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

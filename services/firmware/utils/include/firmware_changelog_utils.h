@@ -21,7 +21,7 @@
 #include "singleton.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareChangelogUtils final : public DelayedSingleton<FirmwareChangelogUtils> {
     DECLARE_DELAYED_SINGLETON(FirmwareChangelogUtils);
 public:
@@ -32,6 +32,6 @@ public:
     void SaveHotaCurrentVersionComponentId();
     void GetAllComponentIds(std::vector<std::string> &componentIds);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_CHANGELOG_UTILS_H

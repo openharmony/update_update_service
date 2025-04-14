@@ -23,7 +23,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void AlarmTimerUtils::TimerTaskInfo::OnTrigger()
 {
     ENGINE_LOGI("timed task had been triggered");
@@ -129,5 +129,5 @@ uint64_t AlarmTimerUtils::GetSystemBootTime()
     ENGINE_LOGI("GetSystemBootTime bootTime : %{public}" PRIu64 "", bootTime);
     return bootTime;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

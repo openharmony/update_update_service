@@ -18,7 +18,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool PreferencesUtil::DeletePreference()
 {
     return true;
@@ -105,5 +105,5 @@ bool PreferencesUtil::RefreshSync()
 {
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

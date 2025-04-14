@@ -24,7 +24,7 @@
 #include "firmware_install.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareInstallExecutor : public FirmwareIExecutor {
 public:
     FirmwareInstallExecutor(InstallType installType, FirmwareInstallExecutorCallback firmwareInstallCallback)
@@ -49,6 +49,6 @@ private:
     std::shared_ptr<FirmwarePreferencesUtil> preferencesUtil_ =
         DelayedSingleton<FirmwarePreferencesUtil>::GetInstance();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_INSTALL_EXECUTOR_H

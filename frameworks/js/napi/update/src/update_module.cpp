@@ -24,7 +24,7 @@
 #include "update_client.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 // class name
 const std::string CLASS_NAME_UPDATE_CLIENT = "UpdateClient";
 const std::string CLASS_NAME_RESTORER = "Restorer";
@@ -405,4 +405,4 @@ extern "C" __attribute__((constructor)) void RegisterModule(void)
     ENGINE_LOGI("RegisterModule");
     napi_module_register(&g_module);
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

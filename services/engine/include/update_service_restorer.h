@@ -21,7 +21,7 @@
 #include "nocopyable.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateServiceRestorer final : public IServiceRestorer {
 public:
     UpdateServiceRestorer() = default;
@@ -32,6 +32,6 @@ public:
 
     int32_t FactoryReset(BusinessError &businessError) override;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_RESTORER_H

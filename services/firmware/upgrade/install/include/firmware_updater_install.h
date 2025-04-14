@@ -22,13 +22,13 @@
 #include "firmware_install.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdaterInstall final : public FirmwareInstall {
 private:
     bool IsComponentLegal(const std::vector<FirmwareComponent> &componentList) final;
     bool PerformInstall(const std::vector<FirmwareComponent> &componentList, UpgradeStatus &status) final;
     int32_t DoUpdaterInstall(const std::vector<FirmwareComponent> &componentList);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_UPDATER_INSTALL_H

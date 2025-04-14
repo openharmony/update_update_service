@@ -23,7 +23,7 @@
 #include "update_system_event.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 int32_t UpdateServiceLocalUpdater::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
     const std::vector<std::string> &packageNames, BusinessError &businessError)
 {
@@ -49,5 +49,5 @@ int32_t UpdateServiceLocalUpdater::VerifyUpgradePackage(const std::string &packa
     ENGINE_LOGI("VerifyUpgradePackage %s, %s, %{public}d", packagePath.c_str(), keyPath.c_str(), ret);
     return (ret == 0) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

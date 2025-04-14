@@ -43,7 +43,7 @@
     {StringUtils::GetEnumValueString(#item),    \
         NapiCommonUtils::CreateUint32(env, CAST_UINT(NapiCommonUtils::ConvertToErrorCode(item)))}
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 void DefineProperty::DefineProperties(napi_env env, napi_value exports)
 {
     DefineCallResult(env, exports);
@@ -253,4 +253,4 @@ void DefineProperty::DefineBusinessVendor(napi_env env, napi_value exports)
     };
     NapiCommonUtils::CreateProperty(env, exports, "BusinessVendor", businessVendorList);
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

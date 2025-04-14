@@ -23,7 +23,7 @@
 #include "version_digest_info.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct NewVersionInfo : public Parcelable {
     VersionDigestInfo versionDigestInfo;
     std::vector<VersionComponent> versionComponents;
@@ -32,5 +32,5 @@ struct NewVersionInfo : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static NewVersionInfo *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_NEW_VERSION_INFO_H

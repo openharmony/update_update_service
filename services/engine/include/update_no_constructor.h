@@ -17,7 +17,7 @@
 #define UPDATE_NO_CONSTRUCTOR_H
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class NoConstructor {
 public:
     // 禁止默认构造
@@ -26,6 +26,6 @@ public:
     // 禁止拷贝构造
     NoConstructor(const NoConstructor &) = delete;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_NO_CONSTRUCTOR_H

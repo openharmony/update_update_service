@@ -20,7 +20,7 @@
 #include <string>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class TimeUtilsProxy {
 public:
     virtual ~TimeUtilsProxy() = default;
@@ -29,6 +29,6 @@ public:
     virtual int64_t GetRandTime(int32_t minTime, int32_t maxTime);
     virtual int64_t GetSystemBootDuration();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // TIME_UTILS_PROXY

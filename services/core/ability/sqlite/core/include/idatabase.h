@@ -23,7 +23,7 @@
 #include "values_bucket.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class IDataBase {
 public:
     virtual ~IDataBase() = default;
@@ -35,6 +35,6 @@ public:
     virtual bool Update(
         int &changedRows, const NativeRdb::ValuesBucket &values, const NativeRdb::RdbPredicates &predicates) = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // IDATABASE_H

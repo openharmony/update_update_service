@@ -25,7 +25,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 StartupSchedule::StartupSchedule()
 {
     ENGINE_LOGD("StartupSchedule constructor");
@@ -57,5 +57,5 @@ bool StartupSchedule::OnDemandSchedule(const std::vector<ScheduleTask> &tasks)
     ENGINE_LOGI("OnDemandSchedule");
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

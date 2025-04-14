@@ -24,7 +24,7 @@
 #include "firmware_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareFlowManager::FirmwareFlowManager()
 {
     FIRMWARE_LOGD("FirmwareFlowManager::FirmwareFlowManager()");
@@ -159,5 +159,5 @@ std::shared_ptr<FirmwareIExecutor> FirmwareFlowManager::CreateInstance(FirmwareS
     }
     return executor;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -25,7 +25,7 @@
 #define GET_ENUM_VALUE_STRING(item) StringUtils::GetEnumValueString(#item)
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 
 enum class StrCnvResult {
     SUCCESS,
@@ -172,6 +172,6 @@ private:
         return StrCnvResult::SUCCESS;
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // STRING_UTILS_H

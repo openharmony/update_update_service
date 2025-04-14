@@ -19,7 +19,7 @@
 #include "upgrade_status.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct ClearOptions : public Parcelable {
     UpgradeStatus status = UpgradeStatus::INIT;
 
@@ -27,5 +27,5 @@ struct ClearOptions : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static ClearOptions *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_CLEAR_OPTIONS_H

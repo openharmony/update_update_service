@@ -24,7 +24,7 @@
 #include "parcel.h"
 #include "version_component.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct CurrentVersionInfo : public Parcelable {
     std::string osVersion;
     std::string deviceName;
@@ -34,5 +34,5 @@ struct CurrentVersionInfo : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static CurrentVersionInfo *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_CURRENT_VERSION_INFO_H

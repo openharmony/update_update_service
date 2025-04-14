@@ -23,7 +23,7 @@
 
 using namespace std;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 uint32_t g_sessionId = 0;
 
 NapiSession::NapiSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber)
@@ -103,4 +103,4 @@ void NapiSession::GetSessionFuncParameter(std::string &funcName, std::string &pe
     funcName = GetFunctionName();
     permissionName = GetFunctionPermissionName();
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

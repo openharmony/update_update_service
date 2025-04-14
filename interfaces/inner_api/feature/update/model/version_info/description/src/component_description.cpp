@@ -18,7 +18,7 @@
 #include <string_ex.h>
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool ComponentDescription::ReadFromParcel(Parcel &parcel)
 {
     componentId = Str16ToStr8(parcel.ReadString16());
@@ -54,4 +54,4 @@ ComponentDescription *ComponentDescription::Unmarshalling(Parcel &parcel)
     }
     return componentDescription;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

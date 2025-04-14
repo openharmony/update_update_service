@@ -20,7 +20,7 @@
 
 #include "event_classify.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct EventClassifyInfo {
     EventClassify eventClassify = EventClassify::TASK;
     std::string extraInfo;
@@ -29,5 +29,5 @@ struct EventClassifyInfo {
     explicit EventClassifyInfo(EventClassify classify) : eventClassify(classify) {}
     EventClassifyInfo(EventClassify classify, const std::string &info) : eventClassify(classify), extraInfo(info) {}
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_EVENT_CLASSIFY_INFO_H

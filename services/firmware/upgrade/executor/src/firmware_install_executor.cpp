@@ -27,7 +27,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void FirmwareInstallExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareInstallExecutor::Execute");
@@ -161,5 +161,5 @@ void FirmwareInstallExecutor::HandleInstallResult(const bool result, const Error
     installCallback_.installCallback(installCallbackInfo_);
 }
 
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

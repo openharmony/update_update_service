@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class JsonBuilder {
 public:
     JsonBuilder &Append(const std::string &qualifier)
@@ -112,5 +112,5 @@ private:
     std::string builder_;
     bool isFirstItem_ = true;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // JSON_BUILDER_H

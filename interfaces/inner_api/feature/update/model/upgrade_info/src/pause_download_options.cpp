@@ -16,7 +16,7 @@
 #include "pause_download_options.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool PauseDownloadOptions::ReadFromParcel(Parcel &parcel)
 {
     isAllowAutoResume = parcel.ReadBool();
@@ -47,4 +47,4 @@ PauseDownloadOptions *PauseDownloadOptions::Unmarshalling(Parcel &parcel)
     }
     return pauseDownloadOptions;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
