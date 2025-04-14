@@ -17,7 +17,7 @@
 
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool ClearOptions::ReadFromParcel(Parcel &parcel)
 {
     status = static_cast<UpgradeStatus>(parcel.ReadUint32());
@@ -48,4 +48,4 @@ ClearOptions *ClearOptions::Unmarshalling(Parcel &parcel)
     }
     return clearOptions;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

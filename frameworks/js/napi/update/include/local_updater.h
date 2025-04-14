@@ -19,7 +19,7 @@
 #include "iupdater.h"
 #include "node_api.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class LocalUpdater : public IUpdater {
 public:
     class Napi {
@@ -43,5 +43,5 @@ public:
 private:
     bool isInit_ = false;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // LOCAL_UPDATER_H

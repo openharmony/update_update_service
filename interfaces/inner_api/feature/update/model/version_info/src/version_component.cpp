@@ -18,7 +18,7 @@
 #include <string_ex.h>
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder VersionComponent::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -85,4 +85,4 @@ JsonBuilder VersionComponent::GetJsonBuilder()
         }
         return versionComponent;
     }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

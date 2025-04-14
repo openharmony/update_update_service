@@ -23,7 +23,7 @@
 #include "progress.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareFlowManager {
 public:
     FirmwareFlowManager();
@@ -49,6 +49,6 @@ private:
     std::shared_ptr<FirmwareIExecutor> executor_ = nullptr;
     FirmwareStep nextStep_ = FirmwareStep::INIT;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_FLOW_MANAGER_H

@@ -16,7 +16,7 @@
 #include "check_result.h"
 #include "parcel_common.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool CheckResult::ReadFromParcel(Parcel &parcel)
 {
     isExistNewVersion = parcel.ReadBool();
@@ -74,4 +74,4 @@ CheckResult *CheckResult::Unmarshalling(Parcel &parcel)
     }
     return checkResult;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

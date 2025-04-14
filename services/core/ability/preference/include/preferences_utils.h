@@ -25,7 +25,7 @@
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class PreferencesUtil {
 public:
     PreferencesUtil() = default;
@@ -84,6 +84,6 @@ private:
         std::shared_ptr<NativePreferences::Preferences> ptr, const std::string &key, const float &defValue);
 #endif
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // PREFERENCES_UTILS_H

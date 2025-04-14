@@ -28,7 +28,7 @@
 #include "file_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void FirmwareInstall::StartInstall(const std::vector<FirmwareComponent> &componentList, FirmwareInstallCallback &cb)
 {
     if (IsInstalling()) {
@@ -75,5 +75,5 @@ void FirmwareInstall::CallbackResult(FirmwareInstallCallback &cb, bool result, U
 {
     cb.onFirmwareEvent(result, errMsg_, status);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

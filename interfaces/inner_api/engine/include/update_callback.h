@@ -19,7 +19,7 @@
 #include "update_callback_info.h"
 #include "update_callback_stub.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class UpdateCallback : public UpdateCallbackStub {
 public:
     explicit UpdateCallback() = default;
@@ -33,5 +33,5 @@ public:
 private:
     UpdateCallbackInfo updateCallback_{};
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_CALLBACK_H

@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_UPGRADE_STATUS_H
 #define UPDATE_SERVICE_UPGRADE_STATUS_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class UpgradeStatus {
     ERROR = -1,
     INIT = 0,
@@ -50,5 +50,5 @@ enum class UpgradeStatus {
     UPGRADE_COUNT_DOWN = 100,
     UPGRADE_CANCEL
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_STATUS_H

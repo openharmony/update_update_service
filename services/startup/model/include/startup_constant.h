@@ -21,7 +21,7 @@
 #include <vector>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 enum class StartupReason {
     UNKNOWN = -1,
     DEVICE_REBOOT = 0,
@@ -56,6 +56,6 @@ constexpr uint64_t PULLUP_INTERVAL = 4 * ONE_HOUR_MINUTES * ONE_MINUTE_SECONDS; 
 const std::string IDLE_CHECK_INTERVAL_CONFIG = "idleCheckInterval";               // 空闲检测间隔配置项
 constexpr uint64_t IDLE_CHECK_INTERVAL = 5 * ONE_MINUTE_SECONDS;                  // 空闲检测间隔
 } // namespace Startup
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // STARTUP_CONSTANT_H

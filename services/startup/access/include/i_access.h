@@ -21,7 +21,7 @@
 #include "schedule_task.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class IAccess {
 public:
     virtual ~IAccess() = default;
@@ -30,6 +30,6 @@ public:
     virtual std::vector<ScheduleTask> GetScheduleTasks() = 0;
     virtual bool Exit() = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // I_ACCESS_H

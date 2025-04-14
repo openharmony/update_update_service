@@ -24,7 +24,7 @@
 #include "upgrade_status.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 struct FirmwareComponent {
     int32_t id = 0;
 
@@ -89,6 +89,6 @@ struct FirmwareComponent {
         .append("recordPoint=").append(std::to_string(recordPoint));
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_COMPONENT_H

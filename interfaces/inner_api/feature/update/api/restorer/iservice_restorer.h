@@ -20,12 +20,12 @@
 
 #include "business_error.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class IServiceRestorer : public virtual RefBase {
 public:
     virtual ~IServiceRestorer() = default;
 
     virtual int32_t FactoryReset(BusinessError &businessError) = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // ISERVICE_RESTORER_H

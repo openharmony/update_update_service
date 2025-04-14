@@ -21,7 +21,7 @@
 #include "business_error.h"
 #include "napi_common_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct SessionParams {
     uint32_t type;
     size_t callbackStartIndex;
@@ -60,5 +60,5 @@ struct NapiResult {
         obj = nullptr;
     }
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // NAPI_STRUCTS_BASE_H

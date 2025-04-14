@@ -23,7 +23,7 @@
 #include "system_ability_definition.h"
 #include "system_ability_load_callback_stub.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class LoadSaStatus {
     WAIT_RESULT = 0,
     SUCCESS,
@@ -49,5 +49,5 @@ private:
     static std::mutex instanceLock_;
     static sptr<LoadSaService> instance_;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // LOAD_SA_SERVICE_H

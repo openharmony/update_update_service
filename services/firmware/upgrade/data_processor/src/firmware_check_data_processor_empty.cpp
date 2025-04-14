@@ -18,7 +18,7 @@
 #include "firmware_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareCheckDataProcessor::FirmwareCheckDataProcessor()
 {
     FIRMWARE_LOGD("FirmwareCheckDataProcessor::FirmwareCheckDataProcessor");
@@ -118,5 +118,5 @@ void FirmwareCheckDataProcessor::BuildVersionDigest(
 {
     FIRMWARE_LOGI("FirmwareCheckDataProcessor::BuildVersionDigest");
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

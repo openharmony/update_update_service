@@ -21,7 +21,7 @@
 #include "parcel.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct DownloadOptions : public Parcelable {
     NetType allowNetwork = NetType::WIFI;
     Order order = Order::DOWNLOAD;
@@ -30,5 +30,5 @@ struct DownloadOptions : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static DownloadOptions *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_DOWNLOAD_OPTIONS_H

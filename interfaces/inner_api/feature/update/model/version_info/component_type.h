@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_COMPONENT_TYPE_H
 #define UPDATE_SERVICE_COMPONENT_TYPE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class ComponentType {
     INVALID = 0,
     OTA = 1,
@@ -25,5 +25,5 @@ enum class ComponentType {
     PARAM = 8,
     SA = 16
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_COMPONENT_TYPE_H

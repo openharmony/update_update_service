@@ -20,7 +20,7 @@
 #include "update_callback_info.h"
 #include "update_service_kits.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 
 napi_value LocalUpdater::Napi::NapiVerifyUpgradePackage(napi_env env, napi_callback_info info)
@@ -150,4 +150,4 @@ napi_value LocalUpdater::ApplyNewVersion(napi_env env, napi_callback_info info)
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to ApplyNewVersion");
     return retValue;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

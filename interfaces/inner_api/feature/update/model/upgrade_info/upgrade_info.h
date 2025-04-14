@@ -23,7 +23,7 @@
 #include "parcel.h"
 #include "update_device_type.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 const std::string LOCAL_UPGRADE_INFO = "LocalUpgradeInfo";
 struct UpgradeInfo : public Parcelable {
     std::string upgradeApp;
@@ -73,5 +73,5 @@ struct UpgradeInfo : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static UpgradeInfo *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_INFO_H

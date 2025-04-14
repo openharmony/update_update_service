@@ -16,7 +16,7 @@
 #include "upgrade_options.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool UpgradeOptions::ReadFromParcel(Parcel &parcel)
 {
     order = static_cast<Order>(parcel.ReadUint32());
@@ -47,4 +47,4 @@ UpgradeOptions *UpgradeOptions::Unmarshalling(Parcel &parcel)
     }
     return upgradeOptions;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

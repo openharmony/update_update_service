@@ -27,7 +27,7 @@
 #include "iupdater.h"
 #include "napi_session.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class BaseUpdateSession : public BaseAsyncSession<UpdateResult> {
 public:
     BaseUpdateSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber)
@@ -175,5 +175,5 @@ public:
 private:
     static std::map<uint32_t, std::string> sessionFuncMap_;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SESSION_H

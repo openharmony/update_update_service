@@ -19,7 +19,7 @@
 #include "parcel_common.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool VersionDescriptionInfo::ReadFromParcel(Parcel &parcel)
 {
     int32_t componentDescriptionsSize = parcel.ReadInt32();
@@ -65,4 +65,4 @@ VersionDescriptionInfo *VersionDescriptionInfo::Unmarshalling(Parcel &parcel)
     }
     return versionDescriptionInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

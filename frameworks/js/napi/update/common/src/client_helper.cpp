@@ -29,7 +29,7 @@
 #include "update_define.h"
 #include "version_description_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 void ClientHelper::TrimString(std::string &str)
 {
     str.erase(0, str.find_first_not_of(" "));
@@ -686,4 +686,4 @@ ClientStatus ClientHelper::BuildEventInfo(napi_env env, napi_value &obj, const E
         "BuildEventInfo error, build task info fail");
     return ClientStatus::CLIENT_SUCCESS;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

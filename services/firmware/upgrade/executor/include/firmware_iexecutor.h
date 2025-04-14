@@ -23,7 +23,7 @@
 #include "progress.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 using FirmwareComponentCallback = std::function<void(
     CheckStatus status, const Duration &duration, const std::vector<FirmwareComponent> &componentList,
     const CheckAndAuthInfo &checkAndAuthInfo)>;
@@ -56,6 +56,6 @@ public:
     virtual ~FirmwareIExecutor() = default;
     virtual void Execute() = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_IEXECUTOR_H

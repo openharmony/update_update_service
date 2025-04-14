@@ -20,7 +20,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::shared_ptr<NativePreferences::Preferences> PreferencesUtil::GetPreference()
 {
     std::string path = GetPath();
@@ -266,5 +266,5 @@ bool PreferencesUtil::RefreshSync()
     }
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

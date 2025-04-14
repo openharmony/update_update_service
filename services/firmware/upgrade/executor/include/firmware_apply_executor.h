@@ -24,7 +24,7 @@
 #include "firmware_install.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareApplyExecutor : public FirmwareIExecutor {
 public:
     FirmwareApplyExecutor(FirmwareApplyCallback firmwareApplyCallback)
@@ -41,6 +41,6 @@ private:
     std::vector<FirmwareComponent> components_;
     FirmwareTask tasks_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_APPLY_EXECUTOR_H

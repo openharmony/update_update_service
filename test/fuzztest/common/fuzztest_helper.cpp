@@ -20,7 +20,7 @@
 #include "token_setproc.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr uint32_t CHAR_TO_INT_INDEX0 = 0;
 constexpr uint32_t CHAR_TO_INT_INDEX1 = 1;
 constexpr uint32_t CHAR_TO_INT_INDEX2 = 2;
@@ -182,5 +182,5 @@ uint32_t FuzztestHelper::GetUInt()
     index_ += FUZZ_INT_LEN_DATA;
     return number;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

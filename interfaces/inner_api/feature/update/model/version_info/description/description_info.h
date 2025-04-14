@@ -19,12 +19,12 @@
 #include "base_json_struct.h"
 #include "description_type.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct DescriptionInfo : public BaseJsonStruct {
     DescriptionType descriptionType = DescriptionType::CONTENT;
     std::string content;
 
     JsonBuilder GetJsonBuilder() final;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_DESCRIPTION_INFO_H

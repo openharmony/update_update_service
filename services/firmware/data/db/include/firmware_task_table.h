@@ -24,7 +24,7 @@
 #include "firmware_task.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string FIRMWARE_TABLE_TASK = "task";
 const std::string COLUMN_TASK_TASK_ID = "taskId";
 const std::string COLUMN_TASK_STATUS = "status";
@@ -73,6 +73,6 @@ public:
     std::string GetTableCreateSql();
 #endif
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_TASK_TABLE_H

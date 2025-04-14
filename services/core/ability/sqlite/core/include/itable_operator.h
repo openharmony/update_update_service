@@ -22,7 +22,7 @@
 #include "values_bucket.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 template <typename T>
 class ITableOperator {
 public:
@@ -35,6 +35,6 @@ public:
     virtual bool Update(
         int &changedRows, const NativeRdb::ValuesBucket &values, const NativeRdb::RdbPredicates &predicates) = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // ITABLE_OPERATOR_H

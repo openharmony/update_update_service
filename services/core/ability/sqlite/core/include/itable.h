@@ -28,7 +28,7 @@
 using ResultSet = OHOS::NativeRdb::ResultSet;
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string COLUMN_ID = "id";
 
 template <typename T>
@@ -134,6 +134,6 @@ private:
         return ret;
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // ITABLE_H

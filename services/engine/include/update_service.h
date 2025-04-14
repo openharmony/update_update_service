@@ -31,7 +31,7 @@
 #include "update_service_stub.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateService : public SystemAbility, public UpdateServiceStub {
 public:
     DECLARE_SYSTEM_ABILITY(UpdateService);
@@ -161,6 +161,6 @@ private:
     std::shared_ptr<UpdateServiceImplManager> updateImplMgr_ = nullptr;
 };
 
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_H

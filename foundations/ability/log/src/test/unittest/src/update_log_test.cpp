@@ -20,7 +20,7 @@
 using namespace testing::ext;
 using namespace testing;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class UpdateLogTest : public testing::Test {
 public:
     static void SetupTestCase(void) {};
@@ -116,4 +116,4 @@ HWTEST_F(UpdateLogTest, TestPrintLongLog, TestSize.Level1)
     ENGINE_LONG_LOGI("log test %{public}s", longLogBuffer);
     ASSERT_TRUE(true);
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

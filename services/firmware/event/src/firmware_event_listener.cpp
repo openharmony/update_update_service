@@ -22,7 +22,7 @@
 #include "update_define.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareEventListener::FirmwareEventListener()
 {
     FIRMWARE_LOGD("FirmwareEventListener::FirmwareEventListener");
@@ -49,5 +49,5 @@ void FirmwareEventListener::UnregisterNetChangedListener()
     FIRMWARE_LOGI("FirmwareEventListener UnregisterNetChangedListener");
     DelayedSingleton<NetManager>::GetInstance()->UnregisterCallback(NetChangeCallbackType::HOTA_DOWNLOAD);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

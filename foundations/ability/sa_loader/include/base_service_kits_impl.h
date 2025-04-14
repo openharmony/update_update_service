@@ -24,7 +24,7 @@
 #include "load_sa_service.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 #define RETURN_FAIL_WHEN_SERVICE_NULL(service) \
     if ((service) == nullptr) {                \
         ENGINE_LOGE("Service is null");        \

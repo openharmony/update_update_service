@@ -23,7 +23,7 @@
 #include "new_version_info.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareCheckDataProcessor {
 public:
     FirmwareCheckDataProcessor();
@@ -63,6 +63,6 @@ private:
     bool isSameWithDb_ = true;
     CheckStatus status_ = CheckStatus::CHECK_FAIL;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_CHECK_DATA_PROCESSOR_H

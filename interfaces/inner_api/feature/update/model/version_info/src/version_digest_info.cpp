@@ -15,7 +15,7 @@
 
 #include "version_digest_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder VersionDigestInfo::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -54,4 +54,4 @@ VersionDigestInfo *VersionDigestInfo::Unmarshalling(Parcel &parcel)
     }
     return versionDigestInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

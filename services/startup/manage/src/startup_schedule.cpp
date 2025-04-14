@@ -26,7 +26,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr uint64_t STARTUP_LOOPER_INTERVAL = 180; // 动态启停定时器轮询周期
 StartupSchedule::StartupSchedule()
 {
@@ -84,5 +84,5 @@ bool StartupSchedule::OnDemandSchedule(const std::vector<ScheduleTask> &tasks)
     ENGINE_LOGI("OnDemandSchedule %{public}s", isSuccess ? "success" : "failure");
     return isSuccess;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -17,7 +17,7 @@
 #include "upgrade_info.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 std::string UpgradeInfo::ToString() const
 {
     std::string output = "upgradeApp:" + upgradeApp;
@@ -94,4 +94,4 @@ UpgradeInfo *UpgradeInfo::Unmarshalling(Parcel &parcel)
     }
     return upgradeInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

@@ -23,7 +23,7 @@
 #include "file_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareFileUtils {
 public:
     static bool IsSpaceEnough(const int64_t requiredSpace)
@@ -36,6 +36,6 @@ public:
         FileUtils::DeleteFile(Firmware::PACKAGE_PATH, false);
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_FILE_UTILS_H

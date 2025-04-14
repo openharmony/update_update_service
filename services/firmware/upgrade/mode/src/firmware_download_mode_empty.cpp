@@ -19,7 +19,7 @@
 #include "firmware_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareStep FirmwareDownloadMode::GetNextStep(FirmwareStep step)
 {
     FIRMWARE_LOGI("GetNextStep %{public}d", static_cast<uint32_t>(step));
@@ -78,5 +78,5 @@ void FirmwareDownloadMode::SetDownloadProgress(const Progress &progress)
 {
     downloadDataProcessor_.SetDownloadProgress(progress);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

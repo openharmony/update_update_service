@@ -23,7 +23,7 @@
 #include "upgrade_interval.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateServiceCache {
 public:
     static UpgradeInfo GetUpgradeInfo(BusinessSubType businessSubType);
@@ -50,6 +50,6 @@ private:
     static uint64_t paramDownloadInterval_;
     static UpgradeInterval paramUpgradeInterval_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_CACHE_H

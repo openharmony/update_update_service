@@ -27,7 +27,7 @@
 #include "idatabase.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class SqliteDb : public IDataBase {
 public:
     SqliteDb() = default;
@@ -56,6 +56,6 @@ private:
     std::mutex dbMutex_;
     std::mutex writeMutex_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // SQLITE_DB_H

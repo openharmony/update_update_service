@@ -16,7 +16,7 @@
 #include "business_error.h"
 #include "parcel_common.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool BusinessError::ReadFromParcel(Parcel &parcel)
 {
     message = Str16ToStr8(parcel.ReadString16());
@@ -76,4 +76,4 @@ BusinessError *BusinessError::Unmarshalling(Parcel &parcel)
     }
     return businessError;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

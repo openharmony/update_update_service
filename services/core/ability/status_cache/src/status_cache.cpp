@@ -20,7 +20,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool StatusCache::IsChecking()
 {
     if (lastCheckTime_ != -1 && abs(GetCurrentTime() - lastCheckTime_) > Constant::FIVE_MINUTES_SECONDS) {
@@ -78,5 +78,5 @@ bool StatusCache::IsUpgradeTriggered()
     lastUpgradeTime_ = TimeUtils::GetTimestampByMilliseconds();
     return false;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

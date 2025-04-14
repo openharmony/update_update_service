@@ -18,7 +18,7 @@
 #include <memory>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool FirmwareComponentOperator::UpdateProgressByUrl(const std::string &url, UpgradeStatus status, int32_t progress)
 {
     NativeRdb::ValuesBucket values;
@@ -83,5 +83,5 @@ bool FirmwareComponentOperator::QueryByUrl(const std::string &url, FirmwareCompo
     }
     return false;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

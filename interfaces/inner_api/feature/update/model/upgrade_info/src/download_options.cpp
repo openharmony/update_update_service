@@ -16,7 +16,7 @@
 #include "download_options.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool DownloadOptions::ReadFromParcel(Parcel &parcel)
 {
     allowNetwork = static_cast<NetType>(parcel.ReadUint32());
@@ -53,4 +53,4 @@ DownloadOptions *DownloadOptions::Unmarshalling(Parcel &parcel)
     }
     return downloadOptions;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

@@ -21,25 +21,25 @@
 #include "../include/module_manager.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void RegisterFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
-    OHOS::UpdateEngine::ModuleManager::GetInstance().HookFunc(codes, handleRemoteRequest);
+    OHOS::UpdateService::ModuleManager::GetInstance().HookFunc(codes, handleRemoteRequest);
 }
 
 void RegisterOnStartOnStopFunc(std::string phase, LifeCycleFuncType handlePhase)
 {
-    OHOS::UpdateEngine::ModuleManager::GetInstance().HookOnStartOnStopFunc(phase, handlePhase);
+    OHOS::UpdateService::ModuleManager::GetInstance().HookOnStartOnStopFunc(phase, handlePhase);
 }
 
 void RegisterOnIdleFunc(std::string phase, LifeCycleFuncReturnType handlePhase)
 {
-    OHOS::UpdateEngine::ModuleManager::GetInstance().HookOnIdleFunc(phase, handlePhase);
+    OHOS::UpdateService::ModuleManager::GetInstance().HookOnIdleFunc(phase, handlePhase);
 }
 
 void RegisterDumpFunc(std::string phase, LifeCycleFuncDumpType handlePhase)
 {
-    OHOS::UpdateEngine::ModuleManager::GetInstance().HookDumpFunc(phase, handlePhase);
+    OHOS::UpdateService::ModuleManager::GetInstance().HookDumpFunc(phase, handlePhase);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

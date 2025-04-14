@@ -18,7 +18,7 @@
 #include "napi_common_define.h"
 #include "update_session.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 napi_value IUpdater::On(napi_env env, napi_callback_info info)
 {
     size_t argc = MAX_ARGC;
@@ -143,4 +143,4 @@ void IUpdater::NotifyEventInfo(const EventInfo &eventInfo)
     EventClassifyInfo eventClassifyInfo(classify);
     sessionsMgr_->Emit(eventClassifyInfo, eventInfo);
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

@@ -16,7 +16,7 @@
 #include "firmware_component_table.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::string FirmwareComponentTable::GetTableName()
 {
     return FIRMWARE_TABLE_COMPONENT;
@@ -122,5 +122,5 @@ void FirmwareComponentTable::BuildDbValue(const FirmwareComponent &value, Native
     PutColumnValue(dbValue, COLUMN_COMPONENT_PROGRESS, value.progress);
     PutColumnValue(dbValue, COLUMN_COMPONENT_RECORD_POINT, value.recordPoint);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -24,7 +24,7 @@
 #include "update_define.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 struct FirmwareTask {
     std::string taskId;
     UpgradeStatus status = UpgradeStatus::INIT;
@@ -73,6 +73,6 @@ struct FirmwareTask {
         .append("isStreamUpgrade=").append(std::to_string(isStreamUpgrade));
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_TASK_H

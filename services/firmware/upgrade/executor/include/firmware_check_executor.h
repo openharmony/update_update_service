@@ -21,7 +21,7 @@
 #include "firmware_iexecutor.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareCheckExecutor : public FirmwareIExecutor {
 public:
     FirmwareCheckExecutor(FirmwareCheckComponentCallback checkComponentCallback)
@@ -42,6 +42,6 @@ private:
     std::vector<FirmwareComponent> componentList_;
     CheckStatus status_ = CheckStatus::CHECK_SUCCESS;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_CHECK_EXECUTOR_H

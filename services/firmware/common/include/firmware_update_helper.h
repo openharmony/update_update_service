@@ -37,7 +37,7 @@
 #include "version_component.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareUpdateHelper {
 public:
     static bool IsBatteryEnough(int32_t batteryLimit);
@@ -56,6 +56,6 @@ public:
 private:
     static VersionComponent BuildHotaVersionComponent(std::vector<FirmwareComponent> &hotaComponents);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_UPDATE_HELPER_H

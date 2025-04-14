@@ -25,7 +25,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::shared_ptr<NativeRdb::RdbStore> SqliteDb::GetDbStore()
 {
     if (dbStore_ == nullptr) {
@@ -102,5 +102,5 @@ bool SqliteDb::Update(
     ENGINE_CHECK(ret == NativeRdb::E_OK, return false, "SqliteDb failed to update ret=%{public}d", ret);
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

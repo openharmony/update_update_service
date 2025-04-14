@@ -22,11 +22,11 @@
 #include "firmware_install.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class InstallFactory final {
 public:
     static std::shared_ptr<FirmwareInstall> GetInstance(InstallType type);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_INSTALL_FACTORY

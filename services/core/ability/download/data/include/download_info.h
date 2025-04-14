@@ -23,7 +23,7 @@
 #include "anonymous_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 struct DownloadInfo {
 public:
     DownloadInfo() = default;
@@ -67,6 +67,6 @@ public:
         .append("isNeedAutoResume=").append(std::to_string(isNeedAutoResume));
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DOWNLOAD_INFO_H

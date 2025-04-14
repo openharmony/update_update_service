@@ -37,7 +37,7 @@
 #include "upgrade_options.h"
 #include "upgrade_policy.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class ClientHelper {
 public:
     static int32_t BuildCheckResult(napi_env env, napi_value &obj, const UpdateResult &result);
@@ -76,5 +76,5 @@ private:
     static ClientStatus GetNetType(napi_env env, const napi_value arg, NetType &netType);
     static ClientStatus GetOrder(napi_env env, const napi_value arg, Order &order);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_CLIENT_HELPER_H
