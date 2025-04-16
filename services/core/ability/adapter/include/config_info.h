@@ -19,12 +19,12 @@
 #include <cstdint>
 #include <string>
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct ConfigInfo {
     std::string businessDomain;
     uint32_t abInstallTimeout = 1800; // 1800s
     uint32_t streamInstallTimeout = 3600; // 3600s
     std::string moduleLibPath;
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif //UPDATE_SERVICE_CONFIG_INFO_H

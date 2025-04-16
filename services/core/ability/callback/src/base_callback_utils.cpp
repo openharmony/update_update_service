@@ -24,7 +24,7 @@
 #include "update_service_util.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void BaseCallbackUtils::NotifyEvent(const std::string &versionDigestInfo, EventId eventId, UpgradeStatus status,
     const ErrorMessage &errorMessage, const std::vector<VersionComponent> &versionComponents)
 {
@@ -104,5 +104,5 @@ void BaseCallbackUtils::NotifyToHap(EventInfo &info)
         UpdateNotify::GetInstance()->ConnectToAppService(eventInfoStr, subscribeInfo.ToJson());
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

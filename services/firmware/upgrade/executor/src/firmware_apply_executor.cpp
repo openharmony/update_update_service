@@ -28,7 +28,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void FirmwareApplyExecutor::Execute()
 {
     FIRMWARE_LOGI("FirmwareApplyExecutor::Execute");
@@ -60,5 +60,5 @@ void FirmwareApplyExecutor::GetTask()
         FirmwareTaskOperator().QueryTask(tasks_);
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

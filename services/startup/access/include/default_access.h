@@ -21,7 +21,7 @@
 #include "i_access.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class DefaultAccess final : public IAccess, public DelayedSingleton<DefaultAccess> {
     DECLARE_DELAYED_SINGLETON(DefaultAccess);
 
@@ -31,6 +31,6 @@ public:
     std::vector<ScheduleTask> GetScheduleTasks() final;
     bool Exit() final;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DEFAULT_ACCESS_H

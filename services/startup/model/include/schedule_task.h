@@ -23,7 +23,7 @@
 #include "update_define.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class ScheduleTask final {
 public:
     TaskPriority priority = TaskPriority::LOW;
@@ -68,6 +68,6 @@ public:
                 .append("]");
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // SCHEDULE_TASK_H

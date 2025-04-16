@@ -23,7 +23,7 @@
 #include "dupdate_inet_observer.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class NetObserver final : public DupdateINetObserver, public NetManagerStandard::NetConnCallbackStub {
 public:
     void SetCallback(const std::weak_ptr<INetObserverCallback> &callback) final;
@@ -37,6 +37,6 @@ private:
 
     std::weak_ptr<INetObserverCallback> callback_; // 弱引用
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DUPDATE_NET_OBSERVER_H

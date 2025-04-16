@@ -25,7 +25,7 @@
 #include "progress.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 #define ENGINE_CHECK_NO_LOG(retCode, exper) \
     if (!(retCode)) {                     \
         exper;                            \
@@ -146,6 +146,6 @@ private:
     int64_t downloadedSize_ = 0; // 已下载大小
     std::atomic<bool> exitDownload_ { false };
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATER_THREAD_H

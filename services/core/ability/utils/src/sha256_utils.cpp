@@ -24,7 +24,7 @@
 #include "mbedtls/sha256.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr unsigned int SHA256_STRING_LEN = 65;
 constexpr unsigned int SHA256_LENGTH = 32;
 constexpr unsigned int MAX_BUFFER_LENGTH = 1024;
@@ -152,5 +152,5 @@ bool Sha256Utils::TransDigestToSha256Result(char *sha256Result, uint32_t compone
     }
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

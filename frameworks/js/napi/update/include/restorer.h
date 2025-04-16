@@ -20,7 +20,7 @@
 
 #include "iupdater.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class Restorer : public IUpdater {
 public:
     class Napi {
@@ -33,5 +33,5 @@ public:
     Restorer(napi_env env, napi_value thisVar);
     napi_value FactoryReset(napi_env env, napi_callback_info info);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_CLIENT_RESTORER_H

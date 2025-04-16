@@ -26,7 +26,7 @@
 
 using namespace std;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 SessionManager::SessionManager(napi_env env, napi_ref thisReference) : env_(env), thisReference_(thisReference)
 {
     ENGINE_LOGI("SessionManager constructor");
@@ -241,4 +241,4 @@ void SessionManager::Emit(const EventClassifyInfo &eventClassifyInfo, const Even
         ENGINE_LOGE("PublishToJS: Failed to SendEvent");
     }
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

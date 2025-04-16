@@ -32,7 +32,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 static const std::string UPDATER_RESULT_FILE = "/data/updater/updater_result";
 constexpr int32_t SYMBOL_LENGTH = 1;
 constexpr uint32_t UPDATE_SUCCESSED = 1;
@@ -176,5 +176,5 @@ UpdateResultCode FirmwareResultProcess::HandleFileResults(std::map<std::string, 
     }
     return UpdateResultCode::SUCCESS;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

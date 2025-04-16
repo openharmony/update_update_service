@@ -19,7 +19,7 @@
 #include "firmware_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareStep FirmwareManualCheckMode::GetNextStep(FirmwareStep step)
 {
     FIRMWARE_LOGI("GetNextStep %{public}d", static_cast<uint32_t>(step));
@@ -47,5 +47,5 @@ void FirmwareManualCheckMode::HandleComplete()
 {
     FIRMWARE_LOGI("FirmwareManualCheckMode::HandleComplete");
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -17,7 +17,7 @@
 
 #include "update_service_kits.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 napi_value Restorer::Napi::FactoryReset(napi_env env, napi_callback_info info)
 {
     ENGINE_LOGI("Restorer::Napi::FactoryReset");
@@ -46,4 +46,4 @@ napi_value Restorer::FactoryReset(napi_env env, napi_callback_info info)
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to FactoryReset.");
     return retValue;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

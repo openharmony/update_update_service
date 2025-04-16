@@ -21,7 +21,7 @@
 #include "dupdate_inet_observer.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareEventListener : public DelayedSingleton<FirmwareEventListener> {
     DECLARE_DELAYED_SINGLETON(FirmwareEventListener);
 
@@ -29,6 +29,6 @@ public:
     void RegisterNetChangedListener();
     void UnregisterNetChangedListener();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_EVENT_LISTENER_H

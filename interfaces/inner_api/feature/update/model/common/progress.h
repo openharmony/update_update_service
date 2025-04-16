@@ -21,11 +21,11 @@
 
 #include "upgrade_status.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct Progress {
     uint32_t percent = 0;
     UpgradeStatus status = UpgradeStatus::INIT;
     std::string endReason;
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_PROGRESS_H

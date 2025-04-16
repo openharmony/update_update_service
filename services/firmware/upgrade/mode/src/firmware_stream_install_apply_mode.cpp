@@ -32,7 +32,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareStep FirmwareStreamInstallApplyMode::GetNextStep(FirmwareStep step)
 {
     FIRMWARE_LOGI("GetNextStep %{public}d", static_cast<uint32_t>(step));
@@ -158,5 +158,5 @@ void FirmwareStreamInstallApplyMode::SetApplyResult(bool isSuccess)
 {
     FIRMWARE_LOGI("SetApplyResult isSuccess: %{public}s", isSuccess ? "success" : "fail");
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

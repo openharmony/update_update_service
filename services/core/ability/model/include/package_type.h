@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_PACKAGE_TYPE_H
 #define UPDATE_SERVICE_PACKAGE_TYPE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class PackageType {
     DYNAMIC = 0,
     NORMAL = 1,
@@ -28,5 +28,5 @@ enum class PackageType {
     PATCH = 8,
     SA = 9
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_PACKAGE_TYPE_H

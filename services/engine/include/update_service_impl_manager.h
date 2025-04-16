@@ -23,7 +23,7 @@
 #include "upgrade_info.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateServiceImplManager {
 public:
     UpdateServiceImplManager();
@@ -38,6 +38,6 @@ private:
     std::mutex updateImplMapLock_;
     std::map<UpgradeInfo, sptr<IServiceOnlineUpdater>> updateImpMap_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_IMPL_MANAGER_H

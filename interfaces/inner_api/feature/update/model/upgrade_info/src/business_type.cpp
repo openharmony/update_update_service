@@ -15,7 +15,7 @@
 
 #include "business_type.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder BusinessType::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -24,4 +24,4 @@ JsonBuilder BusinessType::GetJsonBuilder()
         .Append("subType", CAST_INT(subType))
         .Append("}");
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

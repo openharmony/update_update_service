@@ -25,7 +25,7 @@
 #include "update_callback.h"
 #include "update_service_proxy.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class UpdateServiceKitsImpl final : public UpdateServiceKits,
     public DelayedRefSingleton<UpdateServiceKitsImpl>,
     public BaseServiceKitsImpl<IUpdateService> {
@@ -101,5 +101,5 @@ private:
     UpgradeInfo upgradeInfo_{};
     int32_t retryTimes_ = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_KITS_IMPL_H

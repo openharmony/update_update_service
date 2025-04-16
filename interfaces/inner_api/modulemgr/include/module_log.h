@@ -19,8 +19,8 @@
 
 #include "update_log.h"
 
-#define UTILS_LOGE(fmt, ...) PRINT_LOGE(OHOS::UpdateEngine::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
-#define UTILS_LOGI(fmt, ...) PRINT_LOGI(OHOS::UpdateEngine::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
-#define UTILS_LOGD(fmt, ...) PRINT_LOGD(OHOS::UpdateEngine::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
+#define UTILS_LOGE(fmt, ...) PRINT_LOGE(OHOS::UpdateService::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
+#define UTILS_LOGI(fmt, ...) PRINT_LOGI(OHOS::UpdateService::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
+#define UTILS_LOGD(fmt, ...) PRINT_LOGD(OHOS::UpdateService::UPDATE_MODULEMGR_TAG, fmt, ##__VA_ARGS__)
 
 #endif // UPDATE_SERVICE__MODULE_LOG_H

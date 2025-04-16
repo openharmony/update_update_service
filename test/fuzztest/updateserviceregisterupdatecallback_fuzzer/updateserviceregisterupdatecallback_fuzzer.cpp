@@ -15,7 +15,7 @@
 
 #include "updateserviceregisterupdatecallback_fuzzer.h"
 
-using namespace OHOS::UpdateEngine;
+using namespace OHOS::UpdateService;
 
 namespace OHOS {
 bool FuzzUpdateServiceRegisterUpdateCallback(const uint8_t* data, size_t size)

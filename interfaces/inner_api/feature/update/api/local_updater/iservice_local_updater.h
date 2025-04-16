@@ -21,7 +21,7 @@
 #include "business_error.h"
 #include "upgrade_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class IServiceLocalUpdater : public virtual RefBase {
 public:
     virtual ~IServiceLocalUpdater() = default;
@@ -32,5 +32,5 @@ public:
     virtual int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError) = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // ISERVICE_LOCAL_UPDATER_H

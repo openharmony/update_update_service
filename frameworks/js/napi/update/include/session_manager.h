@@ -27,7 +27,7 @@
 #include "event_classify_info.h"
 #include "event_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class SessionManager {
 public:
     SessionManager(napi_env env, napi_ref thisReference);
@@ -55,5 +55,5 @@ private:
     std::map<uint32_t, std::shared_ptr<BaseSession>> sessions_;
     std::recursive_mutex sessionMutex_;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SESSION_MGR_H

@@ -20,7 +20,7 @@
 using namespace testing::ext;
 using namespace testing;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 
 Progress downloadProgress;
 void TestProgressCallback(const Progress &progress)
@@ -78,4 +78,4 @@ HWTEST_F(StreamProgressThreadTest, DownloadProgressTest, TestSize.Level1)
     int32_t result = StreamProgressThread::DownloadProgress(&thread, dlTotal, dlNow, ulTotal, ulNow);
     ASSERT_EQ(result, 0);
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

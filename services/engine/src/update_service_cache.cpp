@@ -23,7 +23,7 @@
 #include "upgrade_interval.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 UpgradeInfo UpdateServiceCache::upgradeInfo_{};
 uint64_t UpdateServiceCache::checkInterval_ = 0;
 uint64_t UpdateServiceCache::downloadInterval_ = 0;
@@ -150,5 +150,5 @@ void UpdateServiceCache::SetUpgradeEndTime(BusinessSubType businessSubType, uint
         upgradeInterval_.timeEnd = time;
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

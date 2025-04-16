@@ -24,7 +24,7 @@
 #include "firmware_component.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string FIRMWARE_TABLE_COMPONENT = "component";
 const std::string COLUMN_COMPONENT_VERSION_ID = "versionId";
 const std::string COLUMN_COMPONENT_VERSION_PACKAGE_TYPE = "versionPackageType";
@@ -76,6 +76,6 @@ public:
     std::string GetTableCreateSql();
 #endif
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_COMPONENT_TABLE_H

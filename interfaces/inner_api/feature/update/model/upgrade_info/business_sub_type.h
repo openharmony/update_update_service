@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_BUSINESS_SUB_TYPE_H
 #define UPDATE_SERVICE_BUSINESS_SUB_TYPE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class BusinessSubType {
     START_UP = 0,
     FIRMWARE = 1,
@@ -25,5 +25,5 @@ enum class BusinessSubType {
     ACCESSORY = 4,
     ASSIST = 5
 };
-} // namespace OHOS::UpdateEngine:
+} // namespace OHOS::UpdateService:
 #endif // UPDATE_SERVICE_BUSINESS_SUB_TYPE_H

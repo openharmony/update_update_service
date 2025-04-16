@@ -28,7 +28,7 @@
 #include "progress.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareDownloadMode final : public FirmwareIExecuteMode {
 public:
     FirmwareDownloadMode(const DownloadOptions &downloadOptions, BusinessError &businessError,
@@ -60,6 +60,6 @@ private:
     OnExecuteFinishCallback onExecuteFinishCallback_;
     FirmwareTask tasks_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_DOWNLOAD_MODE_H

@@ -17,7 +17,7 @@
 #include "parcel_common.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 
 bool CurrentVersionInfo::ReadFromParcel(Parcel &parcel)
 {
@@ -76,4 +76,4 @@ CurrentVersionInfo *CurrentVersionInfo::Unmarshalling(Parcel &parcel)
     }
     return currentVersionInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

@@ -22,7 +22,7 @@
 #include "timer.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 enum class EventType {
     STARTUP_IDLE_LOOPER_EVENT = 1
 };
@@ -40,6 +40,6 @@ private:
     std::shared_ptr<OHOS::Utils::Timer> timer_ = nullptr;
     std::mutex mutex_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // TIMER_MANAGER_H

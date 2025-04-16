@@ -20,7 +20,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 AccessManager::AccessManager()
 {
     ENGINE_LOGD("AccessManager constructor");
@@ -102,5 +102,5 @@ void AccessManager::SetRemoteIdle(bool isRemoteIdle)
     ENGINE_LOGI("AccessManager SetRemoteIdle %{public}s", StringUtils::GetBoolStr(isRemoteIdle).c_str());
     isRemoteIdle_ = isRemoteIdle;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

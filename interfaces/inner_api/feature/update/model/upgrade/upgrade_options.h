@@ -19,7 +19,7 @@
 #include "order.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct UpgradeOptions : public Parcelable {
     Order order = Order::INSTALL;
 
@@ -27,5 +27,5 @@ struct UpgradeOptions : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static UpgradeOptions *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_OPTIONS_H

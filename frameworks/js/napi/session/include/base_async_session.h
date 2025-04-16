@@ -21,7 +21,7 @@
 
 #include "napi_session.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 constexpr int32_t RESULT_ARGC = 2;
 
 template <typename RESULT> class BaseAsyncSession : public NapiSession {
@@ -115,5 +115,5 @@ protected:
     napi_async_work worker_ = nullptr;
     std::vector<napi_ref> callbackRef_ = { 0 };
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // BASE_ASYNC_SESSION_H

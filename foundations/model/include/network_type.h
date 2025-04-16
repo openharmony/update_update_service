@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_NETWORK_TYPE_H
 #define UPDATE_SERVICE_NETWORK_TYPE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class NetType {
     NO_NET = 0,
     CELLULAR = 1,
@@ -27,5 +27,5 @@ enum class NetType {
     WIFI = METERED_WIFI | NOT_METERED_WIFI,
     CELLULAR_AND_WIFI = CELLULAR | WIFI
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_NETWORK_TYPE_H

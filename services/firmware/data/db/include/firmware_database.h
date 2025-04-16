@@ -24,7 +24,7 @@
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 class FirmwareDatabase final : public SqliteDb, DelayedSingleton<FirmwareDatabase> {
     DECLARE_DELAYED_SINGLETON(FirmwareDatabase);
@@ -54,6 +54,6 @@ private:
     FirmwareDatabaseCallback dbOpenCallback_;
 #endif
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_DATABASE_H

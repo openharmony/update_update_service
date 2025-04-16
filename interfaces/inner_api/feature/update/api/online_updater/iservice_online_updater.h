@@ -35,7 +35,7 @@
 #include "version_description_info.h"
 #include "version_digest_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class IServiceOnlineUpdater : public virtual RefBase {
 public:
     virtual ~IServiceOnlineUpdater() = default;
@@ -82,5 +82,5 @@ public:
 
     virtual int32_t Cancel(const UpgradeInfo &info, int32_t service, BusinessError &businessError) = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // ISERVICE_ONLINE_UPDATER_H

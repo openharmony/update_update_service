@@ -20,7 +20,7 @@
 #include "firmware_task.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareInstallDataProcessor {
 public:
     FirmwareInstallDataProcessor() = default;
@@ -39,6 +39,6 @@ private:
 private:
     FirmwareTask tasks_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_INSTALL_DATA_RPOCESSOR_H

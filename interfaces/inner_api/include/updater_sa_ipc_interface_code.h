@@ -18,7 +18,7 @@
 
 #include <cstdint>
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 /* SAID: 3006 */
 enum class UpdaterSaInterfaceCode : uint32_t {
     CHECK_VERSION = 1,
@@ -42,5 +42,5 @@ enum class UpdaterSaInterfaceCode : uint32_t {
     APPLY_NEW_VERSION,
     VERIFY_UPGRADE_PACKAGE
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATER_SA_IPC_INTERFACE_CODE_H

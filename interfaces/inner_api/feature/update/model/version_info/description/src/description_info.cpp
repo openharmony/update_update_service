@@ -16,7 +16,7 @@
 #include "description_info.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder DescriptionInfo::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -25,4 +25,4 @@ JsonBuilder DescriptionInfo::GetJsonBuilder()
         .Append("content", content)
         .Append("}");
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

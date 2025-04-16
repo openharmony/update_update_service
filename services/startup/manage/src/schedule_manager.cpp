@@ -19,7 +19,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 ScheduleManager::ScheduleManager(
     const std::shared_ptr<IAccessManager> &accessManager, const std::shared_ptr<IStartupSchedule> &startupSchedule)
 {
@@ -69,5 +69,5 @@ bool ScheduleManager::TaskSchedule(const ScheduleTask &scheduleTask)
     scheduleTasks.emplace_back(scheduleTask);
     return startupSchedule_->OnDemandSchedule(scheduleTasks);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

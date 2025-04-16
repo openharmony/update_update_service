@@ -22,7 +22,7 @@
 #include <string>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 static const int32_t ENCRYPT_LENGTH = 4; // 需要替换*的长度
 static const int32_t ENCRYPT_TOTAL_LENGTH = 8; // 敏感数据匿名化后最长长度
 static const std::string ENCRYPT_STR = "****";
@@ -66,6 +66,6 @@ public:
         return result;
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // ANONYMOUS_UTILS_H

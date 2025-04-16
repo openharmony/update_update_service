@@ -16,7 +16,7 @@
 #include "firmware_component_table.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string COLUMN_ID = "id";
 std::string FirmwareComponentTable::GetTableName()
 {
@@ -27,5 +27,5 @@ std::string FirmwareComponentTable::GetTableCreateSql()
 {
     return "";
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

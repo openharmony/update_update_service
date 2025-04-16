@@ -21,7 +21,7 @@
 using namespace std;
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 UpdateServiceImplManager::UpdateServiceImplManager()
 {
     ENGINE_LOGI("UpdateServiceImplManager");
@@ -51,5 +51,5 @@ sptr<IServiceOnlineUpdater> UpdateServiceImplManager::GetOnlineUpdater(const Upg
         return updateServiceImpl;
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

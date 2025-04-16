@@ -20,7 +20,7 @@
 #include "startup_constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class ScheduleConfig final {
 public:
     static void InitConfig();
@@ -34,6 +34,6 @@ private:
     static uint64_t pullupInterval_;
     static uint64_t idleCheckInterval_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // SCHEDULE_CONFIG_H

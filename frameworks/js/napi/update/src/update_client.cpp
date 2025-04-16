@@ -26,7 +26,7 @@
 
 using namespace std;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 napi_value UpdateClient::Napi::NapiOn(napi_env env, napi_callback_info info)
 {
     ENGINE_LOGI("UpdateClient::Napi::NapiOn");
@@ -475,4 +475,4 @@ void UpdateClient::GetUpdateResult(uint32_t type, UpdateResult &result)
             break;
     }
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

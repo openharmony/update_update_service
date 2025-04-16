@@ -24,7 +24,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool SystemAbilityOperator::UpdateStartupPolicy(const std::vector<ScheduleTask> &scheduleTasks)
 {
     ENGINE_LOGI("UpdateStartupPolicy");
@@ -120,5 +120,5 @@ inline sptr<ISystemAbilityManager> SystemAbilityOperator::GetSystemAbilityManage
 {
     return SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -26,7 +26,7 @@
 #include "string_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr int64_t SPACE_OFFSET = 100 *1024 *1024;
 
 bool FirmwareInstallDataProcessor::IsSpaceEnough(int64_t &requireTotalSize)
@@ -112,5 +112,5 @@ bool FirmwareInstallDataProcessor::IsUpgradeFileCheckSuccess()
     FirmwareComponentOperator().QueryAll(components);
     return FirmwareUpdateHelper::IsUpgradePackagesReady(components);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

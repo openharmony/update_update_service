@@ -20,10 +20,10 @@
 
 #include "component_type.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct UpgradeFile {
     ComponentType fileType = ComponentType::INVALID;
     std::string filePath;
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_FILE_H

@@ -16,10 +16,10 @@
 #ifndef UPDATE_SERVICE_DESCRIPTION_FORMAT_H
 #define UPDATE_SERVICE_DESCRIPTION_FORMAT_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class DescriptionFormat {
     STANDARD = 0,
     SIMPLIFIED = 1
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_DESCRIPTION_FORMAT_H

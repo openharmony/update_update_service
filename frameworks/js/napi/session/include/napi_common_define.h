@@ -23,7 +23,7 @@
 #include "node_api.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 constexpr int32_t COMPONENT_ERR = 11500000;
 #define PARAM_CHECK(validCheck, exper, ...)  \
 if (!(validCheck)) {                     \
@@ -118,5 +118,5 @@ bool IsValidEnum(const std::list<T> &enumList, int32_t number)
 {
     return std::any_of(enumList.begin(), enumList.end(), [=](T key) { return number == static_cast<int32_t>(key); });
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // NAPI_COMMON_DEFINE_H

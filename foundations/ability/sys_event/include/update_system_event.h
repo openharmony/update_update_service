@@ -20,7 +20,7 @@
 
 #include "hisysevent.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 #define EVENT_WRITE(eventName, type, ...)  \
     HiSysEventWrite(OHOS::HiviewDFX::HiSysEvent::Domain::UPDATE, eventName, type, ##__VA_ARGS__)
 
@@ -70,5 +70,5 @@ public:
     static constexpr const char *EVENT_PERMISSION_VERIFY_FAILED = "permission verify failed";
     static constexpr const char *EVENT_PKG_VERIFY_FAILED = "upgrade package verify failed";
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SYSTEM_EVENT_H

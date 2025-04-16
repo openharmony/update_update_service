@@ -24,7 +24,7 @@
 #include "load_sa_service.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 #define RETURN_FAIL_WHEN_SERVICE_NULL(service) \
     if ((service) == nullptr) {                \
         ENGINE_LOGE("Service is null");        \
@@ -125,5 +125,5 @@ template <typename SERVICE> void BaseServiceKitsImpl<SERVICE>::ResetService(cons
     remoteServer_ = nullptr;
     deathRecipient_ = nullptr;
 }
-}
+} // namespace OHOS::UpdateService
 #endif // BASE_SERVICE_KITS_IMPL_H

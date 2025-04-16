@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_PARCEL_COMMON_H
 #define UPDATE_SERVICE_PARCEL_COMMON_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 static constexpr int32_t MAX_VECTOR_SIZE = 128;
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_PARCEL_COMMON_H

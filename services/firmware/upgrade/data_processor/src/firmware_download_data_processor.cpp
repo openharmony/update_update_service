@@ -26,7 +26,7 @@
 #include "string_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareDownloadDataProcessor::FirmwareDownloadDataProcessor()
 {
     FIRMWARE_LOGD("FirmwareDownloadDataProcessor::FirmwareDownloadDataProcessor");
@@ -80,5 +80,5 @@ Progress FirmwareDownloadDataProcessor::GetDownloadProgress()
 {
     return downloadProgress_;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

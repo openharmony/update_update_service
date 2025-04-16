@@ -20,7 +20,7 @@
 
 #include "event_id.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum TaskBodyMemberMask {
     VERSION_DIGEST_INFO = 0x00000001,
     UPGRADE_STATUS      = 0x00000010,
@@ -62,5 +62,5 @@ const std::map<EventId, uint32_t> g_taskBodyTemplateMap = {
     { EventId::EVENT_AUTH_SUCCESS,     VERSION_DIGEST_INFO | VERSION_COMPONENT | UPGRADE_STATUS },
     { EventId::EVENT_INITIALIZE,       UPGRADE_STATUS },
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_TASK_BODY_MEMBER_MASK_H

@@ -20,7 +20,7 @@
 
 #include "json_builder.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct BaseJsonStruct {
     virtual ~BaseJsonStruct() = default;
 
@@ -31,5 +31,5 @@ struct BaseJsonStruct {
         return GetJsonBuilder().ToJson();
     };
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_BASE_JSON_STRUCT_H

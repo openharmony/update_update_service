@@ -25,7 +25,7 @@
 #include "task_body.h"
 #include "version_component.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct EventInfo : public BaseJsonStruct, public Parcelable {
     EventId eventId = EventId::EVENT_TASK_BASE;
     TaskBody taskBody;
@@ -39,5 +39,5 @@ struct EventInfo : public BaseJsonStruct, public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static EventInfo *Unmarshalling(Parcel &parcel);
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_EVENT_INFO_H

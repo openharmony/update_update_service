@@ -24,7 +24,7 @@
 #include "upgrade_status.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void FirmwareTaskOperator::QueryTask(FirmwareTask &task)
 {
     std::vector<FirmwareTask> taskList;
@@ -127,5 +127,5 @@ bool FirmwareTaskOperator::UpdateByTaskId(const std::string &taskId, const Nativ
     predicates.EqualTo(COLUMN_TASK_TASK_ID, taskId);
     return TableBaseOperator::Update(values, predicates);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

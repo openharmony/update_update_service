@@ -24,7 +24,7 @@
 #include "firmware_constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 ConfigParse::ConfigParse()
 {
     ENGINE_LOGI("ConfigParse::ConfigParse");
@@ -73,5 +73,5 @@ void ConfigParse::LoadConfigInfo()
     JsonUtils::GetValueAndSetTo(root, "streamInstallTimeout", configInfo_.streamInstallTimeout);
     JsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

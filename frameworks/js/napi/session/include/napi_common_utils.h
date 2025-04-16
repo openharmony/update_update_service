@@ -27,7 +27,7 @@
 #include "error_message.h"
 #include "napi_common_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class NapiCommonUtils {
 public:
     static int32_t GetBool(napi_env env, napi_value arg, const std::string &attrName, bool &value);
@@ -73,5 +73,5 @@ private:
     static std::string ConvertVectorToStr(std::vector<std::pair<std::string, std::string>> &strVector, bool isFirst);
     static size_t GetValidDataCount(const std::vector<ErrorMessage> &list);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // NAPI_COMMON_UTILS_H

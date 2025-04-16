@@ -29,7 +29,7 @@
 #include "version_component.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class BaseCallbackUtils {
 public:
     void NotifyEvent(const std::string &versionDigestInfo, EventId eventId, UpgradeStatus status,
@@ -44,6 +44,6 @@ private:
     void CallbackToHap(EventInfo &eventInfo);
     sptr<IUpdateCallback> GetUpgradeCallback(const UpgradeInfo &upgradeInfo);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // BASE_CALLBACK_UTILS_H

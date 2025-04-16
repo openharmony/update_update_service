@@ -19,7 +19,7 @@
 #include "task_body_member_mask.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder GetJsonBuilder(VersionComponent &versionComponent)
 {
     return versionComponent.GetJsonBuilder();
@@ -152,4 +152,4 @@ TaskBody *TaskBody::Unmarshalling(Parcel &parcel)
     }
     return taskBody;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

@@ -20,7 +20,7 @@
 #include <string>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 enum class HttpConstant {
     DEFAULT = -1,
     SUCCESS = 200,
@@ -37,6 +37,6 @@ public:
     int32_t result = 0;
     std::string content;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // NETWORK_RESPONSE_H

@@ -21,7 +21,7 @@
 #include "constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 namespace Firmware {
 constexpr double HALF_PROGRESS = 0.5;
 constexpr int32_t NIGHT_UPGRADE_START_HOUR = 2;
@@ -56,6 +56,6 @@ static const std::vector<DirInfo> FIRMWARE_DIR_INFOS {
     {Firmware::PACKAGE_ROOT_PATH, 0770, true},
     {Firmware::PACKAGE_PATH, 0770, true}
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_CONSTANT_H

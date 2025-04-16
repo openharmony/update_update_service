@@ -24,7 +24,7 @@
 
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class JsonParseError {
     ERR_OK = 0,
     COMMOM_ERROR,
@@ -194,5 +194,5 @@ private:
         }
     }
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // JSON_UTILS_H

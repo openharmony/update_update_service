@@ -22,7 +22,7 @@
 #include "../include/module_manager.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::map<uint32_t, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
 std::map<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
 std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
@@ -181,5 +181,5 @@ bool ModuleManager::IsMapFuncExist(uint32_t code)
 {
     return onRemoteRequestFuncMap_.count(code);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

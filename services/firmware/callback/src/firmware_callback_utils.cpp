@@ -16,7 +16,7 @@
 #include "firmware_callback_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareCallbackUtils::FirmwareCallbackUtils() {}
 
 FirmwareCallbackUtils::~FirmwareCallbackUtils() {}
@@ -25,5 +25,5 @@ BusinessSubType FirmwareCallbackUtils::GetBusinessSubType()
 {
     return BusinessSubType::FIRMWARE;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

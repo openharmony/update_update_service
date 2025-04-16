@@ -18,7 +18,7 @@
 #include "update_define.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr int32_t ONE_SECOND_MILLISECONDS = 1000;
 
 TimerManager::TimerManager()
@@ -83,5 +83,5 @@ void TimerManager::UnregisterLooperEvent(EventType eventType)
     registeredTimerIdMap_.erase(result);
     ENGINE_LOGD("TimerManager UnregisterLooperEvent EventType %{public}d success", CAST_INT(eventType));
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

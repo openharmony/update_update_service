@@ -21,7 +21,7 @@
 #include "network_type.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 enum class NetChangeCallbackType {
     HOTA_BI_REPORT = 0,
     HOTA_DOWNLOAD = 1,
@@ -41,6 +41,6 @@ public:
     virtual void SetCallback(const std::weak_ptr<INetObserverCallback> &callback) = 0;
     virtual void StartObserver() = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DUPDATE_INET_OBSERVER_H

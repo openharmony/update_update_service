@@ -24,7 +24,7 @@
 #include "task_info.h"
 #include "version_description_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class UpdateClient : public IUpdater {
 public:
     class Napi {
@@ -117,5 +117,5 @@ private:
 #ifdef UPDATER_UT
 napi_value UpdateClientInit(napi_env env, napi_value exports);
 #endif
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_CLIENT_H

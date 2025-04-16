@@ -20,7 +20,7 @@
 #include "update_service_cache.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void BaseCallbackUtils::NotifyEvent(const std::string &versionDigestInfo, EventId eventId, UpgradeStatus status,
     const ErrorMessage &errorMessage, const std::vector<VersionComponent> &versionComponents)
 {
@@ -46,5 +46,5 @@ void BaseCallbackUtils::NotifyToHap(EventInfo &info)
 {
     ENGINE_LOGI("BaseCallbackUtils NotifyToHap");
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

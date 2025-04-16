@@ -25,7 +25,7 @@
 #include "tokenid_kit.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 constexpr int32_t STRING_MAX_LENGTH = 81920;
 
 int32_t NapiCommonUtils::GetInt32(napi_env env, napi_value arg, const std::string &attrName, int32_t &intValue)
@@ -399,4 +399,4 @@ ClientStatus NapiCommonUtils::CheckNapiObjectType(napi_env env, const napi_value
         static_cast<int32_t>(type))
     return ClientStatus::CLIENT_SUCCESS;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

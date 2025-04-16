@@ -16,7 +16,7 @@
 #include "task_info.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool TaskInfo::ReadFromParcel(Parcel &parcel)
 {
     existTask = parcel.ReadBool();
@@ -55,4 +55,4 @@ TaskInfo *TaskInfo::Unmarshalling(Parcel &parcel)
     }
     return taskInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

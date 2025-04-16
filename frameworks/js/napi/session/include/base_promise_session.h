@@ -21,7 +21,7 @@
 
 #include "napi_session.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 template <typename RESULT> class BasePromiseSession : public NapiSession {
 public:
     BasePromiseSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber = 0)
@@ -77,5 +77,5 @@ protected:
     napi_async_work worker_ = nullptr;
     napi_deferred deferred_ = nullptr;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // BASE_PROMISE_SESSION_H

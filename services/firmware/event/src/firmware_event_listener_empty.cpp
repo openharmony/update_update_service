@@ -18,7 +18,7 @@
 #include "firmware_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwareEventListener::FirmwareEventListener()
 {
     FIRMWARE_LOGD("FirmwareEventListener::FirmwareEventListener");
@@ -38,5 +38,5 @@ void FirmwareEventListener::UnregisterNetChangedListener()
 {
     FIRMWARE_LOGI("FirmwareEventListener UnregisterNetChangedListener");
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

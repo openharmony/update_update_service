@@ -16,12 +16,12 @@
 #ifndef BASE_CLIENT_H
 #define BASE_CLIENT_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class BaseClient {
 public:
     virtual ~BaseClient() {}
 
     virtual void RemoveSession(uint32_t sessionId) = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // BASE_CLIENT_H

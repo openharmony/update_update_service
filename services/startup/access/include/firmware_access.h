@@ -21,7 +21,7 @@
 #include "i_access.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareAccess final : public IAccess, public DelayedSingleton<FirmwareAccess> {
     DECLARE_DELAYED_SINGLETON(FirmwareAccess);
 
@@ -31,6 +31,6 @@ public:
     std::vector<ScheduleTask> GetScheduleTasks() final;
     bool Exit() final;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_ACCESS_H

@@ -18,7 +18,7 @@
 #include "description_info.h"
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool DescriptionOptions::ReadFromParcel(Parcel &parcel)
 {
     format = static_cast<DescriptionFormat>(parcel.ReadUint32());
@@ -54,4 +54,4 @@ DescriptionOptions *DescriptionOptions::Unmarshalling(Parcel &parcel)
     }
     return descriptionOptions;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

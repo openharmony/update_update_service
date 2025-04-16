@@ -24,7 +24,7 @@
 #include "firmware_task.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateServiceImplFirmware final : public IServiceOnlineUpdater {
 public:
     UpdateServiceImplFirmware() = default;
@@ -82,6 +82,6 @@ private:
     bool checkComplete_ = false;
     void GetChangelogContent(std::string &dataXml, const std::string &language);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_SERVICE_IMPL_FIRMWARE_H

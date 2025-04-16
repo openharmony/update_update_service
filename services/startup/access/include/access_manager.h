@@ -27,7 +27,7 @@
 #include "startup_constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class IAccessManager {
 public:
     virtual ~IAccessManager() = default;
@@ -56,6 +56,6 @@ private:
     std::map<AccessType, std::shared_ptr<IAccess>> accessMap_;
     bool isRemoteIdle_ = true;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // ACCESS_MANAGER_H

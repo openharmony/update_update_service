@@ -24,7 +24,7 @@
 #include "update_define.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 UpdateServiceKits &UpdateServiceKits::GetInstance()
 {
     return DelayedRefSingleton<UpdateServiceKitsImpl>::GetInstance();
@@ -292,4 +292,4 @@ void UpdateServiceKitsImpl::ResetService(const wptr<IRemoteObject> &remote)
         ENGINE_LOGI("ResetService, reconnect service %{public}s", (updateService != nullptr) ? "success" : "fail");
     }
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

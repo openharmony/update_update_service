@@ -35,7 +35,7 @@
 #include "time_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::string FirmwareUpdateAdapter::GetBusinessDomain()
 {
     return DelayedSingleton<ConfigParse>::GetInstance()->GetBusinessDomain();
@@ -50,5 +50,5 @@ std::string FirmwareUpdateAdapter::GetUpdateAction()
     }
     return "upgrade";
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
