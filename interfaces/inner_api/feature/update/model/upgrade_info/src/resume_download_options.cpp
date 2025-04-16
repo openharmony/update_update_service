@@ -16,7 +16,7 @@
 #include "resume_download_options.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 bool ResumeDownloadOptions::ReadFromParcel(Parcel &parcel)
 {
     allowNetwork = static_cast<NetType>(parcel.ReadUint32());
@@ -47,4 +47,4 @@ ResumeDownloadOptions *ResumeDownloadOptions::Unmarshalling(Parcel &parcel)
     }
     return resumeDownloadOptions;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

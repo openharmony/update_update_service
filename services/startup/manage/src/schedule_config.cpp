@@ -20,7 +20,7 @@
 #include "constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 uint64_t ScheduleConfig::pullupInterval_ = Startup::PULLUP_INTERVAL;
 uint64_t ScheduleConfig::idleCheckInterval_ = Startup::IDLE_CHECK_INTERVAL;
 
@@ -58,5 +58,5 @@ uint64_t ScheduleConfig::ParseConfig(nlohmann::json &root, const std::string &ke
     }
     return defaultValue;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

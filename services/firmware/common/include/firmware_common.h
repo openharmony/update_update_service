@@ -27,7 +27,7 @@
 #include "update_define.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 enum class FirmwareStep {
     INIT = 0,
     CHECK_STEP,
@@ -185,6 +185,6 @@ enum class DownloadEndReason {
     INIT_PACKAGE_FAIL,
     NET_CHANGE,
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_COMMON_H

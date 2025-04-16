@@ -36,7 +36,7 @@
 #include "version_description_info.h"
 #include "version_digest_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class UpdateServiceKits {
 public:
     UpdateServiceKits() = default;
@@ -108,5 +108,5 @@ public:
     virtual int32_t VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
         BusinessError &businessError, int32_t &funcResult) = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_KITS_H

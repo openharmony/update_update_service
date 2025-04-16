@@ -17,8 +17,8 @@
 #define DUPDATE_UPGRADE_HELPER_H
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
     static constexpr int MANUAL_UPGRADE_BATTERY_LEVEL = 30;
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DUPDATE_UPGRADE_HELPER_H

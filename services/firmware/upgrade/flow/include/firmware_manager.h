@@ -31,7 +31,7 @@
 #include "upgrade_options.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareManager : public DelayedSingleton<FirmwareManager> {
     DECLARE_DELAYED_SINGLETON(FirmwareManager);
 
@@ -74,6 +74,6 @@ private:
     std::shared_ptr<FirmwarePreferencesUtil> preferencesUtil_ =
         DelayedSingleton<FirmwarePreferencesUtil>::GetInstance();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_MANAGER_H

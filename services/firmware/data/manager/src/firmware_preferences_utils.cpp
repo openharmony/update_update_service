@@ -19,7 +19,7 @@
 #include "firmware_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 FirmwarePreferencesUtil::FirmwarePreferencesUtil()
 {
     FIRMWARE_LOGD("FirmwarePreferencesUtil");
@@ -34,5 +34,5 @@ std::string FirmwarePreferencesUtil::GetPath()
 {
     return Constant::PREFERENCES_ROOT_PATH + "/update_firmware_sp.xml";
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -20,7 +20,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::shared_ptr<FirmwareInstall> InstallFactory::GetInstance(InstallType type)
 {
     switch (type) {
@@ -32,5 +32,5 @@ std::shared_ptr<FirmwareInstall> InstallFactory::GetInstance(InstallType type)
             return std::make_shared<UpdaterInstall>();
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

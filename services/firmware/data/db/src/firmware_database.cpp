@@ -18,7 +18,7 @@
 #include "constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string FIRMWARE_DB_NAME = "/firmware_sqlite.db";
 constexpr int32_t FIRMWARE_DB_VERSION = 1;
 FirmwareDatabase::FirmwareDatabase()
@@ -52,5 +52,5 @@ NativeRdb::RdbOpenCallback &FirmwareDatabase::GetDbOpenCallback()
 {
     return dbOpenCallback_;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -19,7 +19,7 @@
 #include "upgrade_period.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct UpgradePolicy : public Parcelable {
     bool downloadStrategy = false;
     bool autoUpgradeStrategy = false;
@@ -29,5 +29,5 @@ struct UpgradePolicy : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static UpgradePolicy *Unmarshalling(Parcel &parcel);
 };
-} // OHOS::UpdateEngine
+} // OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_POLICY_H

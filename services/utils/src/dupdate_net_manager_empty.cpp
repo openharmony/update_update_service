@@ -22,7 +22,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 NetManager::NetManager()
 {
     ENGINE_LOGI("NetManager NetManager");
@@ -67,5 +67,5 @@ bool NetManager::IsBaseNetType(NetType netType)
 {
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

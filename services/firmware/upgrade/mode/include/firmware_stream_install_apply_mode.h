@@ -27,7 +27,7 @@
 #include "upgrade_options.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareStreamInstallApplyMode final : public FirmwareIExecuteMode {
 public:
     FirmwareStreamInstallApplyMode(const UpgradeOptions &upgradeOptions, BusinessError &businessError,
@@ -64,6 +64,6 @@ private:
     std::shared_ptr<FirmwarePreferencesUtil> preferencesUtil_ =
         DelayedSingleton<FirmwarePreferencesUtil>::GetInstance();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_STREAM_INSTALL_APPLY_MODE_H

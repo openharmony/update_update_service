@@ -22,7 +22,7 @@
 #include "js_native_api.h"
 #include "js_native_api_types.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class DefineProperty {
 public:
     static void DefineProperties(napi_env env, napi_value exports);
@@ -43,5 +43,5 @@ private:
     static void DefineUpgradeAction(napi_env env, napi_value exports);
     static void DefineBusinessVendor(napi_env env, napi_value exports);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_DEFINE_PROPERTY_H

@@ -16,10 +16,10 @@
 #ifndef UPDATE_SERVICE_BUSINESS_VENDOR_H
 #define UPDATE_SERVICE_BUSINESS_VENDOR_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class BusinessVendor {
 public:
     static constexpr const char *PUBLIC = "public";
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_BUSINESS_VENDOR_H

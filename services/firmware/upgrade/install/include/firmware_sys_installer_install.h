@@ -22,7 +22,7 @@
 #include "firmware_install.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 using OnSysInstallerCallback = std::function<void(const InstallProgress &installProgress)>;
 
 struct SysInstallerExecutorCallback {
@@ -41,6 +41,6 @@ private:
 private:
     Progress sysInstallProgress_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_SYS_INSTALLER_INSTALL_H

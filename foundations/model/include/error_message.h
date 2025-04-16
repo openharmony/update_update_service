@@ -26,7 +26,7 @@
 
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct ErrorMessage : public Parcelable {
     int32_t errorCode = 0;
     std::string errorMessage;
@@ -56,5 +56,5 @@ struct ErrorMessage : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static ErrorMessage *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_ERROR_MESSAGE_H

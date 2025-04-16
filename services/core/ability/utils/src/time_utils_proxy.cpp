@@ -18,7 +18,7 @@
 #include "time_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 int64_t TimeUtilsProxy::GetTimestamp()
 {
     return TimeUtils::GetTimestamp();
@@ -33,5 +33,5 @@ int64_t TimeUtilsProxy::GetSystemBootDuration()
 {
     return TimeUtils::GetSystemBootDuration();
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

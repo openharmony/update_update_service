@@ -20,7 +20,7 @@
 #include <vector>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class DeviceAdapter {
 public:
     static std::string GetParameter(const std::string &key, const std::string &def);
@@ -33,6 +33,6 @@ public:
 private:
     static bool IsValidParamValue(const char *value, uint32_t len);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DEVICE_ADAPTER_H

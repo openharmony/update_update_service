@@ -24,7 +24,7 @@
 #include "startup_constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class StartupManager final : public DelayedSingleton<StartupManager> {
     DECLARE_DELAYED_SINGLETON(StartupManager);
 
@@ -43,6 +43,6 @@ private:
     std::shared_ptr<ScheduleManager> scheduleManager_ = nullptr;
     int64_t lastIdleCheckTime_ = 0;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // STARTUP_MANAGER_H

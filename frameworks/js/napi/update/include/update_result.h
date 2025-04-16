@@ -26,7 +26,7 @@
 #include "upgrade_policy.h"
 #include "version_description_info.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct UpdateResult : NapiResult {
 public:
     using BuildJSObject = std::function<int(napi_env env, napi_value &obj, const UpdateResult &napiResult)>;
@@ -98,5 +98,5 @@ public:
         return *this;
     }
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_RESULT_H

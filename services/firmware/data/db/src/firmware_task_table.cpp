@@ -18,7 +18,7 @@
 #include "update_define.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::string FirmwareTaskTable::GetTableName()
 {
     return FIRMWARE_TABLE_TASK;
@@ -116,5 +116,5 @@ void FirmwareTaskTable::BuildDbValue(const FirmwareTask &value, NativeRdb::Value
     PutColumnValue(dbValue, COLUMN_TASK_AUTH_TIME, value.authTime);
     PutColumnValue(dbValue, COLUMN_TASK_IS_STREAM_UPGRADE, value.isStreamUpgrade);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

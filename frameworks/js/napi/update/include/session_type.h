@@ -18,7 +18,7 @@
 
 #include <cstdint>
 
-namespace OHOS::UpdateEngine::SessionType {
+namespace OHOS::UpdateService::SessionType {
 constexpr uint32_t SESSION_CHECK_VERSION = 0;
 constexpr uint32_t SESSION_DOWNLOAD = 1;
 constexpr uint32_t SESSION_PAUSE_DOWNLOAD = 2;
@@ -42,5 +42,5 @@ constexpr uint32_t SESSION_GET_CUR_VERSION_DESCRIPTION = 19;
 constexpr uint32_t SESSION_GET_TASK_INFO = 20;
 constexpr uint32_t SESSION_REPLY_PARAM_ERROR = 21;
 constexpr uint32_t SESSION_MAX = UINT32_MAX;
-} // namespace OHOS::UpdateEngine::SessionType
+} // namespace OHOS::UpdateService::SessionType
 #endif // UPDATE_SESSION_TYPE_H

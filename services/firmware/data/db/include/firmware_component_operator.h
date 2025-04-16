@@ -28,7 +28,7 @@
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 class FirmwareComponentOperator final : public TableBaseOperator<FirmwareComponentTable, FirmwareComponent> {
 #else
@@ -51,6 +51,6 @@ public:
     bool QueryByVersionId(const std::string &versionId, FirmwareComponent &component);
     bool QueryByUrl(const std::string &url, FirmwareComponent &component);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_COMPONENT_OPERATOR_H

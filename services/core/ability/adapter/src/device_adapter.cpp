@@ -32,7 +32,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr int32_t MAX_PARAM_VALUE_LEN = 128;
 
 bool DeviceAdapter::IsValidParamValue(const char *value, uint32_t len)
@@ -82,5 +82,5 @@ std::string DeviceAdapter::GetBootSlot()
 {
     return GetParameter("ohos.boot.bootslots", "0"); // 0:not ab,2:ab; default 0
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

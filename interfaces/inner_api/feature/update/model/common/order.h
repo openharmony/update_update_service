@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_ORDER_H
 #define UPDATE_SERVICE_ORDER_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class Order {
     DOWNLOAD = 1,
     INSTALL = 2,
@@ -26,5 +26,5 @@ enum class Order {
     TRANSFER = 8,
     TRANSFER_AND_APPLY = TRANSFER | APPLY
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_ORDER_H

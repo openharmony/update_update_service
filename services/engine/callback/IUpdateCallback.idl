@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-sequenceable OHOS.UpdateEngine.EventInfo;
+sequenceable OHOS.UpdateService.EventInfo;
 
-[callback] interface OHOS.UpdateEngine.IUpdateCallback {
+[callback] interface OHOS.UpdateService.IUpdateCallback {
     void OnEvent([in] EventInfo eventInfo) ;
 }

@@ -21,7 +21,7 @@
 #include "js_native_api_types.h"
 #include "napi_structs_base.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class BaseSession {
 public:
     using DoWorkFunction = std::function<int(void *context)>;
@@ -32,5 +32,5 @@ public:
     virtual bool IsAsyncCompleteWork() = 0;
     virtual void OnAsyncComplete(const BusinessError &businessError) = 0;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // BASE_SESSION_H

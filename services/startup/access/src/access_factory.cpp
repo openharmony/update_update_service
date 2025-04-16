@@ -19,7 +19,7 @@
 #include "firmware_access.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::shared_ptr<IAccess> AccessFactory::GetInstance(AccessType type)
 {
     switch (type) {
@@ -29,5 +29,5 @@ std::shared_ptr<IAccess> AccessFactory::GetInstance(AccessType type)
             return DelayedSingleton<DefaultAccess>::GetInstance();
     }
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

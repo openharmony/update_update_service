@@ -15,7 +15,7 @@
 
 #include "updateservicegetupgradepolicy_fuzzer.h"
 
-using namespace OHOS::UpdateEngine;
+using namespace OHOS::UpdateService;
 
 namespace OHOS {
 bool FuzzUpdateServiceGetUpgradePolicy(const uint8_t* data, size_t size)

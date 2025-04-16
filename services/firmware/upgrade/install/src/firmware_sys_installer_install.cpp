@@ -30,7 +30,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 
 bool SysInstallerInstall::IsComponentLegal(const std::vector<FirmwareComponent> &componentList)
 {
@@ -155,5 +155,5 @@ int32_t SysInstallerInstall::WaitInstallResult()
         CAST_INT(sysInstallProgress_.status));
     return OHOS_FAILURE;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

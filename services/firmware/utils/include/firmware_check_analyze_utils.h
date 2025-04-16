@@ -25,7 +25,7 @@
 #include "firmware_common.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareCheckAnalyzeUtils {
 public:
     FirmwareCheckAnalyzeUtils() = default;
@@ -43,6 +43,6 @@ private:
 private:
     std::vector<FirmwareComponent> components_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_CHECK_ANALYZE_UTILS_H

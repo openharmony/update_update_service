@@ -29,7 +29,7 @@
 
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct VersionComponent : public BaseJsonStruct, public Parcelable {
     std::string componentId;
     int32_t componentType = CAST_INT(ComponentType::INVALID);
@@ -48,5 +48,5 @@ struct VersionComponent : public BaseJsonStruct, public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static VersionComponent *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_VERSION_COMPONENT_H

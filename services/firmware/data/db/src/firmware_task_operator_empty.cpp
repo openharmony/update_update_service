@@ -22,7 +22,7 @@
 #include "order.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool FirmwareTaskOperator::Insert(const FirmwareTask &values)
 {
     return true;
@@ -89,5 +89,5 @@ bool FirmwareTaskOperator::UpdateUpgradeOrderByTaskId(const std::string &taskId,
 {
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

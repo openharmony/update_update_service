@@ -19,7 +19,7 @@
 #include "device_adapter.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::string CombinePackageVersionUtils::GetPackageVersion(std::string &baseVersion, std::string &custVersion,
     std::string &preloadVersion)
 {
@@ -118,5 +118,5 @@ std::string CombinePackageVersionUtils::HandlePreloadVersion(std::string &preloa
     preload.append("P").append(getPnum);
     return preload;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

@@ -23,7 +23,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 std::mutex UpdateNotify::instanceLock_;
 sptr<UpdateNotify> UpdateNotify::instance_ = nullptr;
 
@@ -153,5 +153,5 @@ void NotifyConnection::OnAbilityDisconnectDone(const AppExecFwk::ElementName &el
 {
     ENGINE_LOGI("OnAbilityDisconnectDone successfully. result %{public}d", resultCode);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

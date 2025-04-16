@@ -23,7 +23,7 @@
 #include "schedule_task.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class ISystemAbilityOperator {
 public:
     virtual ~ISystemAbilityOperator() = default;
@@ -43,6 +43,6 @@ private:
     bool UpdateStartupOnDemandPolicy(const std::vector<SystemAbilityOnDemandEvent> &events);
     sptr<ISystemAbilityManager> GetSystemAbilityManager() const;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // SYSTEM_ABILITY_OPERATOR_H

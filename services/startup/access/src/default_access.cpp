@@ -18,7 +18,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 DefaultAccess::DefaultAccess()
 {
     ENGINE_LOGD("DefaultAccess constructor");
@@ -48,5 +48,5 @@ bool DefaultAccess::Exit()
 {
     return true;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

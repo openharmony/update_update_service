@@ -24,7 +24,7 @@
 #include "firmware_task_table.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 
 enum {
     VERSION_INITIAL_VERSION = 1,
@@ -71,5 +71,5 @@ std::vector<std::string> FirmwareDatabaseCallback::GenerateDbCreateSqlVector()
     dbCreateSqlVector.push_back(FirmwareTaskTable().GetTableCreateSql());
     return dbCreateSqlVector;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

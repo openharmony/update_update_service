@@ -21,7 +21,7 @@
 #include "description_info.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct ComponentDescription : public Parcelable {
     std::string componentId;
     DescriptionInfo descriptionInfo;
@@ -31,5 +31,5 @@ struct ComponentDescription : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static ComponentDescription *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_COMPONENT_DESCRIPTION_H

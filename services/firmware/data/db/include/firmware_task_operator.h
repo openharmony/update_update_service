@@ -30,7 +30,7 @@
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 class FirmwareTaskOperator final : public TableBaseOperator<FirmwareTaskTable, FirmwareTask> {
 #else
@@ -67,6 +67,6 @@ private:
     bool UpdateByTaskId(const std::string &taskId, const NativeRdb::ValuesBucket &values);
 #endif
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_TASK_OPERATOR_H

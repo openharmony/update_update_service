@@ -24,7 +24,7 @@
 #include "session_manager.h"
 #include "update_result.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class IUpdater : public BaseClient {
 public:
     virtual ~IUpdater() {}
@@ -53,5 +53,5 @@ protected:
 protected:
     std::shared_ptr<SessionManager> sessionsMgr_ = nullptr;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATER_INTERFACE_H

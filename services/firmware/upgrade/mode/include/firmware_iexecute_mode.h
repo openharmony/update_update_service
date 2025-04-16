@@ -26,7 +26,7 @@
 #include "upgrade_options.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 using OnCheckComplete = std::function<void(BusinessError &businessError, CheckResult &checkResult)>;
 using OnExecuteFinishCallback = std::function<void()>;
 
@@ -64,6 +64,6 @@ public:
         return InstallType::UPDATER;
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_IEXECUTE_MODE_H

@@ -22,7 +22,7 @@
 #include "firmware_sys_installer_install.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class SysInstallerCallback : public SysInstaller::ISysInstallerCallbackFunc {
 public:
     explicit SysInstallerCallback(SysInstallerExecutorCallback &installCallback);
@@ -36,6 +36,6 @@ public:
 private:
     SysInstallerExecutorCallback sysInstallCallback_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_SYS_INSTALLER_CALLBACK_H

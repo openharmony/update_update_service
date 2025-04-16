@@ -20,10 +20,10 @@
 
 #include "iremote_broker.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class IUpdateNotify : public OHOS::IRemoteBroker {
 public:
     DECLARE_INTERFACE_DESCRIPTOR(u"OHOS.Updater.IUpdateNotify");
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // I_UPDATE_NOTIFY_H

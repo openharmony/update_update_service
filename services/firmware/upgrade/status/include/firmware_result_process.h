@@ -24,7 +24,7 @@
 #include "firmware_component.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string UPDATER_RESULT_SUCCESS = "pass";
 const std::string UPDATER_RESULT_FAILURE = "fail";
 const std::string UPDATER_RESULT_FAILURE_REASON = "compare version fail";
@@ -73,6 +73,6 @@ private:
         const std::vector<FirmwareComponent> &components);
     void ParseResult(const std::vector<std::string> &results, std::string &value, size_t index);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_RESULT_PROCESS_H

@@ -23,7 +23,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class Sha256Utils {
 public:
     static std::string CalculateHashCode(std::string inputStr);
@@ -35,6 +35,6 @@ private:
     static bool Sha256Calculate(const unsigned char *input, int len, char *componentId, int componentIdLen);
     static bool TransDigestToSha256Result(char *sha256Result, uint32_t componentIdLen, const unsigned char *digest);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // SHA256_UTILS_H

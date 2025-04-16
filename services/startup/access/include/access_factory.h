@@ -22,11 +22,11 @@
 #include "startup_constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class AccessFactory final {
 public:
     static std::shared_ptr<IAccess> GetInstance(AccessType type);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // ACCESS_FACTORY_H

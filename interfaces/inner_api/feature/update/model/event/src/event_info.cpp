@@ -17,7 +17,7 @@
 #include "update_define.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 JsonBuilder EventInfo::GetJsonBuilder()
 {
     return JsonBuilder()
@@ -65,4 +65,4 @@ EventInfo *EventInfo::Unmarshalling(Parcel &parcel)
     }
     return eventInfo;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

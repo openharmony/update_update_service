@@ -20,7 +20,7 @@
 
 #include "iremote_object.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class CommonDeathRecipient : public IRemoteObject::DeathRecipient {
 public:
     using ResetServiceFunc = std::function<void(const wptr<IRemoteObject> &object)>;
@@ -39,5 +39,5 @@ public:
 private:
     ResetServiceFunc resetServiceFunc_;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // COMMON_DEATH_RECIPIENT_H

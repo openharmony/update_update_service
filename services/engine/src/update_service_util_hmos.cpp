@@ -27,7 +27,7 @@
 #include "update_system_event.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 void UpdateServiceUtil::BuildTaskBody(const Progress &progress, TaskBody &taskBody)
 {
     taskBody.status = progress.status;
@@ -51,5 +51,5 @@ sptr<IUpdateCallback> UpdateServiceUtil::GetUpgradeCallback(const UpgradeInfo &u
     int32_t funcResult = 0;
     return service->GetUpgradeCallback(upgradeInfo, funcResult);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

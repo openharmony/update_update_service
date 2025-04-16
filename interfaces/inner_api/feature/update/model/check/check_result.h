@@ -19,7 +19,7 @@
 #include "new_version_info.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct CheckResult : public Parcelable {
     bool isExistNewVersion = false;
     NewVersionInfo newVersionInfo;
@@ -28,5 +28,5 @@ struct CheckResult : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static CheckResult *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_CHECK_RESULT_H

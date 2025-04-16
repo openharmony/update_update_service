@@ -18,7 +18,7 @@
 
 #include "update_define.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 constexpr int CALL_RESULT_OFFSET = 2000;
 
 enum class CallResult {
@@ -56,5 +56,5 @@ constexpr int32_t INT_IO_ERROR = CAST_INT(CallResult::IO_ERROR);
 constexpr int32_t INT_NET_ERROR = CAST_INT(CallResult::NET_ERROR);
 constexpr std::string_view NOT_SYSTEM_APP_INFO =
     ": Permission verification failed. A non-system application calls a system API.";
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_CALL_RESULT_H

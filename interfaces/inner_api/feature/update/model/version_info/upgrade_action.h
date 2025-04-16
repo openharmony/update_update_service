@@ -16,12 +16,12 @@
 #ifndef UPDATE_SERVICE_UPGRADE_ACTION_H
 #define UPDATE_SERVICE_UPGRADE_ACTION_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class UpgradeAction {
 public:
     static constexpr const char *UPGRADE = "upgrade";
     static constexpr const char *RECOVERY = "recovery";
     static constexpr const char *ROLLBACK = "rollback";
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_UPGRADE_ACTION_H

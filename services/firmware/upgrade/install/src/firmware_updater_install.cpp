@@ -29,7 +29,7 @@
 #include "firmware_update_helper.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 bool UpdaterInstall::IsComponentLegal(const std::vector<FirmwareComponent> &componentList)
 {
     return FirmwareUpdateHelper::IsUpgradePackagesReady(componentList);
@@ -62,5 +62,5 @@ int32_t UpdaterInstall::DoUpdaterInstall(const std::vector<FirmwareComponent> &c
     }
     return OHOS_SUCCESS;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

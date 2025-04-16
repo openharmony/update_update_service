@@ -26,7 +26,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class TimeUtils {
 static constexpr int64_t BOOT_COMPLETE_SIMULATE_DURATION = 60L;           // 模拟开机广播：时间判断门限
 public:
@@ -83,6 +83,6 @@ public:
         return GetSystemBootDuration() <= BOOT_COMPLETE_SIMULATE_DURATION;
     }
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // TIME_UTILS_H

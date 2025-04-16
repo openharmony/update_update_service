@@ -22,7 +22,7 @@
 #include "description_format.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct DescriptionOptions : public Parcelable {
     DescriptionFormat format = DescriptionFormat::STANDARD;
     std::string language;
@@ -31,5 +31,5 @@ struct DescriptionOptions : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static DescriptionOptions *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_DESCRIPTION_OPTIONS_H

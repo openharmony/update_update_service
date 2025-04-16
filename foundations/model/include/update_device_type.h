@@ -16,7 +16,7 @@
 #ifndef UPDATE_SERVICE_DEVICE_TYPE_H
 #define UPDATE_SERVICE_DEVICE_TYPE_H
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 enum class DeviceType {
     UNKNOWN = 0,
     SMART_PHONE = 1,    // 手机
@@ -26,5 +26,5 @@ enum class DeviceType {
     KEYBOARD = 7,       // 键盘
     PEN  = 8            // 手写笔
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_DEVICE_TYPE_H

@@ -19,7 +19,7 @@
 #include "network_type.h"
 #include "parcel.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct ResumeDownloadOptions : public Parcelable {
     NetType allowNetwork = NetType::WIFI;
 
@@ -27,5 +27,5 @@ struct ResumeDownloadOptions : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static ResumeDownloadOptions *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_RESUME_DOWNLOAD_OPTIONS_H

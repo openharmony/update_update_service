@@ -27,7 +27,7 @@
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 struct NetChangeCallback {
     std::set<NetType> netTypes;
     NetObserverCallback function;
@@ -59,6 +59,6 @@ private:
     NetType netType_ = NetType::NO_NET;
     std::map<NetChangeCallbackType, NetChangeCallback> netChangeCallbackMap_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // DUPDATE_NET_MANAGER_H

@@ -24,7 +24,7 @@
 #include <vector>
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 constexpr int32_t FOLDER_PERMISSION = 0750;
 
 struct DirInfo {
@@ -54,6 +54,6 @@ private:
     static std::map<std::string, int32_t> baseDirMap_;
     static void RemoveAll(const std::filesystem::path &path);
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FILE_UTILS_H

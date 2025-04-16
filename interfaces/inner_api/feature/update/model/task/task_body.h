@@ -25,7 +25,7 @@
 #include "version_digest_info.h"
 #include "version_component.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 struct TaskBody : public Parcelable {
     VersionDigestInfo versionDigestInfo;
     UpgradeStatus status = UpgradeStatus::INIT;
@@ -41,5 +41,5 @@ struct TaskBody : public Parcelable {
     bool Marshalling(Parcel &parcel) const override;
     static TaskBody *Unmarshalling(Parcel &parcel);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_TASK_BODY_H

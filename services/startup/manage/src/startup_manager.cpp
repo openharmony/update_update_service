@@ -28,7 +28,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 StartupManager::StartupManager()
 {
     ENGINE_LOGD("StartupManager constructor");
@@ -145,5 +145,5 @@ StartupReason StartupManager::GetStartupReason() const
     preferenceUtil->Remove(Constant::PROCESS_RESTART_REASON);
     return reasonFromSp;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

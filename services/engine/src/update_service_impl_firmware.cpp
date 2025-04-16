@@ -31,7 +31,7 @@
 #include "update_service_util.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 const std::string LANGUAGE_CHINESE = "<language name=\"zh-cn\" code=\"2052\">";
 const std::string LANGUAGE_ENGLISH = "<language name=\"en-us\" code=\"1033\">";
 const std::string LANGUAGE_END = "</language>";
@@ -340,5 +340,5 @@ void UpdateServiceImplFirmware::GetChangelogContent(std::string &dataXml, const 
     }
     StringUtils::StringRemove(dataXml, languageStart, LANGUAGE_END);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

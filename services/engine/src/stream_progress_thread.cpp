@@ -30,7 +30,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 
 int32_t StreamProgressThread::StartDownload(const std::string &url, const int64_t size, const int64_t recordPoint)
 {
@@ -230,5 +230,5 @@ bool StreamProgressThread::DealExitOrCancel()
     }
     return false;
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

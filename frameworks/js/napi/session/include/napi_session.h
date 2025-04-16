@@ -31,7 +31,7 @@
 #include "napi_common_utils.h"
 #include "napi_structs_base.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 class NapiSession : public BaseSession {
 public:
     NapiSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber);
@@ -171,5 +171,5 @@ protected:
 private:
     void GetSessionFuncParameter(std::string &funcName, std::string &permissionName);
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // NAPI_SESSION_H

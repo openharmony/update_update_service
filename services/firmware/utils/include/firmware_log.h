@@ -19,7 +19,7 @@
 #include "update_log.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 static constexpr OHOS::HiviewDFX::HiLogLabel FIRMWARE_UPDATE_LABEL = {LOG_CORE, 0xD002E00, "UPDATE_FIRMWARE"};
 
 #define FIRMWARE_LOGD(fmt, ...) PRINT_LOGD(UPDATE_FIRMWARE_TAG, fmt, ##__VA_ARGS__)
@@ -32,6 +32,6 @@ static constexpr OHOS::HiviewDFX::HiLogLabel FIRMWARE_UPDATE_LABEL = {LOG_CORE, 
     fmt, args)
 #define FIRMWARE_LONG_LOGE(fmt, args) PRINT_LONG_LOGE(UPDATE_FIRMWARE_TAG, UPDATE_LABEL[UPDATE_FIRMWARE_TAG], \
     fmt, args)
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_LOG_H

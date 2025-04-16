@@ -30,7 +30,7 @@
 #include "want.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class UpdateNotify : public IRemoteStub<IUpdateNotify> {
 public:
     DISALLOW_COPY_AND_MOVE(UpdateNotify);
@@ -70,6 +70,6 @@ public:
 private:
     sptr<UpdateNotify> instance_ = nullptr;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // UPDATE_NOTIFY_H

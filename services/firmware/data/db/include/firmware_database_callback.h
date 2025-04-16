@@ -25,7 +25,7 @@
 #endif
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 #ifdef RELATIONAL_STORE_NATIVE_RDB_ENABLE
 class FirmwareDatabaseCallback final : public NativeRdb::RdbOpenCallback {
 #else
@@ -41,6 +41,6 @@ public:
 private:
     std::vector<std::string> GenerateDbCreateSqlVector();
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_DATABASE_CALLBACK_H

@@ -19,7 +19,7 @@
 #include "firmware_constant.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 SysInstallerCallback::SysInstallerCallback(SysInstallerExecutorCallback &installCallback)
 {
     sysInstallCallback_ = installCallback;
@@ -83,5 +83,5 @@ void SysInstallerCallback::OnUpgradeDealLen(SysInstaller::UpdateStatus updateSta
     }
     sysInstallCallback_.onSysInstallerCallback(installProgress);
 }
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS

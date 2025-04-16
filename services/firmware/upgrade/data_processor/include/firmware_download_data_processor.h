@@ -21,7 +21,7 @@
 #include "progress.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareDownloadDataProcessor {
 public:
     FirmwareDownloadDataProcessor();
@@ -40,6 +40,6 @@ private:
     FirmwareTask tasks_;
     Progress downloadProgress_;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_DOWNLOAD_DATA_RPOCESSOR_H

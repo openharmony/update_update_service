@@ -21,13 +21,13 @@
 #include "base_callback_utils.h"
 
 namespace OHOS {
-namespace UpdateEngine {
+namespace UpdateService {
 class FirmwareCallbackUtils final : public BaseCallbackUtils, public DelayedSingleton<FirmwareCallbackUtils> {
     DECLARE_DELAYED_SINGLETON(FirmwareCallbackUtils);
 
 protected:
     BusinessSubType GetBusinessSubType() final;
 };
-} // namespace UpdateEngine
+} // namespace UpdateService
 } // namespace OHOS
 #endif // FIRMWARE_CALLBACK_UTILS_H

@@ -22,7 +22,7 @@
 #include "business_type.h"
 #include "update_device_type.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 const std::string UPDATE_APP_PACKAGE_NAME = "com.ohos.updateapp";
 const std::string UPDATE_APP_SERVICE_EXT_ABILITY_NAME = "ServiceExtAbility";
 constexpr int32_t UPDATE_APP_TIMEOUT = 15;
@@ -46,5 +46,5 @@ struct SubscribeInfo : public BaseJsonStruct {
 
     JsonBuilder GetJsonBuilder() final;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_SUBSCRIBE_INFO_H

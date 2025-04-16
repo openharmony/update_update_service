@@ -23,7 +23,7 @@
 
 using namespace std;
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService {
 void UpdateAsyncession::CompleteWork(napi_env env, napi_status status)
 {
     ENGINE_LOGI("UpdateAsyncession::CompleteWork callbackNumber_: %{public}d, %{public}d",
@@ -183,4 +183,4 @@ std::string SessionFuncHelper::GetFuncName(uint32_t sessionType)
     }
     return funcIter->second;
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
