@@ -17,8 +17,8 @@ updateengine_inner_library_name = "updateservicekits"
 updateengine_library_name = "updateservice"
 updateengine_part_name = "update_service"
 updateengine_root_path = "//base/update/updateservice"
-updateengine_test_name = "update_service_test"
-updateengine_unittest_name = "update_service_unittest"
+updateengine_test_name = "update_service"
+updateengine_unittest_name = "update_service"
 updateengine_adapter_config =
     "$updateengine_root_path/adapter/default_config/feature_config"
 
