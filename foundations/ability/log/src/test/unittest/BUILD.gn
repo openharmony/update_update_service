@@ -15,7 +15,7 @@ import("//base/update/updateservice/foundations/ability/log/log.gni")
 import("//base/update/updateservice/updateengine.gni")
 import("//build/test.gni")
 
-module_output_path = "update_service/updateservice"
+module_output_path = "$updateengine_part_name/$updateengine_test_name"
 
 config("module_private_config") {
   visibility = [ ":*" ]
