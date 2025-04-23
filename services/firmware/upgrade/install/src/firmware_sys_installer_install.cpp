@@ -21,6 +21,7 @@
 
 #include "isys_installer.h"
 #include "sys_installer_kits_impl.h"
+#include "sys_installer_task_const.h"
 
 #include "config_parse.h"
 #include "dupdate_errno.h"
@@ -142,12 +143,14 @@ int32_t SysInstallerInstall::WaitInstallResult(const std::string &versionId)
     while (timeout <= configTime) {
         if (sysInstallProgress_.status == UpgradeStatus::INSTALL_FAIL) {
             FIRMWARE_LOGE("WaitInstallResult sysinstaller fail");
-            SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateResult(versionId, "install", "ab_update");
+            SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateResult(versionId,
+                SysInstaller::TaskTypeConst::TASK_TYPE_AB_UPDATE, SysInstaller::ResultTypeConst::RESULT_TYPE_INSTALL);
             return OHOS_FAILURE;
         }
         if (sysInstallProgress_.status == UpgradeStatus::INSTALL_SUCCESS &&
             sysInstallProgress_.percent == Firmware::ONE_HUNDRED) {
-            SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateResult(versionId, "install", "ab_update");
+            SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateResult(versionId,
+                SysInstaller::TaskTypeConst::TASK_TYPE_AB_UPDATE, SysInstaller::ResultTypeConst::RESULT_TYPE_INSTALL);
             return OHOS_SUCCESS;
         }
         timeout++;
