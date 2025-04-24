@@ -95,7 +95,7 @@ int32_t StreamInstallerInstall::DoSysInstall(const FirmwareComponent &component)
     FIRMWARE_LOGI("DoSysInstall, status=%{public}d", component.status);
     FirmwareComponent firmwareComponent = component;
 
-    int32_t ret = InitSysInstaller();
+    int32_t ret = InitSysInstaller(firmwareComponent.versionId);
     if (ret != OHOS_SUCCESS) {
         return ret;
     }
@@ -113,17 +113,17 @@ int32_t StreamInstallerInstall::DoSysInstall(const FirmwareComponent &component)
     return WaitInstallResult();
 }
 
-int32_t StreamInstallerInstall::InitSysInstaller()
+int32_t StreamInstallerInstall::InitSysInstaller(const std::string &versionId)
 {
     #ifndef UPDATER_UT
-    int32_t ret = SysInstaller::SysInstallerKitsImpl::GetInstance().SysInstallerInit(true);
+    int32_t ret = SysInstaller::SysInstallerKitsImpl::GetInstance().SysInstallerInit(versionId, true);
     if (ret != OHOS_SUCCESS) {
         FIRMWARE_LOGE("sys installer init failed");
         errMsg_.errorMessage = "sys installer init failed";
         errMsg_.errorCode = DUPDATE_ERR_IPC_ERROR;
         return OHOS_FAILURE;
     }
-    int32_t updateStatus = SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateStatus();
+    int32_t updateStatus = SysInstaller::SysInstallerKitsImpl::GetInstance().GetUpdateStatus(versionId);
     if (updateStatus != CAST_INT(SysInstaller::UpdateStatus::UPDATE_STATE_INIT)) {
         FIRMWARE_LOGE("StartUnpack status: %{public}d , system busy", updateStatus);
         errMsg_.errorMessage = "sys installer is busy";
@@ -167,7 +167,7 @@ int32_t StreamInstallerInstall::SetInstallerCallback(FirmwareComponent &componen
         return OHOS_FAILURE;
     }
 
-    int32_t ret = SysInstaller::SysInstallerKitsImpl::GetInstance().SetUpdateCallback(cb);
+    int32_t ret = SysInstaller::SysInstallerKitsImpl::GetInstance().SetUpdateCallback(component.versionId, cb);
     if (ret != OHOS_SUCCESS) {
         FIRMWARE_LOGE("set sys installer callback failed");
         errMsg_.errorMessage = "set sys installer callback failed";

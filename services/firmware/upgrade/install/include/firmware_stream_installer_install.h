@@ -39,7 +39,7 @@ private:
     int32_t DoSysInstall(const FirmwareComponent &component);
     bool InstallComponentWithRetry(const FirmwareComponent &component);
     int32_t WaitInstallResult();
-    int32_t InitSysInstaller();
+    int32_t InitSysInstaller(const std::string &versionId);
     int32_t SetInstallerCallback(FirmwareComponent &component);
     void NotifyCondition();
 
