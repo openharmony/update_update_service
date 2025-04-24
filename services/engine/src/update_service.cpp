@@ -553,25 +553,26 @@ int32_t UpdateService::CallbackExit(uint32_t code, int32_t result)
 
 int32_t UpdateService::CallbackParcel(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    int32_t ret;
+    // 未加载接口扩展能力，通过idl框架分发
     if (!ModuleManager::GetInstance().IsModuleLoaded()) {
         ENGINE_LOGI("IsModuleLoaded false");
         return INT_CALL_SUCCESS;
-    } else {
-        ENGINE_LOGI("IsModuleLoaded true, code: %{public}u", code);
-        if (!ModuleManager::GetInstance().IsMapFuncExist(code)) {
-            ENGINE_LOGE("UpdateService OnRemoteRequest code %{public}u not found", code);
-            ret = IPCObjectStub::OnRemoteRequest(code, data, reply, option);
-            ENGINE_LOGE("UpdateService OnRemoteRequest ret %{public}d", ret);
-            return INT_CALL_FAIL;
-        }
-        ret = ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
-        ENGINE_LOGE("CallbackParcel deal result code %{public}d", ret);
-        if (ret != INT_CALL_SUCCESS) {
-            return ret > CALL_RESULT_OFFSET ? (ret - CALL_RESULT_OFFSET) : ret;
-        }
-        return INT_CALL_FAIL;
     }
+
+    // 加载了接口扩展能力， 但是未拓展当前接口的调用，还是通过idl框架分发
+    ENGINE_LOGI("IsModuleLoaded true, code: %{public}u", code);
+    if (!ModuleManager::GetInstance().IsMapFuncExist(code)) {
+        ENGINE_LOGE("UpdateService OnRemoteRequest code %{public}u not found", code);
+        return INT_CALL_SUCCESS;
+    }
+
+    // 加载了接口扩展能力， 并且当前调用接口为拓展当前接口，则通过Hook框架分发
+    int32_t ret = ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
+    ENGINE_LOGE("CallbackParcel deal result code %{public}d", ret);
+    if (ret != INT_CALL_SUCCESS) {
+        return ret > CALL_RESULT_OFFSET ? (ret - CALL_RESULT_OFFSET) : ret;
+    }
+    return INT_CALL_FAIL;
 }
 
 bool UpdateService::IsCallerValid()
