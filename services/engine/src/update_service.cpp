@@ -576,7 +576,7 @@ int32_t UpdateService::CallbackParcel(uint32_t code, MessageParcel &data, Messag
     int32_t ret = ModuleManager::GetInstance().HandleFunc(code, data, reply, option);
     ENGINE_LOGE("CallbackParcel, code %{public}u extended, result %{public}d", code, ret);
     if (ret != INT_CALL_SUCCESS) {
-        return ret > CALL_RESULT_OFFSET ? (ret - CALL_RESULT_OFFSET) : ret;
+        return ret;
     }
     return INT_CALL_FAIL;
 }
