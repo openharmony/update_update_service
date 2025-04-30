@@ -522,7 +522,7 @@ int32_t UpdateService::CallbackEnter(uint32_t code)
     if (!ModuleManager::GetInstance().IsModuleLoaded()) {
         ENGINE_LOGI("CallbackEnter, extend module not loaded, code %{public}u", code);
         return PermissionCheck(code);
-    } 
+    }
 
     // 加载了接口扩展能力， 但是当前调用接口不是拓展接口，还是执行UpdateService鉴权动作
     if (!ModuleManager::GetInstance().IsMapFuncExist(code)) {
