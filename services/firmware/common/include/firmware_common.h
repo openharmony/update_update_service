@@ -18,9 +18,8 @@
 
 #include <string>
 
-#include "nlohmann/json.hpp"
-
 #include "anonymous_utils.h"
+#include "cJSON.h"
 #include "constant.h"
 #include "firmware_component.h"
 #include "firmware_log.h"
@@ -77,12 +76,16 @@ public:
     std::string displayVersionNumber;
     std::string versionPackageType;
 
-    nlohmann::ordered_json ToCheckJson()
+    friend void ToCheckJson(cJSON *jsonObject, const VersionPackageRule &versionPackageRule)
     {
-        nlohmann::ordered_json json = nlohmann::ordered_json::object();
-        json["versionPackageType"] = versionPackageType;
-        json["versionNumber"] = versionNumber;
-        return json;
+        if (jsonObject == nullptr)
+        {
+            return;
+        }
+
+        cJSON_AddStringToObject(jsonObject, "versionNumber", versionPackageRule.versionNumber.c_str());
+        cJSON_AddStringToObject(jsonObject, "displayVersionNumber", versionPackageRule.displayVersionNumber.c_str());
+        cJSON_AddStringToObject(jsonObject, "versionPackageType", versionPackageRule.versionPackageType.c_str());
     }
 };
 
@@ -102,13 +105,16 @@ struct UpdatePackage {
     int32_t packageIndex = 0;
     PackageType versionPackageType = PackageType::DYNAMIC;
 
-    nlohmann::ordered_json ToJson()
+    friend void ToJson(cJSON *jsonObject, const UpdatePackage &updatePackage)
     {
-        nlohmann::ordered_json json = nlohmann::ordered_json::object();
-        json["versionId"] = versionId;
-        json["packageIndex"] = packageIndex;
-        json["versionPackageType"] = CAST_INT(versionPackageType);
-        return json;
+        if (jsonObject == nullptr)
+        {
+            return;
+        }
+
+        cJSON_AddStringToObject(jsonObject, "versionId", updatePackage.versionId.c_str());
+        cJSON_AddNumberToObject(jsonObject, "packageIndex", updatePackage.packageIndex);
+        cJSON_AddNumberToObject(jsonObject, "versionPackageType", CAST_INT(updatePackage.versionPackageType));
     }
 };
 

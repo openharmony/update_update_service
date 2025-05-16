@@ -27,9 +27,8 @@ uint64_t ScheduleConfig::idleCheckInterval_ = Startup::IDLE_CHECK_INTERVAL;
 void ScheduleConfig::InitConfig()
 {
     ENGINE_LOGI("InitConfig");
-    nlohmann::json root =
-        nlohmann::json::parse(FileUtils::ReadDataFromFile(Constant::DUPDATE_ENGINE_CONFIG_PATH), nullptr, false);
-    if (root.is_discarded()) {
+    cJSON* root = cJSON_Parse(FileUtils::ReadDataFromFile(Constant::DUPDATE_ENGINE_CONFIG_PATH).c_str());
+    if (!root) {
         ENGINE_LOGI("InitConfig load fail");
         return;
     }
@@ -37,6 +36,7 @@ void ScheduleConfig::InitConfig()
     idleCheckInterval_ = ParseConfig(root, Startup::IDLE_CHECK_INTERVAL_CONFIG, Startup::IDLE_CHECK_INTERVAL);
     ENGINE_LOGI("InitConfig pullupInterval: %{public}s, idleCheckInterval: %{public}s",
         std::to_string(pullupInterval_).c_str(), std::to_string(idleCheckInterval_).c_str());
+    cJSON_Delete(root);
 }
 
 uint64_t ScheduleConfig::GetPullupInterval()
@@ -49,7 +49,7 @@ uint64_t ScheduleConfig::GetIdleCheckInterval()
     return idleCheckInterval_;
 }
 
-uint64_t ScheduleConfig::ParseConfig(nlohmann::json &root, const std::string &key, uint64_t defaultValue)
+uint64_t ScheduleConfig::ParseConfig(cJSON *root, const std::string &key, uint64_t defaultValue)
 {
     uint64_t value = 0;
     int32_t ret = JsonUtils::GetValueAndSetTo(root, key, value);

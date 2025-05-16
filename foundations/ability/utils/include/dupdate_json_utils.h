@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2023 Huawei Device Co., Ltd.
+* Copyright (c) 2025 Huawei Device Co., Ltd.
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -19,9 +19,9 @@
 #include <algorithm>
 #include <functional>
 #include <string>
+#include <unistd.h>
 
-#include "nlohmann/json.hpp"
-
+#include "cJSON.h"
 #include "update_define.h"
 
 namespace OHOS::UpdateService {
@@ -36,162 +36,187 @@ enum class JsonParseError {
 // 当前获取json对象/数组的封装使用的parse方法参数：string输入、无解析回调、解析失败不报异常
 class JsonUtils {
 public:
-    template <typename T>
-    static int32_t GetValueAndSetTo(const nlohmann::json &jsonObject, const std::string &key, T &value)
+    template <typename T> static int32_t GetValueAndSetTo(cJSON *jsonObject, const std::string &key, T &value)
     {
-        if (jsonObject.find(key) == jsonObject.end()) {
+        if (!jsonObject || key.empty()) {
             return CAST_INT(JsonParseError::MISSING_PROP);
         }
-        if (!CheckType(jsonObject.at(key), value)) {
+
+        cJSON *item = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
+        if (!item) {
+            return CAST_INT(JsonParseError::MISSING_PROP);
+        }
+
+        if (!CheckType(item, value)) {
             return CAST_INT(JsonParseError::TYPE_ERROR);
         }
-        GetValue(jsonObject, key, value);
+        GetValue(item, value);
         return CAST_INT(JsonParseError::ERR_OK);
     }
 
-    static bool ParseAndGetJsonObject(const std::string &jsonStr, nlohmann::json &root)
+    static cJSON *ParseAndGetJsonObject(const std::string &jsonStr)
     {
-        root = nlohmann::json::parse(jsonStr, nullptr, false);
-        if (root.is_discarded() || !root.is_object()) {
-            return false;
+        cJSON *object = cJSON_Parse(jsonStr.c_str());
+        if (!object) {
+            return nullptr;
         }
-        return true;
+
+        if (!cJSON_IsObject(object))
+        {
+            cJSON_Delete(object);
+            return nullptr;
+        }
+
+        return object;
     }
 
-    static bool ParseAndGetJsonArray(const std::string &jsonStr, nlohmann::json &root)
+    static cJSON *ParseAndGetJsonArray(const std::string &jsonStr)
     {
-        root = nlohmann::json::parse(jsonStr, nullptr, false);
-        if (root.is_discarded() || !root.is_array()) {
-            return false;
+        cJSON *root = cJSON_Parse(jsonStr.c_str());
+        if (!root) {
+            return nullptr;
         }
-        return true;
+
+        if (!cJSON_IsArray(root))
+        {
+            cJSON_Delete(root);
+            return nullptr;
+        }
+
+        return root;
     }
 
-    static int32_t GetValueAndSetToArray(const nlohmann::json &jsonObject, const std::string &key,
-        nlohmann::json &value)
+    static int32_t GetValueAndSetToArray(cJSON *jsonObject, const std::string &key, cJSON *&value)
     {
-        if (jsonObject.find(key) == jsonObject.end()) {
+        cJSON *item = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
+        if (!item) {
             return CAST_INT(JsonParseError::MISSING_PROP);
         }
-        if (!jsonObject.at(key).is_array()) {
+
+        if (!cJSON_IsArray(item)) {
             return CAST_INT(JsonParseError::TYPE_ERROR);
         }
-        jsonObject.at(key).get_to(value);
+
+        value = cJSON_Duplicate(item, 1);
         return CAST_INT(JsonParseError::ERR_OK);
     }
 
-    static void SetJsonToVector(nlohmann::json &jsonObject, std::vector<std::string> &vector)
+    static void SetJsonToVector(cJSON *jsonObject, std::vector<std::string> &vector)
     {
-        if (jsonObject.is_array()) {
-            for (nlohmann::json::iterator it = jsonObject.begin(); it != jsonObject.end(); ++it) {
-                if (!it.value().is_string()) {
-                    continue;
+        if (cJSON_IsArray(jsonObject))
+        {
+            cJSON *child = jsonObject->child;
+            while (child != nullptr)
+            {
+                if (cJSON_IsString(child) && child->valuestring != nullptr)
+                {
+                    vector.emplace_back(std::string(child->valuestring));
                 }
-                vector.push_back(static_cast<std::string>(it.value()));
+                child = child->next;
             }
         }
     }
 
-    static void SetJsonToVector(const nlohmann::json &jsonObject, const std::string &key,
-        std::vector<std::string> &vector)
+    static bool IsArray(cJSON *jsonObject, const std::string &key)
     {
-        if (!IsArray(jsonObject, key)) {
-            return;
-        }
-        nlohmann::json jsonArray = jsonObject.at(key);
-        SetJsonToVector(jsonArray, vector);
+        cJSON *item = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
+        return item && cJSON_IsArray(item);
     }
 
-    static bool IsArray(const nlohmann::json &jsonObject, const std::string &key)
+    static void SetJsonToVector(cJSON *jsonObject, const std::string &key, std::vector<std::string> &vector)
     {
-        if (jsonObject.find(key) == jsonObject.end()) {
-            return false;
+        if (IsArray(jsonObject, key)) {
+            cJSON *jsonArray = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
+            SetJsonToVector(jsonArray, vector);
         }
-        return jsonObject.at(key).is_array();
-    }
-
-    template <typename T> static std::string StructToJsonStr(const T &value)
-    {
-        nlohmann::json jsonObj(value);
-        return jsonObj.dump();
-    }
-
-    template <typename T> static int32_t JsonStrToStruct(const std::string &jsonStr, T &value)
-    {
-        if (jsonStr.empty()) {
-            return CAST_INT(JsonParseError::COMMOM_ERROR);
-        }
-        nlohmann::json jsonObj = nlohmann::json::parse(jsonStr, nullptr, false);
-        if (!jsonObj.is_discarded() && CheckType(jsonObj, value)) {
-            value = jsonObj.get<T>();
-            return CAST_INT(JsonParseError::ERR_OK);
-        }
-        return CAST_INT(JsonParseError::TYPE_ERROR);
     }
 
 private:
-    static bool CheckType(const nlohmann::json &jsonObject, std::string &value)
+    static bool CheckType(cJSON *jsonObject, std::string &value)
     {
-        return jsonObject.is_string();
+        return jsonObject && cJSON_IsString(jsonObject);
     }
 
-    static bool CheckType(const nlohmann::json &jsonObject, int32_t &value)
+    static bool CheckType(cJSON *jsonObject, int32_t &value)
     {
-        return jsonObject.is_number();
+        return jsonObject && cJSON_IsNumber(jsonObject);
     }
 
-    static bool CheckType(const nlohmann::json &jsonObject, uint32_t &value)
+    static bool CheckType(cJSON *jsonObject, int64_t &value)
     {
-        return jsonObject.is_number();
+        return jsonObject && cJSON_IsNumber(jsonObject);
     }
 
-    static bool CheckType(const nlohmann::json &jsonObject, uint64_t &value)
+    static bool CheckType(cJSON *jsonObject, uint32_t &value)
     {
-        return jsonObject.is_number();
+        return jsonObject && cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
     }
 
-    static bool CheckType(const nlohmann::json &jsonObject, int64_t &value)
+    static bool CheckType(cJSON *jsonObject, uint64_t &value)
     {
-        return jsonObject.is_number();
+        return jsonObject && cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
     }
 
-    static bool CheckType(const nlohmann::json &jsonObject, double &value)
+    static bool CheckType(cJSON *jsonObject, bool value)
     {
-        return jsonObject.is_number();
+        return jsonObject && (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
     }
 
-    static bool CheckType(const nlohmann::json &jsonObject, bool &value)
+    template <typename T>
+    static bool CheckType(cJSON *jsonObject, T &value)
     {
-        return jsonObject.is_boolean();
+        return cJSON_IsObject(jsonObject);
     }
 
-    template <typename T> static bool CheckType(const nlohmann::json &jsonObject, T &value)
+    template <typename T>
+    static bool CheckType(cJSON *jsonObject, std::vector<T> &value)
     {
-        return jsonObject.is_object();
+        return cJSON_IsArray(jsonObject);
     }
 
-    template <typename T> static bool CheckType(const nlohmann::json &jsonObject, std::vector<T> &value)
+    static void GetValue(const cJSON *jsonArray, std::vector<std::string> &value)
     {
-        return jsonObject.is_array();
-    }
-
-    template <typename T> static void GetValue(const nlohmann::json &jsonObject, const std::string &key, T &value)
-    {
-        jsonObject.at(key).get_to(value);
-    }
-
-    static void GetValue(const nlohmann::json &jsonObject, const std::string &key, std::vector<std::string> &value)
-    {
-        if (!IsArray(jsonObject, key)) {
+        if (!jsonArray || !cJSON_IsArray(jsonArray)) {
             return;
         }
-        nlohmann::json jsonArray = jsonObject.at(key);
-        for (nlohmann::json::iterator it = jsonArray.begin(); it != jsonArray.end(); ++it) {
-            if (!it.value().is_string()) {
-                continue;
+
+        const cJSON *element = nullptr;
+        cJSON_ArrayForEach(element, jsonArray) {
+            if (cJSON_IsString(element) && element->valuestring != nullptr) {
+                value.push_back(element->valuestring);
             }
-            value.push_back(static_cast<std::string>(it.value()));
         }
+    }
+
+    template <typename T>
+    static void GetValue(cJSON *item, T &value)
+    {
+        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, int32_t>) {
+            if (cJSON_IsNumber(item)) {
+                value = item->valueint;
+            }
+        } else if constexpr (std::is_same_v<T, double> || std::is_same_v<T, int64_t>) {
+            if (cJSON_IsNumber(item)) {
+                value = item->valuedouble;
+            }
+        } else if constexpr (std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
+            if (cJSON_IsNumber(item)) {
+                value = item->valuedouble;
+            }
+        } else if constexpr (std::is_same_v<T, bool>) {
+            if (cJSON_IsTrue(item)) {
+                value = true;
+            } else {
+                value = false;
+            }
+        } else if constexpr (std::is_same_v<T, std::string>) {
+            if (cJSON_IsString(item)) {
+                value = item->valuestring;
+            }
+        } else {
+            return;
+        }
+        return;
     }
 };
 } // namespace OHOS::UpdateService

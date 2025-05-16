@@ -20,9 +20,8 @@
 #include <string_ex.h>
 #include <vector>
 
-#include "nlohmann/json.hpp"
-
 #include "call_result.h"
+#include "cJSON.h"
 #include "dupdate_json_utils.h"
 #include "error_message.h"
 #include "json_builder.h"
@@ -50,22 +49,64 @@ struct BusinessError : public Parcelable {
         return *this;
     }
 
-    friend void to_json(nlohmann::json &jsonObj, const BusinessError &businessError)
+    friend void to_json(cJSON *jsonObject, const BusinessError &businessError)
     {
-        jsonObj["message"] = businessError.message;
-        jsonObj["errorNum"] = businessError.errorNum;
-        jsonObj["data"] = businessError.data;
+        if (jsonObject == nullptr)
+        {
+            return;
+        }
+        cJSON_AddStringToObject(jsonObject, "message", businessError.message.c_str());
+        cJSON_AddNumberToObject(jsonObject, "errorNum", CAST_INT(businessError.errorNum));
+        cJSON *dataArray = cJSON_CreateArray();
+        if (dataArray == nullptr)
+        {
+            return;
+        }
+
+        for (const auto &errorMessage : businessError.data)
+        {
+            cJSON *errorMessageObject = cJSON_CreateObject();
+            if (errorMessageObject == nullptr)
+            {
+                cJSON_Delete(dataArray);
+                return;
+            }
+            to_json(errorMessageObject, errorMessage);
+            cJSON_AddItemToArray(dataArray, errorMessageObject);
+        }
+        cJSON_AddItemToObject(jsonObject, "data", dataArray);
     }
 
-    friend void from_json(const nlohmann::json &jsonObj, BusinessError &businessError)
+    friend void from_json(cJSON *jsonObject, BusinessError &businessError)
     {
-        JsonUtils::GetValueAndSetTo(jsonObj, "message", businessError.message);
-        JsonUtils::GetValueAndSetTo(jsonObj, "data", businessError.data);
+        if (jsonObject == nullptr)
+        {
+            return;
+        }
+
+        JsonUtils::GetValueAndSetTo(jsonObject, "message", businessError.message);
         int32_t errorNumber = static_cast<int32_t>(CallResult::SUCCESS);
-        JsonUtils::GetValueAndSetTo(jsonObj, "errorNum", errorNumber);
+        JsonUtils::GetValueAndSetTo(jsonObject, "errorNum", errorNumber);
         businessError.errorNum = static_cast<CallResult>(errorNumber);
+        cJSON *dataArray = cJSON_GetObjectItemCaseSensitive(jsonObject, "data");
+        if (dataArray == nullptr || !cJSON_IsArray(dataArray))
+        {
+            return;
+        }
+        size_t arraySize = cJSON_GetArraySize(dataArray);
+        businessError.data.reserve(arraySize);
+        for (size_t i = 0; i < arraySize; i++)
+        {
+            cJSON *errorMessageObject = cJSON_GetArrayItem(dataArray, i);
+            if (errorMessageObject == nullptr || !cJSON_IsObject(errorMessageObject))
+            {
+                return;
+            }
+            ErrorMessage errorMessage;
+            from_json(errorMessageObject, errorMessage);
+            businessError.data.emplace_back(errorMessage);
+        }
     }
-
     bool ReadFromParcel(Parcel &parcel);
     bool Marshalling(Parcel &parcel) const override;
     static BusinessError *Unmarshalling(Parcel &parcel);

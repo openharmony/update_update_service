@@ -28,7 +28,7 @@ public:
     static uint64_t GetIdleCheckInterval();
 
 private:
-    static uint64_t ParseConfig(nlohmann::json &root, const std::string &key, uint64_t defaultValue);
+    static uint64_t ParseConfig(cJSON *root, const std::string &key, uint64_t defaultValue);
 
 private:
     static uint64_t pullupInterval_;

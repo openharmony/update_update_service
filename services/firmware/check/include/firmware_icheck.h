@@ -22,7 +22,6 @@
 #include <vector>
 
 #include "cJSON.h"
-#include "nlohmann/json.hpp"
 #include "openssl/err.h"
 #include "openssl/ssl.h"
 #include "parameter.h"
@@ -107,10 +106,11 @@ public:
         if (response.status != static_cast<int64_t>(HttpConstant::SUCCESS) || response.content.empty()) {
             checkStatus = CheckStatus::CHECK_FAIL;
         } else {
-            nlohmann::json root = nlohmann::json::parse(response.content, nullptr, false);
-            if (!root.is_discarded()) {
-                FIRMWARE_LONG_LOGI("FirmwareCheck response: %{public}s", root.dump().c_str());
+             cJSON *root = cJSON_Parse(response.content.c_str());
+            if (!root) {
+                FIRMWARE_LONG_LOGI("FirmwareCheck response: %{public}s", response.content.c_str());
             }
+            cJSON_Delete(root);
             FirmwareCheckAnalyzeUtils().DoAnalyze(response.content, checkResultList_, duration_, checkAndAuthInfo_);
             checkStatus = CheckStatus::CHECK_SUCCESS;
         }
