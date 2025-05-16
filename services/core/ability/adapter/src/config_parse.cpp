@@ -63,8 +63,8 @@ void ConfigParse::LoadConfigInfo()
     std::string rawJson(streambuffer.str());
     readFile.close();
 
-    nlohmann::json root = nlohmann::json::parse(rawJson, nullptr, false);
-    if (root.is_discarded()) {
+    cJSON *root = cJSON_Parse(rawJson.c_str());
+    if (!root) {
         ENGINE_LOGE("json Create error!");
         return;
     }
@@ -72,6 +72,7 @@ void ConfigParse::LoadConfigInfo()
     JsonUtils::GetValueAndSetTo(root, "abInstallTimeout", configInfo_.abInstallTimeout);
     JsonUtils::GetValueAndSetTo(root, "streamInstallTimeout", configInfo_.streamInstallTimeout);
     JsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
+    cJSON_Delete(root);
 }
 } // namespace UpdateService
 } // namespace OHOS
