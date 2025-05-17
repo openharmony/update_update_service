@@ -29,21 +29,6 @@ namespace OHOS::UpdateService {
 struct ErrorMessage : public Parcelable {
     int32_t errorCode = 0;
     std::string errorMessage;
-    friend void to_json(cJSON *jsonObject, const ErrorMessage &message)
-    {
-        if (jsonObject == nullptr)
-        {
-            return;
-        }
-        cJSON_AddNumberToObject(jsonObject, "errorCode", message.errorCode);
-        cJSON_AddStringToObject(jsonObject, "errorCode", message.errorMessage.c_str());
-    }
-
-    friend void from_json(cJSON *jsonObject, ErrorMessage &message)
-    {
-        JsonUtils::GetValueAndSetTo(jsonObject, "errorCode", message.errorCode);
-        JsonUtils::GetValueAndSetTo(jsonObject, "errorMessage", message.errorMessage);
-    }
 
     JsonBuilder GetJsonBuilder()
     {
