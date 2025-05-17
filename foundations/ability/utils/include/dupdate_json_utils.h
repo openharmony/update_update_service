@@ -70,67 +70,6 @@ public:
         return object;
     }
 
-    static cJSON *ParseAndGetJsonArray(const std::string &jsonStr)
-    {
-        cJSON *root = cJSON_Parse(jsonStr.c_str());
-        if (!root) {
-            return nullptr;
-        }
-
-        if (!cJSON_IsArray(root))
-        {
-            cJSON_Delete(root);
-            return nullptr;
-        }
-
-        return root;
-    }
-
-    static int32_t GetValueAndSetToArray(cJSON *jsonObject, const std::string &key, cJSON *&value)
-    {
-        cJSON *item = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
-        if (!item) {
-            return CAST_INT(JsonParseError::MISSING_PROP);
-        }
-
-        if (!cJSON_IsArray(item)) {
-            return CAST_INT(JsonParseError::TYPE_ERROR);
-        }
-
-        value = cJSON_Duplicate(item, 1);
-        return CAST_INT(JsonParseError::ERR_OK);
-    }
-
-    static void SetJsonToVector(cJSON *jsonObject, std::vector<std::string> &vector)
-    {
-        if (cJSON_IsArray(jsonObject))
-        {
-            cJSON *child = jsonObject->child;
-            while (child != nullptr)
-            {
-                if (cJSON_IsString(child) && child->valuestring != nullptr)
-                {
-                    vector.emplace_back(std::string(child->valuestring));
-                }
-                child = child->next;
-            }
-        }
-    }
-
-    static bool IsArray(cJSON *jsonObject, const std::string &key)
-    {
-        cJSON *item = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
-        return item && cJSON_IsArray(item);
-    }
-
-    static void SetJsonToVector(cJSON *jsonObject, const std::string &key, std::vector<std::string> &vector)
-    {
-        if (IsArray(jsonObject, key)) {
-            cJSON *jsonArray = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
-            SetJsonToVector(jsonArray, vector);
-        }
-    }
-
 private:
     static bool CheckType(cJSON *jsonObject, std::string &value)
     {
