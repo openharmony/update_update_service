@@ -32,7 +32,8 @@ public:
 private:
     static bool GetFileSha256Str(const std::string &fileName, char *sha256Result, uint32_t len);
     static bool GetDigestFromFile(const char *fileName, unsigned char digest[]);
-    static bool Sha256Calculate(const unsigned char *input, int len, char *componentId, int componentIdLen);
+    static bool Sha256Calculate(const unsigned char *input, size_t len, char *componentId,
+        unsigned int componentIdLen);
     static bool TransDigestToSha256Result(char *sha256Result, uint32_t componentIdLen, const unsigned char *digest);
 };
 } // namespace UpdateService

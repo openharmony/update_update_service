@@ -16,12 +16,12 @@
 #include "sha256_utils.h"
 
 #include <cstdlib>
+#include <openssl/sha.h>
 #include <sys/stat.h>
 #include <sys/statfs.h>
 #include <unistd.h>
 
 #include "file_utils.h"
-#include "mbedtls/sha256.h"
 
 namespace OHOS {
 namespace UpdateService {
@@ -61,37 +61,33 @@ bool Sha256Utils::CheckFileSha256String(const std::string &fileName, const std::
 
 bool Sha256Utils::GetDigestFromFile(const char *fileName, unsigned char digest[])
 {
-    char *canonicalPath = realpath(fileName, NULL);
-    if (canonicalPath == NULL) {
-        ENGINE_LOGI("%s is not exist or invalid", fileName);
+    char realPath[PATH_MAX] = {};
+    if (realpath(fileName, realPath) == NULL) {
+        ENGINE_LOGI("%{private}s is not exist or invalid", fileName);
         return false;
     }
-    FILE *fp = fopen(canonicalPath, "rb");
-    free(canonicalPath);
-    if (fp == NULL) {
-        return false;
-    }
-    (void)fseek(fp, 0, SEEK_END);
-    long fLen = ftell(fp);
-    (void)fseek(fp, 0, SEEK_SET);
 
-    unsigned char buffer[MAX_BUFFER_LENGTH]; /* buffer len 1024 */
-    mbedtls_sha256_context context;
-    mbedtls_sha256_init(&context);
-    mbedtls_sha256_starts(&context, 0);
-    while (!feof(fp) && fLen > 0) {
-        int readCount = (sizeof(buffer) > (uint32_t)fLen) ? fLen : sizeof(buffer);
-        int count = (int)fread(buffer, 1, readCount, fp);
-        if (count != readCount) {
-            ENGINE_LOGE("read file %{public}s error", fileName);
-            break;
-        }
-        fLen -= count;
-        mbedtls_sha256_update(&context, buffer, count);
+    std::ifstream file(realPath, std::ios::binary);
+    if (!file.is_open()) {
+        ENGINE_LOGI("%{private}s Unable to open file", realPath);
+        return false;
     }
-    mbedtls_sha256_finish(&context, digest);
-    mbedtls_sha256_free(&context);
-    (void)fclose(fp);
+
+    char *buffer = (char *)malloc(MAX_BUFFER_LENGTH); /* buffer len 1024 */
+    if (buffer == nullptr) {
+        ENGINE_LOGI("failed to allocate memory");
+        return false;
+    }
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+
+    while (!file.eof()) {
+        file.read(buffer, MAX_BUFFER_LENGTH);
+        SHA256_Update(&sha256, buffer, file.gcount());
+    }
+    SHA256_Final(digest, &sha256);
+    file.close();
+    free(buffer);
     return true;
 }
 
@@ -102,37 +98,34 @@ bool Sha256Utils::GetFileSha256Str(const std::string &fileName, char *sha256Resu
     return TransDigestToSha256Result(sha256Result, len, digest);
 }
 
-bool Sha256Utils::Sha256Calculate(const unsigned char *input, int len, char *componentId, int componentIdLen)
+bool Sha256Utils::Sha256Calculate(const unsigned char *input, size_t len, char *componentId,
+    unsigned int componentIdLen)
 {
     unsigned char digest[SHA256_LENGTH] = {0};
-    mbedtls_sha256_context ctx;
+    SHA256_CTX ctx;
     int ret = memset_s(&ctx, sizeof(ctx), 0, sizeof(ctx));
     if (ret != 0) {
-        ENGINE_LOGE("init mbedtls_sha256_context failed");
+        ENGINE_LOGE("init sha256_context failed");
         return false;
     }
-    mbedtls_sha256_init(&ctx);
-    int startRet = mbedtls_sha256_starts(&ctx, 0);
-    if (startRet != 0) {
-        mbedtls_sha256_free(&ctx);
-        ENGINE_LOGE("mbedtls_sha256_starts_ret failed");
-        return false;
-    }
-
-    int updateRet = mbedtls_sha256_update(&ctx, input, len);
-    if (updateRet != 0) {
-        mbedtls_sha256_free(&ctx);
-        ENGINE_LOGE("mbedtls_sha256_update_ret failed");
+    int startRet = SHA256_Init(&ctx);
+    if (startRet != 1) {
+        ENGINE_LOGE("SHA256_Init failed, startRet = %{public}d", startRet);
         return false;
     }
 
-    int finishRet = mbedtls_sha256_finish(&ctx, digest);
-    if (finishRet != 0) {
-        mbedtls_sha256_free(&ctx);
-        ENGINE_LOGE("mbedtls_sha256_finish_ret failed");
+    int updateRet = SHA256_Update(&ctx, input, len);
+    if (updateRet != 1) {
+        ENGINE_LOGE("SHA256_Update failed, updateRet = %{public}d", updateRet);
         return false;
     }
-    mbedtls_sha256_free(&ctx);
+
+    int finishRet = SHA256_Final(digest, &ctx);
+    if (finishRet != 1) {
+        ENGINE_LOGE("SHA256_Final failed, finishRet = %{public}d", finishRet);
+        return false;
+    }
+
     return TransDigestToSha256Result(componentId, componentIdLen, digest);
 }
 
