@@ -71,49 +71,58 @@ public:
     }
 
 private:
-    static bool CheckType(cJSON *jsonObject, std::string &value)
+    static bool IsNumberArray(cJSON *array)
     {
-        return jsonObject && cJSON_IsString(jsonObject);
+        for (cJSON *item = array->child; item != NULL; item = item->next)
+        {
+            if (!cJSON_IsNumber(item))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
-    static bool CheckType(cJSON *jsonObject, int32_t &value)
+    static bool IsStringArray(cJSON *array)
     {
-        return jsonObject && cJSON_IsNumber(jsonObject);
+        for (cJSON *item = array->child; item != NULL; item = item->next)
+        {
+            if (!cJSON_IsString(item))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
-    static bool CheckType(cJSON *jsonObject, int64_t &value)
+    template <typename T> static bool CheckType(cJSON *jsonObject, T &value)
     {
-        return jsonObject && cJSON_IsNumber(jsonObject);
+        if (!jsonObject) {
+            return false;
+        }
+
+        if constexpr (std::is_same_v<T, std::string>) {
+            return jsonObject && cJSON_IsString(jsonObject);
+        } else if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
+            return jsonObject && cJSON_IsNumber(jsonObject);
+        } else if constexpr (std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
+            return jsonObject && cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
+        } else if constexpr (std::is_same_v<T, bool>) {
+            return jsonObject && (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
+        } else if constexpr (std::is_same_v<T, double>) {
+            return jsonObject && cJSON_IsNumber(jsonObject);
+        } else if constexpr (std::is_same_v<T, std::vector<int>>) {
+            return jsonObject && IsNumberArray(jsonObject);
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+            return jsonObject && IsStringArray(jsonObject);
+        } else if constexpr (std::is_same_v<T, void>) {
+            return cJSON_IsNull(jsonObject);
+        } else {
+            return false;
+        }
     }
 
-    static bool CheckType(cJSON *jsonObject, uint32_t &value)
-    {
-        return jsonObject && cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
-    }
-
-    static bool CheckType(cJSON *jsonObject, uint64_t &value)
-    {
-        return jsonObject && cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
-    }
-
-    static bool CheckType(cJSON *jsonObject, bool value)
-    {
-        return jsonObject && (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
-    }
-
-    template <typename T>
-    static bool CheckType(cJSON *jsonObject, T &value)
-    {
-        return cJSON_IsObject(jsonObject);
-    }
-
-    template <typename T>
-    static bool CheckType(cJSON *jsonObject, std::vector<T> &value)
-    {
-        return cJSON_IsArray(jsonObject);
-    }
-
-    static void GetValue(const cJSON *jsonArray, std::vector<std::string> &value)
+    static void GetValueVecString(const cJSON *jsonArray, std::vector<std::string> &value)
     {
         if (!jsonArray || !cJSON_IsArray(jsonArray)) {
             return;
@@ -127,35 +136,50 @@ private:
         }
     }
 
+    static void GetValueVecInt(const cJSON *jsonArray, std::vector<int> &value)
+    {
+        if (!jsonArray || !cJSON_IsArray(jsonArray)) {
+            return;
+        }
+
+        const cJSON *element = nullptr;
+        cJSON_ArrayForEach(element, jsonArray) {
+            if (cJSON_IsNumber(element)) {
+                value.push_back(element->valueint);
+            }
+        }
+    }
+
     template <typename T>
     static void GetValue(cJSON *item, T &value)
     {
-        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, int32_t>) {
+        if (!item) {
+            return;
+        }
+
+        if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>)
+        {
             if (cJSON_IsNumber(item)) {
-                value = item->valueint;
+               (sizeof(T) <= sizeof(int)) ? value = static_cast<T>(item->valueint) :
+                    value = static_cast<T>(item->valuedouble);
             }
-        } else if constexpr (std::is_same_v<T, double> || std::is_same_v<T, int64_t>) {
+        } else if constexpr (std::is_floating_point_v<T>) {
             if (cJSON_IsNumber(item)) {
-                value = item->valuedouble;
-            }
-        } else if constexpr (std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
-            if (cJSON_IsNumber(item)) {
-                value = item->valuedouble;
+                value = static_cast<T>(item->valuedouble);
             }
         } else if constexpr (std::is_same_v<T, bool>) {
-            if (cJSON_IsTrue(item)) {
-                value = true;
-            } else {
-                value = false;
-            }
+            value = cJSON_IsTrue(item) ? true : false;
         } else if constexpr (std::is_same_v<T, std::string>) {
             if (cJSON_IsString(item)) {
                 value = item->valuestring;
             }
+        } else if constexpr (std::is_same_v<T, std::vector<int>>) {
+             GetValueVecInt(item, value);
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+             GetValueVecString(item, value);
         } else {
             return;
         }
-        return;
     }
 };
 } // namespace OHOS::UpdateService
