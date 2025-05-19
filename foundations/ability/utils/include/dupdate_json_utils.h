@@ -115,8 +115,6 @@ private:
             return jsonObject && IsNumberArray(jsonObject);
         } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
             return jsonObject && IsStringArray(jsonObject);
-        } else if constexpr (std::is_same_v<T, void>) {
-            return cJSON_IsNull(jsonObject);
         } else {
             return false;
         }
