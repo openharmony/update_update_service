@@ -102,22 +102,27 @@ private:
         }
 
         if constexpr (std::is_same_v<T, std::string>) {
-            return jsonObject && cJSON_IsString(jsonObject);
-        } else if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
-            return jsonObject && cJSON_IsNumber(jsonObject);
+            return  cJSON_IsString(jsonObject);
+        } else if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t> ||
+            std::is_same_v<T, double>) {
+            return cJSON_IsNumber(jsonObject);
         } else if constexpr (std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
-            return jsonObject && cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
+            return cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
         } else if constexpr (std::is_same_v<T, bool>) {
-            return jsonObject && (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
-        } else if constexpr (std::is_same_v<T, double>) {
-            return jsonObject && cJSON_IsNumber(jsonObject);
-        } else if constexpr (std::is_same_v<T, std::vector<int>>) {
-            return jsonObject && IsNumberArray(jsonObject);
+            return (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
+        }  else if constexpr (std::is_same_v<T, std::vector<int>>) {
+            return IsNumberArray(jsonObject);
         } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
-            return jsonObject && IsStringArray(jsonObject);
+            return IsStringArray(jsonObject);
         } else {
             return false;
         }
+    }
+
+    template <typename T>
+    static bool CheckType(cJSON *jsonObject, std::vector<T> &value)
+    {
+        return cJSON_IsArray(jsonObject);
     }
 
     static void GetValueVecString(const cJSON *jsonArray, std::vector<std::string> &value)
