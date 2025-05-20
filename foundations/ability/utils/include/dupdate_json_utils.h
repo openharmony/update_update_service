@@ -47,7 +47,7 @@ public:
             return CAST_INT(JsonParseError::MISSING_PROP);
         }
 
-        if (!CheckType(item, value)) {
+        if (!CheckBaseType(item, value)) {
             return CAST_INT(JsonParseError::TYPE_ERROR);
         }
         GetValue(item, value);
@@ -71,31 +71,9 @@ public:
     }
 
 private:
-    static bool IsNumberArray(cJSON *array)
-    {
-        for (cJSON *item = array->child; item != NULL; item = item->next)
-        {
-            if (!cJSON_IsNumber(item))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    static bool IsStringArray(cJSON *array)
-    {
-        for (cJSON *item = array->child; item != NULL; item = item->next)
-        {
-            if (!cJSON_IsString(item))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    template <typename T> static bool CheckType(cJSON *jsonObject, T &value)
+    // 检查基本类型
+    template <typename T> static bool CheckBaseType(cJSON *jsonObject, T &value)
     {
         if (!jsonObject) {
             return false;
@@ -110,17 +88,13 @@ private:
             return cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
         } else if constexpr (std::is_same_v<T, bool>) {
             return (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
-        }  else if constexpr (std::is_same_v<T, std::vector<int>>) {
-            return IsNumberArray(jsonObject);
-        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
-            return IsStringArray(jsonObject);
-        } else {
+        }  else {
             return false;
         }
     }
 
     template <typename T>
-    static bool CheckType(cJSON *jsonObject, std::vector<T> &value)
+    static bool CheckArrayType(cJSON *jsonObject, std::vector<T> &value)
     {
         return cJSON_IsArray(jsonObject);
     }
