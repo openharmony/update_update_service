@@ -15,7 +15,6 @@
 
 #include <gtest/gtest.h>
 
-#include "cJSON.h"
 #include "dupdate_json_utils.h"
 
 using namespace testing::ext;

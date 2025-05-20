@@ -36,13 +36,9 @@ public:
 
         if (isPrint) {
             cJSON_AddStringToObject(jsonObject, "udid", AnonymousUtils::AnonymousString(deviceInfo.udid).c_str());
-        } eles {
-            cJSON_AddStringToObject(jsonObject, "udid", deviceInfo.udid.c_str());
-        }
-
-        if (isPrint) {
             cJSON_AddStringToObject(jsonObject, "deviceId", AnonymousUtils::AnonymousString(deviceInfo.udid).c_str());
-        } eles {
+        } else {
+            cJSON_AddStringToObject(jsonObject, "udid", deviceInfo.udid.c_str());
             cJSON_AddStringToObject(jsonObject, "deviceId", deviceInfo.deviceId.c_str());
         }
     }

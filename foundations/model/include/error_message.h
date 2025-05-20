@@ -19,7 +19,6 @@
 #include <cstdint>
 #include <string>
 
-#include "cJSON.h"
 #include "dupdate_json_utils.h"
 #include "json_builder.h"
 

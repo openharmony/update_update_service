@@ -21,8 +21,6 @@
 #include <vector>
 
 #include "call_result.h"
-#include "cJSON.h"
-#include "dupdate_json_utils.h"
 #include "error_message.h"
 #include "json_builder.h"
 #include "parcel.h"
