@@ -82,7 +82,7 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlC
     {
         for (int i = 0; i < cJSON_GetArraySize(itemCheckResults); i++)
         {
-            cJSON *item = cJSON_GetArrayItem(itemCheckResults, i);
+            auto item = cJSON_GetArrayItem(itemCheckResults, i);
             BlVersionCheckResult checkResult;
             ret += JsonUtils::GetValueAndSetTo(item, "descriptPackageId", checkResult.descriptPackageId);
             checkResult.blVersionType = 1;
