@@ -75,18 +75,6 @@ public:
     std::string versionNumber;
     std::string displayVersionNumber;
     std::string versionPackageType;
-
-    friend void ToCheckJson(cJSON *jsonObject, const VersionPackageRule &versionPackageRule)
-    {
-        if (jsonObject == nullptr)
-        {
-            return;
-        }
-
-        cJSON_AddStringToObject(jsonObject, "versionNumber", versionPackageRule.versionNumber.c_str());
-        cJSON_AddStringToObject(jsonObject, "displayVersionNumber", versionPackageRule.displayVersionNumber.c_str());
-        cJSON_AddStringToObject(jsonObject, "versionPackageType", versionPackageRule.versionPackageType.c_str());
-    }
 };
 
 enum VersionIndex {
@@ -104,18 +92,6 @@ struct UpdatePackage {
     std::string versionId;
     int32_t packageIndex = 0;
     PackageType versionPackageType = PackageType::DYNAMIC;
-
-    friend void ToJson(cJSON *jsonObject, const UpdatePackage &updatePackage)
-    {
-        if (jsonObject == nullptr)
-        {
-            return;
-        }
-
-        cJSON_AddStringToObject(jsonObject, "versionId", updatePackage.versionId.c_str());
-        cJSON_AddNumberToObject(jsonObject, "packageIndex", updatePackage.packageIndex);
-        cJSON_AddNumberToObject(jsonObject, "versionPackageType", CAST_INT(updatePackage.versionPackageType));
-    }
 };
 
 struct TargetBlComponent {
