@@ -13,8 +13,8 @@
 * limitations under the License.
 */
 
-#ifndef JSON_UTILS_H
-#define JSON_UTILS_H
+#ifndef UPDATESERVICE_JSON_UTILS_H
+#define UPDATESERVICE_JSON_UTILS_H
 
 #include <algorithm>
 #include <functional>
@@ -34,7 +34,7 @@ enum class JsonParseError {
 
 // 开发人员请使用该工具类封装的安全函数来获取json对象/数组，以及从json对象获取Value
 // 当前获取json对象/数组的封装使用的parse方法参数：string输入、无解析回调、解析失败不报异常
-class JsonUtils {
+class UpdateServiceJsonUtils {
 public:
     template <typename T> static int32_t GetValueAndSetTo(cJSON *jsonObject, const std::string &key, T &value)
     {
@@ -160,4 +160,4 @@ private:
     }
 };
 } // namespace OHOS::UpdateService
-#endif // JSON_UTILS_H
+#endif // UPDATESERVICE_JSON_UTILS_H

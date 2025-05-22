@@ -52,7 +52,7 @@ uint64_t ScheduleConfig::GetIdleCheckInterval()
 uint64_t ScheduleConfig::ParseConfig(cJSON *root, const std::string &key, uint64_t defaultValue)
 {
     uint64_t value = 0;
-    int32_t ret = JsonUtils::GetValueAndSetTo(root, key, value);
+    int32_t ret = UpdateServiceJsonUtils::GetValueAndSetTo(root, key, value);
     if ((ret == CAST_INT(JsonParseError::ERR_OK)) && (value > 0)) {
         return value;
     }

@@ -22,7 +22,7 @@ config("module_private_config") {
   include_dirs = []
 }
 
-ohos_unittest("JsonUtilsTest") {
+ohos_unittest("UpdateServiceJsonUtilsTest") {
   module_out_path = module_output_path
   configs = [ ":module_private_config" ]
   include_dirs = [
@@ -30,7 +30,7 @@ ohos_unittest("JsonUtilsTest") {
     "$updateengine_root_path/foundations/ability/log/include",
     "$updateengine_root_path/foundations/ability/utils/include",
   ]
-  sources = [ "$updateengine_root_path/test/unittest/json_utils_test/dupdate_json_utils_test.cpp" ]
+  sources = [ "$updateengine_root_path/test/unittest/json_utils_test/updateservice_json_utils_test.cpp" ]
   external_deps = [
     "cJSON:cjson",
     "googletest:gtest_main",

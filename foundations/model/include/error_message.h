@@ -19,7 +19,7 @@
 #include <cstdint>
 #include <string>
 
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "json_builder.h"
 
 #include "parcel.h"

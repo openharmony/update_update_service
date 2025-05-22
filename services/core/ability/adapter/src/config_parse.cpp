@@ -20,7 +20,7 @@
 #include <sstream>
 
 #include "constant.h"
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "firmware_constant.h"
 
 namespace OHOS {
@@ -69,9 +69,9 @@ void ConfigParse::LoadConfigInfo()
         return;
     }
 
-    JsonUtils::GetValueAndSetTo(root, "abInstallTimeout", configInfo_.abInstallTimeout);
-    JsonUtils::GetValueAndSetTo(root, "streamInstallTimeout", configInfo_.streamInstallTimeout);
-    JsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "abInstallTimeout", configInfo_.abInstallTimeout);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "streamInstallTimeout", configInfo_.streamInstallTimeout);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
     cJSON_Delete(root);
 }
 } // namespace UpdateService

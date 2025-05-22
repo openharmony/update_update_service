@@ -22,7 +22,7 @@
 #include <string>
 
 #include "constant.h"
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "file_utils.h"
 #include "firmware_combine_version_utils.h"
 #include "firmware_constant.h"
@@ -37,14 +37,14 @@ void FirmwareCheckAnalyzeUtils::DoAnalyze(const std::string &rawJson, std::vecto
 {
     BlCheckResponse response;
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
-    cJSON *root = JsonUtils::ParseAndGetJsonObject(rawJson);
+    cJSON *root = UpdateServiceJsonUtils::ParseAndGetJsonObject(rawJson);
     if (!root) {
         FIRMWARE_LOGE("fail to parse out a json object");
         return;
     }
 
     int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
-    JsonUtils::GetValueAndSetTo(root, "searchStatus", status);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
 
     checkAndAuthInfo.responseStatus = std::to_string(status);
     if (!IsLegalStatus(status)) {
@@ -77,34 +77,34 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlC
 
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
-    JsonUtils::GetValueAndSetTo(root, "searchStatus", status);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
     if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE))
     {
         for (int i = 0; i < cJSON_GetArraySize(itemCheckResults); i++)
         {
             auto item = cJSON_GetArrayItem(itemCheckResults, i);
             BlVersionCheckResult checkResult;
-            ret += JsonUtils::GetValueAndSetTo(item, "descriptPackageId", checkResult.descriptPackageId);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "descriptPackageId", checkResult.descriptPackageId);
             checkResult.blVersionType = 1;
             checkResult.status = std::to_string(status);
             UpdatePackage package;
             package.versionId = "1";
             int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
-            ret += JsonUtils::GetValueAndSetTo(item, "packageType", versionPackageType);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "packageType", versionPackageType);
             package.versionPackageType = static_cast<PackageType>(versionPackageType);
             package.packageIndex = 0;
             checkResult.updatePackages.push_back(package);
             TargetBlComponent component;
             component.versionPackageType = package.versionPackageType;
-            ret += JsonUtils::GetValueAndSetTo(item, "versionName", component.displayVersionNumber);
-            ret += JsonUtils::GetValueAndSetTo(item, "versionName", component.versionNumber);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionName", component.displayVersionNumber);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionName", component.versionNumber);
             checkResult.targetBlComponents.push_back(component);
-            JsonUtils::GetValueAndSetTo(item, "blVersionInfo", checkResult.blVersionInfo);
+            UpdateServiceJsonUtils::GetValueAndSetTo(item, "blVersionInfo", checkResult.blVersionInfo);
             response.blVersionCheckResults.push_back(checkResult);
             Version version;
             version.versionId = "1";
-            ret += JsonUtils::GetValueAndSetTo(item, "versionCode", version.versionNumber);
-            ret += JsonUtils::GetValueAndSetTo(item, "url", version.url);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionCode", version.versionNumber);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "url", version.url);
             response.versionList.push_back(version);
         }
     }
@@ -158,21 +158,21 @@ int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(cJSON *checkResults)
         int32_t componetSize = 0;
 
         // 获取组件相关属性
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "descriptPackageId", component.descriptPackageId);
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "url", component.url);
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "size", componetSize);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "descriptPackageId", component.descriptPackageId);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "url", component.url);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "size", componetSize);
         component.size = static_cast<int64_t>(componetSize);
         component.fileName = StringUtils::GetLastSplitString(component.url, "/");
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "verifyInfo", component.verifyInfo);
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "versionCode", component.versionNumber);
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "versionName", component.targetBlVersionNumber);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "verifyInfo", component.verifyInfo);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "versionCode", component.versionNumber);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "versionName", component.targetBlVersionNumber);
 
         int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "packageType", versionPackageType);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "packageType", versionPackageType);
         component.versionPackageType = static_cast<PackageType>(versionPackageType);
 
         int32_t otaType = CAST_INT(OtaType::REGULAR);
-        ret += JsonUtils::GetValueAndSetTo(itemResult, "otaType", otaType);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "otaType", otaType);
         component.otaType = static_cast<OtaType>(otaType);
 
         component.targetBlDisplayVersionNumber = component.targetBlVersionNumber;
@@ -202,8 +202,8 @@ int32_t FirmwareCheckAnalyzeUtils::ProcessDescriptInfo(cJSON *descriptInfo)
         std::string subString = "quota";
         std::string replString = "\"";
 
-        ret += JsonUtils::GetValueAndSetTo(itemInfo, "descriptionType", descriptInfoType);
-        ret += JsonUtils::GetValueAndSetTo(itemInfo, "content", descContent);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemInfo, "descriptionType", descriptInfoType);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemInfo, "content", descContent);
 
         StringUtils::ReplaceStringAll(descContent, subString, replString);
 
