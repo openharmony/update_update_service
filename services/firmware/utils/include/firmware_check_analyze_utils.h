@@ -21,7 +21,7 @@
 
 #include "singleton.h"
 
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "firmware_common.h"
 
 namespace OHOS {
@@ -35,10 +35,10 @@ public:
 
 private:
     bool IsLegalStatus(int32_t status);
-    int32_t AnalyzeComponents(nlohmann::json &root);
-    int32_t ProcessCheckResults(const nlohmann::json &checkResults);
-    int32_t ProcessDescriptInfo(const nlohmann::json &descriptInfo);
-    int32_t AnalyzeBlVersionCheckResults(nlohmann::json &root, BlCheckResponse &response);
+    int32_t AnalyzeComponents(cJSON *root);
+    int32_t ProcessCheckResults(cJSON *checkResults);
+    int32_t ProcessDescriptInfo(cJSON *descriptInfo);
+    int32_t AnalyzeBlVersionCheckResults(cJSON *root, BlCheckResponse &response);
 
 private:
     std::vector<FirmwareComponent> components_;

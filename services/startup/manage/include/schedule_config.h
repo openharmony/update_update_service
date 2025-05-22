@@ -16,7 +16,7 @@
 #ifndef SCHEDULE_CONFIG_H
 #define SCHEDULE_CONFIG_H
 
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "startup_constant.h"
 
 namespace OHOS {
@@ -28,7 +28,7 @@ public:
     static uint64_t GetIdleCheckInterval();
 
 private:
-    static uint64_t ParseConfig(nlohmann::json &root, const std::string &key, uint64_t defaultValue);
+    static uint64_t ParseConfig(cJSON *root, const std::string &key, uint64_t defaultValue);
 
 private:
     static uint64_t pullupInterval_;

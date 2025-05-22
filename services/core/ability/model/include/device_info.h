@@ -18,8 +18,6 @@
 
 #include <string>
 
-#include "nlohmann/json.hpp"
-
 #include "anonymous_utils.h"
 
 namespace OHOS {
@@ -29,12 +27,20 @@ public:
     std::string udid;
     std::string deviceId;
 
-    nlohmann::ordered_json ToJson(bool isPrint)
+    friend void ToJson(cJSON *jsonObject, const DeviceInfo &deviceInfo, bool isPrint)
     {
-        nlohmann::ordered_json json = nlohmann::ordered_json::object();
-        json["udid"] = isPrint ? AnonymousUtils::AnonymousString(udid) : udid;
-        json["deviceId"] = isPrint ? AnonymousUtils::AnonymousString(deviceId) : deviceId;
-        return json;
+        if (jsonObject == nullptr)
+        {
+            return;
+        }
+
+        if (isPrint) {
+            cJSON_AddStringToObject(jsonObject, "udid", AnonymousUtils::AnonymousString(deviceInfo.udid).c_str());
+            cJSON_AddStringToObject(jsonObject, "deviceId", AnonymousUtils::AnonymousString(deviceInfo.udid).c_str());
+        } else {
+            cJSON_AddStringToObject(jsonObject, "udid", deviceInfo.udid.c_str());
+            cJSON_AddStringToObject(jsonObject, "deviceId", deviceInfo.deviceId.c_str());
+        }
     }
 };
 } // namespace UpdateService
