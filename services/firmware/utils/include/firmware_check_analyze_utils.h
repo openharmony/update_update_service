@@ -21,7 +21,7 @@
 
 #include "singleton.h"
 
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "firmware_common.h"
 
 namespace OHOS {

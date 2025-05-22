@@ -15,13 +15,13 @@
 
 #include <gtest/gtest.h>
 
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 
 using namespace testing::ext;
 using namespace testing;
 
 namespace OHOS::UpdateService {
-class JsonUtilsTest : public testing::Test {
+class UpdateServiceJsonUtilsTest : public testing::Test {
 public:
     static void SetupTestCase(void) {};
     static void TearDownTestCase(void) {};
@@ -34,10 +34,10 @@ public:
 * @tc.desc: Test json string is true
 * @tc.type: FUNC
 */
-HWTEST_F(JsonUtilsTest, ParseAndGetJsonObjectTrue, TestSize.Level1)
+HWTEST_F(UpdateServiceJsonUtilsTest, ParseAndGetJsonObjectTrue, TestSize.Level1)
 {
     std::string jsonStr = "{\"name\":\"Alice\", \"age\":25}";
-    cJSON *root = JsonUtils::ParseAndGetJsonObject(jsonStr);
+    cJSON *root = UpdateServiceJsonUtils::ParseAndGetJsonObject(jsonStr);
     EXPECT_NE(nullptr, root);
     cJSON_Delete(root);
 }
@@ -47,10 +47,10 @@ HWTEST_F(JsonUtilsTest, ParseAndGetJsonObjectTrue, TestSize.Level1)
 * @tc.desc: Test json string is false
 * @tc.type: FUNC
 */
-HWTEST_F(JsonUtilsTest, ParseAndGetJsonObjectFalse, TestSize.Level1)
+HWTEST_F(UpdateServiceJsonUtilsTest, ParseAndGetJsonObjectFalse, TestSize.Level1)
 {
     std::string jsonStr = "{\"name\":\"Alice\", \"age\":25, abc}";
-    cJSON *root = JsonUtils::ParseAndGetJsonObject(jsonStr);
+    cJSON *root = UpdateServiceJsonUtils::ParseAndGetJsonObject(jsonStr);
     EXPECT_EQ(nullptr, root);
 }
 
@@ -59,13 +59,13 @@ HWTEST_F(JsonUtilsTest, ParseAndGetJsonObjectFalse, TestSize.Level1)
 * @tc.desc: Test json string, get int
 * @tc.type: FUNC
 */
-HWTEST_F(JsonUtilsTest, GetValueAndSetToInt, TestSize.Level1)
+HWTEST_F(UpdateServiceJsonUtilsTest, GetValueAndSetToInt, TestSize.Level1)
 {
     std::string jsonStr = "{\"age\": 54, \"file\": \"a.txt\"}";
     int ageNumber = 0;
     cJSON *root = cJSON_Parse(jsonStr.c_str());
     EXPECT_NE(nullptr, root);
-    int ret = JsonUtils::GetValueAndSetTo(root, "age", ageNumber);
+    int ret = UpdateServiceJsonUtils::GetValueAndSetTo(root, "age", ageNumber);
     EXPECT_EQ(ageNumber, 54);
     EXPECT_EQ(0, ret);
     cJSON_Delete(root);
@@ -76,13 +76,13 @@ HWTEST_F(JsonUtilsTest, GetValueAndSetToInt, TestSize.Level1)
 * @tc.desc: Test json string, get uint64
 * @tc.type: FUNC
 */
-HWTEST_F(JsonUtilsTest, GetValueAndSetToUint64, TestSize.Level1)
+HWTEST_F(UpdateServiceJsonUtilsTest, GetValueAndSetToUint64, TestSize.Level1)
 {
     std::string jsonStr = "{\"time\": 123456789, \"file\": \"a.txt\"}";
     uint64_t timeNumber = 0;
     cJSON *root = cJSON_Parse(jsonStr.c_str());
     EXPECT_NE(nullptr, root);
-    int ret = JsonUtils::GetValueAndSetTo(root, "time", timeNumber);
+    int ret = UpdateServiceJsonUtils::GetValueAndSetTo(root, "time", timeNumber);
     EXPECT_EQ(timeNumber, 123456789);
     EXPECT_EQ(0, ret);
     cJSON_Delete(root);
@@ -93,13 +93,13 @@ HWTEST_F(JsonUtilsTest, GetValueAndSetToUint64, TestSize.Level1)
 * @tc.desc: Test json string, get string
 * @tc.type: FUNC
 */
-HWTEST_F(JsonUtilsTest, GetValueAndSetToString, TestSize.Level1)
+HWTEST_F(UpdateServiceJsonUtilsTest, GetValueAndSetToString, TestSize.Level1)
 {
     std::string jsonStr = "{\"age\": 54, \"file\": \"a.txt\"}";
     std::string fileName;
     cJSON *root = cJSON_Parse(jsonStr.c_str());
     EXPECT_NE(nullptr, root);
-    int ret = JsonUtils::GetValueAndSetTo(root, "file", fileName);
+    int ret = UpdateServiceJsonUtils::GetValueAndSetTo(root, "file", fileName);
     EXPECT_EQ(fileName, "a.txt");
     EXPECT_EQ(0, ret);
     cJSON_Delete(root);
@@ -110,13 +110,13 @@ HWTEST_F(JsonUtilsTest, GetValueAndSetToString, TestSize.Level1)
 * @tc.desc: Test json string, get bool
 * @tc.type: FUNC
 */
-HWTEST_F(JsonUtilsTest, GetValueAndSetToBool, TestSize.Level1)
+HWTEST_F(UpdateServiceJsonUtilsTest, GetValueAndSetToBool, TestSize.Level1)
 {
     std::string jsonStr = "{\"exist\": true, \"file\": \"a.txt\"}";
     bool  existYN = false;
     cJSON *root = cJSON_Parse(jsonStr.c_str());
     EXPECT_NE(nullptr, root);
-    int ret = JsonUtils::GetValueAndSetTo(root, "exist", existYN);
+    int ret = UpdateServiceJsonUtils::GetValueAndSetTo(root, "exist", existYN);
     EXPECT_EQ(existYN, true);
     EXPECT_EQ(0, ret);
     cJSON_Delete(root);

@@ -16,7 +16,7 @@
 #ifndef SCHEDULE_CONFIG_H
 #define SCHEDULE_CONFIG_H
 
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "startup_constant.h"
 
 namespace OHOS {
