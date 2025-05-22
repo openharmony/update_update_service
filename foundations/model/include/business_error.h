@@ -20,10 +20,7 @@
 #include <string_ex.h>
 #include <vector>
 
-#include "nlohmann/json.hpp"
-
 #include "call_result.h"
-#include "dupdate_json_utils.h"
 #include "error_message.h"
 #include "json_builder.h"
 #include "parcel.h"
@@ -48,22 +45,6 @@ struct BusinessError : public Parcelable {
         errMsg.errorMessage = errorMessage;
         data.push_back(errMsg);
         return *this;
-    }
-
-    friend void to_json(nlohmann::json &jsonObj, const BusinessError &businessError)
-    {
-        jsonObj["message"] = businessError.message;
-        jsonObj["errorNum"] = businessError.errorNum;
-        jsonObj["data"] = businessError.data;
-    }
-
-    friend void from_json(const nlohmann::json &jsonObj, BusinessError &businessError)
-    {
-        JsonUtils::GetValueAndSetTo(jsonObj, "message", businessError.message);
-        JsonUtils::GetValueAndSetTo(jsonObj, "data", businessError.data);
-        int32_t errorNumber = static_cast<int32_t>(CallResult::SUCCESS);
-        JsonUtils::GetValueAndSetTo(jsonObj, "errorNum", errorNumber);
-        businessError.errorNum = static_cast<CallResult>(errorNumber);
     }
 
     bool ReadFromParcel(Parcel &parcel);

@@ -13,7 +13,7 @@
 
 import("//base/update/updateservice/updateengine.gni")
 
-utils_external_deps = [ "json:nlohmann_json_static" ]
+utils_external_deps = []
 utils_deps = []
 utils_include = [ "$updateengine_root_path/foundations/ability/utils/include" ]
 utils_src = []

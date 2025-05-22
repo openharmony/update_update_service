@@ -86,9 +86,9 @@ ohos_shared_library("$updateengine_inner_library_name") {
   external_deps = [
     "bounds_checking_function:libsec_static",
     "c_utils:utils",  # sptr
+    "cJSON:cjson",
     "hilog:libhilog",
     "ipc:ipc_core",
-    "json:nlohmann_json_static",
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",
   ]

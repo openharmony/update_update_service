@@ -18,8 +18,6 @@
 
 #include <algorithm>
 
-#include "nlohmann/json.hpp"
-
 #include "current_version_info.h"
 #include "firmware_changelog_utils.h"
 #include "firmware_constant.h"

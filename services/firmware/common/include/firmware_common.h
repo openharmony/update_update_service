@@ -18,9 +18,8 @@
 
 #include <string>
 
-#include "nlohmann/json.hpp"
-
 #include "anonymous_utils.h"
+#include "cJSON.h"
 #include "constant.h"
 #include "firmware_component.h"
 #include "firmware_log.h"
@@ -76,14 +75,6 @@ public:
     std::string versionNumber;
     std::string displayVersionNumber;
     std::string versionPackageType;
-
-    nlohmann::ordered_json ToCheckJson()
-    {
-        nlohmann::ordered_json json = nlohmann::ordered_json::object();
-        json["versionPackageType"] = versionPackageType;
-        json["versionNumber"] = versionNumber;
-        return json;
-    }
 };
 
 enum VersionIndex {
@@ -101,15 +92,6 @@ struct UpdatePackage {
     std::string versionId;
     int32_t packageIndex = 0;
     PackageType versionPackageType = PackageType::DYNAMIC;
-
-    nlohmann::ordered_json ToJson()
-    {
-        nlohmann::ordered_json json = nlohmann::ordered_json::object();
-        json["versionId"] = versionId;
-        json["packageIndex"] = packageIndex;
-        json["versionPackageType"] = CAST_INT(versionPackageType);
-        return json;
-    }
 };
 
 struct TargetBlComponent {

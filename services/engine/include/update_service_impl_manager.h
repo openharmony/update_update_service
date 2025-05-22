@@ -18,6 +18,7 @@
 
 #include "iservice_online_updater.h"
 
+#include <map>
 #include <mutex>
 
 #include "upgrade_info.h"

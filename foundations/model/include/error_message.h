@@ -19,9 +19,7 @@
 #include <cstdint>
 #include <string>
 
-#include "nlohmann/json.hpp"
-
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "json_builder.h"
 
 #include "parcel.h"
@@ -30,18 +28,6 @@ namespace OHOS::UpdateService {
 struct ErrorMessage : public Parcelable {
     int32_t errorCode = 0;
     std::string errorMessage;
-
-    friend void to_json(nlohmann::json &jsonObj, const ErrorMessage &message)
-    {
-        jsonObj["errorCode"] = message.errorCode;
-        jsonObj["errorMessage"] = message.errorMessage;
-    }
-
-    friend void from_json(const nlohmann::json &jsonObj, ErrorMessage &message)
-    {
-        JsonUtils::GetValueAndSetTo(jsonObj, "errorCode", message.errorCode);
-        JsonUtils::GetValueAndSetTo(jsonObj, "errorMessage", message.errorMessage);
-    }
 
     JsonBuilder GetJsonBuilder()
     {

@@ -22,7 +22,7 @@
 #include <string>
 
 #include "constant.h"
-#include "dupdate_json_utils.h"
+#include "updateservice_json_utils.h"
 #include "file_utils.h"
 #include "firmware_combine_version_utils.h"
 #include "firmware_constant.h"
@@ -37,18 +37,19 @@ void FirmwareCheckAnalyzeUtils::DoAnalyze(const std::string &rawJson, std::vecto
 {
     BlCheckResponse response;
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
-    nlohmann::json root;
-    if (!JsonUtils::ParseAndGetJsonObject(rawJson, root)) {
+    cJSON *root = UpdateServiceJsonUtils::ParseAndGetJsonObject(rawJson);
+    if (!root) {
         FIRMWARE_LOGE("fail to parse out a json object");
         return;
     }
 
     int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
-    JsonUtils::GetValueAndSetTo(root, "searchStatus", status);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
 
     checkAndAuthInfo.responseStatus = std::to_string(status);
     if (!IsLegalStatus(status)) {
         FIRMWARE_LOGI("not found new version!");
+        cJSON_Delete(root);
         return;
     }
     if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE)) {
@@ -60,100 +61,118 @@ void FirmwareCheckAnalyzeUtils::DoAnalyze(const std::string &rawJson, std::vecto
     if (ret == CAST_INT(JsonParseError::ERR_OK)) {
         components = components_;
     }
+    cJSON_Delete(root);
 }
 
-int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(nlohmann::json &root, BlCheckResponse &response)
+int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlCheckResponse &response)
 {
-    if (root.find("checkResults") == root.end()) {
+    cJSON *itemCheckResults = cJSON_GetObjectItemCaseSensitive(root, "checkResults");
+    if (!itemCheckResults) {
         FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults no key checkResults");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
-    FIRMWARE_LOGI("checkResults size is %{public}" PRIu64 "", static_cast<uint64_t>(root["checkResults"].size()));
+
+    FIRMWARE_LOGI("checkResults size is %{public}" PRIu64 "",
+        static_cast<uint64_t>(cJSON_IsArray(itemCheckResults) ? cJSON_GetArraySize(itemCheckResults) : 0));
+
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
-    for (auto &result : root["checkResults"]) {
-        int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
-        JsonUtils::GetValueAndSetTo(root, "searchStatus", status);
-        if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE)) {
+    int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
+    if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE))
+    {
+        for (int i = 0; i < cJSON_GetArraySize(itemCheckResults); i++)
+        {
+            auto item = cJSON_GetArrayItem(itemCheckResults, i);
             BlVersionCheckResult checkResult;
-            ret += JsonUtils::GetValueAndSetTo(result, "descriptPackageId", checkResult.descriptPackageId);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "descriptPackageId", checkResult.descriptPackageId);
             checkResult.blVersionType = 1;
             checkResult.status = std::to_string(status);
             UpdatePackage package;
             package.versionId = "1";
             int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
-            ret += JsonUtils::GetValueAndSetTo(result, "packageType", versionPackageType);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "packageType", versionPackageType);
             package.versionPackageType = static_cast<PackageType>(versionPackageType);
             package.packageIndex = 0;
             checkResult.updatePackages.push_back(package);
             TargetBlComponent component;
             component.versionPackageType = package.versionPackageType;
-            ret += JsonUtils::GetValueAndSetTo(result, "versionName", component.displayVersionNumber);
-            ret += JsonUtils::GetValueAndSetTo(result, "versionName", component.versionNumber);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionName", component.displayVersionNumber);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionName", component.versionNumber);
             checkResult.targetBlComponents.push_back(component);
-            checkResult.blVersionInfo = result["blVersionInfo"].dump();
+            UpdateServiceJsonUtils::GetValueAndSetTo(item, "blVersionInfo", checkResult.blVersionInfo);
             response.blVersionCheckResults.push_back(checkResult);
             Version version;
             version.versionId = "1";
-            ret += JsonUtils::GetValueAndSetTo(result, "versionCode", version.versionNumber);
-            ret += JsonUtils::GetValueAndSetTo(result, "url", version.url);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionCode", version.versionNumber);
+            ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "url", version.url);
             response.versionList.push_back(version);
         }
     }
     return ret;
 }
 
-int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(nlohmann::json &root)
+int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(cJSON *root)
 {
     // 检查 "checkResults" 是否存在
-    if (root.find("checkResults") == root.end()) {
+    cJSON *itemCheckResults = cJSON_GetObjectItemCaseSensitive(root, "checkResults");
+    if (!itemCheckResults) {
         FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key checkResults");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
-    FIRMWARE_LOGI("checkResults size is %{public}" PRIu64 "", static_cast<uint64_t>(root["checkResults"].size()));
+    FIRMWARE_LOGI("checkResults size is %{public}" PRIu64 "",
+        static_cast<uint64_t>(cJSON_IsArray(itemCheckResults) ? cJSON_GetArraySize(itemCheckResults) : 0));
 
     // 初始化返回值
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
 
     // 处理 "checkResults" 部分
-    ret += ProcessCheckResults(root["checkResults"]);
+    ret += ProcessCheckResults(itemCheckResults);
 
     // 检查 "descriptInfo" 是否存在
-    if (root.find("descriptInfo") == root.end()) {
-        FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
+    cJSON *itemDescriptInfo = cJSON_GetObjectItemCaseSensitive(root, "descriptInfo");
+    if (!itemDescriptInfo) {
+       FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
 
     // 处理 "descriptInfo" 部分
-    ret += ProcessDescriptInfo(root["descriptInfo"]);
+    ret += ProcessDescriptInfo(itemDescriptInfo);
 
     return ret;
 }
 
-int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(const nlohmann::json &checkResults)
+int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(cJSON *checkResults)
 {
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     std::string componentId;
 
-    for (auto &result : checkResults) {
+    if (!checkResults) {
+        FIRMWARE_LOGE("AnalyzeComponents no key checkResults");
+        return CAST_INT(JsonParseError::MISSING_PROP);
+    }
+
+    for (int i = 0; i < cJSON_GetArraySize(checkResults); i++) {
+        cJSON *itemResult = cJSON_GetArrayItem(checkResults, i);
+
         FirmwareComponent component;
         int32_t componetSize = 0;
 
         // 获取组件相关属性
-        ret += JsonUtils::GetValueAndSetTo(result, "descriptPackageId", component.descriptPackageId);
-        ret += JsonUtils::GetValueAndSetTo(result, "url", component.url);
-        ret += JsonUtils::GetValueAndSetTo(result, "size", componetSize);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "descriptPackageId", component.descriptPackageId);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "url", component.url);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "size", componetSize);
         component.size = static_cast<int64_t>(componetSize);
         component.fileName = StringUtils::GetLastSplitString(component.url, "/");
-        ret += JsonUtils::GetValueAndSetTo(result, "verifyInfo", component.verifyInfo);
-        ret += JsonUtils::GetValueAndSetTo(result, "versionCode", component.versionNumber);
-        ret += JsonUtils::GetValueAndSetTo(result, "versionName", component.targetBlVersionNumber);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "verifyInfo", component.verifyInfo);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "versionCode", component.versionNumber);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "versionName", component.targetBlVersionNumber);
 
         int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
-        ret += JsonUtils::GetValueAndSetTo(result, "packageType", versionPackageType);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "packageType", versionPackageType);
         component.versionPackageType = static_cast<PackageType>(versionPackageType);
 
         int32_t otaType = CAST_INT(OtaType::REGULAR);
-        ret += JsonUtils::GetValueAndSetTo(result, "otaType", otaType);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "otaType", otaType);
         component.otaType = static_cast<OtaType>(otaType);
 
         component.targetBlDisplayVersionNumber = component.targetBlVersionNumber;
@@ -163,23 +182,28 @@ int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(const nlohmann::json &che
 
         components_.push_back(component);
     }
-
     return ret;
 }
 
-int32_t FirmwareCheckAnalyzeUtils::ProcessDescriptInfo(const nlohmann::json &descriptInfo)
+int32_t FirmwareCheckAnalyzeUtils::ProcessDescriptInfo(cJSON *descriptInfo)
 {
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     std::string componentId = components_.empty() ? "" : components_.back().descriptPackageId;
 
-    for (auto &info : descriptInfo) {
+    if (!descriptInfo) {
+        FIRMWARE_LOGE("ProcessDescriptInfo no descriptInfo");
+        return CAST_INT(JsonParseError::MISSING_PROP);
+    }
+
+    for (int i = 0; i < cJSON_GetArraySize(descriptInfo); i++) {
+        cJSON *itemInfo = cJSON_GetArrayItem(descriptInfo, i);
         int32_t descriptInfoType;
         std::string descContent;
         std::string subString = "quota";
         std::string replString = "\"";
 
-        ret += JsonUtils::GetValueAndSetTo(info, "descriptionType", descriptInfoType);
-        ret += JsonUtils::GetValueAndSetTo(info, "content", descContent);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemInfo, "descriptionType", descriptInfoType);
+        ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemInfo, "content", descContent);
 
         StringUtils::ReplaceStringAll(descContent, subString, replString);
 
