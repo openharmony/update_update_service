@@ -16,6 +16,7 @@
 #ifndef UPDATE_SERVICE_UPGRADE_POLICY_H
 #define UPDATE_SERVICE_UPGRADE_POLICY_H
 
+#include "enum_policy_type.h"
 #include "upgrade_period.h"
 #include "parcel.h"
 
@@ -24,6 +25,7 @@ struct UpgradePolicy : public Parcelable {
     bool downloadStrategy = false;
     bool autoUpgradeStrategy = false;
     UpgradePeriod autoUpgradePeriods[2];
+    PolicyType customPolicyType = PolicyType::DEFAULT;
 
     bool ReadFromParcel(Parcel &parcel);
     bool Marshalling(Parcel &parcel) const override;

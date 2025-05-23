@@ -332,6 +332,7 @@ int32_t ClientHelper::BuildUpgradePolicy(napi_env env, napi_value &obj, const Up
     // Add the result.
     NapiCommonUtils::SetBool(env, obj, "downloadStrategy", upgradePolicy.downloadStrategy);
     NapiCommonUtils::SetBool(env, obj, "autoUpgradeStrategy", upgradePolicy.autoUpgradeStrategy);
+    NapiCommonUtils::SetBool(env, obj, "customPolicyType", CAST_INT(upgradePolicy.customPolicyType);
 
     napi_value autoUpgradePeriods;
     size_t count = COUNT_OF(upgradePolicy.autoUpgradePeriods);
