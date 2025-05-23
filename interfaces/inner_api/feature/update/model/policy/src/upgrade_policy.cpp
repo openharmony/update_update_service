@@ -23,6 +23,7 @@ bool UpgradePolicy::ReadFromParcel(Parcel &parcel)
 {
     downloadStrategy = static_cast<bool>(parcel.ReadBool());
     autoUpgradeStrategy = static_cast<bool>(parcel.ReadBool());
+    customPolicyType = static_cast<PolicyType>(parcel.ReadInt32());
     size_t size = static_cast<size_t>(parcel.ReadInt32());
     size_t arraySize = COUNT_OF(autoUpgradePeriods);
     if (size > MAX_VECTOR_SIZE) {
@@ -45,6 +46,11 @@ bool UpgradePolicy::Marshalling(Parcel &parcel) const
 
     if (!parcel.WriteBool(autoUpgradeStrategy)) {
         ENGINE_LOGE("Write downloadStrategy failed");
+        return false;
+    }
+
+    if (!parcel.WriteInt32(CAST_INT(customPolicyType))) {
+        ENGINE_LOGE("Write customPolicyType failed");
         return false;
     }
 
