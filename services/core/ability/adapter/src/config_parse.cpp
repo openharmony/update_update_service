@@ -63,16 +63,15 @@ void ConfigParse::LoadConfigInfo()
     std::string rawJson(streambuffer.str());
     readFile.close();
 
-    cJSON *root = cJSON_Parse(rawJson.c_str());
-    if (!root) {
+    auto root = UpdateServiceJsonUtils::ParseJson(rawJson.c_str());
+    if (root == nullptr) {
         ENGINE_LOGE("json Create error!");
         return;
     }
 
-    UpdateServiceJsonUtils::GetValueAndSetTo(root, "abInstallTimeout", configInfo_.abInstallTimeout);
-    UpdateServiceJsonUtils::GetValueAndSetTo(root, "streamInstallTimeout", configInfo_.streamInstallTimeout);
-    UpdateServiceJsonUtils::GetValueAndSetTo(root, "moduleLibPath", configInfo_.moduleLibPath);
-    cJSON_Delete(root);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root.get(), "abInstallTimeout", configInfo_.abInstallTimeout);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root.get(), "streamInstallTimeout", configInfo_.streamInstallTimeout);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root.get(), "moduleLibPath", configInfo_.moduleLibPath);
 }
 } // namespace UpdateService
 } // namespace OHOS

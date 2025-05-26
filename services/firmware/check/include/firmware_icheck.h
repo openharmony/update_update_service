@@ -106,11 +106,11 @@ public:
         if (response.status != static_cast<int64_t>(HttpConstant::SUCCESS) || response.content.empty()) {
             checkStatus = CheckStatus::CHECK_FAIL;
         } else {
-             cJSON *root = cJSON_Parse(response.content.c_str());
-            if (!root) {
+            auto root = UpdateServiceJsonUtils::ParseJson(response.content.c_str());
+            if (root == nullptr) {
                 FIRMWARE_LONG_LOGI("FirmwareCheck response: %{public}s", response.content.c_str());
+                return;
             }
-            cJSON_Delete(root);
             FirmwareCheckAnalyzeUtils().DoAnalyze(response.content, checkResultList_, duration_, checkAndAuthInfo_);
             checkStatus = CheckStatus::CHECK_SUCCESS;
         }
