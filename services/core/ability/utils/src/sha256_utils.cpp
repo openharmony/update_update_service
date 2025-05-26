@@ -99,24 +99,15 @@ bool Sha256Utils::GetDigestFromFile(const char *fileName, unsigned char digest[]
         return false;
     }
 
-    while (file.read(buffer, MAX_BUFFER_LENGTH)) {
+    while (!file.eof()) {
+        file.read(buffer, MAX_BUFFER_LENGTH);
         int32_t updateRet = SHA256_Update(&sha256, buffer, file.gcount());
         if (updateRet != OPENSSL_SUCCESS) {
-            ENGINE_LOGE("SHA256_Init failed, updateRet = %{public}d", updateRet);
+            ENGINE_LOGE("SHA256_update_ret failed, updateRet = %{public}d", updateRet);
             FreeBuffer(buffer, file);
             return false;
         }
     }
-
-    if (file.eof() && !file.fail()) {
-        int32_t updateRet = SHA256_Update(&sha256, buffer, file.gcount());
-        if (updateRet != OPENSSL_SUCCESS) {
-            ENGINE_LOGE("SHA256_Init failed, updateRet = %{public}d", updateRet);
-            FreeBuffer(buffer, file);
-            return false;
-        }
-    }
-
     int32_t finishRet = SHA256_Final(digest, &sha256);
     if (finishRet != OPENSSL_SUCCESS) {
         ENGINE_LOGE("SHA256_finish_ret failed, finishRet = %{public}d", finishRet);
