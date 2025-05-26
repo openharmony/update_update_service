@@ -36,6 +36,11 @@ ohos_unittest("UpdateServiceJsonUtilsTest") {
     "googletest:gtest_main",
     "hilog:libhilog",
   ]
+
+  cflags = [
+    "-Dprivate=public",
+    "-Dprotected=public",
+  ]
   deps = []
   part_name = updateengine_part_name
 }

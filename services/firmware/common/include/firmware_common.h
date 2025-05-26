@@ -19,7 +19,6 @@
 #include <string>
 
 #include "anonymous_utils.h"
-#include "cJSON.h"
 #include "constant.h"
 #include "firmware_component.h"
 #include "firmware_log.h"

@@ -43,26 +43,24 @@ public:
         }
 
         cJSON *item = cJSON_GetObjectItemCaseSensitive(jsonObject, key.c_str());
-        if (!item) {
+        if (item == nullptr) {
             return CAST_INT(JsonParseError::MISSING_PROP);
         }
 
-        if (!CheckBaseType(item, value)) {
+        if (!CheckTypeAndAsign(item, value)) {
             return CAST_INT(JsonParseError::TYPE_ERROR);
         }
-        GetValue(item, value);
         return CAST_INT(JsonParseError::ERR_OK);
     }
 
     static cJSON *ParseAndGetJsonObject(const std::string &jsonStr)
     {
         cJSON *object = cJSON_Parse(jsonStr.c_str());
-        if (!object) {
+        if (object == nullptr) {
             return nullptr;
         }
 
-        if (!cJSON_IsObject(object))
-        {
+        if (!cJSON_IsObject(object)) {
             cJSON_Delete(object);
             return nullptr;
         }
@@ -70,93 +68,98 @@ public:
         return object;
     }
 
+    static std::shared_ptr<cJSON> ParseJson(const std::string &jsonStr)
+    {
+        cJSON *root = cJSON_Parse(jsonStr.c_str());
+        if (root == nullptr) {
+            return nullptr;
+        }
+
+        return std::shared_ptr<cJSON>(root, [](cJSON *r) { cJSON_Delete(r); });
+    }
+
 private:
 
+    static bool IsInteger(double d)
+    {
+        return std::floor(d) == d;
+    }
+
+    // 判断int32_t, int64_t, uint32_t, uint64_t 是否合法整数
+    template <typename T> static bool CheckInteger(cJSON *jsonObj, T &value)
+    {
+        if (!cJSON_IsNumber(jsonObj)) {
+            return false;
+        }
+
+        double objValue = jsonObj->valuedouble;
+        if (!IsInteger(objValue)) {
+            return false;
+        }
+
+        if (std::is_same_v<T, int32_t>) {
+            if (objValue < std::numeric_limits<int32_t>::min() || objValue > std::numeric_limits<int32_t>::max()) {
+                return false;
+            }
+        }
+
+        if (std::is_same_v<T, int64_t>) {
+            if (objValue < std::numeric_limits<int64_t>::min() || objValue > std::numeric_limits<int64_t>::max()) {
+                return false;
+            }
+        }
+
+        if (std::is_same_v<T, uint32_t>) {
+            if (objValue < 0 || objValue > std::numeric_limits<uint32_t>::max()) {
+                return false;
+            }
+        }
+
+        if (std::is_same_v<T, uint64_t>) {
+            if (objValue < 0 || objValue > std::numeric_limits<uint64_t>::max()) {
+                return false;
+            }
+        }
+        value = objValue;
+        return true;
+    }
+
     // 检查基本类型
-    template <typename T> static bool CheckBaseType(cJSON *jsonObject, T &value)
+    template <typename T> static bool CheckTypeAndAsign(cJSON *jsonObject, T &value)
     {
-        if (!jsonObject) {
-            return false;
-        }
-
         if constexpr (std::is_same_v<T, std::string>) {
-            return  cJSON_IsString(jsonObject);
-        } else if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t> ||
-            std::is_same_v<T, double>) {
-            return cJSON_IsNumber(jsonObject);
-        } else if constexpr (std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
-            return cJSON_IsNumber(jsonObject) && jsonObject->valuedouble >=0;
-        } else if constexpr (std::is_same_v<T, bool>) {
-            return (jsonObject->type == cJSON_True || jsonObject->type == cJSON_False);
-        }  else {
+            if (cJSON_IsString(jsonObject)) {
+                value = jsonObject->valuestring;
+                return true;
+            }
             return false;
         }
-    }
 
-    template <typename T>
-    static bool CheckArrayType(cJSON *jsonObject, std::vector<T> &value)
-    {
-        return cJSON_IsArray(jsonObject);
-    }
-
-    static void GetValueVecString(const cJSON *jsonArray, std::vector<std::string> &value)
-    {
-        if (!jsonArray || !cJSON_IsArray(jsonArray)) {
-            return;
-        }
-
-        const cJSON *element = nullptr;
-        cJSON_ArrayForEach(element, jsonArray) {
-            if (cJSON_IsString(element) && element->valuestring != nullptr) {
-                value.push_back(element->valuestring);
+        if constexpr (std::is_same_v<T, bool>) {
+            if (jsonObject->type != cJSON_True && jsonObject->type != cJSON_False) {
+                return false;
             }
-        }
-    }
-
-    static void GetValueVecInt(const cJSON *jsonArray, std::vector<int> &value)
-    {
-        if (!jsonArray || !cJSON_IsArray(jsonArray)) {
-            return;
+            value = cJSON_IsTrue(jsonObject) ? true : false;
+            return true;
         }
 
-        const cJSON *element = nullptr;
-        cJSON_ArrayForEach(element, jsonArray) {
-            if (cJSON_IsNumber(element)) {
-                value.push_back(element->valueint);
-            }
-        }
-    }
-
-    template <typename T>
-    static void GetValue(cJSON *item, T &value)
-    {
-        if (!item) {
-            return;
+        if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t> ||
+            std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
+            return CheckInteger(jsonObject, value);
         }
 
-        if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>)
-        {
-            if (cJSON_IsNumber(item)) {
-               (sizeof(T) <= sizeof(int)) ? value = static_cast<T>(item->valueint) :
-                    value = static_cast<T>(item->valuedouble);
+        if constexpr (std::is_same_v<T, double>) {
+            if (!cJSON_IsNumber(jsonObject)) {
+                return false;
             }
-        } else if constexpr (std::is_floating_point_v<T>) {
-            if (cJSON_IsNumber(item)) {
-                value = static_cast<T>(item->valuedouble);
+            double dbValue = jsonObject->valuedouble;
+            if (!std::isfinite(dbValue)) {
+                return false;
             }
-        } else if constexpr (std::is_same_v<T, bool>) {
-            value = cJSON_IsTrue(item) ? true : false;
-        } else if constexpr (std::is_same_v<T, std::string>) {
-            if (cJSON_IsString(item)) {
-                value = item->valuestring;
-            }
-        } else if constexpr (std::is_same_v<T, std::vector<int>>) {
-             GetValueVecInt(item, value);
-        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
-             GetValueVecString(item, value);
-        } else {
-            return;
+            value = dbValue;
+            return true;
         }
+        return false;
     }
 };
 } // namespace OHOS::UpdateService

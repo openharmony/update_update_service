@@ -22,13 +22,13 @@
 #include <string>
 
 #include "constant.h"
-#include "updateservice_json_utils.h"
 #include "file_utils.h"
 #include "firmware_combine_version_utils.h"
 #include "firmware_constant.h"
 #include "firmware_log.h"
 #include "firmware_preferences_utils.h"
 #include "string_utils.h"
+#include "updateservice_json_utils.h"
 
 namespace OHOS {
 namespace UpdateService {
@@ -37,37 +37,35 @@ void FirmwareCheckAnalyzeUtils::DoAnalyze(const std::string &rawJson, std::vecto
 {
     BlCheckResponse response;
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
-    cJSON *root = UpdateServiceJsonUtils::ParseAndGetJsonObject(rawJson);
-    if (!root) {
+    auto root = UpdateServiceJsonUtils::ParseJson(rawJson);
+    if (root == nullptr) {
         FIRMWARE_LOGE("fail to parse out a json object");
         return;
     }
 
     int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
-    UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
+    UpdateServiceJsonUtils::GetValueAndSetTo(root.get(), "searchStatus", status);
 
     checkAndAuthInfo.responseStatus = std::to_string(status);
     if (!IsLegalStatus(status)) {
         FIRMWARE_LOGI("not found new version!");
-        cJSON_Delete(root);
         return;
     }
     if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE)) {
-        ret += AnalyzeBlVersionCheckResults(root, response);
-        ret += AnalyzeComponents(root);
+        ret += AnalyzeBlVersionCheckResults(root.get(), response);
+        ret += AnalyzeComponents(root.get());
     }
 
     // 解析的都是必须字段，全部解析正常，才能给component赋值
     if (ret == CAST_INT(JsonParseError::ERR_OK)) {
         components = components_;
     }
-    cJSON_Delete(root);
 }
 
 int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlCheckResponse &response)
 {
     cJSON *itemCheckResults = cJSON_GetObjectItemCaseSensitive(root, "checkResults");
-    if (!itemCheckResults) {
+    if (itemCheckResults == nullptr) {
         FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults no key checkResults");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
@@ -78,10 +76,9 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlC
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
     UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
-    if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE))
-    {
-        for (int i = 0; i < cJSON_GetArraySize(itemCheckResults); i++)
-        {
+    if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE)) {
+        int32_t arraySize = cJSON_GetArraySize(itemCheckResults);
+        for (int i = 0; i < arraySize; i++) {
             auto item = cJSON_GetArrayItem(itemCheckResults, i);
             BlVersionCheckResult checkResult;
             ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "descriptPackageId", checkResult.descriptPackageId);
@@ -115,7 +112,7 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(cJSON *root)
 {
     // 检查 "checkResults" 是否存在
     cJSON *itemCheckResults = cJSON_GetObjectItemCaseSensitive(root, "checkResults");
-    if (!itemCheckResults) {
+    if (itemCheckResults == nullptr) {
         FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key checkResults");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
@@ -130,7 +127,7 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(cJSON *root)
 
     // 检查 "descriptInfo" 是否存在
     cJSON *itemDescriptInfo = cJSON_GetObjectItemCaseSensitive(root, "descriptInfo");
-    if (!itemDescriptInfo) {
+    if (itemDescriptInfo == nullptr) {
        FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
@@ -146,12 +143,8 @@ int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(cJSON *checkResults)
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     std::string componentId;
 
-    if (!checkResults) {
-        FIRMWARE_LOGE("AnalyzeComponents no key checkResults");
-        return CAST_INT(JsonParseError::MISSING_PROP);
-    }
-
-    for (int i = 0; i < cJSON_GetArraySize(checkResults); i++) {
+    int32_t arraySize = cJSON_GetArraySize(checkResults);
+    for (int i = 0; i < arraySize; i++) {
         cJSON *itemResult = cJSON_GetArrayItem(checkResults, i);
 
         FirmwareComponent component;
@@ -190,12 +183,8 @@ int32_t FirmwareCheckAnalyzeUtils::ProcessDescriptInfo(cJSON *descriptInfo)
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     std::string componentId = components_.empty() ? "" : components_.back().descriptPackageId;
 
-    if (!descriptInfo) {
-        FIRMWARE_LOGE("ProcessDescriptInfo no descriptInfo");
-        return CAST_INT(JsonParseError::MISSING_PROP);
-    }
-
-    for (int i = 0; i < cJSON_GetArraySize(descriptInfo); i++) {
+    int32_t arraySize = cJSON_GetArraySize(descriptInfo);
+    for (int i = 0; i < arraySize; i++) {
         cJSON *itemInfo = cJSON_GetArrayItem(descriptInfo, i);
         int32_t descriptInfoType;
         std::string descContent;
