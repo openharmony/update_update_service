@@ -96,7 +96,6 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlC
             ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionName", component.displayVersionNumber);
             ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "versionName", component.versionNumber);
             checkResult.targetBlComponents.push_back(component);
-            UpdateServiceJsonUtils::GetValueAndSetTo(item, "blVersionInfo", checkResult.blVersionInfo);
             response.blVersionCheckResults.push_back(checkResult);
             Version version;
             version.versionId = "1";
