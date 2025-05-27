@@ -94,7 +94,7 @@ bool Sha256Utils::GetDigestFromFile(const char *fileName, unsigned char digest[]
     SHA256_CTX sha256;
     int32_t startRet = SHA256_Init(&sha256);
     if (startRet != OPENSSL_SUCCESS) {
-        ENGINE_LOGE("SHA256_Init_ret failed, startRet = %{public}d", startRet);
+        ENGINE_LOGE("SHA256_init_ret failed, startRet = %{public}d", startRet);
         FreeBuffer(buffer, file);
         return false;
     }
