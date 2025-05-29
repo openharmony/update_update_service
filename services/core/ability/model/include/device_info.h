@@ -27,19 +27,18 @@ public:
     std::string udid;
     std::string deviceId;
 
-    friend void ToJson(cJSON *jsonObject, const DeviceInfo &deviceInfo, bool isPrint)
+    friend void ToJson(cJSON *jsonObject, bool isPrint)
     {
-        if (jsonObject == nullptr)
-        {
+        if (jsonObject == nullptr) {
             return;
         }
 
         if (isPrint) {
-            cJSON_AddStringToObject(jsonObject, "udid", AnonymousUtils::AnonymousString(deviceInfo.udid).c_str());
-            cJSON_AddStringToObject(jsonObject, "deviceId", AnonymousUtils::AnonymousString(deviceInfo.udid).c_str());
+            cJSON_AddStringToObject(jsonObject, "udid", AnonymousUtils::AnonymousString(udid.c_str()));
+            cJSON_AddStringToObject(jsonObject, "deviceId", AnonymousUtils::AnonymousString(deviceId.c_str()));
         } else {
-            cJSON_AddStringToObject(jsonObject, "udid", deviceInfo.udid.c_str());
-            cJSON_AddStringToObject(jsonObject, "deviceId", deviceInfo.deviceId.c_str());
+            cJSON_AddStringToObject(jsonObject, "udid", udid.c_str());
+            cJSON_AddStringToObject(jsonObject, "deviceId", deviceId.c_str());
         }
     }
 };

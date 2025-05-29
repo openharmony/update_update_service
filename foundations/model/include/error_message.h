@@ -19,10 +19,10 @@
 #include <cstdint>
 #include <string>
 
-#include "updateservice_json_utils.h"
 #include "json_builder.h"
 
 #include "parcel.h"
+#include "update_log.h"
 
 namespace OHOS::UpdateService {
 struct ErrorMessage : public Parcelable {

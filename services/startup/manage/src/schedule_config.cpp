@@ -15,9 +15,10 @@
 
 #include "schedule_config.h"
 
+#include "constant.h"
 #include "file_utils.h"
 #include "update_log.h"
-#include "constant.h"
+#include "updateservice_json_utils.h"
 
 namespace OHOS {
 namespace UpdateService {
@@ -27,16 +28,21 @@ uint64_t ScheduleConfig::idleCheckInterval_ = Startup::IDLE_CHECK_INTERVAL;
 void ScheduleConfig::InitConfig()
 {
     ENGINE_LOGI("InitConfig");
-    cJSON* root = cJSON_Parse(FileUtils::ReadDataFromFile(Constant::DUPDATE_ENGINE_CONFIG_PATH).c_str());
-    if (!root) {
+
+    std::string dataString = FileUtils::ReadDataFromFile(Constant::DUPDATE_ENGINE_CONFIG_PATH);
+    if (dataString.empty()) {
+        ENGINE_LOGI("file content is null");
+        return;
+    }
+    auto root = UpdateServiceJsonUtils::ParseJson(dataString);
+    if (root == nullptr) {
         ENGINE_LOGI("InitConfig load fail");
         return;
     }
-    pullupInterval_ = ParseConfig(root, Startup::PULLUP_INTERVAL_CONFIG, Startup::PULLUP_INTERVAL);
-    idleCheckInterval_ = ParseConfig(root, Startup::IDLE_CHECK_INTERVAL_CONFIG, Startup::IDLE_CHECK_INTERVAL);
+    pullupInterval_ = ParseConfig(root.get(), Startup::PULLUP_INTERVAL_CONFIG, Startup::PULLUP_INTERVAL);
+    idleCheckInterval_ = ParseConfig(root.get(), Startup::IDLE_CHECK_INTERVAL_CONFIG, Startup::IDLE_CHECK_INTERVAL);
     ENGINE_LOGI("InitConfig pullupInterval: %{public}s, idleCheckInterval: %{public}s",
         std::to_string(pullupInterval_).c_str(), std::to_string(idleCheckInterval_).c_str());
-    cJSON_Delete(root);
 }
 
 uint64_t ScheduleConfig::GetPullupInterval()
