@@ -25,6 +25,7 @@
 
 namespace OHOS {
 namespace UpdateService {
+constexpr int OPENSSL_SUCCESS = 1;
 constexpr unsigned int SHA256_STRING_LEN = 65;
 constexpr unsigned int SHA256_LENGTH = 32;
 constexpr unsigned int MAX_BUFFER_LENGTH = 1024;
@@ -59,6 +60,17 @@ bool Sha256Utils::CheckFileSha256String(const std::string &fileName, const std::
     return true;
 }
 
+void Sha256Utils::FreeBuffer(char *buffer, std::ifstream &file)
+{
+    if (buffer != nullptr) {
+        free(buffer);
+    }
+
+    if (file.is_open()) {
+        file.close();
+    }
+}
+
 bool Sha256Utils::GetDigestFromFile(const char *fileName, unsigned char digest[])
 {
     char realPath[PATH_MAX] = {};
@@ -76,18 +88,33 @@ bool Sha256Utils::GetDigestFromFile(const char *fileName, unsigned char digest[]
     char *buffer = (char *)malloc(MAX_BUFFER_LENGTH); /* buffer len 1024 */
     if (buffer == nullptr) {
         ENGINE_LOGI("failed to allocate memory");
+        file.close();
         return false;
     }
     SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    int32_t startRet = SHA256_Init(&sha256);
+    if (startRet != OPENSSL_SUCCESS) {
+        ENGINE_LOGE("SHA256_init_ret failed, startRet = %{public}d", startRet);
+        FreeBuffer(buffer, file);
+        return false;
+    }
 
     while (!file.eof()) {
         file.read(buffer, MAX_BUFFER_LENGTH);
-        SHA256_Update(&sha256, buffer, file.gcount());
+        int32_t updateRet = SHA256_Update(&sha256, buffer, file.gcount());
+        if (updateRet != OPENSSL_SUCCESS) {
+            ENGINE_LOGE("SHA256_update_ret failed, updateRet = %{public}d", updateRet);
+            FreeBuffer(buffer, file);
+            return false;
+        }
     }
-    SHA256_Final(digest, &sha256);
-    file.close();
-    free(buffer);
+    int32_t finishRet = SHA256_Final(digest, &sha256);
+    if (finishRet != OPENSSL_SUCCESS) {
+        ENGINE_LOGE("SHA256_finish_ret failed, finishRet = %{public}d", finishRet);
+        FreeBuffer(buffer, file);
+        return false;
+    }
+    FreeBuffer(buffer, file);
     return true;
 }
 
@@ -109,19 +136,19 @@ bool Sha256Utils::Sha256Calculate(const unsigned char *input, size_t len, char *
         return false;
     }
     int startRet = SHA256_Init(&ctx);
-    if (startRet != 1) {
+    if (startRet != OPENSSL_SUCCESS) {
         ENGINE_LOGE("SHA256_Init failed, startRet = %{public}d", startRet);
         return false;
     }
 
     int updateRet = SHA256_Update(&ctx, input, len);
-    if (updateRet != 1) {
+    if (updateRet != OPENSSL_SUCCESS) {
         ENGINE_LOGE("SHA256_Update failed, updateRet = %{public}d", updateRet);
         return false;
     }
 
     int finishRet = SHA256_Final(digest, &ctx);
-    if (finishRet != 1) {
+    if (finishRet != OPENSSL_SUCCESS) {
         ENGINE_LOGE("SHA256_Final failed, finishRet = %{public}d", finishRet);
         return false;
     }

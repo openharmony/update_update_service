@@ -35,6 +35,7 @@ private:
     static bool Sha256Calculate(const unsigned char *input, size_t len, char *componentId,
         unsigned int componentIdLen);
     static bool TransDigestToSha256Result(char *sha256Result, uint32_t componentIdLen, const unsigned char *digest);
+    static void FreeBuffer(char *buffer, std::ifstream &file);
 };
 } // namespace UpdateService
 } // namespace OHOS
