@@ -61,8 +61,7 @@ public:
             return nullptr;
         }
 
-        if (!cJSON_IsObject(object))
-        {
+        if (!cJSON_IsObject(object)) {
             cJSON_Delete(object);
             return nullptr;
         }
@@ -134,10 +133,9 @@ private:
             return;
         }
 
-        if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>)
-        {
+        if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>) {
             if (cJSON_IsNumber(item)) {
-               (sizeof(T) <= sizeof(int)) ? value = static_cast<T>(item->valueint) :
+                (sizeof(T) <= sizeof(int)) ? value = static_cast<T>(item->valueint) :
                     value = static_cast<T>(item->valuedouble);
             }
         } else if constexpr (std::is_floating_point_v<T>) {
@@ -151,9 +149,9 @@ private:
                 value = item->valuestring;
             }
         } else if constexpr (std::is_same_v<T, std::vector<int>>) {
-             GetValueVecInt(item, value);
+            GetValueVecInt(item, value);
         } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
-             GetValueVecString(item, value);
+            GetValueVecString(item, value);
         } else {
             return;
         }
