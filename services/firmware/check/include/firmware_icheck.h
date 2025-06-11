@@ -106,7 +106,7 @@ public:
         if (response.status != static_cast<int64_t>(HttpConstant::SUCCESS) || response.content.empty()) {
             checkStatus = CheckStatus::CHECK_FAIL;
         } else {
-             cJSON *root = cJSON_Parse(response.content.c_str());
+            cJSON *root = cJSON_Parse(response.content.c_str());
             if (!root) {
                 FIRMWARE_LONG_LOGI("FirmwareCheck response: %{public}s", response.content.c_str());
             }

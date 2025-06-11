@@ -78,10 +78,8 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeBlVersionCheckResults(cJSON *root, BlC
     int32_t ret = CAST_INT(JsonParseError::ERR_OK);
     int32_t status = CAST_INT(CheckResultStatus::STATUS_SYSTEM_ERROR);
     UpdateServiceJsonUtils::GetValueAndSetTo(root, "searchStatus", status);
-    if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE))
-    {
-        for (int i = 0; i < cJSON_GetArraySize(itemCheckResults); i++)
-        {
+    if (status == CAST_INT(CheckResultStatus::STATUS_NEW_VERSION_AVAILABLE)) {
+        for (int i = 0; i < cJSON_GetArraySize(itemCheckResults); i++) {
             auto item = cJSON_GetArrayItem(itemCheckResults, i);
             BlVersionCheckResult checkResult;
             ret += UpdateServiceJsonUtils::GetValueAndSetTo(item, "descriptPackageId", checkResult.descriptPackageId);
@@ -131,7 +129,7 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(cJSON *root)
     // 检查 "descriptInfo" 是否存在
     cJSON *itemDescriptInfo = cJSON_GetObjectItemCaseSensitive(root, "descriptInfo");
     if (!itemDescriptInfo) {
-       FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
+        FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
 

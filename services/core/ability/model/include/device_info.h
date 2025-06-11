@@ -29,8 +29,7 @@ public:
 
     friend void ToJson(cJSON *jsonObject, const DeviceInfo &deviceInfo, bool isPrint)
     {
-        if (jsonObject == nullptr)
-        {
+        if (jsonObject == nullptr) {
             return;
         }
 
