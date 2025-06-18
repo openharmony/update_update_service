@@ -39,6 +39,11 @@ struct BusinessError {
         return *this;
     }
 
+    bool IsSuccess() const
+    {
+        return errorNum == CallResult::SUCCESS;
+    }
+
     BusinessError &AddErrorMessage(int32_t errorCode, const std::string &errorMessage)
     {
         ErrorMessage errMsg;
