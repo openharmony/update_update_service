@@ -28,7 +28,6 @@ ohos_taihe("run_taihe_update") {
     taihe_generated_file_path = "$taihe_generated_file_path"
     deps = [ ":copy_update_framework" ]
     outputs = [
-        "$taihe_generated_file_path/src/ani_constructor.cpp",
         "$taihe_generated_file_path/src/ohos.update.ani.cpp",
         "$taihe_generated_file_path/src/ohos.update.abi.c",
     ]
@@ -78,6 +77,7 @@ taihe_shared_library("update_ani") {
     include_dirs = ani_includes
     sources += [
         "src/ani_base_updater.cpp",
+        "src/ani_constructor.cpp",
         "src/ani_common_conveter.cpp",
         "src/ani_local_updater.cpp",
         "src/ani_restorer.cpp",
