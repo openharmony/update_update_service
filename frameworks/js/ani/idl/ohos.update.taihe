@@ -119,6 +119,11 @@
     taskBody: TaskBody;
   }
 
+  struct ErrorMessage {
+    errorCode: i32;
+    errorMessage: String;
+  }
+
   struct TaskBody {
     versionDigestInfo: VersionDigestInfo;
     status: UpgradeStatus;
@@ -127,11 +132,6 @@
     installMode: i32;
     errorMessages: Array<ErrorMessage>;
     versionComponents: Array<VersionComponent>;
-  }
-
-  struct ErrorMessage {
-    errorCode: i32;
-    errorMessage: String;
   }
 
   struct EventClassifyInfo {
