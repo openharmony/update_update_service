@@ -46,7 +46,7 @@ public:
         const ohos::update::UpgradeOptions &upgradeOptions);
     void ClearErrorSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::ClearOptions &clearOptions);
-    ohos::update::UpgradePolicy getUpgradePolicySync();
+    ohos::update::UpgradePolicy GetUpgradePolicySync();
     void SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy);
     void TerminateUpgradeSync();
 

@@ -119,11 +119,6 @@
     taskBody: TaskBody;
   }
 
-  struct ErrorMessage {
-    errorCode: i32;
-    errorMessage: String;
-  }
-
   struct TaskBody {
     versionDigestInfo: VersionDigestInfo;
     status: UpgradeStatus;
@@ -132,6 +127,11 @@
     installMode: i32;
     errorMessages: Array<ErrorMessage>;
     versionComponents: Array<VersionComponent>;
+  }
+
+  struct ErrorMessage {
+    errorCode: i32;
+    errorMessage: String;
   }
 
   struct EventClassifyInfo {
@@ -256,87 +256,87 @@
 interface Updater {
     @gen_async("checkNewVersion")
     @gen_promise("checkNewVersion")
-    checkNewVersionSync(): CheckResult;
+    CheckNewVersionSync(): CheckResult;
 
     @gen_async("getNewVersionInfo")
     @gen_promise("getNewVersionInfo")
-    getNewVersionInfoSync(): NewVersionInfo;
+    GetNewVersionInfoSync(): NewVersionInfo;
 
     @gen_async("getNewVersionDescription")
     @gen_promise("getNewVersionDescription")
-    getNewVersionDescriptionSync(versionDigestInfo: VersionDigestInfo, descriptionOptions: DescriptionOptions): Array<ComponentDescription>;
+    GetNewVersionDescriptionSync(versionDigestInfo: VersionDigestInfo, descriptionOptions: DescriptionOptions): Array<ComponentDescription>;
 
     @gen_async("getCurrentVersionInfo")
     @gen_promise("getCurrentVersionInfo")
-    getCurrentVersionInfoSync(): CurrentVersionInfo;
+    GetCurrentVersionInfoSync(): CurrentVersionInfo;
 
     @gen_async("getCurrentVersionDescription")
     @gen_promise("getCurrentVersionDescription")
-    getCurrentVersionDescriptionSync(descriptionOptions: DescriptionOptions): Array<ComponentDescription>;
+    GetCurrentVersionDescriptionSync(descriptionOptions: DescriptionOptions): Array<ComponentDescription>;
 
     @gen_async("getTaskInfo")
     @gen_promise("getTaskInfo")
-    getTaskInfoSync(): TaskInfo;
+    GetTaskInfoSync(): TaskInfo;
 
     @gen_async("download")
     @gen_promise("download")
-    downloadSync(versionDigestInfo: VersionDigestInfo, downloadOptions: DownloadOptions): void;
+    DownloadSync(versionDigestInfo: VersionDigestInfo, downloadOptions: DownloadOptions): void;
 
     @gen_async("resumeDownload")
     @gen_promise("resumeDownload")
-    resumeDownloadSync(versionDigestInfo: VersionDigestInfo, resumeDownloadOptions: ResumeDownloadOptions): void;
+    ResumeDownloadSync(versionDigestInfo: VersionDigestInfo, resumeDownloadOptions: ResumeDownloadOptions): void;
 
     @gen_async("pauseDownload")
     @gen_promise("pauseDownload")
-    pauseDownloadSync(versionDigestInfo: VersionDigestInfo, pauseDownloadOptions: PauseDownloadOptions): void;
+    PauseDownloadSync(versionDigestInfo: VersionDigestInfo, pauseDownloadOptions: PauseDownloadOptions): void;
 
     @gen_async("upgrade")
     @gen_promise("upgrade")
-    upgradeSync(versionDigestInfo: VersionDigestInfo, upgradeOptions: UpgradeOptions): void;
+    UpgradeSync(versionDigestInfo: VersionDigestInfo, upgradeOptions: UpgradeOptions): void;
 
     @gen_async("clearError")
     @gen_promise("clearError")
-    clearErrorSync(versionDigestInfo: VersionDigestInfo, clearOptions: ClearOptions): void;
+    ClearErrorSync(versionDigestInfo: VersionDigestInfo, clearOptions: ClearOptions): void;
 
     @gen_async("getUpgradePolicy")
     @gen_promise("getUpgradePolicy")
-    getUpgradePolicySync(): UpgradePolicy;
+    GetUpgradePolicySync(): UpgradePolicy;
 
     @gen_async("setUpgradePolicy")
     @gen_promise("setUpgradePolicy")
-    setUpgradePolicySync(policy: UpgradePolicy): void;
+    SetUpgradePolicySync(policy: UpgradePolicy): void;
 
     @gen_async("terminateUpgrade")
     @gen_promise("terminateUpgrade")
-    terminateUpgradeSync():void;
+    TerminateUpgradeSync():void;
 
-    on(eventClassifyInfo: EventClassifyInfo, taskCallback: (eventInfo: EventInfo) => void): void;
+    On(eventClassifyInfo: EventClassifyInfo, taskCallback: (eventInfo: EventInfo) => void): void;
 
-    off(eventClassifyInfo: EventClassifyInfo, taskCallback:Optional<(eventInfo: EventInfo) => void>): void;
+    Off(eventClassifyInfo: EventClassifyInfo, taskCallback:Optional<(eventInfo: EventInfo) => void>): void;
   }
 
   interface Restorer {
     @gen_async("factoryReset")
     @gen_promise("factoryReset")
-    factoryResetSync(): void;
+    FactoryResetSync(): void;
   }
 
   interface LocalUpdater {
     @gen_async("verifyUpgradePackage")
     @gen_promise("verifyUpgradePackage")
-    verifyUpgradePackageSync(upgradeFile: UpgradeFile, certsFile: String): void;
+    VerifyUpgradePackageSync(upgradeFile: UpgradeFile, certsFile: String): void;
 
     @gen_async("applyNewVersion")
     @gen_promise("applyNewVersion")
-    applyNewVersionSync(upgradeFiles: Array<UpgradeFile>): void;
+    ApplyNewVersionSync(upgradeFiles: Array<UpgradeFile>): void;
 
-    on(eventClassifyInfo: EventClassifyInfo, taskCallback: (eventInfo: EventInfo) => void): void;
+    On(eventClassifyInfo: EventClassifyInfo, taskCallback: (eventInfo: EventInfo) => void): void;
 
-    off(eventClassifyInfo: EventClassifyInfo, taskCallback:Optional<(eventInfo: EventInfo) => void>): void;
+    Off(eventClassifyInfo: EventClassifyInfo, taskCallback:Optional<(eventInfo: EventInfo) => void>): void;
   }
 
-  function getOnlineUpdater(upgradeInfo: UpgradeInfo): Updater;
+  function GetOnlineUpdater(upgradeInfo: UpgradeInfo): Updater;
 
-  function getRestorer(): Restorer;
+  function GetRestorer(): Restorer;
 
-  function getLocalUpdater(): LocalUpdater;
+  function GetLocalUpdater(): LocalUpdater;

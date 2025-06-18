@@ -28,19 +28,19 @@ class UpdaterImpl {
 public:
     explicit UpdaterImpl(const UpgradeInfo &upgradeInfo) : upgradeInfo_(upgradeInfo) {}
 
-    ohos::update::CheckResult checkNewVersionSync()
+    ohos::update::CheckResult CheckNewVersionSync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         return GetAniUpdater()->CheckNewVersionSync();
     }
 
-    ohos::update::NewVersionInfo getNewVersionInfoSync()
+    ohos::update::NewVersionInfo GetNewVersionInfoSync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         return GetAniUpdater()->GetNewVersionInfoSync();
     }
 
-    taihe::array<ohos::update::ComponentDescription> getNewVersionDescriptionSync(
+    taihe::array<ohos::update::ComponentDescription> GetNewVersionDescriptionSync(
         const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::DescriptionOptions &descriptionOptions)
     {
@@ -48,86 +48,86 @@ public:
         return GetAniUpdater()->GetNewVersionDescriptionSync(versionDigestInfo, descriptionOptions);
     }
 
-    ohos::update::CurrentVersionInfo getCurrentVersionInfoSync()
+    ohos::update::CurrentVersionInfo GetCurrentVersionInfoSync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         return GetAniUpdater()->GetCurrentVersionInfoSync();
     }
 
-    taihe::array<ohos::update::ComponentDescription> getCurrentVersionDescriptionSync(
+    taihe::array<ohos::update::ComponentDescription> GetCurrentVersionDescriptionSync(
         ohos::update::DescriptionOptions const & descriptionOptions)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         return GetAniUpdater()->GetCurrentVersionDescriptionSync(descriptionOptions);
     }
 
-    ohos::update::TaskInfo getTaskInfoSync()
+    ohos::update::TaskInfo GetTaskInfoSync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         return GetAniUpdater()->GetTaskInfoSync();
     }
 
-    void downloadSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
+    void DownloadSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::DownloadOptions &downloadOptions)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->DownloadSync(versionDigestInfo, downloadOptions);
     }
 
-    void resumeDownloadSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
+    void ResumeDownloadSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::ResumeDownloadOptions &resumeDownloadOptions)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->ResumeDownloadSync(versionDigestInfo, resumeDownloadOptions);
     }
 
-    void pauseDownloadSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
+    void PauseDownloadSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::PauseDownloadOptions &pauseDownloadOptions)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->PauseDownloadSync(versionDigestInfo, pauseDownloadOptions);
     }
 
-    void upgradeSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
+    void UpgradeSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::UpgradeOptions &upgradeOptions)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->UpgradeSync(versionDigestInfo, upgradeOptions);
     }
 
-    void clearErrorSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
+    void ClearErrorSync(const ohos::update::VersionDigestInfo &versionDigestInfo,
         const ohos::update::ClearOptions &clearOptions)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->ClearErrorSync(versionDigestInfo, clearOptions);
     }
 
-    ohos::update::UpgradePolicy getUpgradePolicySync()
+    ohos::update::UpgradePolicy GetUpgradePolicySync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
-        return GetAniUpdater()->getUpgradePolicySync();
+        return GetAniUpdater()->GetUpgradePolicySync();
     }
 
-    void setUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
+    void SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->SetUpgradePolicySync(policy);
     }
 
-    void terminateUpgradeSync()
+    void TerminateUpgradeSync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->TerminateUpgradeSync();
     }
 
-    void on(const ohos::update::EventClassifyInfo &eventClassifyInfo,
+    void On(const ohos::update::EventClassifyInfo &eventClassifyInfo,
         taihe::callback_view<void(const ohos::update::EventInfo &)> taskCallback)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetAniUpdater()->On(taskCallback);
     }
 
-    void off(const ::ohos::update::EventClassifyInfo &eventClassifyInfo,
+    void Off(const ::ohos::update::EventClassifyInfo &eventClassifyInfo,
         taihe::optional_view<taihe::callback<void(const ohos::update::EventInfo &)>> taskCallback)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
@@ -155,7 +155,7 @@ class RestorerImpl {
 public:
     RestorerImpl() = default;
 
-    void factoryResetSync()
+    void FactoryResetSync()
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         if (aniRestorer_ == nullptr) {
@@ -172,26 +172,26 @@ class LocalUpdaterImpl {
 public:
     LocalUpdaterImpl() = default;
 
-    void verifyUpgradePackageSync(const ohos::update::UpgradeFile &upgradeFile, taihe::string_view certsFile)
+    void VerifyUpgradePackageSync(const ohos::update::UpgradeFile &upgradeFile, taihe::string_view certsFile)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetLocalUpdater()->VerifyUpgradePackageSync(upgradeFile, certsFile);
     }
 
-    void applyNewVersionSync(taihe::array_view<ohos::update::UpgradeFile> upgradeFiles)
+    void ApplyNewVersionSync(taihe::array_view<ohos::update::UpgradeFile> upgradeFiles)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetLocalUpdater()->ApplyNewVersionSync(upgradeFiles);
     }
 
-    void on(const ohos::update::EventClassifyInfo &eventClassifyInfo,
+    void On(const ohos::update::EventClassifyInfo &eventClassifyInfo,
         taihe::callback_view<void(const ohos::update::EventInfo &)> taskCallback)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
         GetLocalUpdater()->On(taskCallback);
     }
 
-    void off(const ::ohos::update::EventClassifyInfo &eventClassifyInfo,
+    void Off(const ::ohos::update::EventClassifyInfo &eventClassifyInfo,
         taihe::optional_view<taihe::callback<void(const ohos::update::EventInfo &)>> taskCallback)
     {
         ENGINE_LOGI("%{public}s method invoked", __func__);
@@ -214,18 +214,18 @@ private:
     static inline std::shared_ptr<AniLocalUpdater> localUpdater_ = nullptr;
 };
 
-ohos::update::Updater getOnlineUpdater(const ohos::update::UpgradeInfo &upgradeInfo)
+ohos::update::Updater GetOnlineUpdater(const ohos::update::UpgradeInfo &upgradeInfo)
 {
     const auto &info = AniCommonConverter::Converter(upgradeInfo);
     return taihe::make_holder<UpdaterImpl, ohos::update::Updater>(info);
 }
 
-ohos::update::Restorer getRestorer()
+ohos::update::Restorer GetRestorer()
 {
     return taihe::make_holder<RestorerImpl, ohos::update::Restorer>();
 }
 
-ohos::update::LocalUpdater getLocalUpdater()
+ohos::update::LocalUpdater GetLocalUpdater()
 {
     return taihe::make_holder<LocalUpdaterImpl, ohos::update::LocalUpdater>();
 }
@@ -233,7 +233,7 @@ ohos::update::LocalUpdater getLocalUpdater()
 
 // Since these macros are auto-generate, lint will cause false positive.
 // NOLINTBEGIN
-TH_EXPORT_CPP_API_getOnlineUpdater(getOnlineUpdater);
-TH_EXPORT_CPP_API_getRestorer(getRestorer);
-TH_EXPORT_CPP_API_getLocalUpdater(getLocalUpdater);
+TH_EXPORT_CPP_API_GetOnlineUpdater(GetOnlineUpdater);
+TH_EXPORT_CPP_API_GetRestorer(GetRestorer);
+TH_EXPORT_CPP_API_GetLocalUpdater(GetLocalUpdater);
 // NOLINTEND

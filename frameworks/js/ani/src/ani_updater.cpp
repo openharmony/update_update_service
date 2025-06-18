@@ -137,7 +137,7 @@ void AniUpdater::ClearErrorSync(const ohos::update::VersionDigestInfo &versionDi
     SetError(ret, "clearError", businessError);
 }
 
-ohos::update::UpgradePolicy AniUpdater::getUpgradePolicySync()
+ohos::update::UpgradePolicy AniUpdater::GetUpgradePolicySync()
 {
     BusinessError businessError;
     UpgradePolicy policy;
@@ -153,7 +153,7 @@ void AniUpdater::SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
 
     const auto ret = UpdateServiceKits::GetInstance().SetUpgradePolicy(upgradeInfo_,
         AniCommonConverter::Converter(policy), businessError);
-    SetError(ret, "getUpgradePolicy", businessError);
+    SetError(ret, "setUpgradePolicy", businessError);
 }
 
 void AniUpdater::TerminateUpgradeSync()
