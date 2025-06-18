@@ -19,7 +19,7 @@
 #include <mutex>
 #include <vector>
 
-#include "ohos.update.EventInfo.proj.1.hpp"
+#include "ohos.update.proj.hpp"
 #include "taihe/callback.hpp"
 
 #include "business_error.h"
