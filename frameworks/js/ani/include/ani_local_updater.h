@@ -16,7 +16,7 @@
 #ifndef ANI_LOCAL_UPDATER_H
 #define ANI_LOCAL_UPDATER_H
 
-#include "ohos.update.UpgradeFile.proj.1.hpp"
+#include "ohos.update.proj.hpp"
 
 #include "ani_base_updater.h"
 

@@ -16,21 +16,7 @@
 #ifndef ANI_COMMON_CONVETER_H
 #define ANI_COMMON_CONVETER_H
 
-#include "ohos.update.CheckResult.proj.1.hpp"
-#include "ohos.update.ClearOptions.proj.1.hpp"
-#include "ohos.update.ComponentDescription.proj.1.hpp"
-#include "ohos.update.CurrentVersionInfo.proj.1.hpp"
-#include "ohos.update.DescriptionOptions.proj.1.hpp"
-#include "ohos.update.DownloadOptions.proj.1.hpp"
-#include "ohos.update.EventInfo.proj.1.hpp"
-#include "ohos.update.PauseDownloadOptions.proj.1.hpp"
-#include "ohos.update.ResumeDownloadOptions.proj.1.hpp"
-#include "ohos.update.TaskBody.proj.1.hpp"
-#include "ohos.update.TaskInfo.proj.1.hpp"
-#include "ohos.update.UpgradeFile.proj.1.hpp"
-#include "ohos.update.UpgradeInfo.proj.1.hpp"
-#include "ohos.update.UpgradeOptions.proj.1.hpp"
-#include "ohos.update.UpgradePolicy.proj.1.hpp"
+#include "ohos.update.proj.hpp"
 
 #include "check_result.h"
 #include "clear_options.h"
