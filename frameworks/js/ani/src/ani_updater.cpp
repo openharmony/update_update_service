@@ -150,7 +150,6 @@ ohos::update::UpgradePolicy AniUpdater::GetUpgradePolicySync()
 void AniUpdater::SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
 {
     BusinessError businessError;
-
     const auto ret = UpdateServiceKits::GetInstance().SetUpgradePolicy(upgradeInfo_,
         AniCommonConverter::Converter(policy), businessError);
     SetError(ret, "setUpgradePolicy", businessError);
@@ -159,10 +158,9 @@ void AniUpdater::SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
 void AniUpdater::TerminateUpgradeSync()
 {
     BusinessError businessError;
-
     UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, businessError);
     if (!businessError.IsSuccess()) {
-        taihe::set_business_error(static_cast<int32_t>(businessError.errorNum), businessError.message);
+        SetError(ret, "TerminateUpgrade", businessError);
     }
 }
 
