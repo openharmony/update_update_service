@@ -158,7 +158,7 @@ void AniUpdater::SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
 void AniUpdater::TerminateUpgradeSync()
 {
     BusinessError businessError;
-    UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, businessError);
+    const auto ret = UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, businessError);
     if (!businessError.IsSuccess()) {
         SetError(ret, "TerminateUpgrade", businessError);
     }
