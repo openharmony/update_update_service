@@ -160,7 +160,7 @@ void AniUpdater::TerminateUpgradeSync()
     BusinessError businessError;
     const auto ret = UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, businessError);
     if (!businessError.IsSuccess()) {
-        SetError(ret, "TerminateUpgrade", businessError);
+        SetError(ret, "terminateUpgrade", businessError);
     }
 }
 
