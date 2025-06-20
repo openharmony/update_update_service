@@ -51,12 +51,14 @@
         "preferences",
         "sys_installer",
         "time_service",
-        "relational_store"
+        "relational_store",
+        "runtime_core"
       ],
       "third_party": []
     },
     "build": {
       "modules": [
+        "//base/update/updateservice/frameworks/js/ani:update_framework_taihe",
         "//base/update/updateservice/frameworks/js/napi/update:update",
         "//base/update/updateservice/interfaces/inner_api/engine:updateservicekits",
         "//base/update/updateservice/interfaces/inner_api/modulemgr:update_module_mgr",
