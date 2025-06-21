@@ -38,7 +38,7 @@ struct VersionComponent : public BaseJsonStruct, public Parcelable {
     std::string innerVersion;
     size_t size = 0;
     size_t effectiveMode = static_cast<size_t>(EffectiveMode::COLD);
-    size_t otaMode = static_cast<size_t>(OtaMode::REGULAR);
+    size_t otaMode = static_cast<size_t>(OtaMode::REGULAR_OTA);
     DescriptionInfo descriptionInfo;
     std::string componentExtra;
 

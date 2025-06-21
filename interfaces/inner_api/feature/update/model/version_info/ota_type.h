@@ -18,10 +18,10 @@
 
 namespace OHOS::UpdateService {
 enum class OtaMode {
-    REGULAR = 0,
-    STREAM = 1, // 1 << 0
-    AB = 2, // 1 << 1
-    AB_STREAM = 3 // STREAM | AB
+    REGULAR_OTA = 0,
+    STREAM_OTA = 1, // 1 << 0
+    AB_REGULAR_OTA = 2, // 1 << 1
+    AB_STREAM_OTA = 3 // STREAM | AB
 };
 } // namespace OHOS::UpdateService
 #endif // UPDATE_SERVICE_OTA_TYPE_H
