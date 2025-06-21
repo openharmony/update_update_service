@@ -134,10 +134,10 @@ void DefineProperty::DefineEffectiveMode(napi_env env, napi_value exports)
 void DefineProperty::DefineOtaType(napi_env env, napi_value exports)
 {
     std::vector<std::pair<std::string, napi_value>> otaTypeList = {
-        DECLARE_ENUM_PROPERTY(OtaMode::REGULAR),
-        DECLARE_ENUM_PROPERTY(OtaMode::STREAM),
-        DECLARE_ENUM_PROPERTY(OtaMode::AB),
-        DECLARE_ENUM_PROPERTY(OtaMode::AB_STREAM)
+        DECLARE_ENUM_PROPERTY(OtaMode::REGULAR_OTA),
+        DECLARE_ENUM_PROPERTY(OtaMode::STREAM_OTA),
+        DECLARE_ENUM_PROPERTY(OtaMode::AB_REGULAR_OTA),
+        DECLARE_ENUM_PROPERTY(OtaMode::AB_STREAM_OTA)
     };
     NapiCommonUtils::CreateProperty(env, exports, "OtaMode", otaTypeList);
 }
