@@ -87,11 +87,11 @@ VersionComponent FirmwareUpdateHelper::BuildHotaVersionComponent(std::vector<Fir
     hotaVersionComponent.effectiveMode = effectiveMode;
     size_t otaMode;
     if (InstallType == InstallType::SYS_INSTALLER) {
-        otaMode = static_cast<size_t>(OtaMode::AB);
+        otaMode = static_cast<size_t>(OtaMode::AB_REGULAR_OTA);
     } else if (InstallType == InstallType::STREAM_INSTALLLER) {
-        otaMode = static_cast<size_t>(OtaMode::AB_STREAM);
+        otaMode = static_cast<size_t>(OtaMode::AB_STREAM_OTA);
     } else {
-        otaMode = static_cast<size_t>(OtaMode::REGULAR);
+        otaMode = static_cast<size_t>(OtaMode::REGULAR_OTA);
     }
     hotaVersionComponent.otaMode = otaMode;
     hotaVersionComponent.innerVersion = hotaComponents[0].targetBlVersionNumber;
