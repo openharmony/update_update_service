@@ -166,7 +166,7 @@ private:
             int32_t len = SSL_read(ssl, buffer.data(), JSON_MAX_SIZE);
             std::string resultStr = buffer.data();
             size_t index = resultStr.find('{');
-            if (index != std::string::pos) {
+            if (index != std::string::npos) {
                 buffer.erase(buffer.begin(), buffer.begin() + index);
             }
             if (len > 0 && ParseJsonFile(buffer, response) == 0) {
