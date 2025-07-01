@@ -31,7 +31,7 @@ void AniBaseUpdater::On(taihe::callback_view<void(const ohos::update::EventInfo 
     std::unique_lock lock(mutex_);
     taihe::callback<void(const ohos::update::EventInfo &)> taiheCallback(callback);
     for (const auto &callbackInfo : callbacks_) {
-        if (taihe::same(taiheCallback, callbackInfo)) {
+        if (taiheCallback == callbackInfo) {
             ENGINE_LOGI("AniBaseUpdater::on ignored, callback is same");
             return;
         }
@@ -47,7 +47,7 @@ void AniBaseUpdater::Off([[maybe_unused]] const taihe::callback<void(const ohos:
     std::unique_lock lock(mutex_);
     taihe::callback<void(const ohos::update::EventInfo &)> taiheCallback(callback);
     for (auto it = callbacks_.begin(); it != callbacks_.end();) {
-        if (taihe::same(*it, callback)) {
+        if (*it == callback) {
             callbacks_.erase(it);
             continue;
         }
