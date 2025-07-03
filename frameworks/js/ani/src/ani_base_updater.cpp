@@ -45,13 +45,10 @@ void AniBaseUpdater::On(taihe::callback_view<void(const ohos::update::EventInfo 
 void AniBaseUpdater::Off([[maybe_unused]] const taihe::callback<void(const ohos::update::EventInfo &)> &callback)
 {
     std::unique_lock lock(mutex_);
-    for (auto it = callbacks_.begin(); it != callbacks_.end();) {
-        if (*it == callback) {
-            it = callbacks_.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    callbacks_.erase(
+        std::remove_if(callbacks_.begin(), callbacks_.end(),
+            [&](const auto &cb) { return cb == callback; }),
+            callbacks_.end());
     if (callbacks_.empty()) {
         UnRegisterCallback();
     }
