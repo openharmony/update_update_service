@@ -48,10 +48,10 @@ void AniBaseUpdater::Off([[maybe_unused]] const taihe::callback<void(const ohos:
     taihe::callback<void(const ohos::update::EventInfo &)> taiheCallback(callback);
     for (auto it = callbacks_.begin(); it != callbacks_.end();) {
         if (*it == callback) {
-            callbacks_.erase(it);
-            continue;
+            it = callbacks_.erase(it);
+        } else {
+            ++it;
         }
-        ++it;
     }
     if (callbacks_.empty()) {
         UnRegisterCallback();
