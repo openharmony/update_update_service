@@ -20,7 +20,7 @@
 #include "ani_common_conveter.h"
 #include "update_log.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService{
 AniBaseUpdater::~AniBaseUpdater()
 {
     OffAll();
