@@ -17,11 +17,12 @@
 
 #include "update_service_kits.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService{
 void AniRestorer::FactoryResetSync()
 {
     BusinessError error;
-    const int32_t ret = UpdateServiceKits::GetInstance().FactoryReset(error);
+    int32_t funcResult;
+    const int32_t ret = UpdateServiceKits::GetInstance().FactoryReset(error, funcResult);
     SetError(ret, "factoryReset", error);
 }
 

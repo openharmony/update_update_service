@@ -35,7 +35,7 @@
 #include "upgrade_options.h"
 #include "upgrade_policy.h"
 
-namespace OHOS::UpdateEngine {
+namespace OHOS::UpdateService{
 class AniCommonConverter {
 public:
     static ohos::update::ErrorMessage Converter(const ErrorMessage &error);
