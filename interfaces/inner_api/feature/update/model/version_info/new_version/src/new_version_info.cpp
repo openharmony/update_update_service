@@ -23,8 +23,8 @@ bool NewVersionInfo::ReadFromParcel(Parcel &parcel)
 {
     versionDigestInfo.versionDigest = Str16ToStr8(parcel.ReadString16());
     int32_t size = parcel.ReadInt32();
-    if (size > MAX_VECTOR_SIZE) {
-        ENGINE_LOGE("ReadVersionComponents size is over MAX_VECTOR_SIZE, size=%{public}d", size);
+    if ((size < MIN_VECTOR_SIZE) || (size > MAX_VECTOR_SIZE)) {
+        ENGINE_LOGE("Invalid versionDigestInfo size =%{public}d", size);
         return false;
     }
 
