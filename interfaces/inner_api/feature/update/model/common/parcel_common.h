@@ -18,5 +18,6 @@
 
 namespace OHOS::UpdateService {
 static constexpr int32_t MAX_VECTOR_SIZE = 128;
+static constexpr int32_t MIN_VECTOR_SIZE = 0;
 } // OHOS::UpdateService
 #endif // UPDATE_SERVICE_PARCEL_COMMON_H
