@@ -18,7 +18,7 @@
 
 #include "ani_base_updater.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 class AniRestorer final : public AniBaseUpdater {
 public:
     explicit AniRestorer() = default;

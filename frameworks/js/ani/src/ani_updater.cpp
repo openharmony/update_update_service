@@ -23,7 +23,7 @@
 #include "task_info.h"
 #include "update_service_kits.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 AniUpdater::AniUpdater(const UpgradeInfo &info) : upgradeInfo_(info)
 {
     ENGINE_LOGI("AniUpdater construct upgradeInfo = %{public}s", info.ToString().c_str());

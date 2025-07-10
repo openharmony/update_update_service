@@ -20,7 +20,7 @@
 
 #include "ani_base_updater.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 class AniLocalUpdater final : public AniBaseUpdater {
 public:
     AniLocalUpdater() = default;

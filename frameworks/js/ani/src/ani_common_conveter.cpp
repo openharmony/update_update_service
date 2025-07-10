@@ -15,7 +15,7 @@
 
 #include "ani_common_conveter.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 ohos::update::ErrorMessage AniCommonConverter::Converter(const ErrorMessage &error)
 {
     return {

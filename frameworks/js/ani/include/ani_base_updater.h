@@ -25,7 +25,7 @@
 #include "business_error.h"
 #include "event_info.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 class AniBaseUpdater {
 public:
     virtual ~AniBaseUpdater();
