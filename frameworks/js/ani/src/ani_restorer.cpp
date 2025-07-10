@@ -17,7 +17,7 @@
 
 #include "update_service_kits.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 void AniRestorer::FactoryResetSync()
 {
     BusinessError error;

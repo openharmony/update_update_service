@@ -22,7 +22,7 @@
 #include "ani_base_updater.h"
 #include "upgrade_info.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 class AniUpdater final : public AniBaseUpdater {
 public:
     explicit AniUpdater(const UpgradeInfo &info);

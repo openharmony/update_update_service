@@ -21,7 +21,7 @@
 #include "update_service_kits.h"
 #include "upgrade_file.h"
 
-namespace OHOS::UpdateService{
+namespace OHOS::UpdateService {
 void AniLocalUpdater::VerifyUpgradePackageSync(const ohos::update::UpgradeFile &upgradeFile,
     taihe::string_view certsFile)
 {
@@ -43,7 +43,7 @@ void AniLocalUpdater::ApplyNewVersionSync(const taihe::array_view<ohos::update::
     for (const auto &value : upgradeFiles) {
         packageNames.emplace_back(AniCommonConverter::Converter(value).filePath);
     }
-    const int32_t ret = UpdateServiceKits::GetInstance().ApplyNewVersion(upgradeInfo, miscFile, packageNames, error, 
+    const int32_t ret = UpdateServiceKits::GetInstance().ApplyNewVersion(upgradeInfo, miscFile, packageNames, error,
         funcResult);
     SetError(ret, "applyNewVersion", error);
 }
