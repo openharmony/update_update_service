@@ -83,8 +83,8 @@ bool TaskBody::ReadFromParcel(Parcel &parcel)
     installMode = parcel.ReadInt32();
 
     int32_t errorMessageSize = parcel.ReadInt32();
-    if (errorMessageSize > MAX_VECTOR_SIZE) {
-        ENGINE_LOGE("ReadErrorMessages size is over MAX_VECTOR_SIZE, size=%{public}d", errorMessageSize);
+    if ((errorMessageSize < MIN_VECTOR_SIZE) || (errorMessageSize > MAX_VECTOR_SIZE)) {
+        ENGINE_LOGE("Invalid errorMessage size=%{public}d", errorMessageSize);
         return false;
     }
 
@@ -99,8 +99,8 @@ bool TaskBody::ReadFromParcel(Parcel &parcel)
     }
 
     int32_t componentSize = parcel.ReadInt32();
-    if (componentSize > MAX_VECTOR_SIZE) {
-        ENGINE_LOGE("ReadVersionComponents size is over MAX_VECTOR_SIZE, size=%{public}d", componentSize);
+    if ((componentSize < MIN_VECTOR_SIZE) || (componentSize > MAX_VECTOR_SIZE)) {
+        ENGINE_LOGE("Invalid  componentSize size=%{public}d", componentSize);
         return false;
     }
 

@@ -45,7 +45,7 @@ std::string Sha256Utils::CalculateHashCode(std::string inputStr)
 bool Sha256Utils::CheckFileSha256String(const std::string &fileName, const std::string &sha256String)
 {
     if (!FileUtils::IsFileExist(fileName)) {
-        ENGINE_LOGE("check file sha256 failed, fileName = %{public}s is not exist", fileName.c_str());
+        ENGINE_LOGE("check file sha256 failed, file not exist");
         return false;
     }
     char sha256Result[SHA256_STRING_LEN] = {0}; // sha256Result len is 65
@@ -75,7 +75,7 @@ bool Sha256Utils::GetDigestFromFile(const char *fileName, unsigned char digest[]
 {
     char realPath[PATH_MAX] = {};
     if (realpath(fileName, realPath) == NULL) {
-        ENGINE_LOGI("%{private}s is not exist or invalid", fileName);
+        ENGINE_LOGI("file not exist or invalid");
         return false;
     }
 

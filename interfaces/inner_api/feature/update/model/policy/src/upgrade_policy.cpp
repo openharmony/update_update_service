@@ -24,13 +24,13 @@ bool UpgradePolicy::ReadFromParcel(Parcel &parcel)
     downloadStrategy = static_cast<bool>(parcel.ReadBool());
     autoUpgradeStrategy = static_cast<bool>(parcel.ReadBool());
     customPolicyType = static_cast<PolicyType>(parcel.ReadInt32());
-    size_t size = static_cast<size_t>(parcel.ReadInt32());
+    int32_t size = parcel.ReadInt32();
     size_t arraySize = COUNT_OF(autoUpgradePeriods);
-    if (size > MAX_VECTOR_SIZE) {
-        ENGINE_LOGE("ReadUpgradePolicy size is over MAX_VECTOR_SIZE, size=%{public}zu", size);
+    if ((size < MIN_VECTOR_SIZE) || (size > MAX_VECTOR_SIZE)) {
+        ENGINE_LOGE("Invalid autoUpgradePeriods size=%{public}zu", size);
         return -1;
     }
-    for (size_t i = 0; (i < size) && (i < arraySize); i++) {
+    for (size_t i = 0; (i < static_cast<size_t>(size)) && (i < arraySize); i++) {
         autoUpgradePeriods[i].start = parcel.ReadUint32();
         autoUpgradePeriods[i].end = parcel.ReadUint32();
     }
