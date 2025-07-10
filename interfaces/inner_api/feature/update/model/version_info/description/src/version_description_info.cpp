@@ -23,8 +23,8 @@ namespace OHOS::UpdateService {
 bool VersionDescriptionInfo::ReadFromParcel(Parcel &parcel)
 {
     int32_t componentDescriptionsSize = parcel.ReadInt32();
-    if (componentDescriptionsSize > MAX_VECTOR_SIZE) {
-        ENGINE_LOGE("size is over MAX_VECTOR_SIZE, size=%{public}d", componentDescriptionsSize);
+    if ((componentDescriptionsSize < MIN_VECTOR_SIZE) || (componentDescriptionsSize > MAX_VECTOR_SIZE)) {
+        ENGINE_LOGE("Invalid componentDescriptions size =%{public}d", componentDescriptionsSize);
         return false;
     }
 
