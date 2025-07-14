@@ -33,7 +33,7 @@ ohos::update::CheckResult AniUpdater::CheckNewVersionSync()
 {
     BusinessError error;
     CheckResult result;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().CheckNewVersion(upgradeInfo_, error, result, funcResult);
     SetError(ret, "checkNewVersion", error);
     return AniCommonConverter::Converter(result);
@@ -43,7 +43,7 @@ ohos::update::NewVersionInfo AniUpdater::GetNewVersionInfoSync()
 {
     BusinessError error;
     NewVersionInfo info;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().GetNewVersionInfo(upgradeInfo_, info, error, funcResult);
     SetError(ret, "getNewVersionInfo", error);
     return AniCommonConverter::Converter(info);
@@ -55,7 +55,7 @@ taihe::array<ohos::update::ComponentDescription> AniUpdater::GetNewVersionDescri
 {
     BusinessError error;
     VersionDescriptionInfo result;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().GetNewVersionDescription(upgradeInfo_,
         AniCommonConverter::Converter(versionDigestInfo), AniCommonConverter::Converter(descriptionOptions), result,
         error, funcResult);
@@ -67,7 +67,7 @@ ohos::update::CurrentVersionInfo AniUpdater::GetCurrentVersionInfoSync()
 {
     BusinessError error;
     CurrentVersionInfo info;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().GetCurrentVersionInfo(upgradeInfo_, info, error, funcResult);
     SetError(ret, "getCurrentVersionInfo", error);
     return AniCommonConverter::Converter(info);
@@ -78,7 +78,7 @@ taihe::array<ohos::update::ComponentDescription> AniUpdater::GetCurrentVersionDe
 {
     VersionDescriptionInfo currentVersionDescriptionInfo;
     BusinessError error;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().GetCurrentVersionDescription(upgradeInfo_,
         AniCommonConverter::Converter(descriptionOptions), currentVersionDescriptionInfo, error, funcResult);
     SetError(ret, "getCurrentVersionDescription", error);
@@ -89,7 +89,7 @@ ohos::update::TaskInfo AniUpdater::GetTaskInfoSync()
 {
     TaskInfo taskInfo;
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().GetTaskInfo(upgradeInfo_, taskInfo, businessError, funcResult);
     SetError(ret, "getTaskInfo", businessError);
     return AniCommonConverter::Converter(taskInfo);
@@ -99,7 +99,7 @@ void AniUpdater::DownloadSync(const ohos::update::VersionDigestInfo &versionDige
     const ohos::update::DownloadOptions &downloadOptions)
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret =
         UpdateServiceKits::GetInstance().Download(upgradeInfo_, AniCommonConverter::Converter(versionDigestInfo),
         AniCommonConverter::Converter(downloadOptions), businessError, funcResult);
@@ -110,7 +110,7 @@ void AniUpdater::ResumeDownloadSync(const ohos::update::VersionDigestInfo &versi
     const ohos::update::ResumeDownloadOptions &resumeDownloadOptions)
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret =
         UpdateServiceKits::GetInstance().ResumeDownload(upgradeInfo_, AniCommonConverter::Converter(versionDigestInfo),
         AniCommonConverter::Converter(resumeDownloadOptions), businessError, funcResult);
@@ -121,7 +121,7 @@ void AniUpdater::PauseDownloadSync(const ohos::update::VersionDigestInfo &versio
     const ohos::update::PauseDownloadOptions &pauseDownloadOptions)
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret =
         UpdateServiceKits::GetInstance().PauseDownload(upgradeInfo_, AniCommonConverter::Converter(versionDigestInfo),
         AniCommonConverter::Converter(pauseDownloadOptions), businessError, funcResult);
@@ -132,7 +132,7 @@ void AniUpdater::UpgradeSync(const ohos::update::VersionDigestInfo &versionDiges
     const ohos::update::UpgradeOptions &upgradeOptions)
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().Upgrade(upgradeInfo_,
         AniCommonConverter::Converter(versionDigestInfo), AniCommonConverter::Converter(upgradeOptions), businessError,
         funcResult);
@@ -143,7 +143,7 @@ void AniUpdater::ClearErrorSync(const ohos::update::VersionDigestInfo &versionDi
     const ohos::update::ClearOptions &clearOptions)
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().ClearError(upgradeInfo_,
         AniCommonConverter::Converter(versionDigestInfo), AniCommonConverter::Converter(clearOptions), businessError,
         funcResult);
@@ -154,8 +154,7 @@ ohos::update::UpgradePolicy AniUpdater::GetUpgradePolicySync()
 {
     BusinessError businessError;
     UpgradePolicy policy;
-    int32_t funcResult;
-
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().GetUpgradePolicy(upgradeInfo_, policy, businessError, funcResult);
     SetError(ret, "getUpgradePolicy", businessError);
     return AniCommonConverter::Converter(policy);
@@ -164,7 +163,7 @@ ohos::update::UpgradePolicy AniUpdater::GetUpgradePolicySync()
 void AniUpdater::SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().SetUpgradePolicy(upgradeInfo_,
         AniCommonConverter::Converter(policy), businessError, funcResult);
     SetError(ret, "setUpgradePolicy", businessError);
@@ -173,7 +172,7 @@ void AniUpdater::SetUpgradePolicySync(const ohos::update::UpgradePolicy &policy)
 void AniUpdater::TerminateUpgradeSync()
 {
     BusinessError businessError;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const auto ret = UpdateServiceKits::GetInstance().TerminateUpgrade(upgradeInfo_, businessError, funcResult);
     if (!businessError.IsSuccess()) {
         SetError(ret, "terminateUpgrade", businessError);
@@ -187,7 +186,7 @@ void AniUpdater::RegisterCallback()
     constexpr int32_t sleepDuration = 10; // 回调注册失败后再次尝试之前的等待时间，单位：毫秒
     constexpr int32_t maxRetryTimes = 5;  // 回调注册失败最大尝试次数
     int32_t retryTimes = 0;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     do {
         int32_t ret = UpdateServiceKits::GetInstance().RegisterUpdateCallback(upgradeInfo_, callback, funcResult);
         if (ret == INT_CALL_SUCCESS) {
@@ -205,7 +204,7 @@ void AniUpdater::RegisterCallback()
 
 void AniUpdater::UnRegisterCallback()
 {
-    int32_t funcResult;
+    int32_t funcResult = 0;
     UpdateServiceKits::GetInstance().UnregisterUpdateCallback(upgradeInfo_, funcResult);
 }
 }
