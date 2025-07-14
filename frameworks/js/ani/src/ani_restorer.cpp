@@ -21,8 +21,7 @@ namespace OHOS::UpdateService {
 void AniRestorer::FactoryResetSync()
 {
     BusinessError error;
-    int32_t funcResult;
-    const int32_t ret = UpdateServiceKits::GetInstance().FactoryReset(error, funcResult);
+    const int32_t ret = UpdateServiceKits::GetInstance().FactoryReset(error);
     SetError(ret, "factoryReset", error);
 }
 
@@ -30,4 +29,4 @@ std::string AniRestorer::GetPermissionName()
 {
     return "ohos.permission.FACTORY_RESET";
 }
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService

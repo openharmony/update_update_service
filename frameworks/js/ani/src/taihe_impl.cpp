@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+#include <map>
+
 #include "ohos.update.proj.hpp"
 #include "ohos.update.impl.hpp"
 #include "taihe/runtime.hpp"
@@ -22,7 +24,7 @@
 #include "ani_restorer.h"
 #include "ani_updater.h"
 
-using namespace OHOS::UpdateEngine;
+using namespace OHOS::UpdateService;
 namespace {
 class UpdaterImpl {
 public:
