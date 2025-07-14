@@ -29,5 +29,5 @@ public:
 protected:
     std::string GetPermissionName() override;
 };
-} // namespace OHOS::UpdateEngine
+} // namespace OHOS::UpdateService
 #endif // ANI_RESTORER_H
