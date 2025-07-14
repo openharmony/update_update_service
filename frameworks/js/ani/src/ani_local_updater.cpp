@@ -26,7 +26,7 @@ void AniLocalUpdater::VerifyUpgradePackageSync(const ohos::update::UpgradeFile &
     taihe::string_view certsFile)
 {
     BusinessError error;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     const int32_t ret = UpdateServiceKits::GetInstance().VerifyUpgradePackage(std::string(upgradeFile.filePath),
         std::string(certsFile), error, funcResult);
     SetError(ret, "verifyUpgradePackage", error);
@@ -39,7 +39,7 @@ void AniLocalUpdater::ApplyNewVersionSync(const taihe::array_view<ohos::update::
     upgradeInfo.upgradeApp = LOCAL_UPGRADE_INFO;
     const std::string miscFile = "/dev/block/by-name/misc";
     std::vector<std::string> packageNames;
-    int32_t funcResult;
+    int32_t funcResult = 0;
     for (const auto &value : upgradeFiles) {
         packageNames.emplace_back(AniCommonConverter::Converter(value).filePath);
     }

@@ -40,7 +40,6 @@ ani_includes = [
 ]
 ani_includes += foundations_include
 
-
 ani_deps = [
     ":run_taihe_update",
     "$updateengine_root_path/foundations:update_foundations",
@@ -49,7 +48,6 @@ ani_deps = [
 ]
 
 ani_deps +=foundations_deps
-
 
 ani_external_deps =[
     "c_utils:utils",
