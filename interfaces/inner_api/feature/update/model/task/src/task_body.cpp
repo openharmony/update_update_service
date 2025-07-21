@@ -100,7 +100,7 @@ bool TaskBody::ReadFromParcel(Parcel &parcel)
 
     int32_t componentSize = parcel.ReadInt32();
     if ((componentSize < MIN_VECTOR_SIZE) || (componentSize > MAX_VECTOR_SIZE)) {
-        ENGINE_LOGE("Invalid  componentSize size=%{public}d", componentSize);
+        ENGINE_LOGE("Invalid componentSize size=%{public}d", componentSize);
         return false;
     }
 
