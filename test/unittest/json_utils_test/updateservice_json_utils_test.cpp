@@ -80,7 +80,7 @@ HWTEST_F(UpdateServiceJsonUtilsTest, ParseJsonFalse, TestSize.Level1)
 
 /**
 * @tc.name: GetValueAndSetToNullptr
-* @tc.desc: Test json string, root is nullptr
+* @tc.desc: Test json string, check root is nullptr
 * @tc.type: FUNC
 */
 HWTEST_F(UpdateServiceJsonUtilsTest, GetValueAndSetToNullptr, TestSize.Level1)
