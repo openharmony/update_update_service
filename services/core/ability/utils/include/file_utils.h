@@ -45,6 +45,7 @@ public:
     static void DestroyBaseDirectory(const std::vector<DirInfo> &dirInfos);
     static std::string ReadDataFromFile(const std::string &filePath);
     static std::string GetParentDir(const std::string &fileDir);
+    static std::string GetFileRealPath(const std::string &filePath);
 
 private:
     static std::string GetCurrentDir(const std::string &fileDir);
