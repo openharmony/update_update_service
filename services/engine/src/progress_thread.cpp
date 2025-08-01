@@ -261,27 +261,13 @@ bool DownloadThread::DealAbnormal(uint32_t percent)
 
 FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &mode)
 {
-    if (fileName.empty() || fileName.size() > PATH_MAX) {
-        ENGINE_LOGI("DownloadThread file is empty or exceed path_max");
-        return nullptr;
-    }
-    std::string fileDir = fileName;
-    auto pos = fileDir.find_last_of("/");
-    if (pos != std::string::npos) {
-        fileDir.erase(pos + 1);
-    } else {
-        ENGINE_LOGI("DownloadThread file %{public}s, mode: %{public}s", fileName.c_str(), mode.c_str());
+    std::string realFileName = FileUtils::GetFileRealPath(fileName);
+    if (realFileName.empty()) {
+        ENGINE_LOGE("fileName is error");
         return nullptr;
     }
 
-    char *path = realpath(fileDir.c_str(), NULL);
-    if (path == NULL) {
-        ENGINE_LOGI("DownloadThread file %{public}s, mode: %{public}s", fileName.c_str(), mode.c_str());
-        return nullptr;
-    }
-    free(path);
-    FILE* fp = fopen(fileName.c_str(), mode.c_str());
-    return fp;
+    return fopen(realFileName.c_str(), mode.c_str());
 }
 } // namespace UpdateService
 } // namespace OHOS
