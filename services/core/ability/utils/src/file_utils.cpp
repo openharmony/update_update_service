@@ -221,5 +221,29 @@ std::string FileUtils::ReadDataFromFile(const std::string &filePath)
     readFile.close();
     return fileRaw;
 }
+
+std::string FileUtils::GetFileRealPath(const std::string &filePath)
+{
+    if (filePath.empty()) {
+        ENGINE_LOGE("GetFileRealPath, file path is empty");
+        return "";
+    }
+
+    size_t lastSlashPos = filePath.find_last_of('/');
+    if (lastSlashPos == std::string::npos) {
+        ENGINE_LOGE("GetFileRealPath, file path format is error");
+        return "";
+    }
+
+    std::string parentDir = filePath.substr(0, lastSlashPos);
+    char realPath[PATH_MAX] = {};
+    if (realpath(parentDir.c_str(), realPath) == NULL) {
+        ENGINE_LOGE("file path not exist or no permission to access the path");
+        return "";
+    }
+
+    std::string fileName = filePath.substr(lastSlashPos + 1);
+    return std::string(realPath) + "/" + fileName;
+}
 } // namespace UpdateService
 } // namespace OHOS
