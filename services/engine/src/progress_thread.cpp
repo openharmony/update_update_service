@@ -267,8 +267,7 @@ FILE* DownloadThread::FileOpen(const std::string &fileName, const std::string &m
         return nullptr;
     }
 
-    FILE* fp = fopen(realFileName.c_str(), mode.c_str());
-    return fp;
+    return fopen(realFileName.c_str(), mode.c_str());
 }
 } // namespace UpdateService
 } // namespace OHOS
