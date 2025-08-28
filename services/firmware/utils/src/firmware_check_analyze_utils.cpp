@@ -127,7 +127,7 @@ int32_t FirmwareCheckAnalyzeUtils::AnalyzeComponents(cJSON *root)
     // 检查 "descriptInfo" 是否存在
     cJSON *itemDescriptInfo = cJSON_GetObjectItemCaseSensitive(root, "descriptInfo");
     if (itemDescriptInfo == nullptr) {
-       FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
+        FIRMWARE_LOGE("FirmwareCheckAnalyzeUtils::AnalyzeComponents no key descriptInfo");
         return CAST_INT(JsonParseError::MISSING_PROP);
     }
 
