@@ -24,7 +24,7 @@
 using namespace std;
 
 namespace OHOS::UpdateService {
-uint32_t g_sessionId = 0;
+std::atomic<uint32_t> g_sessionId = 0;
 
 NapiSession::NapiSession(BaseClient *client, SessionParams &sessionParams, size_t argc, size_t callbackNumber)
     : sessionId(++g_sessionId), client_(client), sessionParams_(sessionParams), totalArgc_(argc),
