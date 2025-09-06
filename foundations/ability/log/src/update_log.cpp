@@ -102,8 +102,20 @@ std::pair<std::string, std::string> UpdateLog::SplitLogByFmtLabel(const std::str
         // 如果log中没有%{public|private}s，则把log全部内容作为前缀字符串，后缀字符串为空
         return std::make_pair(log, "");
     }
-    return std::make_pair(log.substr(0, log.find(fmtLabel, 0)), log.substr(log.find(fmtLabel, 0) +
-        fmtLabel.length()));
+
+    size_t labelPos = log.find(fmtLabel);
+    if (labelPos == std::string::npos) {
+        return std::make_pair(log, "");
+    }
+
+    //前缀是[0, labelPos), 后缀是[labelPos + len, end)
+    size_t labelLen = fmtLabel.length();
+    size_t suffixStart = labelPos + labelLen;
+    if (suffixStart > log.size()) {
+        return std::make_pair(log, "");
+    }
+
+    return std::make_pair(log.substr(0, labelPos), log.substr(suffixStart));
 }
 
 std::string UpdateLog::GetFmtLabel(const std::string &log)
