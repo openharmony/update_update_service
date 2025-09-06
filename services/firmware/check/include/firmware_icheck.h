@@ -164,7 +164,13 @@ private:
                 std::to_string(PORT_NUMBER) + "\r\nConnection: close\r\n\r\n";
             SSL_write(ssl, request.c_str(), request.size());
             int32_t len = SSL_read(ssl, buffer.data(), JSON_MAX_SIZE);
-            std::string resultStr = buffer.data();
+            ENGINE_CHECK(len > 0,
+                SSL_shutdown(ssl);
+                SSL_free(ssl);
+                SSL_CTX_free(sslCtx);
+                return -1,
+                "data is null");
+            std::string_view resultStr(buffer.data(), len);
             size_t index = resultStr.find('{');
             if (index != std::string::npos) {
                 buffer.erase(buffer.begin(), buffer.begin() + index);
