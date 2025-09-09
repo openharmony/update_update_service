@@ -111,10 +111,6 @@ std::pair<std::string, std::string> UpdateLog::SplitLogByFmtLabel(const std::str
     //前缀是[0, labelPos), 后缀是[labelPos + len, end)
     size_t labelLen = fmtLabel.length();
     size_t suffixStart = labelPos + labelLen;
-    if (suffixStart > log.size()) {
-        return std::make_pair(log, "");
-    }
-
     return std::make_pair(log.substr(0, labelPos), log.substr(suffixStart));
 }
 
