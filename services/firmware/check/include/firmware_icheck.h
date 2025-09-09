@@ -170,11 +170,6 @@ private:
                 SSL_CTX_free(sslCtx);
                 return -1,
                 "data is null");
-            std::string_view resultStr(buffer.data(), len);
-            size_t index = resultStr.find('{');
-            if (index != std::string::npos) {
-                buffer.erase(buffer.begin(), buffer.begin() + index);
-            }
             if (len > 0 && ParseJsonFile(buffer, response) == 0) {
                 result = SearchStatus::HAS_NEW_VERSION;
                 errMsg = "";
