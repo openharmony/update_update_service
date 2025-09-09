@@ -55,29 +55,28 @@ void CombinePackageVersionUtils::HandleBaseVersionLog(std::string &baseVersion, 
 {
     std::string::size_type start = baseVersion.find_last_of("(");
     std::string::size_type end = baseVersion.find_last_of(")");
-    if ((start == std::string::npos) || (end == std::string::npos)) {
+    if ((start == std::string::npos) || (end == std::string::npos) || start >= end) {
         return;
     }
-    start++;
-    std::string::size_type mid = start;
-    bool isNumbers = false;
-    while (mid < end) {
-        mid++;
-        if (isdigit(baseVersion[mid])) {
-            isNumbers = true;
-        } else {
-            if (isNumbers) {
-                break;
-            }
-        }
+
+    // 从start+1开始, 查找数字
+    std::string_view viewStr = baseVersion;
+    const size_t contentStart = start + 1;
+    size_t numEnd = contentStart;
+    while (numEnd < end && std::isdigit(static_cast<unsigned char>(viewStr[numEnd]))) {
+        numEnd++;
     }
-    if ((mid == end) && (!isNumbers)) {
-        log = baseVersion.substr(start, mid - start);
+
+    // 如果没有数字
+    if (numEnd == contentStart) {
+        // 整个括号内容当作log
+        log = std::string(viewStr.substr(contentStart, end - contentStart));
         base = "";
         return;
     }
-    base = baseVersion.substr(start, mid - start);
-    log = baseVersion.substr(mid, end - mid);
+
+    base = std::string(viewStr.substr(contentStart, numEnd - contentStart));
+    log = std::string(viewStr.substr(numEnd, end - numEnd));
 }
 
 std::string CombinePackageVersionUtils::HandleCustVersion(std::string &custVersion)

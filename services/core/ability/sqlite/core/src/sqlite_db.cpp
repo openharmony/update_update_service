@@ -65,11 +65,11 @@ bool SqliteDb::DeleteDbStore()
 
 bool SqliteDb::Insert(const std::string &tableName, const std::vector<NativeRdb::ValuesBucket> &values)
 {
-    std::lock_guard<std::mutex> lockGuard(writeMutex_);
     std::shared_ptr<NativeRdb::RdbStore> dbStore = GetDbStore();
     ENGINE_CHECK(dbStore != nullptr, return false, "SqliteDb failed to create: db is null");
 
     int64_t insertNum = 0;
+    std::lock_guard<std::mutex> lockGuard(writeMutex_);
     int ret = dbStore->BatchInsert(insertNum, tableName, values);
     ENGINE_CHECK(ret == NativeRdb::E_OK, return false, "SqliteDb failed to insert ret=%{public}d", ret);
     return true;
