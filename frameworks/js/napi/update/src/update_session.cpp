@@ -66,8 +66,11 @@ napi_value UpdateListener::StartWork(napi_env env, size_t startIndex, const napi
     PARAM_CHECK_NAPI_CALL(env,
         NapiCommonUtils::IsTypeOf(env, args[startIndex], napi_function) == ClientStatus::CLIENT_SUCCESS, return nullptr,
         "Invalid callback type");
-    ClientStatus ret = NapiCommonUtils::CreateReference(env, args[startIndex], 1, handlerRef_);
-    PARAM_CHECK_NAPI_CALL(env, ret == ClientStatus::CLIENT_SUCCESS, return nullptr, "Failed to create reference");
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        ClientStatus ret = NapiCommonUtils::CreateReference(env, args[startIndex], 1, handlerRef_);
+        PARAM_CHECK_NAPI_CALL(env, ret == ClientStatus::CLIENT_SUCCESS, return nullptr, "Failed to create reference");
+    }
     int32_t res = doWorker_(context_);
     napi_value result;
     napi_create_int32(env, res, &result);
