@@ -55,14 +55,13 @@ void CombinePackageVersionUtils::HandleBaseVersionLog(std::string &baseVersion, 
 {
     std::string::size_type start = baseVersion.find_last_of("(");
     std::string::size_type end = baseVersion.find_last_of(")");
-    if ((start == std::string::npos) || (end == std::string::npos)) {
+    if ((start == std::string::npos) || (end == std::string::npos) || start >= end) {
         return;
     }
     start++;
     std::string::size_type mid = start;
     bool isNumbers = false;
     while (mid < end) {
-        mid++;
         if (isdigit(baseVersion[mid])) {
             isNumbers = true;
         } else {
@@ -70,6 +69,7 @@ void CombinePackageVersionUtils::HandleBaseVersionLog(std::string &baseVersion, 
                 break;
             }
         }
+        mid++;
     }
     if ((mid == end) && (!isNumbers)) {
         log = baseVersion.substr(start, mid - start);
