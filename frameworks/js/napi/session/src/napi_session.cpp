@@ -67,9 +67,9 @@ void NapiSession::ExecuteWork(napi_env env)
                 conditionVariable_.wait_until(lock, now + 40000ms, [this] { return asyncExecuteComplete_; });
                 ENGINE_LOGI("UpdateSession::ExecuteWork asyncExcuteComplete : %{public}s",
                     asyncExecuteComplete_ ? "true" : "false");
-                if (!asyncExecuteComplete_) {
-                    businessError_.errorNum = CallResult::TIME_OUT;
-                }
+            }
+            if (!asyncExecuteComplete_) {
+                businessError_.errorNum = CallResult::TIME_OUT;
             }
         }
 #else
