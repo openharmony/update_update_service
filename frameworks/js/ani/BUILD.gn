@@ -11,11 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import("//base/update/updateservice/updateengine.gni")
 import("//build/config/components/ets_frontend/ets2abc_config.gni")
 import("//build/ohos.gni")
 import("//build/ohos/taihe_idl/taihe.gni")
+
 import("$updateengine_root_path/foundations/foundations.gni")
-import("../../../updateengine.gni")
 
 copy_taihe_idl("copy_update_framework") {
   sources = [ "idl/ohos.update.taihe" ]
