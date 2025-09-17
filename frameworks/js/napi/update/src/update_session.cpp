@@ -134,6 +134,7 @@ bool UpdateListener::IsSameListener(napi_env env, const EventClassifyInfo &event
         return false;
     }
 
+    std::lock_guard<std::mutex> lock(mutex_);
     napi_value currentHandler = nullptr;
     napi_status status = napi_get_reference_value(env, handlerRef_, &currentHandler);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return false, "Failed to get current handle");
