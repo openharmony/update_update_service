@@ -1,0 +1,342 @@
+/*
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@!namespace("@ohos.update", "update")
+
+@!sts_inject("""
+    static {
+        loadLibrary("update_ani.z")
+    }
+""")
+
+  struct UpgradeInfo {
+    upgradeApp: String;
+    businessType: BusinessType;
+  }
+
+  struct BusinessType {
+    vendor: BusinessVendor;
+    subType: BusinessSubType;
+  }
+
+  struct CheckResult {
+    isExistNewVersion: bool;
+    newVersionInfo: NewVersionInfo;
+  }
+
+  struct NewVersionInfo {
+    versionDigestInfo: VersionDigestInfo;
+    versionComponents: Array<VersionComponent>;
+  }
+
+  struct VersionDigestInfo {
+    versionDigest: String;
+  }
+
+  struct VersionComponent {
+    componentId: String;
+    componentType: ComponentType;
+    upgradeAction: UpgradeAction;
+    displayVersion: String;
+    innerVersion: String;
+    size: i32;
+    effectiveMode: EffectiveMode;
+    descriptionInfo: DescriptionInfo;
+  }
+
+  struct DescriptionOptions {
+    format: DescriptionFormat;
+    language: String;
+  }
+
+  struct ComponentDescription {
+    componentId: String;
+    descriptionInfo: DescriptionInfo;
+  }
+
+  struct DescriptionInfo {
+    descriptionType: DescriptionType;
+    content: String;
+  }
+
+  struct CurrentVersionInfo {
+    osVersion: String;
+    deviceName: String;
+    versionComponents: Array<VersionComponent>;
+  }
+
+  struct DownloadOptions {
+    allowNetwork: NetType;
+    order: Order;
+  }
+
+  struct ResumeDownloadOptions {
+    allowNetwork: NetType;
+  }
+
+  struct PauseDownloadOptions {
+    isAllowAutoResume: bool;
+  }
+
+  struct UpgradeOptions {
+    order: Order;
+  }
+
+  struct ClearOptions {
+    status: UpgradeStatus;
+  }
+
+  struct UpgradePolicy {
+    downloadStrategy: bool;
+    autoUpgradeStrategy: bool;
+    autoUpgradePeriods: Array<UpgradePeriod>;
+  }
+
+  struct UpgradePeriod {
+    start: i32;
+    end: i32;
+  }
+
+  struct TaskInfo {
+    existTask: bool;
+    taskBody: TaskBody;
+  }
+
+  struct EventInfo {
+    eventId: EventId;
+    taskBody: TaskBody;
+  }
+
+  struct TaskBody {
+    versionDigestInfo: VersionDigestInfo;
+    status: UpgradeStatus;
+    subStatus: i32;
+    progress: i32;
+    installMode: i32;
+    errorMessages: Array<ErrorMessage>;
+    versionComponents: Array<VersionComponent>;
+  }
+
+  struct ErrorMessage {
+    errorCode: i32;
+    errorMessage: String;
+  }
+
+  struct EventClassifyInfo {
+    eventClassify: EventClassify;
+    extraInfo: String;
+  }
+
+  struct UpgradeFile {
+    fileType: ComponentType;
+    filePath: String;
+  }
+
+  enum BusinessVendor : String {
+    PUBLIC = "public"
+  }
+
+  enum BusinessSubType : i32 {
+    FIRMWARE = 1
+  }
+
+  enum ComponentType : i32 {
+    OTA = 1
+  }
+
+  enum UpgradeAction : String {
+    UPGRADE = "upgrade",
+    RECOVERY = "recovery"
+  }
+
+  enum EffectiveMode : i32 {
+    COLD = 1,
+    LIVE = 2,
+    LIVE_AND_COLD = 3
+  }
+
+  enum DescriptionType : i32 {
+    CONTENT = 0,
+    URI = 1
+  }
+
+  enum DescriptionFormat : i32 {
+    STANDARD = 0,
+    SIMPLIFIED = 1
+  }
+
+  enum NetType : i32 {
+    CELLULAR = 1,
+    METERED_WIFI = 2,
+    NOT_METERED_WIFI = 4,
+    WIFI = 6,
+    CELLULAR_AND_WIFI = 7
+  }
+
+  enum Order : i32 {
+    DOWNLOAD = 1,
+    INSTALL = 2,
+    DOWNLOAD_AND_INSTALL = 3,
+    APPLY = 4,
+    INSTALL_AND_APPLY = 6
+  }
+
+  enum UpgradeStatus : i32 {
+      ERROR = -1,
+      INIT = 0,
+      CHECKING_VERSION = 10,
+      CHECK_VERSION_FAIL = 11,
+      CHECK_VERSION_SUCCESS = 12,
+      DOWNLOADING = 20,
+      DOWNLOAD_PAUSE = 21,
+      DOWNLOAD_CANCEL = 22,
+      DOWNLOAD_FAIL = 23,
+      DOWNLOAD_SUCCESS = 24,
+      VERIFYING = 30,
+      VERIFY_FAIL = 31,
+      VERIFY_SUCCESS = 32,
+      AUTHING = 60,
+      AUTH_FAIL = 61,
+      AUTH_SUCCESS = 62,
+      WAIT_TRANSFER = 68,
+      TRANSFER_START = 69,
+      PACKAGE_TRANSING = 70,
+      PACKAGE_TRANS_FAIL = 71,
+      PACKAGE_TRANS_SUCCESS = 72,
+      INSTALLING = 80,
+      INSTALL_FAIL = 81,
+      INSTALL_SUCCESS = 82,
+      INSTALL_PAUSE = 83,
+      UPDATING = 90,
+      UPDATE_FAIL = 91,
+      UPDATE_SUCCESS = 92,
+      UPGRADE_REBOOT = 93,
+      UPGRADE_COUNT_DOWN = 100,
+      UPGRADE_CANCEL = 101
+   }
+
+  enum EventClassify : i32 {
+    TASK = 0x01000000
+  }
+
+  enum EventId : i32 {
+    EVENT_TASK_BASE = 0x01000000, // EventClassify.TASK,
+    EVENT_TASK_RECEIVE,
+    EVENT_TASK_CANCEL,
+    EVENT_DOWNLOAD_WAIT,
+    EVENT_DOWNLOAD_START,
+    EVENT_DOWNLOAD_UPDATE,
+    EVENT_DOWNLOAD_PAUSE,
+    EVENT_DOWNLOAD_RESUME,
+    EVENT_DOWNLOAD_SUCCESS,
+    EVENT_DOWNLOAD_FAIL,
+    EVENT_UPGRADE_WAIT,
+    EVENT_UPGRADE_START,
+    EVENT_UPGRADE_UPDATE,
+    EVENT_APPLY_WAIT,
+    EVENT_APPLY_START,
+    EVENT_UPGRADE_SUCCESS,
+    EVENT_UPGRADE_FAIL
+  }
+
+@!sts_inject("""export type UpgradeTaskCallback = (eventInfo: EventInfo) => void;""")
+
+interface Updater {
+    @gen_async("checkNewVersion")
+    @gen_promise("checkNewVersion")
+    CheckNewVersionSync(): CheckResult;
+
+    @gen_async("getNewVersionInfo")
+    @gen_promise("getNewVersionInfo")
+    GetNewVersionInfoSync(): NewVersionInfo;
+
+    @gen_async("getNewVersionDescription")
+    @gen_promise("getNewVersionDescription")
+    GetNewVersionDescriptionSync(versionDigestInfo: VersionDigestInfo, descriptionOptions: DescriptionOptions): Array<ComponentDescription>;
+
+    @gen_async("getCurrentVersionInfo")
+    @gen_promise("getCurrentVersionInfo")
+    GetCurrentVersionInfoSync(): CurrentVersionInfo;
+
+    @gen_async("getCurrentVersionDescription")
+    @gen_promise("getCurrentVersionDescription")
+    GetCurrentVersionDescriptionSync(descriptionOptions: DescriptionOptions): Array<ComponentDescription>;
+
+    @gen_async("getTaskInfo")
+    @gen_promise("getTaskInfo")
+    GetTaskInfoSync(): TaskInfo;
+
+    @gen_async("download")
+    @gen_promise("download")
+    DownloadSync(versionDigestInfo: VersionDigestInfo, downloadOptions: DownloadOptions): void;
+
+    @gen_async("resumeDownload")
+    @gen_promise("resumeDownload")
+    ResumeDownloadSync(versionDigestInfo: VersionDigestInfo, resumeDownloadOptions: ResumeDownloadOptions): void;
+
+    @gen_async("pauseDownload")
+    @gen_promise("pauseDownload")
+    PauseDownloadSync(versionDigestInfo: VersionDigestInfo, pauseDownloadOptions: PauseDownloadOptions): void;
+
+    @gen_async("upgrade")
+    @gen_promise("upgrade")
+    UpgradeSync(versionDigestInfo: VersionDigestInfo, upgradeOptions: UpgradeOptions): void;
+
+    @gen_async("clearError")
+    @gen_promise("clearError")
+    ClearErrorSync(versionDigestInfo: VersionDigestInfo, clearOptions: ClearOptions): void;
+
+    @gen_async("getUpgradePolicy")
+    @gen_promise("getUpgradePolicy")
+    GetUpgradePolicySync(): UpgradePolicy;
+
+    @gen_async("setUpgradePolicy")
+    @gen_promise("setUpgradePolicy")
+    SetUpgradePolicySync(policy: UpgradePolicy): void;
+
+    @gen_async("terminateUpgrade")
+    @gen_promise("terminateUpgrade")
+    TerminateUpgradeSync():void;
+
+    On(eventClassifyInfo: EventClassifyInfo, taskCallback: (eventInfo: EventInfo) => void): void;
+
+    Off(eventClassifyInfo: EventClassifyInfo, taskCallback:Optional<(eventInfo: EventInfo) => void>): void;
+  }
+
+  interface Restorer {
+    @gen_async("factoryReset")
+    @gen_promise("factoryReset")
+    FactoryResetSync(): void;
+  }
+
+  interface LocalUpdater {
+    @gen_async("verifyUpgradePackage")
+    @gen_promise("verifyUpgradePackage")
+    VerifyUpgradePackageSync(upgradeFile: UpgradeFile, certsFile: String): void;
+
+    @gen_async("applyNewVersion")
+    @gen_promise("applyNewVersion")
+    ApplyNewVersionSync(upgradeFiles: Array<UpgradeFile>): void;
+
+    On(eventClassifyInfo: EventClassifyInfo, taskCallback: (eventInfo: EventInfo) => void): void;
+
+    Off(eventClassifyInfo: EventClassifyInfo, taskCallback:Optional<(eventInfo: EventInfo) => void>): void;
+  }
+
+  function GetOnlineUpdater(upgradeInfo: UpgradeInfo): Updater;
+
+  function GetRestorer(): Restorer;
+
+  function GetLocalUpdater(): LocalUpdater;
