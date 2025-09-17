@@ -47,9 +47,9 @@ ani_deps = [
   "$updateengine_root_path/interfaces/inner_api/engine:$updateengine_inner_library_name",
 ]
 
-ani_deps +=foundations_deps
+ani_deps += foundations_deps
 
-ani_external_deps =[
+ani_external_deps = [
   "cJSON:cjson",
   "c_utils:utils",
   "runtime_core:ani",
