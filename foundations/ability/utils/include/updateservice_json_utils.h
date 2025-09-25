@@ -104,7 +104,8 @@ private:
         }
 
         if (std::is_same_v<T, int64_t>) {
-            if (objValue < std::numeric_limits<int64_t>::min() || objValue > std::numeric_limits<int64_t>::max()) {
+            if (objValue < static_cast<double>(std::numeric_limits<int64_t>::min()) ||
+                objValue > static_cast<double>(std::numeric_limits<int64_t>::max())) {
                 return false;
             }
         }
@@ -116,7 +117,7 @@ private:
         }
 
         if (std::is_same_v<T, uint64_t>) {
-            if (objValue < 0 || objValue > std::numeric_limits<uint64_t>::max()) {
+            if (objValue < 0 || objValue > static_cast<double>(std::numeric_limits<uint64_t>::max())) {
                 return false;
             }
         }
