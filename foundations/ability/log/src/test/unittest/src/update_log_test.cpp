@@ -25,8 +25,8 @@ class UpdateLogTest : public testing::Test {
 public:
     static void SetupTestCase(void) {};
     static void TearDownTestCase(void) {};
-    void SetUp() final {};
-    void TearDown() final {};
+    void SetUp() const final {};
+    void TearDown() const final {};
 };
 
 /**
