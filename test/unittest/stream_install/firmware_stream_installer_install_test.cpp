@@ -40,7 +40,7 @@ void OnFirmwareStatusImpl(UpgradeStatus status)
 
 class StreamInstallerInstallTest : public ::testing::Test {
 protected:
-    void SetUp() override
+    void SetUp() const override
     {
         installer = std::make_unique<StreamInstallerInstall>();
     }
