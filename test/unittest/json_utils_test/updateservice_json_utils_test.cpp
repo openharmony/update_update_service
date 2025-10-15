@@ -25,8 +25,8 @@ class UpdateServiceJsonUtilsTest : public testing::Test {
 public:
     static void SetupTestCase(void) {};
     static void TearDownTestCase(void) {};
-    void SetUp() const final {};
-    void TearDown() const final {};
+    void SetUp() final {};
+    void TearDown() final {};
 };
 
 /**
