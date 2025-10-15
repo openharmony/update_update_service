@@ -77,7 +77,7 @@ napi_value JsConstructor(napi_env env, napi_callback_info info)
         return g_onlineUpdater[upgradeInfo].get();
     };
 
-    auto finalizer = [](napi_env env, [[maybe_unused]] void* data, void* hint) {
+    auto finalizer = [](napi_env env, void* data, void* hint) {
         ENGINE_LOGI("delete js object");
     };
 
@@ -93,7 +93,7 @@ napi_value JsConstructorRestorer(napi_env env, napi_callback_info info)
         }
         return g_restorer.get();
     };
-    auto finalizer = [](napi_env env, [[maybe_unused]] void* data, void* hint) {};
+    auto finalizer = [](napi_env env, void* data, void* hint) {};
     return JsConstructor<Restorer>(env, info, initializer, finalizer);
 }
 
@@ -106,7 +106,7 @@ napi_value JsConstructorLocalUpdater(napi_env env, napi_callback_info info)
         }
         return g_localUpdater.get();
     };
-    auto finalizer = [](napi_env env, [[maybe_unused]] void* data, void* hint) {};
+    auto finalizer = [](napi_env env, void* data, void* hint) {};
     return JsConstructor<LocalUpdater>(env, info, initializer, finalizer);
 }
 
