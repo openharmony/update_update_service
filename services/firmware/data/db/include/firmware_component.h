@@ -31,7 +31,7 @@ struct FirmwareComponent {
     std::string versionId;           // 标识包的唯一性
     int32_t packageIndex = 0;        // 包的安装顺序
     PackageType versionPackageType = PackageType::DYNAMIC;
-    OtaType otaType = OtaType::REGULAR;
+    OtaType otaType = OtaMode::REGULAR_OTA;
 
     std::string targetBlVersionNumber;
     std::string targetBlDisplayVersionNumber;

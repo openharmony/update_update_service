@@ -28,7 +28,7 @@ bool UpgradePolicy::ReadFromParcel(Parcel &parcel)
     size_t arraySize = COUNT_OF(autoUpgradePeriods);
     if ((size < MIN_VECTOR_SIZE) || (size > MAX_VECTOR_SIZE)) {
         ENGINE_LOGE("Invalid autoUpgradePeriods size=%{public}d", size);
-        return -1;
+        return false;
     }
     for (size_t i = 0; (i < static_cast<size_t>(size)) && (i < arraySize); i++) {
         autoUpgradePeriods[i].start = parcel.ReadUint32();
