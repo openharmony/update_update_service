@@ -19,7 +19,7 @@
 #include <string>
 
 #include "package_type.h"
-#include "ota_type.h"
+#include "ota_mode.h"
 #include "update_define.h"
 #include "upgrade_status.h"
 
