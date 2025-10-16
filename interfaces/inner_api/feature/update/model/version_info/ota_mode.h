@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef UPDATE_SERVICE_OTA_TYPE_H
-#define UPDATE_SERVICE_OTA_TYPE_H
+#ifndef UPDATE_SERVICE_OTA_MODE_H
+#define UPDATE_SERVICE_OTA_MODE_H
 
 namespace OHOS::UpdateService {
 enum class OtaMode {
@@ -24,4 +24,4 @@ enum class OtaMode {
     AB_STREAM_OTA = 3 // STREAM | AB
 };
 } // namespace OHOS::UpdateService
-#endif // UPDATE_SERVICE_OTA_TYPE_H
+#endif // UPDATE_SERVICE_OTA_MODE_H
