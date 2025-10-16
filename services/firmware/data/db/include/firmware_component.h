@@ -58,6 +58,7 @@ struct FirmwareComponent {
     UpgradeStatus status = UpgradeStatus::INIT;
     int32_t progress = 0;
     int64_t recordPoint = 0;
+
     std::string ToString()
     {
         return std::string("FirmwareComponent: ")
