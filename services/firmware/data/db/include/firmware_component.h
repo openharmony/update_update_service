@@ -19,7 +19,7 @@
 #include <string>
 
 #include "package_type.h"
-#include "ota_type.h"
+#include "ota_mode.h"
 #include "update_define.h"
 #include "upgrade_status.h"
 
@@ -31,7 +31,7 @@ struct FirmwareComponent {
     std::string versionId;           // 标识包的唯一性
     int32_t packageIndex = 0;        // 包的安装顺序
     PackageType versionPackageType = PackageType::DYNAMIC;
-    OtaType otaType = OtaType::REGULAR;
+    OtaMode otaType = OtaMode::REGULAR_OTA;
 
     std::string targetBlVersionNumber;
     std::string targetBlDisplayVersionNumber;
@@ -58,7 +58,7 @@ struct FirmwareComponent {
     UpgradeStatus status = UpgradeStatus::INIT;
     int32_t progress = 0;
     int64_t recordPoint = 0;
-    
+
     std::string ToString()
     {
         return std::string("FirmwareComponent: ")

@@ -38,7 +38,7 @@ public:
     static ModuleManager& GetInstance();
 
     void LoadModule(std::string libPath);
-    bool IsModuleLoaded();
+    bool IsModuleLoaded() const;
     void HookFunc(std::vector<uint32_t>, RequestFuncType handleRemoteRequest);
     int32_t HandleFunc(uint32_t code, MessageParcel& data, MessageParcel& reply, MessageOption &option);
     void HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop);
@@ -48,7 +48,7 @@ public:
     void HookDumpFunc(std::string phase, LifeCycleFuncDumpType handleSADump);
     int HandleDumpFunc(std::string phase, int fd, const std::vector<std::u16string> &args);
 
-    bool IsMapFuncExist(uint32_t code);
+    bool IsMapFuncExist(uint32_t code) const;
 
 private:
     int32_t retryInterval_ = 0;

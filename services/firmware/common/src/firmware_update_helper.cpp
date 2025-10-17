@@ -175,7 +175,7 @@ bool FirmwareUpdateHelper::IsStreamUpgrade(const std::vector<FirmwareComponent> 
         FIRMWARE_LOGI("FirmwareUpdateHelper::IsStreamUpgrade componentList is empty");
         return false;
     }
-    return (componentList[0].otaType == OtaType::AB_STREAM);
+    return (componentList[0].otaType == OtaMode::AB_STREAM_OTA);
 }
 
 } // namespace UpdateService
