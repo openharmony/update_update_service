@@ -104,7 +104,7 @@ int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessagePar
 
 ModuleManager::ModuleManager() {}
 
-bool ModuleManager::IsModuleLoaded()
+bool ModuleManager::IsModuleLoaded() const
 {
     return isLoaded;
 }
@@ -177,7 +177,7 @@ int ModuleManager::HandleDumpFunc(std::string phase, int fd, const std::vector<s
     return 0;
 }
 
-bool ModuleManager::IsMapFuncExist(uint32_t code)
+bool ModuleManager::IsMapFuncExist(uint32_t code) const
 {
     return onRemoteRequestFuncMap_.count(code);
 }
