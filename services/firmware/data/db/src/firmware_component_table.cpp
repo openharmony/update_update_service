@@ -67,9 +67,9 @@ void FirmwareComponentTable::ParseDbValue(ResultSet *resultSet, FirmwareComponen
     int32_t versionPackageType = CAST_INT(PackageType::DYNAMIC);
     GetColumnValue(resultSet, COLUMN_COMPONENT_VERSION_PACKAGE_TYPE, versionPackageType);
     value.versionPackageType = static_cast<PackageType>(versionPackageType);
-    int32_t otaType = CAST_INT(OtaType::REGULAR);
+    int32_t otaType = CAST_INT(OtaMode::REGULAR_OTA);
     GetColumnValue(resultSet, COLUMN_COMPONENT_OTA_MODE, otaType);
-    value.otaType = static_cast<OtaType>(otaType);
+    value.otaType = static_cast<OtaMode>(otaType);
     GetColumnValue(resultSet, COLUMN_COMPONENT_PACKAGE_INDEX, value.packageIndex);
     GetColumnValue(resultSet, COLUMN_COMPONENT_TARGET_BL_DISPLAY_VERSION_NUMBER, value.targetBlDisplayVersionNumber);
     GetColumnValue(resultSet, COLUMN_COMPONENT_TARGET_BL_VERSION_NUMBER, value.targetBlVersionNumber);
