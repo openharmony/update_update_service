@@ -163,9 +163,9 @@ int32_t FirmwareCheckAnalyzeUtils::ProcessCheckResults(cJSON *checkResults)
         ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "packageType", versionPackageType);
         component.versionPackageType = static_cast<PackageType>(versionPackageType);
 
-        int32_t otaType = CAST_INT(OtaType::REGULAR);
+        int32_t otaType = CAST_INT(OtaMode::REGULAR_OTA);
         ret += UpdateServiceJsonUtils::GetValueAndSetTo(itemResult, "otaType", otaType);
-        component.otaType = static_cast<OtaType>(otaType);
+        component.otaType = static_cast<OtaMode>(otaType);
 
         component.targetBlDisplayVersionNumber = component.targetBlVersionNumber;
         component.blVersionType = 1;
