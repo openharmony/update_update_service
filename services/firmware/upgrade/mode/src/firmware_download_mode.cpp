@@ -139,8 +139,6 @@ void FirmwareDownloadMode::DownloadPauseProcess(const FirmwareTask &task, const 
 void FirmwareDownloadMode::DownloadFailProcess(const FirmwareTask &task, const ErrorMessage &errorMessage)
 {
     FIRMWARE_LOGI("GetStepAfterDownload download fail");
-    DelayedSingleton<FirmwareCallbackUtils>::GetInstance()->NotifyEvent(
-        task.taskId, EventId::EVENT_DOWNLOAD_FAIL, UpgradeStatus::DOWNLOAD_FAIL, errorMessage);
     FirmwareUpdateHelper::ClearFirmwareInfo();
 }
 
