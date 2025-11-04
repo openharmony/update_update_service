@@ -26,6 +26,7 @@ public:
     virtual ~IServiceRestorer() = default;
 
     virtual int32_t FactoryReset(BusinessError &businessError) = 0;
+    virtual int32_t ForceFactoryReset(BusinessError &businessError) = 0;
 };
 } // namespace OHOS::UpdateService
 #endif // ISERVICE_RESTORER_H

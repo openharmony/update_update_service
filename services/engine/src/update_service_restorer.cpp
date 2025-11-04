@@ -46,5 +46,11 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
     return INT_CALL_SUCCESS;
 #endif
 }
+
+int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
+{
+    ENGINE_LOGI("ForceFactoryReset start");
+    return INT_CALL_SUCCESS;
+}
 } // namespace UpdateService
 } // namespace OHOS

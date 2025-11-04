@@ -166,6 +166,14 @@ public:
         aniRestorer_->FactoryResetSync();
     }
 
+    void ForceFactoryResetSync()
+    {
+        ENGINE_LOGI("%{public}s method invoked", __func__);
+        if (aniRestorer_ == nullptr) {
+            aniRestorer_ = std::make_shared<AniRestorer>();
+        }
+        aniRestorer_->ForceFactoryResetSync();
+    }
 private:
     static inline std::shared_ptr<AniRestorer> aniRestorer_ = nullptr;
 };

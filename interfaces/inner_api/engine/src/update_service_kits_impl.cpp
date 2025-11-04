@@ -248,6 +248,17 @@ int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
     return ret;
 }
 
+int32_t UpdateServiceKitsImpl::ForceFactoryReset(BusinessError &businessError)
+{
+    ENGINE_LOGI("UpdateServiceKitsImpl::ForceFactoryReset");
+    auto updateService = GetService();
+    RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
+    int32_t funcResult;
+    int32_t ret = updateService->ForceFactoryReset(businessError, funcResult);
+    ENGINE_CHECK((ret) == INT_CALL_SUCCESS, ResetRemoteService(), "ForceFactoryReset ipc error");
+    return ret;
+}
+
 int32_t UpdateServiceKitsImpl::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
     const std::vector<std::string> &packageNames, BusinessError &businessError, int32_t &funcResult)
 {

@@ -31,6 +31,7 @@ public:
     DISALLOW_COPY_AND_MOVE(UpdateServiceRestorer);
 
     int32_t FactoryReset(BusinessError &businessError) override;
+    int32_t ForceFactoryReset(BusinessError &businessError) override;
 };
 } // namespace UpdateService
 } // namespace OHOS
