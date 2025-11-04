@@ -68,4 +68,5 @@ interface OHOS.UpdateService.IUpdateService {
     [ipccode 19] int ApplyNewVersion([in] UpgradeInfo info, [in] String miscFile,
         [in] String[] packageNames, [out] BusinessError businessError);
     [ipccode 20] int VerifyUpgradePackage([in] String packagePath, [in] String keyPath, [out] BusinessError businessError);
+    [ipccode 21] int ForceFactoryReset([out] BusinessError businessError);
 }

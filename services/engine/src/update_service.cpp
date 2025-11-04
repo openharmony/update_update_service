@@ -348,6 +348,16 @@ int32_t UpdateService::FactoryReset(BusinessError &businessError, int32_t &funcR
     return restorer->FactoryReset(businessError);
 }
 
+int32_t UpdateService::ForceFactoryReset(BusinessError &businessError, int32_t &funcResult)
+{
+    sptr<UpdateServiceRestorer> restorer = new UpdateServiceRestorer();
+    if (restorer == nullptr) {
+        ENGINE_LOGI("ForceFactoryReset restorer null");
+        return INT_CALL_FAIL;
+    }
+    return restorer->ForceFactoryReset(businessError);
+}
+
 int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
     const std::vector<std::string> &packageNames, BusinessError &businessError, int32_t &funcResult)
 {
