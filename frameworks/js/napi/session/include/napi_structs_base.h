@@ -24,7 +24,7 @@
 namespace OHOS::UpdateService {
 struct SessionParams {
     uint32_t type;
-    size_t callbackStartIndex;
+    size_t callbackStartIndex = 0;
     bool isNeedBusinessError;
     bool isAsyncCompleteWork;
 
@@ -39,7 +39,7 @@ struct SessionParams {
 };
 
 struct NapiResult {
-    uint32_t type;
+    uint32_t type = 0;
     BusinessError businessError;
 
     template <typename T>

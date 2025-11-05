@@ -69,7 +69,7 @@ struct NativeClass {
     napi_callback constructor;
     napi_ref *constructorRef;
     napi_property_descriptor *desc;
-    int descSize;
+    int descSize = 0;
 };
 
 template<typename T>
