@@ -67,7 +67,7 @@ protected:
     void GetColumnValue(ResultSet *resultSet, const std::string &columnName, ValueType &value)
     {
         ENGINE_CHECK(resultSet != nullptr, return, "GetColumnValue resultSet is null");
-        int32_t index = 0;
+        int index = 0;
         int ret = resultSet->GetColumnIndex(columnName, index);
         if (ret != NativeRdb::E_OK) {
             ENGINE_LOGE("GetColumnValue %{public}s column index fail, ret = %{public}d", columnName.c_str(), ret);
