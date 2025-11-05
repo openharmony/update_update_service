@@ -24,7 +24,7 @@
 namespace OHOS::UpdateService {
 struct SessionParams {
     uint32_t type;
-    size_t callbackStartIndex = 0;
+    size_t callbackStartIndex;
     bool isNeedBusinessError;
     bool isAsyncCompleteWork;
 
