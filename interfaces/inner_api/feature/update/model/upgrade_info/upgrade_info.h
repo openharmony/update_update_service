@@ -30,7 +30,7 @@ struct UpgradeInfo : public Parcelable {
     BusinessType businessType = {};
     std::string upgradeDevId;
     std::string controlDevId;
-    int32_t processId;
+    int32_t processId = 0;
     DeviceType deviceType = DeviceType::UNKNOWN;
 
     bool operator<(const UpgradeInfo &other) const

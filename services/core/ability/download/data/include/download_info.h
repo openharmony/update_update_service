@@ -29,7 +29,7 @@ public:
     DownloadInfo() = default;
     ~DownloadInfo() = default;
 
-    int32_t id;
+    int32_t id = 0;
     std::string downloadId;
     std::string versionId;
     std::string taskId;

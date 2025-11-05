@@ -242,7 +242,7 @@ int32_t UpdateServiceKitsImpl::FactoryReset(BusinessError &businessError)
     ENGINE_LOGI("UpdateServiceKitsImpl::FactoryReset");
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
-    int32_t funcResult;
+    int32_t funcResult = 0;
     int32_t ret = updateService->FactoryReset(businessError, funcResult);
     ENGINE_CHECK((ret) == INT_CALL_SUCCESS, ResetRemoteService(), "FactoryReset ipc error");
     return ret;
@@ -273,7 +273,7 @@ int32_t UpdateServiceKitsImpl::VerifyUpgradePackage(const std::string &packagePa
 void UpdateServiceKitsImpl::RegisterCallback()
 {
     ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.size());
-    int32_t funcResult;
+    int32_t funcResult = 0;
     for (auto &iter : remoteUpdateCallbackMap_) {
         remoteServer_->RegisterUpdateCallback(iter.first, iter.second, funcResult);
     }
