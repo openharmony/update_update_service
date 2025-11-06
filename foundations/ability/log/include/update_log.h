@@ -58,7 +58,7 @@ struct UpdateLogContent {
     std::string log;
     std::string args;
     std::string fileName;
-    int32_t line;
+    int32_t line = 0;
 
     UpdateLogContent BuildWithArgs(const std::string &argsInput) const
     {

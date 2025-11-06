@@ -378,7 +378,7 @@ void ParseBusinessType(napi_env env, const napi_value arg, UpgradeInfo &upgradeI
         PARAM_CHECK(status == napi_ok, return, "Failed to napi_set_named_property %d", static_cast<int32_t>(status));
         NapiCommonUtils::GetString(env, businessTypeValue, "vendor", upgradeInfo.businessType.vendor);
 
-        int32_t subType;
+        int32_t subType = 0;
         NapiCommonUtils::GetInt32(env, businessTypeValue, "subType", subType);
         upgradeInfo.businessType.subType = static_cast<BusinessSubType>(subType);
     }
@@ -407,7 +407,7 @@ ClientStatus ClientHelper::GetUpgradeInfoFromArg(napi_env env, const napi_value 
     ParseBusinessType(env, arg, upgradeInfo);
     NapiCommonUtils::GetString(env, arg, "upgradeDevId", upgradeInfo.upgradeDevId);
     NapiCommonUtils::GetString(env, arg, "controlDevId", upgradeInfo.controlDevId);
-    int32_t type;
+    int32_t type = 0;
     NapiCommonUtils::GetInt32(env, arg, "deviceType", type);
     upgradeInfo.deviceType = static_cast<DeviceType>(type);
     // 进程ID
