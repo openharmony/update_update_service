@@ -39,7 +39,7 @@ struct SessionParams {
 };
 
 struct NapiResult {
-    uint32_t type;
+    uint32_t type = 0;
     BusinessError businessError;
 
     template <typename T>
