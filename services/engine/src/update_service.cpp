@@ -619,6 +619,9 @@ bool UpdateService::IsPermissionGranted(uint32_t code)
     if (code == CAST_UINT(UpdaterSaInterfaceCode::FACTORY_RESET)) {
         permission = "ohos.permission.FACTORY_RESET";
     }
+    if (code == CAST_UINT(UpdaterSaInterfaceCode::FORCE_FACTORY_RESET)) {
+        permission = "ohos.permission.FORCE_FACTORY_RESET";
+    }
     int verifyResult = Security::AccessToken::AccessTokenKit::VerifyAccessToken(callerToken, permission);
     bool isPermissionGranted = verifyResult == Security::AccessToken::PERMISSION_GRANTED;
     if (!isPermissionGranted) {
