@@ -23,7 +23,7 @@ idl_include = [
 ]
 
 idl_gen_interface("update_service_interface") {
-  src_idl = rebase_path("IUpdateService.idl")
+  src_idl = rebase_path(updateengine_idl_path + "/" + "IUpdateService.idl")
   sources_callback = [ "callback/IUpdateCallback.idl" ]
   dst_file = string_join(",", idl_interface_sources)
   log_domainid = "0xD002E00"

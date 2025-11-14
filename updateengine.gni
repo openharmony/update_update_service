@@ -17,6 +17,7 @@ updateengine_inner_library_name = "updateservicekits"
 updateengine_library_name = "updateservice"
 updateengine_part_name = "update_service"
 updateengine_root_path = "//base/update/updateservice"
+updateengine_idl_path = "$updateengine_root_path/interfaces/inner_api/engine"
 updateengine_test_name = "update_service"
 updateengine_unittest_name = "update_service"
 updateengine_adapter_config =
