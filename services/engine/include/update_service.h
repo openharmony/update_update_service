@@ -25,6 +25,7 @@
 #include "iservice_local_updater.h"
 #include "iservice_online_updater.h"
 #include "iservice_restorer.h"
+#include "istorage_manager.h"
 #include "system_ability.h"
 
 #include "update_service_impl_manager.h"
@@ -129,6 +130,8 @@ private:
     bool IsCallerValid();
     bool IsPermissionGranted(uint32_t code);
     int32_t PermissionCheck(uint32_t code);
+    int32_t FileManagerEraseKeys();
+    static sptr<StorageManager::IStorageManager> GetStorageMgrProxy();
 
 #ifndef UPDATER_UT
 private:

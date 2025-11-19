@@ -28,10 +28,15 @@ public:
         static constexpr const char *FUNCTION_FACTORY_RESET = "factoryReset";
 
         static napi_value FactoryReset(napi_env env, napi_callback_info info);
+
+        static constexpr const char *FUNCTION_FORCE_FACTORY_RESET = "forceactoryReset";
+
+        static napi_value ForceFactoryReset(napi_env env, napi_callback_info info);
     };
 
     Restorer(napi_env env, napi_value thisVar);
     napi_value FactoryReset(napi_env env, napi_callback_info info);
+    napi_value ForceFactoryReset(napi_env env, napi_callback_info info);
 };
 } // namespace OHOS::UpdateService
 #endif // UPDATE_CLIENT_RESTORER_H

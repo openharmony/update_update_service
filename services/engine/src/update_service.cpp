@@ -348,8 +348,41 @@ int32_t UpdateService::FactoryReset(BusinessError &businessError, int32_t &funcR
     return restorer->FactoryReset(businessError);
 }
 
+sptr<StorageManager::IStorageManager> UpdateService::GetStorageMgrProxy()
+{
+    auto samgr = OHOS::SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        ENGINE_LOGE("samgr empty error");
+        return nullptr;
+    }
+
+    sptr<IRemoteObject> object = samgr->GetSystemAbility(OHOS::STORAGE_MANAGER_MANAGER_ID);
+    if (object == nullptr) {
+        ENGINE_LOGE("storage manager client samgr ability empty error");
+        return nullptr;
+    }
+
+    return iface_cast<StorageManager::IStorageManager>(object);
+}
+
+int32_t UpdateService::FileManagerEraseKeys()
+{
+    sptr<StorageManager::IStorageManager> client = GetStorageMgrProxy();
+    if (client == nullptr) {
+        ENGINE_LOGE("get storage manager service failed");
+        return INT_CALL_FAIL;
+    }
+    return client->EraseAllUserEncryptedKeys();
+}
+
 int32_t UpdateService::ForceFactoryReset(BusinessError &businessError, int32_t &funcResult)
 {
+    // 删除文件类秘钥
+    int32_t ret = FileManagerEraseKeys();
+    if (ret != 0) {
+        ENGINE_LOGE("file manager erase keys error");
+        return INT_CALL_FAIL;
+    }
     sptr<UpdateServiceRestorer> restorer = new UpdateServiceRestorer();
     if (restorer == nullptr) {
         ENGINE_LOGI("ForceFactoryReset restorer null");
