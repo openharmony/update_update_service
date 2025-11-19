@@ -29,7 +29,7 @@ public:
 
         static napi_value FactoryReset(napi_env env, napi_callback_info info);
 
-        static constexpr const char *FUNCTION_FORCE_FACTORY_RESET = "forceactoryReset";
+        static constexpr const char *FUNCTION_FORCE_FACTORY_RESET = "forceFactoryReset";
 
         static napi_value ForceFactoryReset(napi_env env, napi_callback_info info);
     };
