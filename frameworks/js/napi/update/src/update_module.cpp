@@ -292,7 +292,8 @@ static bool DefineClass(napi_env env, napi_value exports, const NativeClass& nat
 static bool DefineRestorer(napi_env env, napi_value exports)
 {
     napi_property_descriptor desc[] = {
-        DECLARE_NAPI_FUNCTION(Restorer::Napi::FUNCTION_FACTORY_RESET, Restorer::Napi::FactoryReset)
+        DECLARE_NAPI_FUNCTION(Restorer::Napi::FUNCTION_FACTORY_RESET, Restorer::Napi::FactoryReset),
+        DECLARE_NAPI_FUNCTION(Restorer::Napi::FUNCTION_FORCE_FACTORY_RESET, Restorer::Napi::ForceFactoryReset)
     };
 
     NativeClass nativeClass = {

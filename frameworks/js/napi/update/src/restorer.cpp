@@ -26,6 +26,14 @@ napi_value Restorer::Napi::FactoryReset(napi_env env, napi_callback_info info)
     return restorer->FactoryReset(env, info);
 }
 
+napi_value Restorer::Napi::ForceFactoryReset(napi_env env, napi_callback_info info)
+{
+    ENGINE_LOGI("Restorer::Napi::ForceFactoryReset");
+    Restorer* restorer = UnwrapJsObject<Restorer>(env, info);
+    PARAM_CHECK_NAPI_CALL(env, restorer != nullptr, return nullptr, "Error get restorer");
+    return restorer->ForceFactoryReset(env, info);
+}
+
 Restorer::Restorer(napi_env env, napi_value thisVar)
 {
     napi_ref thisReference = nullptr;
@@ -42,6 +50,18 @@ napi_value Restorer::FactoryReset(napi_env env, napi_callback_info info)
         [](void *context) -> int {
             BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
             return UpdateServiceKits::GetInstance().FactoryReset(*businessError);
+        });
+    PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to FactoryReset.");
+    return retValue;
+}
+
+napi_value Restorer::ForceFactoryReset(napi_env env, napi_callback_info info)
+{
+    SessionParams sessionParams(SessionType::SESSION_FORCE_FACTORY_RESET, CALLBACK_POSITION_ONE, true);
+    napi_value retValue = StartSession(env, info, sessionParams,
+        [](void *context) -> int {
+            BusinessError *businessError = reinterpret_cast<BusinessError *>(context);
+            return UpdateServiceKits::GetInstance().ForceFactoryReset(*businessError);
         });
     PARAM_CHECK(retValue != nullptr, return nullptr, "Failed to FactoryReset.");
     return retValue;

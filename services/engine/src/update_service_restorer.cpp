@@ -50,6 +50,7 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
 {
     ENGINE_LOGI("ForceFactoryReset start");
+    FactoryReset(businessError);
     return INT_CALL_SUCCESS;
 }
 } // namespace UpdateService
