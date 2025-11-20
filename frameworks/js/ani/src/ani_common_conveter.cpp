@@ -45,8 +45,8 @@ ohos::update::TaskInfo AniCommonConverter::Converter(const TaskInfo &info)
 ohos::update::CurrentVersionInfo AniCommonConverter::Converter(const CurrentVersionInfo &info)
 {
     return {
-        .deviceName = info.deviceName,
         .osVersion = info.osVersion,
+        .deviceName = info.deviceName,
         .versionComponents = Converter(info.versionComponents)
     };
 }
@@ -54,8 +54,8 @@ ohos::update::CurrentVersionInfo AniCommonConverter::Converter(const CurrentVers
 ohos::update::NewVersionInfo AniCommonConverter::Converter(const NewVersionInfo &info)
 {
     return {
-        .versionComponents = Converter(info.versionComponents),
-        .versionDigestInfo = Converter(info.versionDigestInfo)
+        .versionDigestInfo = Converter(info.versionDigestInfo),
+        .versionComponents = Converter(info.versionComponents)
     };
 }
 
@@ -70,13 +70,13 @@ ohos::update::CheckResult AniCommonConverter::Converter(const CheckResult &resul
 ohos::update::TaskBody AniCommonConverter::Converter(const TaskBody &taskBody)
 {
     ohos::update::TaskBody value = {
-        .progress = taskBody.progress,
+        .versionDigestInfo = Converter(taskBody.versionDigestInfo),
         .status = Converter(taskBody.status),
-        .errorMessages = Converter(taskBody.errorMessages),
-        .installMode = static_cast<int32_t>(taskBody.installMode),
         .subStatus = static_cast<int32_t>(taskBody.subStatus),
-        .versionComponents = Converter(taskBody.versionComponents),
-        .versionDigestInfo = Converter(taskBody.versionDigestInfo)
+        .progress = taskBody.progress,
+        .installMode = static_cast<int32_t>(taskBody.installMode),
+        .errorMessages = Converter(taskBody.errorMessages),
+        .versionComponents = Converter(taskBody.versionComponents)
     };
     return value;
 }
@@ -111,8 +111,8 @@ ohos::update::EffectiveMode AniCommonConverter::Converter(const EffectiveMode &e
 ohos::update::DescriptionInfo AniCommonConverter::Converter(const DescriptionInfo &description)
 {
     return {
-        .content = description.content,
-        .descriptionType = Converter(description.descriptionType)
+        .descriptionType = Converter(description.descriptionType),
+        .content = description.content
     };
 }
 
@@ -127,8 +127,8 @@ ohos::update::UpgradePolicy AniCommonConverter::Converter(const UpgradePolicy &u
         std::end(upgradePolicy.autoUpgradePeriods) };
     return {
         .downloadStrategy = upgradePolicy.downloadStrategy,
-        .autoUpgradePeriods = Converter(vectors),
-        .autoUpgradeStrategy = upgradePolicy.autoUpgradeStrategy
+        .autoUpgradeStrategy = upgradePolicy.autoUpgradeStrategy,
+        .autoUpgradePeriods = Converter(vectors)
     };
 }
 
@@ -154,14 +154,14 @@ taihe::array<ohos::update::ComponentDescription> AniCommonConverter::Converter(
 ohos::update::VersionComponent AniCommonConverter::Converter(const VersionComponent &component)
 {
     return {
-        .size = static_cast<int32_t>(component.size),
         .componentId = component.componentId,
         .componentType = Converter(static_cast<ComponentType>(component.componentType)),
-        .descriptionInfo = Converter(component.descriptionInfo),
+        .upgradeAction = Converter(component.upgradeAction),
         .displayVersion = component.displayVersion,
-        .effectiveMode = Converter(static_cast<EffectiveMode>(component.effectiveMode)),
         .innerVersion = component.innerVersion,
-        .upgradeAction = Converter(component.upgradeAction)
+        .size = static_cast<int32_t>(component.size),
+        .effectiveMode = Converter(static_cast<EffectiveMode>(component.effectiveMode)),
+        .descriptionInfo = Converter(component.descriptionInfo)
     };
 }
 
