@@ -356,13 +356,18 @@ sptr<StorageManager::IStorageManager> UpdateService::GetStorageMgrProxy()
         return nullptr;
     }
 
-    sptr<IRemoteObject> object = samgr->GetSystemAbility(OHOS::STORAGE_MANAGER_MANAGER_ID);
-    if (object == nullptr) {
+    auto remote = samgr->GetSystemAbility(OHOS::STORAGE_MANAGER_MANAGER_ID);
+    if (remote == nullptr) {
         ENGINE_LOGE("storage manager client samgr ability empty error");
         return nullptr;
     }
 
-    return iface_cast<StorageManager::IStorageManager>(object);
+    auto storageMgrProxy = iface_cast<StorageManager::IStorageManager>(object);
+    if (storageMgrProxy == nullptr) {
+        ENGINE_LOGE("storageMgrProxy empty error");
+        return nullptr;
+    }
+    return storageMgrProxy;
 }
 
 int32_t UpdateService::FileManagerEraseKeys()
