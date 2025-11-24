@@ -25,7 +25,7 @@
 #include "iservice_local_updater.h"
 #include "iservice_online_updater.h"
 #include "iservice_restorer.h"
-#include "istorage_manager.h"
+
 #include "storage_manager_proxy.h"
 #include "system_ability.h"
 
