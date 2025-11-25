@@ -362,7 +362,7 @@ sptr<StorageManager::IStorageManager> UpdateService::GetStorageMgrProxy()
         return nullptr;
     }
 
-    auto storageMgrProxy = iface_cast<StorageManager::IStorageManager>(object);
+    auto storageMgrProxy = iface_cast<StorageManager::IStorageManager>(remote);
     if (storageMgrProxy == nullptr) {
         ENGINE_LOGE("storageMgrProxy empty error");
         return nullptr;
