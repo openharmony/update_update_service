@@ -30,6 +30,38 @@ const std::string MISC_PATH = "/misc";
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 const std::string CMD_WIPE_DATA = "--user_wipe_data";
 
+sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
+{
+    auto samgr = OHOS::SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        ENGINE_LOGE("samgr empty error");
+        return nullptr;
+    }
+
+    auto remote = samgr->GetSystemAbility(OHOS::STORAGE_MANAGER_MANAGER_ID);
+    if (remote == nullptr) {
+        ENGINE_LOGE("storage manager client samgr ability empty error");
+        return nullptr;
+    }
+
+    auto storageMgrProxy = iface_cast<StorageManager::IStorageManager>(remote);
+    if (storageMgrProxy == nullptr) {
+        ENGINE_LOGE("storageMgrProxy empty error");
+        return nullptr;
+    }
+    return storageMgrProxy;
+}
+
+int32_t UpdateServiceRestorer::FileManagerEraseKeys()
+{
+    sptr<StorageManager::IStorageManager> client = GetStorageMgrProxy();
+    if (client == nullptr) {
+        ENGINE_LOGE("get storage manager service failed");
+        return INT_CALL_FAIL;
+    }
+    return client->EraseAllUserEncryptedKeys();
+}
+
 int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 {
 #ifndef UPDATER_UT
@@ -49,9 +81,13 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 
 int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
 {
-    ENGINE_LOGI("ForceFactoryReset start");
-    FactoryReset(businessError);
-    return INT_CALL_SUCCESS;
+    // 删除文件类秘钥
+    int32_t ret = FileManagerEraseKeys();
+    if (ret != 0) {
+        ENGINE_LOGE("file manager erase keys error");
+        return INT_CALL_FAIL;
+    }
+    return FactoryReset(businessError);
 }
 } // namespace UpdateService
 } // namespace OHOS

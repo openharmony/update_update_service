@@ -18,7 +18,10 @@
 
 #include "iservice_restorer.h"
 
+#include "iservice_registry.h"
 #include "nocopyable.h"
+#include "storage_manager_proxy.h"
+#include "system_ability_definition.h"
 
 namespace OHOS {
 namespace UpdateService {
@@ -32,6 +35,9 @@ public:
 
     int32_t FactoryReset(BusinessError &businessError) override;
     int32_t ForceFactoryReset(BusinessError &businessError) override;
+private:
+    int32_t FileManagerEraseKeys();
+    static sptr<StorageManager::IStorageManager> GetStorageMgrProxy();
 };
 } // namespace UpdateService
 } // namespace OHOS
