@@ -25,7 +25,6 @@
 #include "iservice_local_updater.h"
 #include "iservice_online_updater.h"
 #include "iservice_restorer.h"
-
 #include "system_ability.h"
 
 #include "update_service_impl_manager.h"
