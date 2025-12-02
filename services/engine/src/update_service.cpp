@@ -340,7 +340,7 @@ int32_t UpdateService::Cancel(const UpgradeInfo &info, int32_t service, Business
 
 int32_t UpdateService::FactoryReset(BusinessError &businessError, int32_t &funcResult)
 {
-    sptr<UpdateServiceRestorer> restorer = new UpdateServiceRestorer();
+    sptr<UpdateServiceRestorer> restorer = sptr<UpdateServiceRestorer>::MakeSptr();
     if (restorer == nullptr) {
         ENGINE_LOGI("FactoryReset restorer null");
         return INT_CALL_FAIL;
@@ -350,7 +350,7 @@ int32_t UpdateService::FactoryReset(BusinessError &businessError, int32_t &funcR
 
 int32_t UpdateService::ForceFactoryReset(BusinessError &businessError, int32_t &funcResult)
 {
-    sptr<UpdateServiceRestorer> restorer = new UpdateServiceRestorer();
+    sptr<UpdateServiceRestorer> restorer = sptr<UpdateServiceRestorer>::MakeSptr();
     if (restorer == nullptr) {
         ENGINE_LOGI("ForceFactoryReset restorer null");
         return INT_CALL_FAIL;
@@ -361,7 +361,7 @@ int32_t UpdateService::ForceFactoryReset(BusinessError &businessError, int32_t &
 int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::string &miscFile,
     const std::vector<std::string> &packageNames, BusinessError &businessError, int32_t &funcResult)
 {
-    sptr<UpdateServiceLocalUpdater> localUpdater = new UpdateServiceLocalUpdater();
+    sptr<UpdateServiceLocalUpdater> localUpdater = sptr<UpdateServiceLocalUpdater>::MakeSptr();
     if (localUpdater == nullptr) {
         ENGINE_LOGI("FactoryReset localUpdater null");
         return INT_CALL_FAIL;
@@ -372,7 +372,7 @@ int32_t UpdateService::ApplyNewVersion(const UpgradeInfo &info, const std::strin
 int32_t UpdateService::VerifyUpgradePackage(const std::string &packagePath, const std::string &keyPath,
     BusinessError &businessError, int32_t &funcResult)
 {
-    sptr<UpdateServiceLocalUpdater> localUpdater = new UpdateServiceLocalUpdater();
+    sptr<UpdateServiceLocalUpdater> localUpdater = sptr<UpdateServiceLocalUpdater>::MakeSptr();
     if (localUpdater == nullptr) {
         ENGINE_LOGI("FactoryReset localUpdater null");
         return INT_CALL_FAIL;
