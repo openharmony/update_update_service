@@ -25,6 +25,13 @@ void AniRestorer::FactoryResetSync()
     SetError(ret, "factoryReset", error);
 }
 
+void AniRestorer::ForceFactoryResetSync()
+{
+    BusinessError error;
+    const int32_t ret = UpdateServiceKits::GetInstance().ForceFactoryReset(error);
+    SetError(ret, "forceFactoryReset", error);
+}
+
 std::string AniRestorer::GetPermissionName()
 {
     return "ohos.permission.FACTORY_RESET";

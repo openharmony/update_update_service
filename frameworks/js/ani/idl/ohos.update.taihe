@@ -319,6 +319,9 @@ interface Updater {
     @gen_async("factoryReset")
     @gen_promise("factoryReset")
     FactoryResetSync(): void;
+    @gen_async("forceFactoryReset")
+    @gen_promise("forceFactoryReset")
+    ForceFactoryResetSync(): void;
   }
 
   interface LocalUpdater {
