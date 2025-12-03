@@ -40,7 +40,8 @@ enum class UpdaterSaInterfaceCode : uint32_t {
     CANCEL,
     FACTORY_RESET,
     APPLY_NEW_VERSION,
-    VERIFY_UPGRADE_PACKAGE
+    VERIFY_UPGRADE_PACKAGE,
+    FORCE_FACTORY_RESET
 };
 } // namespace OHOS::UpdateService
 #endif // UPDATER_SA_IPC_INTERFACE_CODE_H

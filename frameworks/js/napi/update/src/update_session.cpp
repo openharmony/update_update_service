@@ -169,6 +169,7 @@ std::map<uint32_t, std::string> SessionFuncHelper::sessionFuncMap_ = {
     {SessionType::SESSION_GET_UPDATER,                 "getUpdater"},
     {SessionType::SESSION_APPLY_NEW_VERSION,           "applyNewVersion"},
     {SessionType::SESSION_FACTORY_RESET,               "factoryReset"},
+    {SessionType::SESSION_FORCE_FACTORY_RESET,         "forceFactoryReset"},
     {SessionType::SESSION_VERIFY_PACKAGE,              "verifyPackage"},
     {SessionType::SESSION_CANCEL_UPGRADE,              "cancel"},
     {SessionType::SESSION_GET_CUR_VERSION,             "getCurrentVersionInfo"},

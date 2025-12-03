@@ -144,6 +144,7 @@ sa_external_deps = [
   "openssl:libssl_shared",
   "safwk:system_ability_fwk",
   "samgr:samgr_proxy",
+  "storage_service:storage_manager_sa_proxy",
   "updater:libfsmanager",  # "fs_manager/mount.h"
   "updater:libpackage_shared",  # "package/package.h"
   "updater:libupdater_shared",  # "updaterkits/updaterkits.h"

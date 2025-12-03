@@ -25,6 +25,7 @@ public:
     ~AniRestorer() override = default;
 
     void FactoryResetSync();
+    void ForceFactoryResetSync();
 
 protected:
     std::string GetPermissionName() override;

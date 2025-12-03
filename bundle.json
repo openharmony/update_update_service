@@ -48,6 +48,7 @@
         "openssl",
         "preferences",
         "sys_installer",
+        "storage_service",
         "time_service",
         "relational_store",
         "runtime_core"
