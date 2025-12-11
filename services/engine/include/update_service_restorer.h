@@ -37,6 +37,8 @@ public:
     int32_t ForceFactoryReset(BusinessError &businessError) override;
 private:
     int32_t FileManagerEraseKeys();
+    std::string GetApplicationHapName();
+    std::string GetResetPointCode();
     static sptr<StorageManager::IStorageManager> GetStorageMgrProxy();
 };
 } // namespace UpdateService
