@@ -15,9 +15,12 @@
 
 #include "update_service_restorer.h"
 
+#include "access_token.h"
+#include "accesstoken_kit.h"
 #ifndef UPDATER_FUZZ
 #include "fs_manager/mount.h"
 #endif
+#include "ipc_skeleton.h"
 #include "updaterkits/updaterkits.h"
 
 #include "update_define.h"
@@ -29,6 +32,40 @@ namespace UpdateService {
 const std::string MISC_PATH = "/misc";
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 const std::string CMD_WIPE_DATA = "--user_wipe_data";
+
+// hap名称： 设置菜单 + 工程菜单 + 手机找回
+// key: hapName, value: errCode
+std::unorderd_map<std::string, int32_t> pointCodeMap = {
+    {"com.huawei.hmos.settings", 101},
+    {"com.huawei.hmos.projectmenu", 111},
+    {"com.huawei.hmos.findservice", 121}
+}
+
+std::string UpdateServiceRestorer::GetApplicationHapName()
+{
+    std::string callingUid = std::to_string(IPCSkeleton::GetCallingUid());
+    OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    Security::AccessToken::HapTokenInfo  hapTokenInfo;
+    if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
+        ENGINE_LOGE("Get hap token info error"); 
+        return "";
+    }
+    ENGINE_LOGI("service restorer bundleName: %{public}s", hapTokenInfo.bundleName.c_str());
+    return hapTokenInfo.bundleName;
+}
+
+std::string UpdateServiceRestorer::GetResetPointCode()
+{
+    std::string pointCode;
+    std::string hapName = GetApplicationHapName();
+    auto it = pointCodeMap.find(hapName);
+    if (it != pointCodeMap.end()) {
+        pointCode = std::to_string(it->second);
+    } else {
+        pointCode = "";
+    }
+    return pointCode;
+}
 
 sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
 {
@@ -69,7 +106,8 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
     auto miscBlockDev = Updater::GetBlockDeviceByMountPoint(MISC_PATH);
     ENGINE_LOGI("FactoryReset::misc path : %{public}s", miscBlockDev.c_str());
     ENGINE_CHECK(!miscBlockDev.empty(), miscBlockDev = MISC_FILE, "cannot get block device of partition");
-    int32_t ret = RebootAndCleanUserData(miscBlockDev, CMD_WIPE_DATA) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
+    std::string paramData = CMD_WIPE_DATA + "\n--reset_enter:" + GetResetPointCode();
+    int32_t ret = RebootAndCleanUserData(miscBlockDev, paramData) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
     ENGINE_LOGI("FactoryReset result : %{public}d", ret);
     SYS_EVENT_SYSTEM_RESET(
         0, ret == INT_CALL_SUCCESS ? UpdateSystemEvent::EVENT_SUCCESS_RESULT : UpdateSystemEvent::EVENT_FAILED_RESULT);
