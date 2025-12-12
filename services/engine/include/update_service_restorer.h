@@ -25,12 +25,6 @@
 
 namespace OHOS {
 namespace UpdateService {
-enum class ResetPointCode {
-    SETTINGS = 101,
-    PROJECT_MENU = 111,
-    FIND_SERVICE = 121
-};
-
 class UpdateServiceRestorer final : public IServiceRestorer {
 public:
     UpdateServiceRestorer() = default;
@@ -43,9 +37,10 @@ public:
     int32_t ForceFactoryReset(BusinessError &businessError) override;
 private:
     int32_t FileManagerEraseKeys();
-    std::string GetApplicationHapName();
-    std::string GetResetPointCode();
+    std::string GetCallingAppId();
+    void SetResetFlag(bool flag);
     static sptr<StorageManager::IStorageManager> GetStorageMgrProxy();
+    bool forceResetFlag = false;
 };
 } // namespace UpdateService
 } // namespace OHOS

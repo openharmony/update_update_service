@@ -32,22 +32,9 @@ namespace UpdateService {
 const std::string MISC_PATH = "/misc";
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 const std::string CMD_WIPE_DATA = "--user_wipe_data";
-const std::string HW_PREFIX = "com.huawei.hmos";
-const std::string HAP_SETTINGS = HW_PREFIX + ".settings";
-const std::string HAP_PROJECT_MENU = HW_PREFIX + ".projectmenu";
-const std::string HAP_FIND_SERVICE = HW_PREFIX + ".findservice";
 
-// hap名称： 设置菜单 + 工程菜单 + 手机找回
-// key: hapName, value: errCode
-std::unordered_map<std::string, int32_t> pointCodeMap = {
-    {HAP_SETTINGS, CAST_INT(ResetPointCode::SETTINGS)},
-    {HAP_PROJECT_MENU, CAST_INT(ResetPointCode::PROJECT_MENU)},
-    {HAP_FIND_SERVICE, CAST_INT(ResetPointCode::FIND_SERVICE)}
-}
-
-std::string UpdateServiceRestorer::GetApplicationHapName()
+std::string UpdateServiceRestorer::GetCallingAppId()
 {
-    std::string callingUid = std::to_string(IPCSkeleton::GetCallingUid());
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
     Security::AccessToken::HapTokenInfo  hapTokenInfo;
     if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
@@ -56,19 +43,6 @@ std::string UpdateServiceRestorer::GetApplicationHapName()
     }
     ENGINE_LOGI("service restorer bundleName: %{public}s", hapTokenInfo.bundleName.c_str());
     return hapTokenInfo.bundleName;
-}
-
-std::string UpdateServiceRestorer::GetResetPointCode()
-{
-    std::string pointCode;
-    std::string hapName = GetApplicationHapName();
-    auto it = pointCodeMap.find(hapName);
-    if (it != pointCodeMap.end()) {
-        pointCode = std::to_string(it->second);
-    } else {
-        pointCode = "";
-    }
-    return pointCode;
 }
 
 sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
@@ -103,6 +77,11 @@ int32_t UpdateServiceRestorer::FileManagerEraseKeys()
     return client->EraseAllUserEncryptedKeys();
 }
 
+void UpdateServiceRestorer::SetResetFlag(bool flag)
+{
+    forceResetFlag = flag;
+}
+
 int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 {
 #ifndef UPDATER_UT
@@ -110,7 +89,10 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
     auto miscBlockDev = Updater::GetBlockDeviceByMountPoint(MISC_PATH);
     ENGINE_LOGI("FactoryReset::misc path : %{public}s", miscBlockDev.c_str());
     ENGINE_CHECK(!miscBlockDev.empty(), miscBlockDev = MISC_FILE, "cannot get block device of partition");
-    std::string paramData = CMD_WIPE_DATA + "\n--reset_enter:" + GetResetPointCode();
+    std::string paramData;
+    std::string suffix;
+    suffix = forceResetFlag ? "\n--reset_enter:forceFactoryReset|" : "\n--reset_enter:factoryReset|";
+    paramData = CMD_WIPE_DATA + suffix + GetCallingAppId();
     int32_t ret = RebootAndCleanUserData(miscBlockDev, paramData) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
     ENGINE_LOGI("FactoryReset result : %{public}d", ret);
     SYS_EVENT_SYSTEM_RESET(
@@ -129,6 +111,7 @@ int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
         ENGINE_LOGE("file manager erase keys error");
         return INT_CALL_FAIL;
     }
+    SetResetFlag(true);
     return FactoryReset(businessError);
 }
 } // namespace UpdateService
