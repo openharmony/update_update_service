@@ -32,13 +32,17 @@ namespace UpdateService {
 const std::string MISC_PATH = "/misc";
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 const std::string CMD_WIPE_DATA = "--user_wipe_data";
+const std::string HW_PREFIX = "com.huawei.hmos";
+const std::string HAP_SETTINGS = HW_PREFIX + ".settings";
+const std::string HAP_PROJECT_MENU = HW_PREFIX + ".projectmenu";
+const std::string HAP_FIND_SERVICE = HW_PREFIX + ".findservice";
 
 // hap名称： 设置菜单 + 工程菜单 + 手机找回
 // key: hapName, value: errCode
-std::unorderd_map<std::string, int32_t> pointCodeMap = {
-    {"com.huawei.hmos.settings", 101},
-    {"com.huawei.hmos.projectmenu", 111},
-    {"com.huawei.hmos.findservice", 121}
+std::unordered_map<std::string, int32_t> pointCodeMap = {
+    {HAP_SETTINGS, CAST_INT(ResetPointCode::SETTINGS)},
+    {HAP_PROJECT_MENU, CAST_INT(ResetPointCode::PROJECT_MENU)},
+    {HAP_FIND_SERVICE, CAST_INT(ResetPointCode::FIND_SERVICE)}
 }
 
 std::string UpdateServiceRestorer::GetApplicationHapName()
@@ -47,7 +51,7 @@ std::string UpdateServiceRestorer::GetApplicationHapName()
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
     Security::AccessToken::HapTokenInfo  hapTokenInfo;
     if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
-        ENGINE_LOGE("Get hap token info error"); 
+        ENGINE_LOGE("Get hap token info error");
         return "";
     }
     ENGINE_LOGI("service restorer bundleName: %{public}s", hapTokenInfo.bundleName.c_str());
