@@ -25,6 +25,12 @@
 
 namespace OHOS {
 namespace UpdateService {
+enum class ResetPointCode {
+    SETTINGS = 101,
+    PROJECT_MENU = 111,
+    FIND_SERVICE = 121
+};
+
 class UpdateServiceRestorer final : public IServiceRestorer {
 public:
     UpdateServiceRestorer() = default;
