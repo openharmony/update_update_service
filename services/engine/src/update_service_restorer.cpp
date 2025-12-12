@@ -90,7 +90,7 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
     ENGINE_LOGI("FactoryReset::misc path : %{public}s", miscBlockDev.c_str());
     ENGINE_CHECK(!miscBlockDev.empty(), miscBlockDev = MISC_FILE, "cannot get block device of partition");
     const std::string suffix = forceResetFlag ? "\n--reset_enter:forceFactoryReset|" : "\n--reset_enter:factoryReset|";
-    const std::striong paramData = CMD_WIPE_DATA + suffix + GetCallingAppId();
+    const std::string paramData = CMD_WIPE_DATA + suffix + GetCallingAppId();
     int32_t ret = RebootAndCleanUserData(miscBlockDev, paramData) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
     ENGINE_LOGI("FactoryReset result : %{public}d", ret);
     SYS_EVENT_SYSTEM_RESET(
