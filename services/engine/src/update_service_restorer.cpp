@@ -35,14 +35,31 @@ const std::string CMD_WIPE_DATA = "--user_wipe_data";
 
 std::string UpdateServiceRestorer::GetCallingAppId()
 {
+    std::string callerInfo;
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
-    Security::AccessToken::HapTokenInfo  hapTokenInfo;
-    if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
-        ENGINE_LOGE("Get hap token info error");
-        return "";
+    auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
+    switch (callerTokenType) {
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_HAP: {
+            Security::AccessToken::HapTokenInfo  hapTokenInfo;
+            if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
+                ENGINE_LOGE("Get hap token info error");
+                callerInfo = "";
+                break;
+            }
+            callerInfo = hapTokenInfo.bundleName;
+            break;
+        }
+        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE: {
+            pid_t callerUid = IPCSkeleton::GetCallingUid();
+            callerInfo = std::to_string(callerUid);
+            break; 
+        }
+        default:
+            ENGINE_LOGE("caller type not match");
+            callerInfo = "";
+            break;
     }
-    ENGINE_LOGI("service restorer bundleName: %{public}s", hapTokenInfo.bundleName.c_str());
-    return hapTokenInfo.bundleName;
+    return callerInfo;
 }
 
 sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
