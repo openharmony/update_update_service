@@ -52,7 +52,7 @@ std::string UpdateServiceRestorer::GetCallingAppId()
         case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE: {
             pid_t callerUid = IPCSkeleton::GetCallingUid();
             callerInfo = std::to_string(callerUid);
-            break; 
+            break;
         }
         default:
             ENGINE_LOGE("caller type not match");
