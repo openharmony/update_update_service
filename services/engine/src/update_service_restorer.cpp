@@ -51,7 +51,7 @@ static std::string GetCallingAppId()
     return "";
 }
 
-static int32_t execReset(BusinessError &businessError, bool forceFlag)
+static int32_t ExecReset(BusinessError &businessError, bool forceFlag)
 {
     businessError.errorNum = CallResult::SUCCESS;
     auto miscBlockDev = Updater::GetBlockDeviceByMountPoint(MISC_PATH);
@@ -101,7 +101,7 @@ int32_t UpdateServiceRestorer::FileManagerEraseKeys()
 int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 {
 #ifndef UPDATER_UT
-    return execReset(businessError, false);
+    return ExecReset(businessError, false);
 #else
     return INT_CALL_SUCCESS;
 #endif
@@ -115,7 +115,7 @@ int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
         ENGINE_LOGE("file manager erase keys error");
         return INT_CALL_FAIL;
     }
-    return execReset(businessError, true);
+    return ExecReset(businessError, true);
 }
 } // namespace UpdateService
 } // namespace OHOS
