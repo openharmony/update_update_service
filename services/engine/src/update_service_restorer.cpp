@@ -43,6 +43,7 @@ std::string UpdateServiceRestorer::GetCallingAppId()
             ENGINE_LOGE("Get hap token info error");
             return "";
         }
+        return hapTokenInfo.bundleName;
     }
     if (callerTokenType == OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE) {
         return std::to_string(IPCSkeleton::GetCallingUid());
