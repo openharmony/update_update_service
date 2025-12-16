@@ -98,8 +98,6 @@ int32_t UpdateServiceRestorer::FileManagerEraseKeys()
     return client->EraseAllUserEncryptedKeys();
 }
 
-
-
 int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 {
 #ifndef UPDATER_UT
