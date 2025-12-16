@@ -38,9 +38,7 @@ public:
 private:
     int32_t FileManagerEraseKeys();
     std::string GetCallingAppId();
-    void SetResetFlag(bool flag);
     static sptr<StorageManager::IStorageManager> GetStorageMgrProxy();
-    bool forceResetFlag_ = false;
 };
 } // namespace UpdateService
 } // namespace OHOS
