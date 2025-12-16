@@ -40,7 +40,7 @@ private:
     std::string GetCallingAppId();
     void SetResetFlag(bool flag);
     static sptr<StorageManager::IStorageManager> GetStorageMgrProxy();
-    bool forceResetFlag = false;
+    bool forceResetFlag_ = false;
 };
 } // namespace UpdateService
 } // namespace OHOS

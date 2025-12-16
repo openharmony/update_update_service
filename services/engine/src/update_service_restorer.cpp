@@ -35,33 +35,21 @@ const std::string CMD_WIPE_DATA = "--user_wipe_data";
 
 std::string UpdateServiceRestorer::GetCallingAppId()
 {
-    std::string callerInfo;
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
     auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
-    switch (callerTokenType) {
-        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_HAP: {
-            Security::AccessToken::HapTokenInfo  hapTokenInfo;
-            if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
-                ENGINE_LOGE("Get hap token info error");
-                callerInfo = "";
-                break;
-            }
-            callerInfo = hapTokenInfo.bundleName;
-            break;
+    if (callerTokenType == OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_HAP) {
+        Security::AccessToken::HapTokenInfo  hapTokenInfo;
+        if (Security::AccessToken::AccessTokenKit::GetHapTokenInfo(callerToken, hapTokenInfo) != 0) {
+            ENGINE_LOGE("Get hap token info error");
+            return "";
         }
-        case OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE: {
-            pid_t callerUid = IPCSkeleton::GetCallingUid();
-            callerInfo = std::to_string(callerUid);
-            break;
-        }
-        default:
-            ENGINE_LOGE("caller type not match");
-            callerInfo = "";
-            break;
     }
-    return callerInfo;
+    if (callerTokenType == OHOS::Security::AccessToken::TypeATokenTypeEnum::TOKEN_NATIVE) {
+        return std::to_string(IPCSkeleton::GetCallingUid());
+    }
+    return "";
 }
-
+ 
 sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
 {
     auto samgr = OHOS::SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
@@ -96,7 +84,7 @@ int32_t UpdateServiceRestorer::FileManagerEraseKeys()
 
 void UpdateServiceRestorer::SetResetFlag(bool flag)
 {
-    forceResetFlag = flag;
+    forceResetFlag_ = flag;
 }
 
 int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
@@ -106,7 +94,8 @@ int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
     auto miscBlockDev = Updater::GetBlockDeviceByMountPoint(MISC_PATH);
     ENGINE_LOGI("FactoryReset::misc path : %{public}s", miscBlockDev.c_str());
     ENGINE_CHECK(!miscBlockDev.empty(), miscBlockDev = MISC_FILE, "cannot get block device of partition");
-    const std::string suffix = forceResetFlag ? "\n--reset_enter:forceFactoryReset|" : "\n--reset_enter:factoryReset|";
+    const std::string suffix = forceResetFlag_ ? "\n--reset_enter:forceFactoryReset|" :
+        "\n--reset_enter:factoryReset|";
     const std::string paramData = CMD_WIPE_DATA + suffix + GetCallingAppId();
     int32_t ret = RebootAndCleanUserData(miscBlockDev, paramData) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
     ENGINE_LOGI("FactoryReset result : %{public}d", ret);
