@@ -33,7 +33,7 @@ const std::string MISC_PATH = "/misc";
 const std::string MISC_FILE = "/dev/block/by-name/misc";
 const std::string CMD_WIPE_DATA = "--user_wipe_data";
 
-std::string UpdateServiceRestorer::GetCallingAppId()
+static std::string GetCallingAppId()
 {
     OHOS::Security::AccessToken::AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
     auto callerTokenType = OHOS::Security::AccessToken::AccessTokenKit::GetTokenType(callerToken);
@@ -50,7 +50,22 @@ std::string UpdateServiceRestorer::GetCallingAppId()
     }
     return "";
 }
- 
+
+static int32_t execReset(BusinessError &businessError, bool forceFlag)
+{
+    businessError.errorNum = CallResult::SUCCESS;
+    auto miscBlockDev = Updater::GetBlockDeviceByMountPoint(MISC_PATH);
+    ENGINE_LOGI("FactoryReset::misc path : %{public}s", miscBlockDev.c_str());
+    ENGINE_CHECK(!miscBlockDev.empty(), miscBlockDev = MISC_FILE, "cannot get block device of partition");
+    const std::string suffix = forceFlag ? "\n--reset_enter:forceFactoryReset|" : "\n--reset_enter:factoryReset|";
+    const std::string paramData = CMD_WIPE_DATA + suffix + GetCallingAppId();
+    int32_t ret = RebootAndCleanUserData(miscBlockDev, paramData) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
+    ENGINE_LOGI("FactoryReset result : %{public}d", ret);
+    SYS_EVENT_SYSTEM_RESET(
+        0, ret == INT_CALL_SUCCESS ? UpdateSystemEvent::EVENT_SUCCESS_RESULT : UpdateSystemEvent::EVENT_FAILED_RESULT);
+    return ret;
+}
+
 sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
 {
     auto samgr = OHOS::SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
@@ -83,26 +98,12 @@ int32_t UpdateServiceRestorer::FileManagerEraseKeys()
     return client->EraseAllUserEncryptedKeys();
 }
 
-void UpdateServiceRestorer::SetResetFlag(bool flag)
-{
-    forceResetFlag_ = flag;
-}
+
 
 int32_t UpdateServiceRestorer::FactoryReset(BusinessError &businessError)
 {
 #ifndef UPDATER_UT
-    businessError.errorNum = CallResult::SUCCESS;
-    auto miscBlockDev = Updater::GetBlockDeviceByMountPoint(MISC_PATH);
-    ENGINE_LOGI("FactoryReset::misc path : %{public}s", miscBlockDev.c_str());
-    ENGINE_CHECK(!miscBlockDev.empty(), miscBlockDev = MISC_FILE, "cannot get block device of partition");
-    const std::string suffix = forceResetFlag_ ? "\n--reset_enter:forceFactoryReset|" :
-        "\n--reset_enter:factoryReset|";
-    const std::string paramData = CMD_WIPE_DATA + suffix + GetCallingAppId();
-    int32_t ret = RebootAndCleanUserData(miscBlockDev, paramData) ? INT_CALL_SUCCESS : INT_CALL_FAIL;
-    ENGINE_LOGI("FactoryReset result : %{public}d", ret);
-    SYS_EVENT_SYSTEM_RESET(
-        0, ret == INT_CALL_SUCCESS ? UpdateSystemEvent::EVENT_SUCCESS_RESULT : UpdateSystemEvent::EVENT_FAILED_RESULT);
-    return ret;
+    return execReset(businessError, false);
 #else
     return INT_CALL_SUCCESS;
 #endif
@@ -116,8 +117,7 @@ int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
         ENGINE_LOGE("file manager erase keys error");
         return INT_CALL_FAIL;
     }
-    SetResetFlag(true);
-    return FactoryReset(businessError);
+    return execReset(businessError, true);
 }
 } // namespace UpdateService
 } // namespace OHOS
