@@ -103,7 +103,13 @@ void NetObserver::OnNetChange(NetType netType)
         ENGINE_LOGI("callback is recycled");
         return;
     }
-    bool result = callback_.lock()->OnNetChange(netType);
+
+    const auto netManager = callback_.lock();
+    if (netManager == nullptr) {
+        ENGINE_LOGI("callback is empty");
+        return;
+    }
+    bool result = netManager->OnNetChange(netType);
     ENGINE_LOGD("OnNetChange callback result %{public}s", StringUtils::GetBoolStr(result).c_str());
 }
 } // namespace UpdateService
