@@ -104,7 +104,7 @@ void NetObserver::OnNetChange(NetType netType)
         return;
     }
 
-    const auto netManager = cacallback_.lock();
+    const auto netManager = callback_.lock();
     if (netManager == nullptr) {
         ENGINE_LOGI("callback is empty");
         return;
