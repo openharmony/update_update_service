@@ -96,8 +96,7 @@ bool UpdateNotify::HandleMessage(const std::string &message)
     int ret = ConnectAbility(want, connect);
     std::unique_lock<std::mutex> uniqueLock(connectMutex_);
     conditionVal_.wait_for(uniqueLock, std::chrono::seconds(UPDATE_APP_CONNECT_TIMEOUT));
-    sptr<IRemoteObject> localRemoteObject_ = remoteObject_;
-    if (ret != OHOS::ERR_OK || localRemoteObject_ == nullptr) {
+    if (ret != OHOS::ERR_OK || remoteObject_ == nullptr) {
         ENGINE_LOGE("HandleMessage, can not connect to ouc");
         return false;
     }
@@ -110,7 +109,7 @@ bool UpdateNotify::HandleMessage(const std::string &message)
 
     MessageParcel reply;
     MessageOption option(MessageOption::TF_SYNC);
-    int32_t result = localRemoteObject_->SendRequest(CAST_INT(UpdateAppCode::UPDATE_APP), data, reply, option);
+    int32_t result = remoteObject_->SendRequest(CAST_INT(UpdateAppCode::UPDATE_APP), data, reply, option);
     if (result != 0) {
         ENGINE_LOGE("HandleMessage SendRequest, error result %{public}d", result);
         DisconnectAbility(connect);
