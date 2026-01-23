@@ -120,6 +120,7 @@ bool UpdateNotify::HandleMessage(const std::string &message)
 
 void UpdateNotify::HandleAbilityConnect(const sptr<IRemoteObject> &remoteObject)
 {
+    std::lock_guard<std::mutex> lock(connectMutex_);
     remoteObject_ = remoteObject;
     conditionVal_.notify_one();
 }
