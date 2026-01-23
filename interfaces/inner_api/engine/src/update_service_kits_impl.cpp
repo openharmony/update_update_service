@@ -285,6 +285,7 @@ void UpdateServiceKitsImpl::RegisterCallback()
 {
     ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.size());
     int32_t funcResult = 0;
+    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     for (auto &iter : remoteUpdateCallbackMap_) {
         remoteServer_->RegisterUpdateCallback(iter.first, iter.second, funcResult);
     }
