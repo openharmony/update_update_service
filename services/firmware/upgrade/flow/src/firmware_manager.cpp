@@ -239,7 +239,8 @@ void FirmwareManager::DoInstall(const UpgradeOptions &upgradeOptions, BusinessEr
     std::shared_ptr<FirmwareIExecuteMode> executeMode;
     if (FirmwareUpdateHelper::IsStreamUpgrade()) {
         executeMode =
-            std::make_shared<FirmwareStreamInstallApplyMode>(upgradeOptions, businessError, installType, [flowManager]() {
+            std::make_shared<FirmwareStreamInstallApplyMode>(upgradeOptions, businessError, installType,
+            [flowManager]() {
                 FIRMWARE_LOGI("FirmwareManager DoInstall finish");
             });
     } else {
