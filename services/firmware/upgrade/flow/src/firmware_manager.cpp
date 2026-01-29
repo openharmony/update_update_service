@@ -188,12 +188,12 @@ void FirmwareManager::DoTerminateUpgrade(BusinessError &businessError)
 
 void FirmwareManager::DoCheck(OnCheckComplete onCheckComplete)
 {
-    auto *flowManager = new FirmwareFlowManager();
+    auto flowManager = std::make_shared<FirmwareFlowManager>();
     std::shared_ptr<FirmwareIExecuteMode> executeMode =
-        std::make_shared<FirmwareManualCheckMode>([=](BusinessError &businessError, CheckResult &checkResult) {
+        std::make_shared<FirmwareManualCheckMode>(
+            [flowManager, onCheckComplete](BusinessError &businessError, CheckResult &checkResult) {
             FIRMWARE_LOGI("FirmwareManager DoCheck newVersionInfoResult");
             onCheckComplete(businessError, checkResult);
-            delete flowManager;
         });
     flowManager->SetExecuteMode(executeMode);
     flowManager->Start();
@@ -201,11 +201,10 @@ void FirmwareManager::DoCheck(OnCheckComplete onCheckComplete)
 
 void FirmwareManager::DoDownload(const DownloadOptions &downloadOptions, BusinessError &businessError)
 {
-    auto *flowManager = new FirmwareFlowManager();
+    auto flowManager = std::make_shared<FirmwareFlowManager>();
     std::shared_ptr<FirmwareIExecuteMode> executeMode =
-        std::make_shared<FirmwareDownloadMode>(downloadOptions, businessError, [=]() {
+        std::make_shared<FirmwareDownloadMode>(downloadOptions, businessError, [flowManager]() {
             FIRMWARE_LOGI("FirmwareManager DoDownload finish");
-            delete flowManager;
         });
     flowManager->SetExecuteMode(executeMode);
     flowManager->Start();
@@ -236,19 +235,17 @@ void FirmwareManager::DoInstall(const UpgradeOptions &upgradeOptions, BusinessEr
         FIRMWARE_LOGI("status can not Install");
         return;
     }
-    FirmwareFlowManager *flowManager = new FirmwareFlowManager();
+    auto flowManager = std::make_shared<FirmwareFlowManager>();
     std::shared_ptr<FirmwareIExecuteMode> executeMode;
     if (FirmwareUpdateHelper::IsStreamUpgrade()) {
         executeMode =
-            std::make_shared<FirmwareStreamInstallApplyMode>(upgradeOptions, businessError, installType, [=]() {
+            std::make_shared<FirmwareStreamInstallApplyMode>(upgradeOptions, businessError, installType, [flowManager]() {
                 FIRMWARE_LOGI("FirmwareManager DoInstall finish");
-                delete flowManager;
             });
     } else {
         executeMode =
-            std::make_shared<FirmwareInstallApplyMode>(upgradeOptions, businessError, installType, [=]() {
+            std::make_shared<FirmwareInstallApplyMode>(upgradeOptions, businessError, installType, [flowManager]() {
                 FIRMWARE_LOGI("FirmwareManager DoInstall finish");
-                delete flowManager;
             });
     }
 
