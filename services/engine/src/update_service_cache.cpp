@@ -50,7 +50,7 @@ bool UpdateServiceCache::IsParamType(BusinessSubType businessSubType)
 
 UpgradeInfo UpdateServiceCache::GetUpgradeInfo(BusinessSubType businessSubType)
 {
-    std::lock_guard<std::mutex> lock(upgradeInfoLock_);
+    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         UpgradeInfo upgradeInfo;
         return upgradeInfo;
@@ -61,7 +61,7 @@ UpgradeInfo UpdateServiceCache::GetUpgradeInfo(BusinessSubType businessSubType)
 
 void UpdateServiceCache::SetUpgradeInfo(const UpgradeInfo &upgradeInfo)
 {
-    std::lock_guard<std::mutex> lock(upgradeInfoLock_);
+    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(upgradeInfo.businessType.subType)) {
         return;
     }
@@ -75,7 +75,7 @@ void UpdateServiceCache::SetUpgradeInfo(const UpgradeInfo &upgradeInfo)
 
 uint64_t UpdateServiceCache::GetCheckInterval(BusinessSubType businessSubType)
 {
-    std::lock_guard<std::mutex> lock(upgradeInfoLock_);
+    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return 0;
     }
@@ -85,7 +85,7 @@ uint64_t UpdateServiceCache::GetCheckInterval(BusinessSubType businessSubType)
 
 void UpdateServiceCache::SetCheckInterval(BusinessSubType businessSubType, uint64_t interval)
 {
-    std::lock_guard<std::mutex> lock(upgradeInfoLock_);
+    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return;
     }
@@ -99,7 +99,7 @@ void UpdateServiceCache::SetCheckInterval(BusinessSubType businessSubType, uint6
 
 uint64_t UpdateServiceCache::GetDownloadInterval(BusinessSubType businessSubType)
 {
-    std::lock_guard<std::mutex> lock(upgradeInfoLock_);
+    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return 0;
     }
@@ -109,7 +109,7 @@ uint64_t UpdateServiceCache::GetDownloadInterval(BusinessSubType businessSubType
 
 void UpdateServiceCache::SetDownloadInterval(BusinessSubType businessSubType, uint64_t interval)
 {
-    std::lock_guard<std::mutex> lock(upgradeInfoLock_);
+    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return;
     }
