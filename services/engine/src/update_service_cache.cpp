@@ -33,7 +33,7 @@ UpgradeInfo UpdateServiceCache::paramUpgradeInfo_{};
 uint64_t UpdateServiceCache::paramCheckInterval_ = 0;
 uint64_t UpdateServiceCache::paramDownloadInterval_ = 0;
 UpgradeInterval UpdateServiceCache::paramUpgradeInterval_{};
-std::mutex UpdateServiceCache::instanceLock_;
+std::mutex UpdateServiceCache::threadLock_;
 
 bool UpdateServiceCache::IsTypelegal(BusinessSubType businessSubType)
 {
@@ -76,7 +76,6 @@ void UpdateServiceCache::SetUpgradeInfo(const UpgradeInfo &upgradeInfo)
 
 uint64_t UpdateServiceCache::GetCheckInterval(BusinessSubType businessSubType)
 {
-    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return 0;
     }
@@ -86,7 +85,6 @@ uint64_t UpdateServiceCache::GetCheckInterval(BusinessSubType businessSubType)
 
 void UpdateServiceCache::SetCheckInterval(BusinessSubType businessSubType, uint64_t interval)
 {
-    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return;
     }
@@ -100,7 +98,6 @@ void UpdateServiceCache::SetCheckInterval(BusinessSubType businessSubType, uint6
 
 uint64_t UpdateServiceCache::GetDownloadInterval(BusinessSubType businessSubType)
 {
-    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return 0;
     }
@@ -110,7 +107,6 @@ uint64_t UpdateServiceCache::GetDownloadInterval(BusinessSubType businessSubType
 
 void UpdateServiceCache::SetDownloadInterval(BusinessSubType businessSubType, uint64_t interval)
 {
-    std::lock_guard<std::mutex> lock(threadLock_);
     if (!IsTypelegal(businessSubType)) {
         return;
     }
