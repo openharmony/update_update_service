@@ -17,6 +17,7 @@
 #define UPDATE_SERVICE_CACHE_H
 
 #include <cstdint>
+#include <mutex>
 
 #include "business_sub_type.h"
 #include "upgrade_info.h"
@@ -49,7 +50,7 @@ private:
     static uint64_t paramCheckInterval_;
     static uint64_t paramDownloadInterval_;
     static UpgradeInterval paramUpgradeInterval_;
-    std::mutex threadLock_;
+    static std::mutex threadLock_;
 };
 } // namespace UpdateService
 } // namespace OHOS

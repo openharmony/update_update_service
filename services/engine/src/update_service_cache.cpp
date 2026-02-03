@@ -33,6 +33,7 @@ UpgradeInfo UpdateServiceCache::paramUpgradeInfo_{};
 uint64_t UpdateServiceCache::paramCheckInterval_ = 0;
 uint64_t UpdateServiceCache::paramDownloadInterval_ = 0;
 UpgradeInterval UpdateServiceCache::paramUpgradeInterval_{};
+std::mutex UpdateServiceCache::instanceLock_;
 
 bool UpdateServiceCache::IsTypelegal(BusinessSubType businessSubType)
 {
