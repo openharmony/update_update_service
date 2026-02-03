@@ -49,7 +49,7 @@ private:
     static uint64_t paramCheckInterval_;
     static uint64_t paramDownloadInterval_;
     static UpgradeInterval paramUpgradeInterval_;
-    std::mutex upgradeInfoLock_;
+    std::mutex threadLock_;
 };
 } // namespace UpdateService
 } // namespace OHOS
