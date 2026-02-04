@@ -25,11 +25,6 @@
 #include "update_define.h"
 
 namespace OHOS::UpdateService {
-// class name
-const std::string CLASS_NAME_UPDATE_CLIENT = "UpdateClient";
-const std::string CLASS_NAME_RESTORER = "Restorer";
-const std::string CLASS_NAME_LOCAL_UPDATER = "LocalUpdater";
-
 std::shared_ptr<Restorer> g_restorer = nullptr;
 std::shared_ptr<LocalUpdater> g_localUpdater = nullptr;
 std::map<UpgradeInfo, std::shared_ptr<UpdateClient>> g_onlineUpdater;
@@ -116,7 +111,7 @@ napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
         return nullptr, "Failed to GetOnlineUpdater");
 
     napi_value jsObject = nullptr;
-    UpdateClient *client = CreateJsObject<UpdateClient>(env, info, jsObject, CLASS_NAME_UPDATE_CLIENT);
+    UpdateClient *client = CreateJsObject<UpdateClient>(env, info, jsObject);
     if (client != nullptr) {
         napi_value result = client->GetOnlineUpdater(env, info);
         if (result != nullptr) {
@@ -133,7 +128,7 @@ napi_value GetRestorer(napi_env env, napi_callback_info info)
         return nullptr, "Failed to GetRestorer");
 
     napi_value jsObject = nullptr;
-    Restorer* restorer = CreateJsObject<Restorer>(env, info, jsObject, CLASS_NAME_RESTORER);
+    Restorer* restorer = CreateJsObject<Restorer>(env, info, jsObject);
     if (restorer == nullptr) {
         return nullptr;
     }
@@ -147,7 +142,7 @@ napi_value GetLocalUpdater(napi_env env, napi_callback_info info)
         return nullptr, "Failed to GetLocalUpdater");
 
     napi_value jsObject = nullptr;
-    LocalUpdater* localUpdater = CreateJsObject<LocalUpdater>(env, info, jsObject, CLASS_NAME_LOCAL_UPDATER);
+    LocalUpdater* localUpdater = CreateJsObject<LocalUpdater>(env, info, jsObject);
     if (localUpdater == nullptr) {
         return nullptr;
     }
