@@ -27,6 +27,11 @@
 namespace OHOS::UpdateService {
 class UpdateClient : public IUpdater {
 public:
+    static std::string GetClassName()
+    {
+        return "UpdateClient";
+    }
+
     class Napi {
     public:
         static constexpr const char *FUNCTION_ON = "on";
