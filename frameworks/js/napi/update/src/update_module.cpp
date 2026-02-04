@@ -284,7 +284,7 @@ static bool DefineRestorer(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = CLASS_NAME_RESTORER,
+        .className = Restorer.GetClassName(),
         .constructor = JsConstructorRestorer,
         .desc = desc,
         .descSize = COUNT_OF(desc)
@@ -303,7 +303,7 @@ static bool DefineLocalUpdater(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = CLASS_NAME_LOCAL_UPDATER,
+        .className = LocalUpdater.GetClassName(),
         .constructor = JsConstructorLocalUpdater,
         .desc = desc,
         .descSize = COUNT_OF(desc)
@@ -334,7 +334,7 @@ static bool DefineUpdateClient(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = CLASS_NAME_UPDATE_CLIENT,
+        .className = UpdateClient.GetClassName(),
         .constructor = JsConstructor<UpdateClient>,
         .desc = desc,
         .descSize = COUNT_OF(desc)
