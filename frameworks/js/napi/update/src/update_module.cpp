@@ -25,16 +25,6 @@
 #include "update_define.h"
 
 namespace OHOS::UpdateService {
-// class name
-const std::string CLASS_NAME_UPDATE_CLIENT = "UpdateClient";
-const std::string CLASS_NAME_RESTORER = "Restorer";
-const std::string CLASS_NAME_LOCAL_UPDATER = "LocalUpdater";
-
-// constructor reference
-static thread_local napi_ref g_updateClientConstructorRef = nullptr;
-static thread_local napi_ref g_restorerConstructorRef = nullptr;
-static thread_local napi_ref g_localUpdaterConstructorRef = nullptr;
-
 std::shared_ptr<Restorer> g_restorer = nullptr;
 std::shared_ptr<LocalUpdater> g_localUpdater = nullptr;
 std::map<UpgradeInfo, std::shared_ptr<UpdateClient>> g_onlineUpdater;
@@ -121,7 +111,7 @@ napi_value GetOnlineUpdater(napi_env env, napi_callback_info info)
         return nullptr, "Failed to GetOnlineUpdater");
 
     napi_value jsObject = nullptr;
-    UpdateClient *client = CreateJsObject<UpdateClient>(env, info, g_updateClientConstructorRef, jsObject);
+    UpdateClient *client = CreateJsObject<UpdateClient>(env, info, jsObject);
     if (client != nullptr) {
         napi_value result = client->GetOnlineUpdater(env, info);
         if (result != nullptr) {
@@ -138,7 +128,7 @@ napi_value GetRestorer(napi_env env, napi_callback_info info)
         return nullptr, "Failed to GetRestorer");
 
     napi_value jsObject = nullptr;
-    Restorer* restorer = CreateJsObject<Restorer>(env, info, g_restorerConstructorRef, jsObject);
+    Restorer* restorer = CreateJsObject<Restorer>(env, info, jsObject);
     if (restorer == nullptr) {
         return nullptr;
     }
@@ -152,7 +142,7 @@ napi_value GetLocalUpdater(napi_env env, napi_callback_info info)
         return nullptr, "Failed to GetLocalUpdater");
 
     napi_value jsObject = nullptr;
-    LocalUpdater* localUpdater = CreateJsObject<LocalUpdater>(env, info, g_localUpdaterConstructorRef, jsObject);
+    LocalUpdater* localUpdater = CreateJsObject<LocalUpdater>(env, info, jsObject);
     if (localUpdater == nullptr) {
         return nullptr;
     }
@@ -283,9 +273,6 @@ static bool DefineClass(napi_env env, napi_value exports, const NativeClass& nat
     status = napi_set_named_property(env, exports, className.c_str(), result);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return false, "DefineClass error, napi_set_named_property fail");
 
-    constexpr int32_t refCount = 1; // 新引用的初始引用计数
-    status = napi_create_reference(env, result, refCount, nativeClass.constructorRef);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return false, "DefineClass error, napi_create_reference fail");
     return true;
 }
 
@@ -297,9 +284,8 @@ static bool DefineRestorer(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = CLASS_NAME_RESTORER,
+        .className = std::string(Restorer::CLASS_NAME),
         .constructor = JsConstructorRestorer,
-        .constructorRef = &g_restorerConstructorRef,
         .desc = desc,
         .descSize = COUNT_OF(desc)
     };
@@ -317,9 +303,8 @@ static bool DefineLocalUpdater(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = CLASS_NAME_LOCAL_UPDATER,
+        .className = std::string(LocalUpdater::CLASS_NAME),
         .constructor = JsConstructorLocalUpdater,
-        .constructorRef = &g_localUpdaterConstructorRef,
         .desc = desc,
         .descSize = COUNT_OF(desc)
     };
@@ -349,9 +334,8 @@ static bool DefineUpdateClient(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = CLASS_NAME_UPDATE_CLIENT,
+        .className = std::string(UpdateClient::CLASS_NAME),
         .constructor = JsConstructor<UpdateClient>,
-        .constructorRef = &g_updateClientConstructorRef,
         .desc = desc,
         .descSize = COUNT_OF(desc)
     };
