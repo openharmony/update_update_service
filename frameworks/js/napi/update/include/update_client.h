@@ -26,8 +26,8 @@
 
 namespace OHOS::UpdateService {
 class UpdateClient : public IUpdater {
-    DECLARE_CLASS_NAME(UpdateClient);
 public:
+    DECLARE_CLASS_NAME(UpdateClient);
     class Napi {
     public:
         static constexpr const char *FUNCTION_ON = "on";

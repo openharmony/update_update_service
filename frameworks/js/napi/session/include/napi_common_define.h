@@ -39,8 +39,7 @@ if (!(assertion)) {                     \
 
 #define INDEX(x) ((x) - 1)
 
-#define DECLARE_CLASS_NAME(className) \
-    static inline constexpr const char *CLASS_NAME = #className
+#define DECLARE_CLASS_NAME(className) static inline constexpr const char *CLASS_NAME = #className
 
 enum class ClientStatus {
     CLIENT_SUCCESS = 0,

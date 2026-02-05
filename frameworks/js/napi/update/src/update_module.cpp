@@ -284,7 +284,7 @@ static bool DefineRestorer(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = std::to_string(Restorer::CLASS_NAME),
+        .className = std::string(Restorer::CLASS_NAME),
         .constructor = JsConstructorRestorer,
         .desc = desc,
         .descSize = COUNT_OF(desc)
@@ -303,7 +303,7 @@ static bool DefineLocalUpdater(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = std::to_string(LocalUpdater::CLASS_NAME),
+        .className = std::string(LocalUpdater::CLASS_NAME),
         .constructor = JsConstructorLocalUpdater,
         .desc = desc,
         .descSize = COUNT_OF(desc)
@@ -334,7 +334,7 @@ static bool DefineUpdateClient(napi_env env, napi_value exports)
     };
 
     NativeClass nativeClass = {
-        .className = std::to_string(UpdateClient::CLASS_NAME),
+        .className = std::string(UpdateClient::CLASS_NAME),
         .constructor = JsConstructor<UpdateClient>,
         .desc = desc,
         .descSize = COUNT_OF(desc)
