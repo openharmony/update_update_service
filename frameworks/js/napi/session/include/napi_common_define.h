@@ -40,7 +40,7 @@ if (!(assertion)) {                     \
 #define INDEX(x) ((x) - 1)
 
 #define DECLARE_CLASS_NAME(className) \
-    static inline constexpr const char *ClassName = #className
+    static inline constexpr const char *CLASS_NAME = #className
 
 enum class ClientStatus {
     CLIENT_SUCCESS = 0,
@@ -83,7 +83,7 @@ T *CreateJsObject(napi_env env, napi_callback_info info, napi_value &jsObject)
     napi_value args[MAX_ARGC] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, args, &thisArg, nullptr);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "CreateJsObject, napi_get_cb_info error");
-    status = napi_get_named_property(env, thisArg, T::ClassName, &constructor);
+    status = napi_get_named_property(env, thisArg, T::CLASS_NAME, &constructor);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "CreateJsObject, napi_get_named_property error");
     status = napi_new_instance(env, constructor, argc, args, &jsObject);
     PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return nullptr, "CreateJsObject error, napi_new_instance fail");
