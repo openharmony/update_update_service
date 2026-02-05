@@ -21,8 +21,8 @@
 
 namespace OHOS::UpdateService {
 class LocalUpdater : public IUpdater {
-    DECLARE_CLASS_NAME(LocalUpdater);
 public:
+    DECLARE_CLASS_NAME(LocalUpdater);
     class Napi {
     public:
         static constexpr const char *FUNCTION_VERIFY_UPGRADE_PACKAGE = "verifyUpgradePackage";
