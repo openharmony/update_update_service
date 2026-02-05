@@ -26,6 +26,7 @@
 
 namespace OHOS::UpdateService {
 class UpdateClient : public IUpdater {
+    DECLARE_CLASS_NAME(UpdateClient);
 public:
     static std::string GetClassName()
     {
