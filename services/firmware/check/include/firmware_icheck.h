@@ -45,6 +45,7 @@ constexpr int32_t TIMEOUT_FOR_CONNECT = 10;
 #else
 constexpr int32_t TIMEOUT_FOR_CONNECT = 1;
 #endif
+#define FDSAN_TAG 1
 
 namespace OHOS {
 namespace UpdateService {
@@ -73,18 +74,20 @@ public:
             FIRMWARE_LOGE("FirmwareICheck DoAction callback is null");
             return;
         }
+        uint64_t updaterFdSanTag = UPDATER_SA_DOMAIN_ID << 32 || FDSAN_TAG;
         int32_t engineSocket = socket(AF_INET, SOCK_STREAM, 0);
         ENGINE_CHECK(engineSocket >= 0,
             checkCallback.callback(CheckStatus::CHECK_FAIL, duration_, checkResultList_, checkAndAuthInfo_);
             return, "socket error !");
 
+        fdsan_exchange_owner_tag(engineSocket, 0, updaterFdSanTag);
         std::string serverIp = OHOS::system::GetParameter(PARAM_NAME_FOR_SEARCH, DEFAULT_SERVER_IP);
         FIRMWARE_LOGI("CheckNewVersion serverIp: %s ", serverIp.c_str());
         sockaddr_in engineSin {};
         engineSin.sin_family = AF_INET;
         engineSin.sin_port = htons(PORT_NUMBER);
         int32_t ret = inet_pton(AF_INET, serverIp.c_str(), &engineSin.sin_addr);
-        ENGINE_CHECK(ret > 0, close(engineSocket);
+        ENGINE_CHECK(ret > 0, fdsan_close_with_tag(engineSocket, updaterFdSanTag);
             checkCallback.callback(CheckStatus::CHECK_FAIL, duration_, checkResultList_, checkAndAuthInfo_);
             return, "socket error");
 
@@ -92,16 +95,16 @@ public:
         setsockopt(engineSocket, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(struct timeval));
         ret = connect(engineSocket, reinterpret_cast<sockaddr *>(&engineSin), sizeof(engineSin));
         ENGINE_CHECK(ret == 0,
-            close(engineSocket);
+            fdsan_close_with_tag(engineSocket, updaterFdSanTag);
             checkCallback.callback(CheckStatus::CHECK_FAIL, duration_, checkResultList_, checkAndAuthInfo_);
             return, "connect error");
         NetworkResponse response {};
         ret = ReadDataFromSSL(engineSocket, response);
         ENGINE_CHECK(ret == 0,
-            close(engineSocket);
+            fdsan_close_with_tag(engineSocket, updaterFdSanTag);
             checkCallback.callback(CheckStatus::CHECK_FAIL, duration_, checkResultList_, checkAndAuthInfo_);
             return, "SSL ReadData error");
-        close(engineSocket);
+        fdsan_close_with_tag(engineSocket, updaterFdSanTag);
         CheckStatus checkStatus;
         if (response.status != static_cast<int64_t>(HttpConstant::SUCCESS) || response.content.empty()) {
             checkStatus = CheckStatus::CHECK_FAIL;
