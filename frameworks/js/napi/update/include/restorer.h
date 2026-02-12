@@ -23,6 +23,7 @@
 namespace OHOS::UpdateService {
 class Restorer : public IUpdater {
 public:
+    DECLARE_CLASS_NAME(Restorer);
     class Napi {
     public:
         static constexpr const char *FUNCTION_FACTORY_RESET = "factoryReset";
