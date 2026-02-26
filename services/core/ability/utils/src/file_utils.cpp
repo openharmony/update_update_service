@@ -212,7 +212,7 @@ std::string FileUtils::ReadDataFromFile(const std::string &filePath)
     bool ret = std::filesystem::exists(filePath, errorCode);
     if (errorCode.operator bool()) {
         ENGINE_LOGE("filesystem::exists error, error code = %{public}d, %{public}s", errorCode.value(),
-        StringUtils::GetBoolStr(ret).c_str());
+            StringUtils::GetBoolStr(ret).c_str());
         return "";
     }
     std::ifstream readFile;
