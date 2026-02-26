@@ -28,6 +28,7 @@
 #include <vector>
 
 #include "constant.h"
+#include "string_utils.h"
 #include "update_log.h"
 
 namespace OHOS {
@@ -205,7 +206,7 @@ bool FileUtils::CreatDirWithPermission(const std::string &fileDir, int32_t dirPe
 std::string FileUtils::ReadDataFromFile(const std::string &filePath)
 {
     if (filePath.empty()) {
-        ENGINE_LOGE("filePath is empty.")
+        ENGINE_LOGE("filePath is empty.");
         return "";
     }
     std::error_code errorCode;
