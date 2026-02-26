@@ -195,11 +195,12 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
             businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
             return INT_CALL_SUCCESS;
         }
-        std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
+        std::string dataXmlFinal = dataXml.substr(startIndex + 1);
         GetChangelogContent(dataXmlFinal, descriptionOptions.language);
         componentDescription.descriptionInfo.content = dataXmlFinal;
-        componentDescription.descriptionInfo.descriptionType =
-            static_cast<DescriptionType>(atoi(dataXml.substr(0, dataXml.find_first_of("|")).c_str()));
+        int32_t descType = 0;
+        StringUtils::DecStringToNumber(dataXml.substr(0, startIndex), descType);
+        componentDescription.descriptionInfo.descriptionType = static_cast<DescriptionType>(descType);
         newVersionDescriptionInfo.componentDescriptions.push_back(componentDescription);
     }
     return INT_CALL_SUCCESS;
@@ -244,11 +245,12 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
         return INT_CALL_SUCCESS;
     }
-    std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
+    std::string dataXmlFinal = dataXml.substr(startIndex + 1);
     GetChangelogContent(dataXmlFinal, descriptionOptions.language);
     descriptionContent.descriptionInfo.content = dataXmlFinal;
-    descriptionContent.descriptionInfo.descriptionType =
-        static_cast<DescriptionType>(atoi(dataXml.substr(0, dataXml.find_first_of("|")).c_str()));
+    int32_t descType = 0;
+    StringUtils::DecStringToNumber(dataXml.substr(0, startIndex), descType);
+    descriptionContent.descriptionInfo.descriptionType = static_cast<DescriptionType>(descType);
     currentVersionDescriptionInfo.componentDescriptions.push_back(descriptionContent);
     businessError.Build(CallResult::SUCCESS, "GetCurrentVersionDescription ok");
     return INT_CALL_SUCCESS;
