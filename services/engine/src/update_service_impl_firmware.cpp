@@ -182,6 +182,11 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
     for (auto const &component : components) {
         ComponentDescription componentDescription;
         componentDescription.componentId = component.componentId;
+        if (!IsValidComponentId(componentDescription.componentId)) {
+            FIRMWARE_LOGE("componentId include invalid chars [%{public}s]", componentDescription.componentId.c_str());
+            businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
+            return INT_CALL_SUCCESS;
+        }
         std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + component.componentId + ".xml";
         if (!FileUtils::IsFileExist(changelogFilePath)) {
             FIRMWARE_LOGE("changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
@@ -190,7 +195,7 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
         }
         std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
         size_t startIndex = dataXml.find_first_of("|");
-        if (startIndex == std::string::npos) {
+        if (startIndex == std::string::npos || (startIndex + 1) >= dataXml.length()) {
             FIRMWARE_LOGE("dataXml not found |");
             businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
             return INT_CALL_SUCCESS;
@@ -232,6 +237,11 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         return INT_CALL_SUCCESS;
     }
 
+    if (!IsValidComponentId(descriptionContent.componentId)) {
+        FIRMWARE_LOGE("componentId include invalid chars [%{public}s]", descriptionContent.componentId.c_str());
+        businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
+        return INT_CALL_SUCCESS;
+    }
     std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + descriptionContent.componentId + ".xml";
     if (!FileUtils::IsFileExist(changelogFilePath)) {
         FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
@@ -240,7 +250,7 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
     }
     std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
     size_t startIndex = dataXml.find_first_of("|");
-    if (startIndex == std::string::npos) {
+    if (startIndex == std::string::npos || (startIndex + 1) >= dataXml.length()) {
         FIRMWARE_LOGE("dataXml not found |");
         businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
         return INT_CALL_SUCCESS;
@@ -341,6 +351,20 @@ void UpdateServiceImplFirmware::GetChangelogContent(std::string &dataXml, const 
         languageStart = LANGUAGE_CHINESE;
     }
     StringUtils::StringRemove(dataXml, languageStart, LANGUAGE_END);
+}
+
+bool UpdateServiceImplFirmware::IsValidComponentId(const std::string &componentId)
+{
+    if (componentId.empty()) {
+        return false;
+    }
+    // 只允许字母、数字、下划线、连字符
+    for (char c : componentId) {
+        if (!isalnum(c) && c != '_' && c != '-') {
+            return false;
+        }
+    }
+    return true;
 }
 } // namespace UpdateService
 } // namespace OHOS

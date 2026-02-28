@@ -81,6 +81,7 @@ private:
     std::mutex checkNewVersionMutex_;
     bool checkComplete_ = false;
     void GetChangelogContent(std::string &dataXml, const std::string &language);
+    bool IsValidComponentId(const std::string &componentId);
 };
 } // namespace UpdateService
 } // namespace OHOS

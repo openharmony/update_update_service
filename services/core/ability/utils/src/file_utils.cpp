@@ -205,19 +205,13 @@ bool FileUtils::CreatDirWithPermission(const std::string &fileDir, int32_t dirPe
 
 std::string FileUtils::ReadDataFromFile(const std::string &filePath)
 {
-    if (filePath.empty()) {
-        ENGINE_LOGE("filePath is empty.");
-        return "";
-    }
-    std::error_code errorCode;
-    bool ret = std::filesystem::exists(filePath, errorCode);
-    if (errorCode.operator bool()) {
-        ENGINE_LOGE("filesystem::exists error, error code = %{public}d, %{public}s", errorCode.value(),
-            StringUtils::GetBoolStr(ret).c_str());
+    char dealPath[PATH_MAX] = {};
+    if (realpath(filePath.c_str(), dealPath) == nullptr) {
+        ENGINE_LOGE("filePath %{private}s is not exist or invalid", filePath.c_str());
         return "";
     }
     std::ifstream readFile;
-    readFile.open(filePath);
+    readFile.open(dealPath);
     if (readFile.fail()) {
         ENGINE_LOGI("open file from %{public}s err", filePath.c_str());
         return "";
