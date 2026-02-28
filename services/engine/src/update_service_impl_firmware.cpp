@@ -15,6 +15,7 @@
 
 #include "update_service_impl_firmware.h"
 
+#include <filesystem>
 #include <string>
 #include "dupdate_errno.h"
 #include "firmware_check_data_processor.h"
@@ -188,7 +189,7 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
             return INT_CALL_SUCCESS;
         }
         std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + component.componentId + ".xml";
-        if (!FileUtils::IsFileExist(changelogFilePath)) {
+        if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
             FIRMWARE_LOGE("changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
             businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
             return INT_CALL_SUCCESS;
@@ -243,7 +244,7 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         return INT_CALL_SUCCESS;
     }
     std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + descriptionContent.componentId + ".xml";
-    if (!FileUtils::IsFileExist(changelogFilePath)) {
+    if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
         FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
         businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
         return INT_CALL_SUCCESS;
@@ -363,6 +364,21 @@ bool UpdateServiceImplFirmware::IsValidComponentId(const std::string &componentI
         if (!isalnum(c) && c != '_' && c != '-') {
             return false;
         }
+    }
+    return true;
+}
+
+bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath, const std::string &basePath)
+{
+    if (fullPath.empty() || basePath.empty()) {
+        return false;
+    }
+    std::filesystem::path basePathDir = std::filesystem::absolute(basePath).lexically_normal();
+    std::filesystem::path fullPathDir = std::filesystem::absolute(fullPath).lexically_normal();
+
+    if (fullPathDir.string().find(basePathDir.string()) != 0) {
+        FIRMWARE_LOGE("Invalid FullPath");
+        return false;
     }
     return true;
 }
