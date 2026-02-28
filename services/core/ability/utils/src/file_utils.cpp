@@ -28,7 +28,6 @@
 #include <vector>
 
 #include "constant.h"
-#include "string_utils.h"
 #include "update_log.h"
 
 namespace OHOS {
