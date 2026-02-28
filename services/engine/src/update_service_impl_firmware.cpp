@@ -15,7 +15,6 @@
 
 #include "update_service_impl_firmware.h"
 
-#include <filesystem>
 #include <string>
 #include "dupdate_errno.h"
 #include "firmware_check_data_processor.h"
