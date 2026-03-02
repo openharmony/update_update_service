@@ -83,6 +83,7 @@ private:
     void GetChangelogContent(std::string &dataXml, const std::string &language);
     bool IsValidComponentId(const std::string &componentId);
     bool IsCoverBasePath(const std::string &fullPath, const std::string &basePath);
+    bool FilePathValidCheck(const std::string &fullPath, BusinessError &businessError);
 };
 } // namespace UpdateService
 } // namespace OHOS

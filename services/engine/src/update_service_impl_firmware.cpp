@@ -15,6 +15,7 @@
 
 #include "update_service_impl_firmware.h"
 
+#include <regex>
 #include <string>
 #include "dupdate_errno.h"
 #include "firmware_check_data_processor.h"
@@ -188,10 +189,7 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
             return INT_CALL_SUCCESS;
         }
         std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + component.componentId + ".xml";
-        if (!FileUtils::IsFileExist(changelogFilePath) ||
-            !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
-            FIRMWARE_LOGE("changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
-            businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
+        if (!FilePathValidCheck(changelogFilePath, businessError)) {
             return INT_CALL_SUCCESS;
         }
         std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
@@ -244,9 +242,7 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         return INT_CALL_SUCCESS;
     }
     std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + descriptionContent.componentId + ".xml";
-    if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
-        FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
-        businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
+    if (!FilePathValidCheck(changelogFilePath, businessError)) {
         return INT_CALL_SUCCESS;
     }
     std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
@@ -360,12 +356,8 @@ bool UpdateServiceImplFirmware::IsValidComponentId(const std::string &componentI
         return false;
     }
     // 只允许字母、数字、下划线、连字符
-    for (char c : componentId) {
-        if (!isalnum(c) && c != '_' && c != '-') {
-            return false;
-        }
-    }
-    return true;
+    std::regex pattern("^[a-zA-Z0-9_-]+$");
+    return std::regex_match(componentId, pattern);
 }
 
 bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath, const std::string &basePath)
@@ -373,10 +365,30 @@ bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath, con
     if (fullPath.empty() || basePath.empty()) {
         return false;
     }
-    std::filesystem::path basePathDir = std::filesystem::absolute(basePath).lexically_normal();
-    std::filesystem::path fullPathDir = std::filesystem::absolute(fullPath).lexically_normal();
-    if (fullPathDir.string().find(basePathDir.string()) != 0) {
+
+    char resolvedBasePath[PATH_MAX] = {};
+    char resolvedFullPath[PATH_MAX] = {};
+    if (realpath(basePath.c_str(), resolvedBasePath) == nullptr) {
+        FIRMWARE_LOGE("Failed to resolve basePath");
+        return false;
+    }
+    if (realpath(fullPath.c_str(), resolvedFullPath) == nullptr) {
+        FIRMWARE_LOGE("Failed to resolve fullPath");
+        return false;
+    }
+
+    if (std::strncmp(resolvedFullPath, resolvedBasePath, strlen(resolvedBasePath)) != 0) {
         FIRMWARE_LOGE("Invalid FullPath");
+        return false;
+    }
+    return true;
+}
+
+bool UpdateServiceImplFirmware::FilePathValidCheck(const std::string &changelogFilePath, BusinessError &businessError)
+{
+    if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
+        FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
+        businessError.Build(CallResult::FAIL, "GetDescription failed");
         return false;
     }
     return true;
