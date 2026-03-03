@@ -360,24 +360,19 @@ bool UpdateServiceImplFirmware::IsValidComponentId(const std::string &componentI
     return std::regex_match(componentId, pattern);
 }
 
-bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath, const std::string &basePath)
+bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath)
 {
-    if (fullPath.empty() || basePath.empty()) {
+    if (fullPath.empty()) {
         return false;
     }
 
-    char resolvedBasePath[PATH_MAX] = {};
     char resolvedFullPath[PATH_MAX] = {};
-    if (realpath(basePath.c_str(), resolvedBasePath) == nullptr) {
-        FIRMWARE_LOGE("Failed to resolve basePath");
-        return false;
-    }
     if (realpath(fullPath.c_str(), resolvedFullPath) == nullptr) {
         FIRMWARE_LOGE("Failed to resolve fullPath");
         return false;
     }
 
-    if (std::strncmp(resolvedFullPath, resolvedBasePath, strlen(resolvedBasePath)) != 0) {
+    if (std::strncmp(resolvedFullPath, Firmware::CHANGELOG_PATH.c_str(), Firmware::CHANGELOG_PATH.length()) != 0) {
         FIRMWARE_LOGE("Invalid FullPath");
         return false;
     }
@@ -386,7 +381,7 @@ bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath, con
 
 bool UpdateServiceImplFirmware::CheckFilePathValid(const std::string &changelogFilePath, BusinessError &businessError)
 {
-    if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
+    if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath)) {
         FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
         businessError.Build(CallResult::FAIL, "GetDescription failed");
         return false;
