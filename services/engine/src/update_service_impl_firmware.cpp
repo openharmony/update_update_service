@@ -189,7 +189,7 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
             return INT_CALL_SUCCESS;
         }
         std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + component.componentId + ".xml";
-        if (!FilePathValidCheck(changelogFilePath, businessError)) {
+        if (!CheckFilePathValid(changelogFilePath, businessError)) {
             return INT_CALL_SUCCESS;
         }
         std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
@@ -242,7 +242,7 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         return INT_CALL_SUCCESS;
     }
     std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + descriptionContent.componentId + ".xml";
-    if (!FilePathValidCheck(changelogFilePath, businessError)) {
+    if (!CheckFilePathValid(changelogFilePath, businessError)) {
         return INT_CALL_SUCCESS;
     }
     std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
@@ -384,7 +384,7 @@ bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath, con
     return true;
 }
 
-bool UpdateServiceImplFirmware::FilePathValidCheck(const std::string &changelogFilePath, BusinessError &businessError)
+bool UpdateServiceImplFirmware::CheckFilePathValid(const std::string &changelogFilePath, BusinessError &businessError)
 {
     if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath, Firmware::CHANGELOG_PATH)) {
         FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
