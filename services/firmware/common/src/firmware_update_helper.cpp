@@ -152,7 +152,7 @@ bool FirmwareUpdateHelper::IsUpgradePackagesReady(const std::vector<FirmwareComp
             FIRMWARE_LOGE("IsUpgradePackagesReady: package [%{public}s] is not exist!", component.spath.c_str());
             return false;
         }
-        int64_t realSize = FileUtils::GetFileSize(component.spath);
+        int64_t realSize = FileUtils::RetrieveFileSize(component.spath);
         if (realSize != component.size) {
             FIRMWARE_LOGE("IsUpgradePackagesReady: calculate component size %{public}s != DB component size %{public}s",
                 std::to_string(realSize).c_str(), std::to_string(component.size).c_str());
