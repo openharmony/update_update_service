@@ -34,7 +34,7 @@ namespace OHOS {
 namespace UpdateService {
 std::map<std::string, int32_t> FileUtils::baseDirMap_;
 
-int64_t FileUtils::GetFileSize(const std::string &fileName)
+int64_t FileUtils::RetrieveFileSize(const std::string &fileName)
 {
     std::error_code errorCode;
     int64_t fileSize = static_cast<int64_t>(std::filesystem::file_size(fileName, errorCode));
