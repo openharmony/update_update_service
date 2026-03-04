@@ -36,7 +36,7 @@ struct DirInfo {
 class FileUtils {
 public:
     static bool IsFileExist(const std::string &fileName);
-    static int64_t GetFileSize(const std::string &fileName);
+    static int64_t RetrieveFileSize(const std::string &fileName);
     static bool IsSpaceEnough(const std::string &filePath, const int64_t requiredSpace);
     static bool SaveDataToFile(const std::string &filePath, const std::string &data);
     static void DeleteFile(const std::string &rootPath, bool isDeleteRootDir);
