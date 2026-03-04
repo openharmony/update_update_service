@@ -372,7 +372,8 @@ bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath)
         return false;
     }
 
-    if (std::strncmp(resolvedFullPath, Firmware::CHANGELOG_PATH.c_str(), Firmware::CHANGELOG_PATH.length()) != 0) {
+    std::string resolvedFullPathStr(resolvedFullPath);
+    if (resolvedFullPathStr.find(Firmware::CHANGELOG_PATH) !=0 ) {
         FIRMWARE_LOGE("Invalid FullPath");
         return false;
     }
