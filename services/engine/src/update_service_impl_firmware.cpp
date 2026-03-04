@@ -15,6 +15,7 @@
 
 #include "update_service_impl_firmware.h"
 
+#include <regex>
 #include <string>
 #include "dupdate_errno.h"
 #include "firmware_check_data_processor.h"
@@ -182,24 +183,28 @@ int32_t UpdateServiceImplFirmware::GetNewVersionDescription(const UpgradeInfo &i
     for (auto const &component : components) {
         ComponentDescription componentDescription;
         componentDescription.componentId = component.componentId;
-        std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + component.componentId + ".xml";
-        if (!FileUtils::IsFileExist(changelogFilePath)) {
-            FIRMWARE_LOGE("changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
+        if (!IsValidComponentId(componentDescription.componentId)) {
+            FIRMWARE_LOGE("componentId include invalid chars [%{public}s]", componentDescription.componentId.c_str());
             businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
+            return INT_CALL_SUCCESS;
+        }
+        std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + component.componentId + ".xml";
+        if (!CheckFilePathValid(changelogFilePath, businessError)) {
             return INT_CALL_SUCCESS;
         }
         std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
         size_t startIndex = dataXml.find_first_of("|");
-        if (startIndex == std::string::npos) {
+        if (startIndex == std::string::npos || (startIndex + 1) >= dataXml.length()) {
             FIRMWARE_LOGE("dataXml not found |");
             businessError.Build(CallResult::FAIL, "GetNewVersionDescription failed");
             return INT_CALL_SUCCESS;
         }
-        std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
+        std::string dataXmlFinal = dataXml.substr(startIndex + 1);
         GetChangelogContent(dataXmlFinal, descriptionOptions.language);
         componentDescription.descriptionInfo.content = dataXmlFinal;
-        componentDescription.descriptionInfo.descriptionType =
-            static_cast<DescriptionType>(atoi(dataXml.substr(0, dataXml.find_first_of("|")).c_str()));
+        int32_t descType = 0;
+        StringUtils::DecStringToNumber(dataXml.substr(0, startIndex), descType);
+        componentDescription.descriptionInfo.descriptionType = static_cast<DescriptionType>(descType);
         newVersionDescriptionInfo.componentDescriptions.push_back(componentDescription);
     }
     return INT_CALL_SUCCESS;
@@ -231,24 +236,28 @@ int32_t UpdateServiceImplFirmware::GetCurrentVersionDescription(const UpgradeInf
         return INT_CALL_SUCCESS;
     }
 
-    std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + descriptionContent.componentId + ".xml";
-    if (!FileUtils::IsFileExist(changelogFilePath)) {
-        FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
+    if (!IsValidComponentId(descriptionContent.componentId)) {
+        FIRMWARE_LOGE("componentId include invalid chars [%{public}s]", descriptionContent.componentId.c_str());
         businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
+        return INT_CALL_SUCCESS;
+    }
+    std::string changelogFilePath = Firmware::CHANGELOG_PATH + "/" + descriptionContent.componentId + ".xml";
+    if (!CheckFilePathValid(changelogFilePath, businessError)) {
         return INT_CALL_SUCCESS;
     }
     std::string dataXml = FileUtils::ReadDataFromFile(changelogFilePath);
     size_t startIndex = dataXml.find_first_of("|");
-    if (startIndex == std::string::npos) {
+    if (startIndex == std::string::npos || (startIndex + 1) >= dataXml.length()) {
         FIRMWARE_LOGE("dataXml not found |");
         businessError.Build(CallResult::FAIL, "GetCurrentVersionDescription failed");
         return INT_CALL_SUCCESS;
     }
-    std::string dataXmlFinal = dataXml.substr(startIndex + 1, dataXml.size());
+    std::string dataXmlFinal = dataXml.substr(startIndex + 1);
     GetChangelogContent(dataXmlFinal, descriptionOptions.language);
     descriptionContent.descriptionInfo.content = dataXmlFinal;
-    descriptionContent.descriptionInfo.descriptionType =
-        static_cast<DescriptionType>(atoi(dataXml.substr(0, dataXml.find_first_of("|")).c_str()));
+    int32_t descType = 0;
+    StringUtils::DecStringToNumber(dataXml.substr(0, startIndex), descType);
+    descriptionContent.descriptionInfo.descriptionType = static_cast<DescriptionType>(descType);
     currentVersionDescriptionInfo.componentDescriptions.push_back(descriptionContent);
     businessError.Build(CallResult::SUCCESS, "GetCurrentVersionDescription ok");
     return INT_CALL_SUCCESS;
@@ -339,6 +348,46 @@ void UpdateServiceImplFirmware::GetChangelogContent(std::string &dataXml, const 
         languageStart = LANGUAGE_CHINESE;
     }
     StringUtils::StringRemove(dataXml, languageStart, LANGUAGE_END);
+}
+
+bool UpdateServiceImplFirmware::IsValidComponentId(const std::string &componentId)
+{
+    if (componentId.empty()) {
+        return false;
+    }
+    // 只允许字母、数字、下划线、连字符
+    std::regex pattern("^[a-zA-Z0-9_-]+$");
+    return std::regex_match(componentId, pattern);
+}
+
+bool UpdateServiceImplFirmware::IsCoverBasePath(const std::string &fullPath)
+{
+    if (fullPath.empty()) {
+        return false;
+    }
+
+    char resolvedFullPath[PATH_MAX] = {};
+    if (realpath(fullPath.c_str(), resolvedFullPath) == nullptr) {
+        FIRMWARE_LOGE("Failed to resolve fullPath");
+        return false;
+    }
+
+    std::string resolvedFullPathStr(resolvedFullPath);
+    if (resolvedFullPathStr.find(Firmware::CHANGELOG_PATH) != 0) {
+        FIRMWARE_LOGE("Invalid FullPath");
+        return false;
+    }
+    return true;
+}
+
+bool UpdateServiceImplFirmware::CheckFilePathValid(const std::string &changelogFilePath, BusinessError &businessError)
+{
+    if (!FileUtils::IsFileExist(changelogFilePath) || !IsCoverBasePath(changelogFilePath)) {
+        FIRMWARE_LOGE("current changelog file [%{public}s] is not exist!", changelogFilePath.c_str());
+        businessError.Build(CallResult::FAIL, "GetDescription failed");
+        return false;
+    }
+    return true;
 }
 } // namespace UpdateService
 } // namespace OHOS

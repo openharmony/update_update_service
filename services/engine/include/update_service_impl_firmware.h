@@ -81,6 +81,9 @@ private:
     std::mutex checkNewVersionMutex_;
     bool checkComplete_ = false;
     void GetChangelogContent(std::string &dataXml, const std::string &language);
+    bool IsValidComponentId(const std::string &componentId);
+    bool IsCoverBasePath(const std::string &fullPath);
+    bool CheckFilePathValid(const std::string &fullPath, BusinessError &businessError);
 };
 } // namespace UpdateService
 } // namespace OHOS
