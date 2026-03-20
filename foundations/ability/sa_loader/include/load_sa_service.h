@@ -16,6 +16,7 @@
 #ifndef LOAD_SA_SERVICE_H
 #define LOAD_SA_SERVICE_H
 
+#include <atomic>
 #include <mutex>
 #include <unistd.h>
 
@@ -45,7 +46,7 @@ private:
     bool CheckSaLoaded();
     bool LoadSa(int systemAbilityId);
 
-    LoadSaStatus loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
+    std::atomic<LoadSaStatus> loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
     static std::mutex instanceLock_;
     static sptr<LoadSaService> instance_;
 };
