@@ -47,18 +47,19 @@ void LoadSaService::OnLoadSystemAbilitySuccess(int32_t systemAbilityId, const sp
 {
     ENGINE_LOGI("SystemAbility load Success systemAbilityId: %{public}d, IRemoteObject result: %{public}s",
         systemAbilityId, (remoteObject != nullptr) ? "succeed" : "failed");
-    loadSaStatus_ = (remoteObject != nullptr) ? LoadSaStatus::SUCCESS : LoadSaStatus::FAIL;
+    loadSaStatus_.store((remoteObject != nullptr) ? LoadSaStatus::SUCCESS : LoadSaStatus::FAIL,
+        std::memory_order_release);
 }
 
 void LoadSaService::OnLoadSystemAbilityFail(int32_t systemAbilityId)
 {
     ENGINE_LOGE("SystemAbility Load fail the systemAbilityId is: %{public}d", systemAbilityId);
-    loadSaStatus_ = LoadSaStatus::FAIL;
+    loadSaStatus_.store(LoadSaStatus::FAIL, std::memory_order_release);
 }
 
 void LoadSaService::InitStatus()
 {
-    loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
+    loadSaStatus_.store(LoadSaStatus::WAIT_RESULT, std::memory_order_release);
 }
 
 bool LoadSaService::CheckSaLoaded()
@@ -69,7 +70,7 @@ bool LoadSaService::CheckSaLoaded()
     ENGINE_LOGI("Waiting for CheckSaLoaded");
     do {
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-        LoadSaStatus loadSaStatus = loadSaStatus_;
+        LoadSaStatus loadSaStatus = loadSaStatus_.load(std::memory_order_acquire);
         if (loadSaStatus != LoadSaStatus::WAIT_RESULT) {
             bool isSaLoaded = loadSaStatus == LoadSaStatus::SUCCESS;
             ENGINE_LOGI("found OnLoad result: %{public}s", isSaLoaded ? "succeed" : "failed");
