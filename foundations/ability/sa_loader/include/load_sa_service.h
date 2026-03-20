@@ -16,7 +16,6 @@
 #ifndef LOAD_SA_SERVICE_H
 #define LOAD_SA_SERVICE_H
 
-#include <atomic>
 #include <mutex>
 #include <unistd.h>
 
