@@ -25,28 +25,15 @@
 #include "system_ability_load_callback_stub.h"
 
 namespace OHOS::UpdateService {
-enum class LoadSaStatus {
-    WAIT_RESULT = 0,
-    SUCCESS,
-    FAIL,
-};
-
 class LoadSaService : public SystemAbilityLoadCallbackStub {
 public:
     static sptr<LoadSaService> GetInstance();
     bool TryLoadSa(int systemAbilityId);
-    void OnLoadSystemAbilitySuccess(int32_t systemAbilityId, const sptr<IRemoteObject> &remoteObject) override;
-    void OnLoadSystemAbilityFail(int32_t systemAbilityId) override;
 
 private:
     LoadSaService();
     ~LoadSaService() override;
 
-    void InitStatus();
-    bool CheckSaLoaded();
-    bool LoadSa(int systemAbilityId);
-
-    std::atomic<LoadSaStatus> loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
     static std::mutex instanceLock_;
     static sptr<LoadSaService> instance_;
 };
