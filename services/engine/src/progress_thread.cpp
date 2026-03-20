@@ -34,12 +34,11 @@ ProgressThread::~ProgressThread() {}
 
 void ProgressThread::QuitDownloadThread()
 {
-    {
-        std::unique_lock<std::mutex> lock(mutex_);
-        isWake_ = true;
-        isExitThread_ = true;
-        condition_.notify_one();
-    }
+    std::unique_lock<std::mutex> lock(mutex_);
+    isWake_ = true;
+    isExitThread_ = true;
+    condition_.notify_one();
+
     if (pDealThread_ != nullptr) {
         pDealThread_->join();
         delete pDealThread_;
