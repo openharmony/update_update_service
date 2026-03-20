@@ -89,6 +89,7 @@ int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t 
     napi_status status = napi_open_handle_scope(env_, &scope);
     PARAM_CHECK(status == napi_ok, return -1, "Error open handle");
 
+    std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
     uint32_t nextSessId = 0;
     bool hasNext = GetFirstSessionId(nextSessId);
     while (hasNext) {
