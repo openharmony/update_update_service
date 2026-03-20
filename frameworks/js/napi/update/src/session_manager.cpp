@@ -93,6 +93,7 @@ int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t 
     bool hasNext = GetFirstSessionId(nextSessId);
     while (hasNext) {
         uint32_t currSessId = nextSessId;
+        std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
         auto iter = sessions_.find(currSessId);
         if (iter == sessions_.end()) {
             break;
