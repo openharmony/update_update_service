@@ -46,11 +46,6 @@ private:
     bool LoadSa(int systemAbilityId);
  
     LoadSaStatus loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
-    void InitStatus();
-    bool CheckSaLoaded();
-    bool LoadSa(int systemAbilityId);
- 
-     LoadSaStatus loadSaStatus_ = LoadSaStatus::WAIT_RESULT;
     static std::mutex instanceLock_;
     static sptr<LoadSaService> instance_;
 };
