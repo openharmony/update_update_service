@@ -295,7 +295,6 @@ void UpdateServiceKitsImpl::ResetService(const wptr<IRemoteObject> &remote)
 {
     BaseServiceKitsImpl::ResetService(remote);
     constexpr int32_t retryMaxTimes = 3;
-    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     ENGINE_LOGI("ResetService, remoteUpdateCallbackMap_: %{public}zu, retryTimes_: %{public}d",
         remoteUpdateCallbackMap_.size(), retryTimes_);
     if (!remoteUpdateCallbackMap_.empty() && retryTimes_ < retryMaxTimes) {
