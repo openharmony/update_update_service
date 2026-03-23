@@ -29,7 +29,7 @@ public:
     static sptr<LoadSaService> GetInstance();
     bool TryLoadSa(int systemAbilityId);
 
-    private:
+private:
     LoadSaService();
     ~LoadSaService() override;
 
