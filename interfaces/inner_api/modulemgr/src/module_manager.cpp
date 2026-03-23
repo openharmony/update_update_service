@@ -82,7 +82,8 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
 {
     std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
-        if (!IsMapFuncExist(code)) {
+        auto it = onRemoteRequestFuncMap_.find(code);
+        if (it == onRemoteRequestFuncMap_.end()) {
             UTILS_LOGI("add code %{public}d", code);
             onRemoteRequestFuncMap_.insert(std::make_pair(code, handleRemoteRequest));
         } else {
@@ -94,13 +95,13 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
 int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
-    if (!IsMapFuncExist(code)) {
+    auto it = onRemoteRequestFuncMap_.find(code);
+    if (it == onRemoteRequestFuncMap_.end()) {
         UTILS_LOGI("code %{public}d not exist", code);
-    } else {
-        UTILS_LOGI("code %{public}d called", code);
-        return ((RequestFuncType)onRemoteRequestFuncMap_[code])(code, data, reply, option);
+        return 0;
     }
-    return 0;
+    UTILS_LOGI("code %{public}d called", code);
+    return it->second(code, data, reply, option);
 }
 
 ModuleManager::ModuleManager() {}
@@ -183,6 +184,7 @@ int ModuleManager::HandleDumpFunc(std::string phase, int fd, const std::vector<s
 
 bool ModuleManager::IsMapFuncExist(uint32_t code) const
 {
+    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     return onRemoteRequestFuncMap_.count(code);
 }
 } // namespace UpdateService
