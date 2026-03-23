@@ -92,17 +92,20 @@ int32_t SessionManager::ProcessUnsubscribe(const std::string &eventType, size_t 
     uint32_t nextSessId = 0;
     bool hasNext = GetFirstSessionId(nextSessId);
     while (hasNext) {
-        uint32_t currSessId = nextSessId;
-        auto iter = sessions_.find(currSessId);
-        if (iter == sessions_.end()) {
-            break;
-        }
-        hasNext = GetNextSessionId(nextSessId);
+        {
+            std::lock_guard<std::recursive_mutex> guard(sessionMutex_);
+            uint32_t currSessId = nextSessId;
+            auto iter = sessions_.find(currSessId);
+            if (iter == sessions_.end()) {
+                break;
+            }
+            hasNext = GetNextSessionId(nextSessId);
 
-        auto listener = (std::shared_ptr<UpdateListener> &)(iter->second);
-        if (listener == nullptr) {
-            iter = sessions_.erase(iter);
-            continue;
+            auto listener = (std::shared_ptr<UpdateListener> &)(iter->second);
+            if (listener == nullptr) {
+                iter = sessions_.erase(iter);
+                continue;
+            }
         }
         if (listener->GetType() != SessionType::SESSION_SUBSCRIBE ||
             eventType.compare(listener->GetEventType()) != 0) {
