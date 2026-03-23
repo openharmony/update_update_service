@@ -47,6 +47,6 @@ bool LoadSaService::TryLoadSa(int systemAbilityId)
     }
     constexpr int32_t loadTimeSeconds = 5;
     auto remoteObj = sm->LoadSystemAbility(systemAbilityId, loadTimeSeconds);
-    return reremoteObj != nullptr;
+    return remoteObj != nullptr;
 }
 } // namespace OHOS::UpdateService
