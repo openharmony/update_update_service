@@ -93,6 +93,7 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
 
 int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
+    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     if (!IsMapFuncExist(code)) {
         UTILS_LOGI("code %{public}d not exist", code);
     } else {
@@ -123,6 +124,7 @@ void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType h
 
 void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
+    std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGI("phase %{public}s not exist", phase.c_str());
         return;
@@ -145,6 +147,7 @@ void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType ha
 
 int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
+    std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGI("phase %{public}s not exist", phase.c_str());
     } else {
@@ -168,6 +171,7 @@ void ModuleManager::HookDumpFunc(std::string phase, LifeCycleFuncDumpType handle
 
 int ModuleManager::HandleDumpFunc(std::string phase, int fd, const std::vector<std::u16string> &args)
 {
+    std::lock_guard<std::mutex> guard(onDumpFuncMapMutex_);
     if (onDumpFuncMap_.find(phase) == onDumpFuncMap_.end()) {
         UTILS_LOGI("phase %{public}s not exist", phase.c_str());
     } else {
