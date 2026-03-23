@@ -124,7 +124,7 @@ public:
     static size_t WriteFunc(uint8_t *ptr, size_t size, size_t nmemb, void *localData);
     static int32_t DownloadProgress(const void *localData,
         double dlTotal, double dlNow, double ulTotal, double ulNow);
-
+        
 protected:
     bool ProcessThreadExecute() override;
     void ProcessThreadExit() override;
@@ -134,7 +134,7 @@ private:
     bool DealExitOrCancel();
     bool CheckFileSize();
     bool DownloadFile();
-
+    
 private:
     Progress downloadProgress_ {};
     ProgressCallback callback_;
