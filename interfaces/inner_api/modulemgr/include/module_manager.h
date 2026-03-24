@@ -24,6 +24,7 @@
 
 #include "ipc_skeleton.h"
 #include "refbase.h"
+#include "safe_map.h"
 #include "system_ability_ondemand_reason.h"
 
 #include "update_service_module.h"
@@ -53,16 +54,12 @@ public:
 private:
     int32_t retryInterval_ = 0;
     void *dueModuleHandler = nullptr;
-    static std::map<std::string, LifeCycleFuncType> onStartOnStopFuncMap_;
-    static std::map<std::string, LifeCycleFuncReturnType> onIdleFuncMap_;
-    static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
-    static std::map<std::string, LifeCycleFuncDumpType> onDumpFuncMap_;
+    static SafeMap<std::string, LifeCycleFuncType> onStartOnStopFuncMap_;
+    static SafeMap<std::string, LifeCycleFuncReturnType> onIdleFuncMap_;
+    static SafeMap<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
+    static SafeMap<std::string, LifeCycleFuncDumpType> onDumpFuncMap_;
 
     static bool isLoaded;
-    static std::mutex onRemoteRequestFuncMapMutex_;
-    static std::mutex onStartOnStopFuncMapMutex_;
-    static std::mutex onIdleFuncMapMutex_;
-    static std::mutex onDumpFuncMapMutex_;
 };
 } // namespace UpdateService
 } // namespace OHOS
