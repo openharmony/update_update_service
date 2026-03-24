@@ -20,7 +20,6 @@
 
 #include "base_service_kits_impl.h"
 #include "iupdate_callback.h"
-#include "safe_map.h"
 #include "update_define.h"
 #include "update_service_kits.h"
 #include "update_callback.h"
@@ -100,7 +99,7 @@ protected:
 #ifndef UPDATER_UT
 private:
 #endif
-    SafeMap<UpgradeInfo, sptr<IUpdateCallback>> remoteUpdateCallbackMap_;
+    std::map<UpgradeInfo, sptr<IUpdateCallback>> remoteUpdateCallbackMap_;
     UpgradeInfo upgradeInfo_{};
     int32_t retryTimes_ = 0;
 };
