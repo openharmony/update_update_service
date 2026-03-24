@@ -185,7 +185,7 @@ int ModuleManager::HandleDumpFunc(std::string phase, int fd, const std::vector<s
 bool ModuleManager::IsMapFuncExist(uint32_t code) const
 {
     std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
-    return onRemoteRequestFuncMap_.Size() > 0 && onRemoteRequestFuncMap_.Find(code, nullptr);
+    return onRemoteRequestFuncMap_.count(code);
 }
 } // namespace UpdateService
 } // namespace OHOS
