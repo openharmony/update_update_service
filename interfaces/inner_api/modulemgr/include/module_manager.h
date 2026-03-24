@@ -57,6 +57,7 @@ private:
     static std::map<std::string, LifeCycleFuncReturnType> onIdleFuncMap_;
     static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
     static std::map<std::string, LifeCycleFuncDumpType> onDumpFuncMap_;
+
     static bool isLoaded;
     static std::mutex onRemoteRequestFuncMapMutex_;
     static std::mutex onStartOnStopFuncMapMutex_;
