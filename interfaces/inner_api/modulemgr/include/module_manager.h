@@ -58,9 +58,9 @@ private:
     static std::map<uint32_t, RequestFuncType> onRemoteRequestFuncMap_;
     static std::map<std::string, LifeCycleFuncDumpType> onDumpFuncMap_;
     static bool isLoaded;
-    static std::mutex onRemoteRequestFuncMapMutex_; 
-    static std::mutex onStartOnStopFuncMapMutex_; 
-    static std::mutex onIdleFuncMapMutex_; 
+    static std::mutex onRemoteRequestFuncMapMutex_;
+    static std::mutex onStartOnStopFuncMapMutex_;
+    static std::mutex onIdleFuncMapMutex_;
     static std::mutex onDumpFuncMapMutex_;
 };
 } // namespace UpdateService
