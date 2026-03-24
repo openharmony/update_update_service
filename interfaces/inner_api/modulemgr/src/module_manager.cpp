@@ -23,10 +23,14 @@
 
 namespace OHOS {
 namespace UpdateService {
-SafeMap<uint32_t, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
-SafeMap<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
-SafeMap<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
-SafeMap<std::string, LifeCycleFuncDumpType> ModuleManager::onDumpFuncMap_;
+std::map<uint32_t, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
+std::map<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
+std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
+std::map<std::string, LifeCycleFuncDumpType> ModuleManager::onDumpFuncMap_;
+std::mutex ModuleManager::onRemoteRequestFuncMapMutex_;
+std::mutex ModuleManager::onStartOnStopFuncMapMutex_;
+std::mutex ModuleManager::onIdleFuncMapMutex_;
+std::mutex ModuleManager::onDumpFuncMapMutex_;
 
 bool ModuleManager::isLoaded = false;
 
@@ -76,10 +80,12 @@ ModuleManager& ModuleManager::GetInstance()
 
 void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
+    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
-        if (!onRemoteRequestFuncMap_.Find(code, nullptr)) {
+        auto it = onRemoteRequestFuncMap_.find(code);
+        if (it == onRemoteRequestFuncMap_.end()) {
             UTILS_LOGI("add code %{public}d", code);
-            onRemoteRequestFuncMap_.EnsureInsert(code, handleRemoteRequest);
+            onRemoteRequestFuncMap_.insert(std::make_pair(code, handleRemoteRequest));
         } else {
             UTILS_LOGI("code %{public}d already exist", code);
         }
@@ -88,16 +94,14 @@ void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handle
 
 int32_t ModuleManager::HandleFunc(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    RequestFuncType func = nullptr;
-    if (!onRemoteRequestFuncMap_.Find(code, func)) {
+    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
+    auto it = onRemoteRequestFuncMap_.find(code);
+    if (it == onRemoteRequestFuncMap_.end()) {
         UTILS_LOGI("code %{public}d not exist", code);
         return 0;
     }
     UTILS_LOGI("code %{public}d called", code);
-    if (func == nullptr) {
-        return 0;
-    }
-    return func(code, data, reply, option);
+    return it->second(code, data, reply, option);
 }
 
 ModuleManager::ModuleManager() {}
@@ -109,77 +113,78 @@ bool ModuleManager::IsModuleLoaded() const
 
 void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop)
 {
-    LifeCycleFuncType func = nullptr;
-    if (!onStartOnStopFuncMap_.Find(phase, func)) {
+    std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
+    if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGI("add phase %{public}s", phase.c_str());
-        onStartOnStopFuncMap_.EnsureInsert(phase, handleSAOnStartOnStop);
+        onStartOnStopFuncMap_.insert(std::make_pair(phase, handleSAOnStartOnStop));
     } else {
         UTILS_LOGI("phase %{public}s exist", phase.c_str());
-        onStartOnStopFuncMap_.FindOldAndSetNew(phase, func, handleSAOnStartOnStop);
+        onStartOnStopFuncMap_[phase] = handleSAOnStartOnStop;
     }
 }
 
 void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
-    LifeCycleFuncType func = nullptr;
-    if (!onStartOnStopFuncMap_.Find(phase, func)) {
+    std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
+    if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGI("phase %{public}s not exist", phase.c_str());
         return;
     }
     UTILS_LOGI("HandleOnStartOnStopFunc phase %{public}s exist", phase.c_str());
-    func(reason);
+    ((LifeCycleFuncType)onStartOnStopFuncMap_[phase])(reason);
 }
 
 void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle)
 {
-    LifeCycleFuncReturnType func = nullptr;
-    if (!onIdleFuncMap_.Find(phase, func)) {
+    std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
+    if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGI("add phase %{public}s", phase.c_str());
-        onIdleFuncMap_.EnsureInsert(phase, handleSAOnIdle);
+        onIdleFuncMap_.insert(std::make_pair(phase, handleSAOnIdle));
     } else {
         UTILS_LOGI("phase %{public}s already exist", phase.c_str());
-        onIdleFuncMap_.FindOldAndSetNew(phase, func, handleSAOnIdle);
+        onIdleFuncMap_[phase] = handleSAOnIdle;
     }
 }
 
 int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbilityOnDemandReason &reason)
 {
-    LifeCycleFuncReturnType func = nullptr;
-    if (!onIdleFuncMap_.Find(phase, func)) {
+    std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
+    if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGI("phase %{public}s not exist", phase.c_str());
     } else {
         UTILS_LOGI("phase %{public}s already exist", phase.c_str());
-        return func(reason);
+        return ((LifeCycleFuncReturnType)onIdleFuncMap_[phase])(reason);
     }
     return 0;
 }
 
 void ModuleManager::HookDumpFunc(std::string phase, LifeCycleFuncDumpType handleSADump)
 {
-    LifeCycleFuncDumpType func = nullptr;
-    if (!onDumpFuncMap_.Find(phase, func)) {
+    std::lock_guard<std::mutex> guard(onDumpFuncMapMutex_);
+    if (onDumpFuncMap_.find(phase) == onDumpFuncMap_.end()) {
         UTILS_LOGI("add phase %{public}s", phase.c_str());
-        onDumpFuncMap_.EnsureInsert(phase, handleSADump);
+        onDumpFuncMap_.insert(std::make_pair(phase, handleSADump));
     } else {
         UTILS_LOGI("phase %{public}s already exist", phase.c_str());
-        onDumpFuncMap_.FindOldAndSetNew(phase, func, handleSADump);
+        onDumpFuncMap_[phase] = handleSADump;
     }
 }
 
 int ModuleManager::HandleDumpFunc(std::string phase, int fd, const std::vector<std::u16string> &args)
 {
-    LifeCycleFuncDumpType func = nullptr;
-    if (!onDumpFuncMap_.Find(phase, func)) {
+    std::lock_guard<std::mutex> guard(onDumpFuncMapMutex_);
+    if (onDumpFuncMap_.find(phase) == onDumpFuncMap_.end()) {
         UTILS_LOGI("phase %{public}s not exist", phase.c_str());
     } else {
         UTILS_LOGI("phase %{public}s already exist", phase.c_str());
-        return func(fd, args);
+        return ((LifeCycleFuncDumpType)onDumpFuncMap_[phase])(fd, args);
     }
     return 0;
 }
 
 bool ModuleManager::IsMapFuncExist(uint32_t code) const
 {
+    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     return onRemoteRequestFuncMap_.Size() > 0 && onRemoteRequestFuncMap_.Find(code, nullptr);
 }
 } // namespace UpdateService
