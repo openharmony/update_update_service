@@ -40,13 +40,11 @@ int32_t UpdateServiceKitsImpl::RegisterUpdateCallback(const UpgradeInfo &info,
     auto updateService = GetService();
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
 
-    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
-
     // 以下代码中sptr<IUpdateCallback>不能修改为auto,否则在重注册时有概率出现Crash
     sptr<IUpdateCallback> remoteUpdateCallback(new UpdateCallback(cb));
     ENGINE_CHECK(remoteUpdateCallback != nullptr, return INT_PARAM_ERR, "Failed to create remote callback");
     int32_t ret = updateService->RegisterUpdateCallback(info, remoteUpdateCallback, funcResult);
-    remoteUpdateCallbackMap_[info] = remoteUpdateCallback;
+    remoteUpdateCallbackMap_.EnsureInsert(info, remoteUpdateCallback);
     ENGINE_LOGI("RegisterUpdateCallback %{public}s", ret == INT_CALL_SUCCESS ? "success" : "failure");
     ENGINE_CHECK((ret) == INT_CALL_SUCCESS, ResetRemoteService(), "RegisterUpdateCallback ipc error");
     return ret;
@@ -58,8 +56,7 @@ int32_t UpdateServiceKitsImpl::UnregisterUpdateCallback(const UpgradeInfo &info,
     RETURN_FAIL_WHEN_SERVICE_NULL(updateService);
 
     ENGINE_LOGI("UnregisterUpdateCallback");
-    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
-    remoteUpdateCallbackMap_.erase(info);
+    remoteUpdateCallbackMap_.Erase(info);
     int32_t ret = updateService->UnregisterUpdateCallback(info, funcResult);
     ENGINE_CHECK((ret) == INT_CALL_SUCCESS, ResetRemoteService(), "UnregisterUpdateCallback ipc error");
     return ret;
@@ -283,9 +280,8 @@ int32_t UpdateServiceKitsImpl::VerifyUpgradePackage(const std::string &packagePa
 
 void UpdateServiceKitsImpl::RegisterCallback()
 {
-    ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.size());
+    ENGINE_LOGI("RegisterUpdateCallback size %{public}zu", remoteUpdateCallbackMap_.Size());
     int32_t funcResult = 0;
-    std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     for (auto &iter : remoteUpdateCallbackMap_) {
         remoteServer_->RegisterUpdateCallback(iter.first, iter.second, funcResult);
     }
@@ -297,8 +293,8 @@ void UpdateServiceKitsImpl::ResetService(const wptr<IRemoteObject> &remote)
     constexpr int32_t retryMaxTimes = 3;
     std::lock_guard<std::recursive_mutex> lock(remoteServerLock_);
     ENGINE_LOGI("ResetService, remoteUpdateCallbackMap_: %{public}zu, retryTimes_: %{public}d",
-        remoteUpdateCallbackMap_.size(), retryTimes_);
-    if (!remoteUpdateCallbackMap_.empty() && retryTimes_ < retryMaxTimes) {
+        remoteUpdateCallbackMap_.Size(), retryTimes_);
+    if (!remoteUpdateCallbackMap_.IsEmpty() && retryTimes_ < retryMaxTimes) {
         ENGINE_LOGI("ResetService, need resume register callback");
         auto updateService = GetService(); // 重新连接注册回调
         retryTimes_++;
