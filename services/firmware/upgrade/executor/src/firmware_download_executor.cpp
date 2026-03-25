@@ -23,8 +23,10 @@
 #include "constant.h"
 #include "dupdate_errno.h"
 #include "download_info.h"
+#include "file_utils.h"
 #include "firmware_callback_utils.h"
 #include "firmware_component_operator.h"
+#include "firmware_constant.h"
 #include "firmware_log.h"
 #include "firmware_task_operator.h"
 #include "firmware_update_helper.h"
@@ -143,7 +145,12 @@ void FirmwareDownloadExecutor::DownloadCallback(std::string serverUrl, std::stri
         ENGINE_LOGI("DownloadCallback fileName %{public}s", fileName.c_str());
         if (!VerifyDownloadPkg(fileName, downloadProgress)) {
             // If the verification fails, delete the corresponding package.
-            remove(fileName.c_str());
+            std::string realFileName = FileUtils::GetFileRealPath(fileName);
+            if(realFileName.substr(0, FIRMWARE::PACKAGE_PATH.size()) == FIRMWARE::PACKAGE_PATH) {
+                remove(fileName.c_str());
+            } else {
+                ENGINE_LOGE("fileName Invalid, can not remove");
+            }
             downloadProgress.status = UpgradeStatus::DOWNLOAD_FAIL;
             downloadProgress.endReason = std::to_string(DUpdateErrno::DUPDATE_ERR_VERIFY_PACKAGE_FAIL);
         }
