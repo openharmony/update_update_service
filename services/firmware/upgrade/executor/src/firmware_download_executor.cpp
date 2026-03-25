@@ -146,7 +146,7 @@ void FirmwareDownloadExecutor::DownloadCallback(std::string serverUrl, std::stri
         if (!VerifyDownloadPkg(fileName, downloadProgress)) {
             // If the verification fails, delete the corresponding package.
             std::string realFileName = FileUtils::GetFileRealPath(fileName);
-            if(realFileName.substr(0, FIRMWARE::PACKAGE_PATH.size()) == FIRMWARE::PACKAGE_PATH) {
+            if (realFileName.substr(0, FIRMWARE::PACKAGE_PATH.size()) == FIRMWARE::PACKAGE_PATH) {
                 remove(fileName.c_str());
             } else {
                 ENGINE_LOGE("fileName Invalid, can not remove");
