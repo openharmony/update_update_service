@@ -59,10 +59,6 @@ private:
     static std::map<std::string, LifeCycleFuncDumpType> onDumpFuncMap_;
 
     static bool isLoaded;
-    static std::mutex onRemoteRequestFuncMapMutex_;
-    static std::mutex onStartOnStopFuncMapMutex_;
-    static std::mutex onIdleFuncMapMutex_;
-    static std::mutex onDumpFuncMapMutex_;
 };
 } // namespace UpdateService
 } // namespace OHOS

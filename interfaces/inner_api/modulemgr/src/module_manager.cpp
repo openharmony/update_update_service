@@ -27,10 +27,6 @@ std::map<uint32_t, RequestFuncType> ModuleManager::onRemoteRequestFuncMap_;
 std::map<std::string, LifeCycleFuncType> ModuleManager::onStartOnStopFuncMap_;
 std::map<std::string, LifeCycleFuncReturnType> ModuleManager::onIdleFuncMap_;
 std::map<std::string, LifeCycleFuncDumpType> ModuleManager::onDumpFuncMap_;
-std::mutex ModuleManager::onRemoteRequestFuncMapMutex_;
-std::mutex ModuleManager::onStartOnStopFuncMapMutex_;
-std::mutex ModuleManager::onIdleFuncMapMutex_;
-std::mutex ModuleManager::onDumpFuncMapMutex_;
 
 bool ModuleManager::isLoaded = false;
 
@@ -80,7 +76,6 @@ ModuleManager& ModuleManager::GetInstance()
 
 void ModuleManager::HookFunc(std::vector<uint32_t> codes, RequestFuncType handleRemoteRequest)
 {
-    std::lock_guard<std::mutex> guard(onRemoteRequestFuncMapMutex_);
     for (const uint32_t code : codes) {
         if (!IsMapFuncExist(code)) {
             UTILS_LOGI("add code %{public}d", code);
@@ -111,7 +106,6 @@ bool ModuleManager::IsModuleLoaded() const
 
 void ModuleManager::HookOnStartOnStopFunc(std::string phase, LifeCycleFuncType handleSAOnStartOnStop)
 {
-    std::lock_guard<std::mutex> guard(onStartOnStopFuncMapMutex_);
     if (onStartOnStopFuncMap_.find(phase) == onStartOnStopFuncMap_.end()) {
         UTILS_LOGI("add phase %{public}s", phase.c_str());
         onStartOnStopFuncMap_.insert(std::make_pair(phase, handleSAOnStartOnStop));
@@ -133,7 +127,6 @@ void ModuleManager::HandleOnStartOnStopFunc(std::string phase, const OHOS::Syste
 
 void ModuleManager::HookOnIdleFunc(std::string phase, LifeCycleFuncReturnType handleSAOnIdle)
 {
-    std::lock_guard<std::mutex> guard(onIdleFuncMapMutex_);
     if (onIdleFuncMap_.find(phase) == onIdleFuncMap_.end()) {
         UTILS_LOGI("add phase %{public}s", phase.c_str());
         onIdleFuncMap_.insert(std::make_pair(phase, handleSAOnIdle));
@@ -156,7 +149,6 @@ int32_t ModuleManager::HandleOnIdleFunc(std::string phase, const OHOS::SystemAbi
 
 void ModuleManager::HookDumpFunc(std::string phase, LifeCycleFuncDumpType handleSADump)
 {
-    std::lock_guard<std::mutex> guard(onDumpFuncMapMutex_);
     if (onDumpFuncMap_.find(phase) == onDumpFuncMap_.end()) {
         UTILS_LOGI("add phase %{public}s", phase.c_str());
         onDumpFuncMap_.insert(std::make_pair(phase, handleSADump));
