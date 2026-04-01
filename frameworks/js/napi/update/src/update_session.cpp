@@ -29,8 +29,8 @@ void UpdateAsyncession::CompleteWork(napi_env env, napi_status status)
     ENGINE_LOGI("UpdateAsyncession::CompleteWork callbackNumber_: %{public}d, %{public}d",
         static_cast<int32_t>(callbackNumber_), sessionParams_.type);
     napi_handle_scope scope;
-    napi_status status = napi_open_handle_scope(env, &scope);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return, "Error open_handle_scope");
+    napi_status napiStatus = napi_open_handle_scope(env, &scope);
+    PARAM_CHECK_NAPI_CALL(env, napiStatus == napi_ok, return, "Error open_handle_scope");
     UpdateResult result;
     GetUpdateResult(result);
     NotifyJS(env, NULL, result);
@@ -45,8 +45,8 @@ std::string BaseUpdateSession::GetFunctionName()
 void UpdatePromiseSession::CompleteWork(napi_env env, napi_status status)
 {
     napi_handle_scope scope;
-    napi_status status = napi_open_handle_scope(env, &scope);
-    PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return, "Error open_handle_scope");
+    napi_status napiStatus = napi_open_handle_scope(env, &scope);
+    PARAM_CHECK_NAPI_CALL(env, napiStatus == napi_ok, return, "Error open_handle_scope");
     UpdateResult result;
     GetUpdateResult(result);
     NotifyJS(env, NULL, result);
