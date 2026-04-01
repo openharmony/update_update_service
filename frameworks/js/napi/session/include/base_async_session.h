@@ -96,7 +96,8 @@ public:
         } else {
             ret = static_cast<uint32_t>(result.buildJSObject(env, retArgs[1], result));
         }
-        PARAM_CHECK_NAPI_CALL(env, ret == napi_ok, napi_close_handle_scope(env, scope);return, "Failed to build json");
+        PARAM_CHECK_NAPI_CALL(env, ret == napi_ok, napi_close_handle_scope(env, scope);return,
+            "Failed to build json");
 
         napi_status retStatus = napi_get_reference_value(env, callbackRef_[0], &callback);
         PARAM_CHECK_NAPI_CALL(env, retStatus == napi_ok, napi_close_handle_scope(env, scope);return,
