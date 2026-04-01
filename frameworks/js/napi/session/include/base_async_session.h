@@ -78,6 +78,9 @@ public:
     void NotifyJS(napi_env env, napi_value thisVar, const RESULT &result)
     {
         ENGINE_LOGI("BaseAsyncSession::NotifyJS callbackNumber_: %{public}d", static_cast<int32_t>(callbackNumber_));
+        napi_handle_scope scope;
+        napi_status status = napi_open_handle_scope(env, &scope);
+        PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return, "Error open_handle_scope");
         napi_value callback;
         napi_value undefined;
         napi_value callResult;
@@ -107,6 +110,7 @@ public:
         }
         napi_delete_async_work(env, worker_);
         worker_ = nullptr;
+        napi_close_handle_scope(env, scope);
     }
 
     virtual void CompleteWork(napi_env env, napi_status status) override{};
