@@ -78,6 +78,9 @@ public:
     void NotifyJS(napi_env env, napi_value thisVar, const RESULT &result)
     {
         ENGINE_LOGI("BaseAsyncSession::NotifyJS callbackNumber_: %{public}d", static_cast<int32_t>(callbackNumber_));
+        napi_handle_scope scope;
+        napi_status status = napi_open_handle_scope(env, &scope);
+        PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return, "Error open_handle_scope");
         napi_value callback;
         napi_value undefined;
         napi_value callResult;
@@ -93,13 +96,16 @@ public:
         } else {
             ret = static_cast<uint32_t>(result.buildJSObject(env, retArgs[1], result));
         }
-        PARAM_CHECK_NAPI_CALL(env, ret == napi_ok, return, "Failed to build json");
+        PARAM_CHECK_NAPI_CALL(env, ret == napi_ok, napi_close_handle_scope(env, scope);return,
+            "Failed to build json");
 
         napi_status retStatus = napi_get_reference_value(env, callbackRef_[0], &callback);
-        PARAM_CHECK_NAPI_CALL(env, retStatus == napi_ok, return, "Failed to get reference");
+        PARAM_CHECK_NAPI_CALL(env, retStatus == napi_ok, napi_close_handle_scope(env, scope);return,
+            "Failed to get reference");
         const int callBackNumber = 2;
         retStatus = napi_call_function(env, undefined, callback, callBackNumber, retArgs, &callResult);
-        PARAM_CHECK_NAPI_CALL(env, retStatus == napi_ok, return, "Failed to call function");
+        PARAM_CHECK_NAPI_CALL(env, retStatus == napi_ok, napi_close_handle_scope(env, scope);return,
+            "Failed to call function");
         // Release resources.
         for (size_t i = 0; i < callbackNumber_; i++) {
             napi_delete_reference(env, callbackRef_[i]);
@@ -107,6 +113,7 @@ public:
         }
         napi_delete_async_work(env, worker_);
         worker_ = nullptr;
+        napi_close_handle_scope(env, scope);
     }
 
     virtual void CompleteWork(napi_env env, napi_status status) override{};

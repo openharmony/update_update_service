@@ -57,6 +57,9 @@ public:
         }
 
         // Get the return result.
+        napi_handle_scope scope;
+        napi_status status = napi_open_handle_scope(env, &scope);
+        PARAM_CHECK_NAPI_CALL(env, status == napi_ok, return, "Error open_handle_scope");
         napi_value processResult = nullptr;
         BusinessError businessError;
         GetBusinessError(businessError, result);
@@ -69,6 +72,7 @@ public:
         }
         napi_delete_async_work(env, worker_);
         worker_ = nullptr;
+        napi_close_handle_scope(env, scope);
     }
 
     virtual void CompleteWork(napi_env env, napi_status status) override {}
