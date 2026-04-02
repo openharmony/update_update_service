@@ -21,6 +21,7 @@
 #include "fs_manager/mount.h"
 #endif
 #include "ipc_skeleton.h"
+#include "string_utils.h"
 #include "updaterkits/updaterkits.h"
 
 #include "update_define.h"
@@ -64,6 +65,15 @@ static int32_t ExecReset(BusinessError &businessError, bool forceFlag)
     SYS_EVENT_SYSTEM_RESET(
         0, ret == INT_CALL_SUCCESS ? UpdateSystemEvent::EVENT_SUCCESS_RESULT : UpdateSystemEvent::EVENT_FAILED_RESULT);
     return ret;
+}
+
+static int32_t ExecDeepReset(BusinessError &businessError, const FactoryResetStrategy factoryResetStrategy)
+{
+    businessError.errorNum = CallResult::SUCCESS;
+    const std::string eraseType = (factoryResetStrategy.scope == FactoryResetScope::DATA) ? "DATA" : "DATA_AND_OS";
+    bool result = RebootAndSecureErase(eraseType);
+    ENGINE_LOGI("ExecDeepReset: %{public}s", StringUtils::GetBoolStr(result).c_str());
+    return result ? INT_CALL_SUCCESS : INT_CALL_FAIL;
 }
 
 sptr<StorageManager::IStorageManager> UpdateServiceRestorer::GetStorageMgrProxy()
@@ -116,6 +126,26 @@ int32_t UpdateServiceRestorer::ForceFactoryReset(BusinessError &businessError)
         return INT_CALL_FAIL;
     }
     return ExecReset(businessError, true);
+}
+
+int32_t UpdateServiceRestorer::DeepFactoryReset(const FactoryResetStrategy factoryResetStrategy,
+    BusinessError &businessError)
+{
+    ENGINE_LOGI("DeepFactoryReset, scope %{public}d, strategy %{public}s",
+        CAST_INT(factoryResetStrategy.scope), factoryResetStrategy.strategy.c_str());
+    return ExecDeepReset(businessError, factoryResetStrategy);
+}
+
+int32_t UpdateServiceRestorer::GetDeepFactoryResetInfo(const FactoryResetStrategy factoryResetStrategy,
+    FactoryResetInfo &factoryResetInfo, BusinessError &businessError)
+{
+    ENGINE_LOGI("GetDeepFactoryResetInfo, scope %{public}d, strategy %{public}s",
+        CAST_INT(factoryResetStrategy.scope), factoryResetStrategy.strategy.c_str());
+    const std::string eraseType = (factoryResetStrategy.scope == FactoryResetScope::DATA) ? "DATA" : "DATA_AND_OS";
+    uint32_t uint = EstimatedEraseTime(eraseType);
+    factoryResetInfo.duration = static_cast<int>(uint);
+    ENGINE_LOGI("duration %{public}d", factoryResetInfo.duration);
+    return INT_CALL_SUCCESS;
 }
 } // namespace UpdateService
 } // namespace OHOS
