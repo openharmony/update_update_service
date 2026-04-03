@@ -75,6 +75,10 @@ public:
     {
         result.businessError = businessError_;
         IUpdater *migrateClient = static_cast<IUpdater *>(client_);
+        if (migrateClient == nullptr) {
+            ENGINE_LOGE("migrateClient is nullptr");
+            return;
+        }
         migrateClient->GetUpdateResult(sessionParams_.type, result);
     }
 

@@ -22,7 +22,7 @@
 
 namespace OHOS::UpdateService {
 struct FactoryResetInfo : public Parcelable {
-    int32_t duration;
+    int32_t duration = 0;
 
     bool ReadFromParcel(Parcel &parcel);
     bool Marshalling(Parcel &parcel) const override;
