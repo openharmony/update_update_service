@@ -14,6 +14,7 @@
  */
 
 #include "progress_thread.h"
+#include "parse_content_len.h"
 
 #include <file_utils.h>
 #include <unistd.h>
@@ -120,7 +121,11 @@ bool StreamProgressThread::CheckFileSize()
         return false;
     }
 
-    int64_t fileSize = std::stoll(match.str());
+    int64_t fileSize = 0;
+    if (!ParseContentLen(match.str(), fileSize)) {
+        ENGINE_LOGE("Failed to parse Content-Length");
+        return false;
+    }
     if (fileSize <= 0 || fileSize != totalFileSize_) {
         ENGINE_LOGE("File size mismatch fileSize:%{public}" PRId64 " totalFileSize_:%{public}" PRId64 "",
         fileSize, totalFileSize_);
